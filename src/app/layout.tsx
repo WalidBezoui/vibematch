@@ -1,6 +1,5 @@
 'use client';
 
-import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider, useLanguage } from '@/context/language-context';
@@ -13,12 +12,9 @@ export const metadata: Metadata = {
 */
 
 function AppBody({ children }: { children: React.ReactNode }) {
-  const { language } = useLanguage();
   return (
     <body
-      className={`font-body bg-background text-foreground/90 antialiased selection:bg-primary/20 ${
-        language === 'AR' ? 'font-arabic' : ''
-      }`}
+      className={`bg-background text-foreground/90 antialiased selection:bg-primary/20`}
     >
       {children}
     </body>

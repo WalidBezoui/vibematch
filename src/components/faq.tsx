@@ -21,7 +21,7 @@ const FaqGroup = ({
   id: string;
 }) => (
   <section className="scroll-mt-24 mb-16" id={id}>
-    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8 font-headline flex items-center gap-3">
+    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8 flex items-center gap-3">
       <span className="material-symbols-outlined text-4xl gradient-text">
         {icon}
       </span>
@@ -62,7 +62,7 @@ export function FaqSection() {
     <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
       <div className="md:col-span-3">
         <nav className="sticky top-32">
-          <h3 className="font-bold text-lg mb-4 font-headline">
+          <h3 className="font-bold text-lg mb-4">
             {t('faqPage.categories')}
           </h3>
           <ul className="space-y-3">

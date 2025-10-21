@@ -16,7 +16,7 @@ export default function FaqPage() {
         <main className="px-4 md:px-10 lg:px-20 py-16 md:py-24 hero-bg">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16 md:mb-24">
-              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight font-headline">
+              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight">
                 {t('faqPage.title.part1')}{' '}
                 <span className="gradient-text">{t('faqPage.title.part2')}</span>
               </h1>
@@ -29,7 +29,7 @@ export default function FaqPage() {
 
             <div className="mt-24 md:mt-32 text-center bg-muted/50 dark:bg-background/50 rounded-xl p-10 md:p-16">
               <div className="max-w-3xl mx-auto flex flex-col items-center">
-                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter mb-4 font-headline">
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter mb-4">
                   {t('faqPage.stillQuestions.title')}
                 </h2>
                 <p className="text-lg md:text-xl text-foreground/60 leading-relaxed mb-8">

@@ -46,6 +46,13 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     document.documentElement.lang = language.toLowerCase();
     document.documentElement.dir = dir;
+    if (language === 'AR') {
+      document.documentElement.style.setProperty('--font-body', "'Tajawal', sans-serif");
+      document.documentElement.style.setProperty('--font-headline', "'Tajawal', sans-serif");
+    } else {
+      document.documentElement.style.setProperty('--font-body', "'Inter', sans-serif");
+      document.documentElement.style.setProperty('--font-headline', "'Poppins', sans-serif");
+    }
   }, [language, dir]);
 
 
