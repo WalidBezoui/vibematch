@@ -9,6 +9,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { ArrowRight, Palette, Store } from 'lucide-react';
+import { useLanguage } from '@/context/language-context';
 
 type SignupDialogProps = {
   open: boolean;
@@ -16,6 +17,8 @@ type SignupDialogProps = {
 };
 
 export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
+  const { t } = useLanguage();
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
@@ -24,10 +27,10 @@ export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
             auto_awesome
           </span>
           <DialogTitle className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            Join VibeMatch
+            {t('signupDialog.title')}
           </DialogTitle>
           <DialogDescription className="text-md">
-            Choose your path and start your journey with us.
+            {t('signupDialog.description')}
           </DialogDescription>
         </DialogHeader>
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -36,9 +39,9 @@ export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
             className="group relative flex flex-col items-center justify-center p-6 bg-muted/50 rounded-lg border hover:border-primary transition-all duration-300 transform hover:-translate-y-1 hover:shadow-glow-primary"
           >
             <Store className="w-10 h-10 text-primary mb-3" />
-            <h3 className="font-bold text-lg">I'm a Brand</h3>
+            <h3 className="font-bold text-lg">{t('signupDialog.brand.title')}</h3>
             <p className="text-sm text-foreground/60 mt-1">
-              Find the perfect creators.
+              {t('signupDialog.brand.description')}
             </p>
             <span className="absolute -bottom-px -right-px h-8 w-8">
               <span className="absolute inset-0.5 bg-primary/20 rounded-br-lg rounded-tl-lg group-hover:bg-primary/40 transition-colors duration-300"></span>
@@ -50,9 +53,9 @@ export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
             className="group relative flex flex-col items-center justify-center p-6 bg-muted/50 rounded-lg border hover:border-secondary transition-all duration-300 transform hover:-translate-y-1 hover:shadow-glow-secondary"
           >
             <Palette className="w-10 h-10 text-accent mb-3" />
-            <h3 className="font-bold text-lg">I'm a Creator</h3>
+            <h3 className="font-bold text-lg">{t('signupDialog.creator.title')}</h3>
             <p className="text-sm text-foreground/60 mt-1">
-              Collaborate with brands.
+              {t('signupDialog.creator.description')}
             </p>
             <span className="absolute -bottom-px -right-px h-8 w-8">
               <span className="absolute inset-0.5 bg-accent/20 rounded-br-lg rounded-tl-lg group-hover:bg-accent/40 transition-colors duration-300"></span>

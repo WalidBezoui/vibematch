@@ -3,11 +3,12 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Link from 'next/link';
+import { useLanguage } from '@/context/language-context';
 import { useRouter } from 'next/navigation';
 
 export default function BrandWaitlistPage() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,13 +26,11 @@ export default function BrandWaitlistPage() {
           <div className="flex w-full flex-col gap-8">
             <div className="flex flex-col gap-3">
               <p className="text-4xl font-black leading-tight tracking-[-0.033em] text-[#1D1D1F] dark:text-white">
-                Soyez les Premiers à Découvrir{' '}
+                {t('brandJoinPage.title.part1')}{' '}
                 <span className="text-primary">VibeMatch</span>.
               </p>
               <p className="mx-auto max-w-md text-base font-normal leading-normal text-[#617589] dark:text-gray-300">
-                Rejoignez notre liste d'attente exclusive pour les marques et
-                découvrez une manière plus transparente et efficace de
-                collaborer avec les influenceurs.
+                {t('brandJoinPage.description')}
               </p>
             </div>
             <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
@@ -41,11 +40,11 @@ export default function BrandWaitlistPage() {
                     htmlFor="name"
                     className="pb-2 text-base font-medium leading-normal text-[#1D1D1F] dark:text-white"
                   >
-                    Nom
+                    {t('brandJoinPage.form.name.label')}
                   </Label>
                   <Input
                     id="name"
-                    placeholder="Votre nom"
+                    placeholder={t('brandJoinPage.form.name.placeholder')}
                     className="h-14 rounded-xl border-[#dbe0e6] bg-white p-[15px] text-base font-normal leading-normal text-[#1D1D1F] placeholder:text-[#617589] focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-[#101922] dark:text-white"
                   />
                 </div>
@@ -54,12 +53,12 @@ export default function BrandWaitlistPage() {
                     htmlFor="email"
                     className="pb-2 text-base font-medium leading-normal text-[#1D1D1F] dark:text-white"
                   >
-                    Email
+                    {t('brandJoinPage.form.email.label')}
                   </Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Votre email"
+                    placeholder={t('brandJoinPage.form.email.placeholder')}
                     className="h-14 rounded-xl border-[#dbe0e6] bg-white p-[15px] text-base font-normal leading-normal text-[#1D1D1F] placeholder:text-[#617589] focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-[#101922] dark:text-white"
                   />
                 </div>
@@ -69,11 +68,11 @@ export default function BrandWaitlistPage() {
                   htmlFor="company"
                   className="pb-2 text-base font-medium leading-normal text-[#1D1D1F] dark:text-white"
                 >
-                  Nom de l'entreprise
+                  {t('brandJoinPage.form.company.label')}
                 </Label>
                 <Input
                   id="company"
-                  placeholder="Nom de votre entreprise"
+                  placeholder={t('brandJoinPage.form.company.placeholder')}
                   className="h-14 rounded-xl border-[#dbe0e6] bg-white p-[15px] text-base font-normal leading-normal text-[#1D1D1F] placeholder:text-[#617589] focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-[#101922] dark:text-white"
                 />
               </div>
@@ -82,11 +81,11 @@ export default function BrandWaitlistPage() {
                   htmlFor="ice"
                   className="pb-2 text-base font-medium leading-normal text-[#1D1D1F] dark:text-white"
                 >
-                  ICE
+                  {t('brandJoinPage.form.ice.label')}
                 </Label>
                 <Input
                   id="ice"
-                  placeholder="Votre numéro ICE"
+                  placeholder={t('brandJoinPage.form.ice.placeholder')}
                   className="h-14 rounded-xl border-[#dbe0e6] bg-white p-[15px] text-base font-normal leading-normal text-[#1D1D1F] placeholder:text-[#617589] focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-[#101922] dark:text-white"
                 />
               </div>
@@ -96,7 +95,7 @@ export default function BrandWaitlistPage() {
                     htmlFor="phone"
                     className="pb-2 text-base font-medium leading-normal text-[#1D1D1F] dark:text-white"
                   >
-                    Téléphone (Maroc)
+                    {t('brandJoinPage.form.phone.label')}
                   </Label>
                   <Input
                     id="phone"
@@ -110,11 +109,11 @@ export default function BrandWaitlistPage() {
                     htmlFor="city"
                     className="pb-2 text-base font-medium leading-normal text-[#1D1D1F] dark:text-white"
                   >
-                    Ville (Maroc)
+                    {t('brandJoinPage.form.city.label')}
                   </Label>
                   <Input
                     id="city"
-                    placeholder="Votre ville"
+                    placeholder={t('brandJoinPage.form.city.placeholder')}
                     className="h-14 rounded-xl border-[#dbe0e6] bg-white p-[15px] text-base font-normal leading-normal text-[#1D1D1F] placeholder:text-[#617589] focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-[#101922] dark:text-white"
                   />
                 </div>
@@ -124,7 +123,7 @@ export default function BrandWaitlistPage() {
                   type="submit"
                   className="h-12 w-full rounded-xl bg-primary px-5 text-base font-bold leading-normal tracking-[0.015em] text-black hover:bg-primary/90 active:bg-primary/80"
                 >
-                  Rejoindre la liste d'attente
+                  {t('brandJoinPage.form.submitButton')}
                 </Button>
               </div>
             </form>

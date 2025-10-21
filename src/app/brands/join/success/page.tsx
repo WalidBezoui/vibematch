@@ -1,8 +1,10 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
 
 export default function WaitlistSuccessPage() {
+  const { t } = useLanguage();
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4">
       <div className="absolute inset-0 z-0">
@@ -22,10 +24,10 @@ export default function WaitlistSuccessPage() {
               </div>
               <div className="flex flex-col gap-3">
                 <p className="text-4xl font-black leading-tight tracking-[-0.033em] text-[#1D1D1F] dark:text-white">
-                  Merci ! Vous êtes sur la liste.
+                  {t('brandJoinSuccessPage.title')}
                 </p>
                 <p className="mx-auto max-w-md text-base font-normal leading-normal text-[#617589] dark:text-gray-300">
-                  Nous vous contacterons pour un accès prioritaire.
+                  {t('brandJoinSuccessPage.description')}
                 </p>
               </div>
             </div>
@@ -34,7 +36,7 @@ export default function WaitlistSuccessPage() {
                 asChild
                 className="h-12 w-full rounded-xl bg-primary px-5 text-base font-bold leading-normal tracking-[0.015em] text-black hover:bg-primary/90 active:bg-primary/80"
               >
-                <Link href="/">Retour à l'accueil</Link>
+                <Link href="/">{t('brandJoinSuccessPage.backButton')}</Link>
               </Button>
             </div>
           </div>

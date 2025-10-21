@@ -1,0 +1,323 @@
+{
+    "header": {
+        "forBrands": "Pour les Marques",
+        "forCreators": "Pour les Créateurs",
+        "faq": "FAQ",
+        "login": "Connexion",
+        "home": "Accueil"
+    },
+    "footer": {
+        "copyright": "© 2024 VibeMatch. Créé à Casablanca pour le Maroc.",
+        "terms": "Conditions d'utilisation",
+        "privacy": "Politique de confidentialité"
+    },
+    "homePage": {
+        "hero": {
+            "title1": "L'Influence, Amplifiée par la",
+            "title2": "Confiance.",
+            "subtitle": "Fini les faux engagements. Fini les paiements en retard. VibeMatch est la Marketplace d'influenceurs vérifiés pour les meilleures marques et créateurs du Maroc.",
+            "brandsButton": "Pour les Marques",
+            "creatorsButton": "Pour les Créateurs"
+        },
+        "brands": {
+            "title1": "Arrêtez de gaspiller de l'argent avec le",
+            "title2": "faux engagement.",
+            "description": "Nous fournissons des créateurs vérifiés et des résultats garantis. Notre moteur de confiance révolutionnaire analyse plus de 50 points de données pour garantir que chaque influenceur avec lequel vous vous associez a une audience authentique et engagée. Fini les bots, fini les métriques vaniteuses. Juste un impact réel.",
+            "joinButton": "Rejoindre la liste d'attente Marques"
+        },
+        "creators": {
+            "title1": "Arrêtez de courir après les paiements.",
+            "title2": "Nous les garantissons.",
+            "description": "Concentrez-vous sur ce que vous faites le mieux : créer du contenu exceptionnel. VibeMatch s'occupe du reste. Nous garantissons vos paiements et automatisons vos factures, pour que vous puissiez construire votre marque en toute tranquillité.",
+            "applyButton": "Devenir Créateur Fondateur"
+        },
+        "results": {
+            "title1": "Arrêtez de Gérer les Risques.",
+            "title2": "Commencez à Gérer les",
+            "title3": "Résultats."
+        },
+        "features": {
+            "shield": {
+                "title": "Votre Bouclier Contre le Faux Engagement",
+                "description": "Ne vous demandez plus si une audience est réelle. Notre \"Score de Confiance\" exclusif et notre processus de vérification manuelle éliminent les créateurs aux engagements suspects. Chaque créateur sur VibeMatch est vérifié pour son authenticité."
+            },
+            "deadlines": {
+                "title": "Délais Garantis, Pas d'Excuses",
+                "description": "Fini les \"J'ai oublié de poster\". Notre Contrat Intelligent fixe les dates de publication exactes. Si un créateur est en retard, son Score de Confiance est pénalisé, vous protégeant ainsi que votre calendrier de campagne."
+            },
+            "autopilot": {
+                "title": "Gestion de Campagne en Pilote Automatique",
+                "description": "Arrêtez de jongler avec 10 conversations DM. Gérez toutes vos collaborations, de la négociation à l'approbation, depuis un tableau de bord unique, clair et centralisé. Voyez qui est en retard et qui a soumis du contenu en un coup d'œil."
+            }
+        },
+        "creating": {
+            "title1": "Concentrez-vous sur la Création.",
+            "title2": "Nous nous occupons du",
+            "title3": "Reste."
+        },
+        "creatorFeatures": {
+            "paycheck": {
+                "title": "Votre Paie 100% Automatisée",
+                "description": "Ne créez plus jamais de facture. Ne relancez plus jamais un paiement. Dès que la marque approuve votre post, notre système génère la facture and vous vire l'argent automatiquement. Vous êtes un créateur, pas un comptable."
+            },
+            "confidence": {
+                "title": "Travaillez en Toute Confiance",
+                "description": "Ne commencez plus jamais un projet en espérant être payé. Pour chaque mission que vous acceptez, le budget de la marque est bloqué et sécurisé sur notre compte séquestre. Votre paiement est garanti avant même que vous n'allumiez votre caméra."
+            },
+            "briefs": {
+                "title": "Briefs Clairs, Zéro Confusion",
+                "description": "Dites adieu aux \"détails qui changent\" à la dernière minute. Notre Contrat Intelligent verrouille le brief, les livrables et le budget. Ce qui est convenu est ce qui est livré. Protégez votre travail et votre temps."
+            }
+        },
+        "testimonialsTitle1": "Ce que les",
+        "testimonialsTitle2": "Créateurs Marocains",
+        "testimonialsTitle3": "en Disent.",
+        "testimonials": [
+            {
+                "quote": "Trouver des marques qui valorisent l'engagement authentique plutôt que le nombre de followers était une lutte constante. Le processus de sélection de VibeMatch change la donne. Je me sens enfin reconnue pour la communauté que j'ai bâtie.",
+                "name": "Ghita A.",
+                "role": "Créatrice Lifestyle",
+                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+            },
+            {
+                "quote": "Courir après les factures et gérer les retards de paiement drainait mon énergie créative. Avec VibeMatch, je sais que je serai payé à temps, à chaque fois. C'est incroyablement libérateur.",
+                "name": "Ayman F.",
+                "role": "Chroniqueur Tech",
+                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+            },
+            {
+                "quote": "En tant que créatrice, il est difficile de trouver des partenaires qui font confiance à votre vision. VibeMatch me met en relation avec des marques qui comprennent la valeur de la liberté créative et du storytelling authentique.",
+                "name": "Soukaina",
+                "role": "Influenceuse Mode",
+                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+            }
+        ],
+        "faq": {
+            "title1": "Vos Questions,",
+            "title2": "Nos Réponses.",
+            "description": "Trouvez des réponses rapides aux questions fréquentes sur le fonctionnement de VibeMatch pour les marques et les créateurs.",
+            "brandsTitle": "Pour les Marques",
+            "creatorsTitle": "Pour les Créateurs",
+            "viewAllButton": "Voir toutes les FAQs"
+        },
+        "brandsFaq": [
+            {
+              "question": "Comment VibeMatch garantit-il la qualité des créateurs ?",
+              "answer": "Notre Moteur de Confiance analyse plus de 50 points de données, y compris la démographie de l'audience, les taux d'engagement et les performances passées, pour vérifier chaque créateur. Nous vous assurons de vous connecter avec des influenceurs qui ont une audience authentique et engagée qui correspond aux valeurs de votre marque."
+            },
+            {
+              "question": "Quel est le modèle tarifaire pour les marques ?",
+              "answer": "VibeMatch fonctionne sur une structure de frais basés sur la campagne. Vous ne payez que pour les campagnes que vous lancez. Nous sommes transparents sur tous les coûts à l'avance, donc il n'y a pas de frais cachés. Contactez-nous pour des informations tarifaires détaillées adaptées à vos besoins."
+            }
+        ],
+        "creatorsFaq": [
+            {
+                "question": "Comment suis-je payé ?",
+                "answer": "Nous garantissons vos paiements. Une fois qu'une campagne est terminée et approuvée, les fonds sont libérés sur votre compte VibeMatch. Vous pouvez ensuite retirer vos gains directement sur votre compte bancaire. Fini la course aux factures !"
+            },
+            {
+                "question": "Quelles sont les conditions pour rejoindre en tant que créateur ?",
+                "answer": "Nous recherchons des créateurs ayant une connexion authentique avec leur public, quelle que soit la taille de leur communauté. Nous évaluons la qualité de l'engagement, la créativité du contenu et la pertinence de la niche. Si vous créez du contenu de haute qualité et avez une communauté fidèle, nous vous encourageons à postuler."
+            }
+        ],
+        "connect": {
+            "title": "Là où les Grandes Marques et les Grands Créateurs se Rencontrent."
+        },
+        "waitlist": {
+            "title1": "Rejoignez la Liste d'Attente",
+            "title2": "VibeMatch",
+            "title3": ".",
+            "description": "Soyez le premier à découvrir l'avenir du marketing d'influence au Maroc.",
+            "brandsButton": "Rejoindre la liste d'attente Marques",
+            "creatorsButton": "Devenir Créateur Fondateur"
+        }
+    },
+    "faqPage": {
+        "title": {
+            "part1": "Foire Aux",
+            "part2": "Questions"
+        },
+        "description": "Une question ? Nous sommes là pour vous aider. Explorez notre FAQ pour trouver des réponses aux questions courantes sur VibeMatch.",
+        "categories": "Catégories",
+        "forBrands": "Pour les Marques",
+        "forCreators": "Pour les Créateurs",
+        "general": "Général",
+        "stillQuestions": {
+            "title": "Encore des questions ?",
+            "description": "Notre équipe est là pour vous aider. Contactez-nous et nous vous répondrons dans les plus brefs délais.",
+            "contactButton": "Contacter le Support"
+        },
+        "brandsFaq": [
+            {
+              "question": "Qu'est-ce que le Moteur de Confiance de VibeMatch ?",
+              "answer": "Notre Moteur de Confiance est un système propriétaire qui analyse plus de 50 points de données pour vérifier les influenceurs. Il vérifie les faux abonnés, l'activité des bots et l'authenticité de l'engagement pour s'assurer que vous vous connectez avec des créateurs qui ont une audience authentique et engagée, maximisant ainsi le ROI de votre campagne."
+            },
+            {
+              "question": "Comment trouver des influenceurs pour ma campagne ?",
+              "answer": "VibeMatch propose des outils de recherche et de filtrage avancés. Vous pouvez rechercher des influenceurs par niche, données démographiques de l'audience, taux d'engagement, emplacement, etc. Notre plateforme vous recommandera les meilleures correspondances pour votre marque en fonction de vos objectifs de campagne et des données de notre Moteur de Confiance."
+            },
+            {
+              "question": "Comment les paiements sont-ils gérés sur la plateforme ?",
+              "answer": "Les paiements sont conservés en toute sécurité sous séquestre par VibeMatch. Vous financez la campagne lors de l'accord, et nous ne débloquons le paiement au créateur qu'après que vous ayez approuvé le contenu et que les livrables de la campagne aient été respectés. Cela protège les deux parties et garantit une collaboration fluide."
+            }
+          ],
+          "creatorsFaq": [
+              {
+                  "question": "Comment rejoindre VibeMatch en tant que créateur ?",
+                  "answer": "Pour maintenir un réseau de haute qualité, VibeMatch est actuellement sur invitation ou nécessite une candidature. Vous pouvez postuler pour devenir un Créateur Fondateur. Nous examinons chaque candidature en fonction de l'engagement de l'audience, de la qualité du contenu et de la niche. Notre équipe vous contactera si votre profil correspond à notre plateforme."
+              },
+              {
+                  "question": "Comment VibeMatch garantit-il les paiements ?",
+                  "answer": "Lorsqu'une marque vous engage pour une campagne, elle dépose le paiement intégral dans notre système de séquestre sécurisé. Une fois que vous avez terminé les livrables convenus et que la marque les a approuvés, nous virons les fonds directement sur votre compte. Cela élimine le risque de paiements en retard ou manqués, vous permettant de vous concentrer sur la création."
+              },
+              {
+                  "question": "Y a-t-il des frais pour utiliser VibeMatch ?",
+                  "answer": "L'inscription et la création d'un profil sur VibeMatch sont gratuites pour les créateurs. Nous prélevons une petite commission sur vos revenus pour chaque campagne terminée. Ces frais nous aident à couvrir le traitement des paiements, la maintenance de la plateforme et à vous fournir un support et des ressources pour développer votre carrière."
+              }
+          ],
+          "generalFaq": [
+              {
+                  "question": "Qu'est-ce qui différencie VibeMatch des autres plateformes ?",
+                  "answer": "VibeMatch est construit sur les piliers de la Confiance et de l'Efficacité. Notre Moteur de Confiance unique garantit des collaborations authentiques, tandis que notre système de paiement automatisé protège les créateurs. Nous nous concentrons spécifiquement sur le marché marocain, en comprenant ses dynamiques uniques et en favorisant une communauté de talents et de marques locales de premier plan."
+              },
+              {
+                  "question": "Que se passe-t-il en cas de litige ?",
+                  "answer": "Dans les rares cas de désaccord entre une marque et un créateur, VibeMatch propose un processus de résolution des litiges dédié. Notreéquipe d'assistance assurera la médiation, examinera l'accord de campagne et la communication, et s'efforcera de trouver une résolution juste et rapide pour les deux parties."
+              }
+          ]
+    },
+    "loginPage": {
+        "title": {
+            "part1": "Bienvenue sur"
+        },
+        "description": "Connectez-vous à votre tableau de bord.",
+        "form": {
+            "email": {
+                "label": "Adresse Email",
+                "placeholder": "votre@email.com"
+            },
+            "password": {
+                "label": "Mot de passe",
+                "forgot": "Mot de passe oublié ?"
+            },
+            "submitButton": "Se connecter"
+        },
+        "signup": {
+            "text": "Pas encore de compte ?",
+            "link": "Postuler ici."
+        }
+    },
+    "signupDialog": {
+        "title": "Rejoindre VibeMatch",
+        "description": "Choisissez votre voie et commencez votre aventure avec nous.",
+        "brand": {
+            "title": "Je suis une Marque",
+            "description": "Trouvez les créateurs parfaits."
+        },
+        "creator": {
+            "title": "Je suis un Créateur",
+            "description": "Collaborez avec des marques."
+        }
+    },
+    "brandJoinPage": {
+        "title": {
+            "part1": "Soyez les Premiers à Découvrir"
+        },
+        "description": "Rejoignez notre liste d'attente exclusive pour les marques et découvrez une manière plus transparente et efficace de collaborer avec les influenceurs.",
+        "form": {
+            "name": {
+                "label": "Nom",
+                "placeholder": "Votre nom"
+            },
+            "email": {
+                "label": "Email",
+                "placeholder": "Votre email"
+            },
+            "company": {
+                "label": "Nom de l'entreprise",
+                "placeholder": "Nom de votre entreprise"
+            },
+            "ice": {
+                "label": "ICE",
+                "placeholder": "Votre numéro ICE"
+            },
+            "phone": {
+                "label": "Téléphone (Maroc)",
+                "placeholder": "06 XX XX XX XX"
+            },
+            "city": {
+                "label": "Ville (Maroc)",
+                "placeholder": "Votre ville"
+            },
+            "submitButton": "Rejoindre la liste d'attente"
+        }
+    },
+    "brandJoinSuccessPage": {
+        "title": "Merci ! Vous êtes sur la liste.",
+        "description": "Nous vous contacterons pour un accès prioritaire.",
+        "backButton": "Retour à l'accueil"
+    },
+    "creatorJoinForm": {
+        "steps": {
+            "1": {
+                "title": "Devenez un Créateur Fondateur",
+                "description": "Rejoignez une communauté exclusive et façonnez l'avenir des collaborations entre créateurs."
+            },
+            "2": {
+                "title": "Connectez Vos Réseaux Sociaux",
+                "description": "Pour garantir confiance et efficacité, nous utilisons des connexions API pour vérifier votre présence sur les réseaux sociaux. Vos données sont en sécurité avec nous."
+            },
+            "3": {
+                "title": "Analyse de l'Audience",
+                "description": "Nous effectuons une analyse rapide pour garantir une communauté de haute qualité."
+            },
+            "4": {
+                "title": "Engagement de Professionnalisme",
+                "description": "Notre communauté est bâtie sur la confiance et la fiabilité. Veuillez confirmer votre engagement."
+            },
+            "5": {
+                "title": "Candidature Soumise !",
+                "description": "Merci d'avoir postulé pour devenir un Créateur Fondateur."
+            }
+        },
+        "stepCounter": "Étape {{current}} sur {{total}}",
+        "backButton": "Retour",
+        "nextButton": "Étape suivante",
+        "submitButton": "Soumettre la candidature",
+        "step1": {
+            "header": "Bienvenue dans le Cercle Privé",
+            "description": "En tant que Créateur Fondateur, vous aurez un accès anticipé à VibeMatch, influencerez directement le développement de notre plateforme et vous connecterez à un réseau de talents et de marques de premier ordre. Commençons.",
+            "nameLabel": "Nom complet",
+            "namePlaceholder": "Entrez votre nom complet",
+            "emailLabel": "Adresse e-mail",
+            "emailPlaceholder": "Entrez votre adresse e-mail"
+        },
+        "step2": {
+            "instagramTitle": "Connecter Instagram",
+            "instagramDescription": "Connectez-vous en toute sécurité via l'API pour vérifier votre compte et importer des métriques clés.",
+            "tiktokTitle": "Connecter TikTok",
+            "tiktokDescription": "Liez votre compte TikTok pour mettre en valeur votre engagement et votre portée.",
+            "whyConnectLink": "Pourquoi dois-je connecter mes comptes ?"
+        },
+        "step3": {
+            "header": "Analyse de votre audience en cours...",
+            "description": "Cela peut prendre quelques instants. Veuillez ne pas fermer cette fenêtre."
+        },
+        "step4": {
+            "header": "Notre Engagement Qualité",
+            "description": "Pour garantir que VibeMatch reste une plateforme de haute confiance, nous demandons à tous les créateurs de s'engager à respecter des normes professionnelles. Cela nous aide à maintenir un environnement fiable pour tous.",
+            "pledge": "Je m'engage à respecter les délais et à ne pas utiliser de faux engagements."
+        },
+        "finalStep": {
+            "title": "Merci pour votre candidature.",
+            "description": "Notre équipe examine votre profil et vous recevrez une réponse dans les 48 heures.",
+            "backButton": "Retour à l'accueil"
+        },
+        "connectionDialog": {
+            "title": "Connexion à {{platformName}}",
+            "description": "Vous allez être redirigé pour authentifier votre compte en toute sécurité.",
+            "connecting": "Veuillez patienter...",
+            "connected": "Connecté avec succès !"
+        }
+    }
+}

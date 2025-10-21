@@ -7,9 +7,11 @@ import { Label } from '@/components/ui/label';
 import { SignupDialog } from '@/components/signup-dialog';
 import { AppHeader } from '@/components/app-header';
 import { Lock, Mail } from 'lucide-react';
+import { useLanguage } from '@/context/language-context';
 
 export default function LoginPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <>
@@ -23,26 +25,24 @@ export default function LoginPage() {
               <div className="p-8 md:p-12 flex flex-col gap-8">
                 <div className="text-center">
                   <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter leading-tight">
-                    Welcome to <span className="gradient-text">VibeMatch</span>
+                    {t('loginPage.title.part1')}{' '}
+                    <span className="gradient-text">VibeMatch</span>
                   </h1>
                   <p className="mt-2 text-md text-foreground/60">
-                    Connect to your dashboard.
+                    {t('loginPage.description')}
                   </p>
                 </div>
                 <form className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
-                    <Label
-                      htmlFor="email"
-                      className="font-semibold text-sm"
-                    >
-                      Email Address
+                    <Label htmlFor="email" className="font-semibold text-sm">
+                      {t('loginPage.form.email.label')}
                     </Label>
                     <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
                       <Mail className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4" />
                       <Input
                         className="w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0"
                         id="email"
-                        placeholder="your@email.com"
+                        placeholder={t('loginPage.form.email.placeholder')}
                         type="email"
                       />
                     </div>
@@ -53,13 +53,13 @@ export default function LoginPage() {
                         htmlFor="password"
                         className="font-semibold text-sm"
                       >
-                        Password
+                        {t('loginPage.form.password.label')}
                       </Label>
                       <Link
                         className="text-sm font-medium text-primary hover:text-secondary transition-colors"
                         href="#"
                       >
-                        Forgot password?
+                        {t('loginPage.form.password.forgot')}
                       </Link>
                     </div>
                     <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
@@ -76,18 +76,18 @@ export default function LoginPage() {
                     size="lg"
                     className="flex mt-4 w-full h-14 px-8 gradient-bg text-black text-base font-bold leading-normal tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
                   >
-                    Login
+                    {t('loginPage.form.submitButton')}
                   </Button>
                 </form>
                 <div className="text-center">
                   <p className="text-sm text-foreground/60">
-                    Don't have an account yet?{' '}
+                    {t('loginPage.signup.text')}{' '}
                     <button
                       className="font-semibold gradient-text hover:text-glow transition"
                       onClick={() => setDialogOpen(true)}
                     >
-                      Apply here.
-                    </button>
+                      {t('loginPage.signup.link')}
+                    </button>                  
                   </p>
                 </div>
               </div>

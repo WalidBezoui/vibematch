@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowRight, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useLanguage } from '@/context/language-context';
 
 const TikTokIcon = () => (
   <svg
@@ -20,19 +21,12 @@ const TikTokIcon = () => (
   </svg>
 );
 
-const steps = [
-  { step: 1, title: 'Become a Founding Creator', description: 'Join an exclusive community and shape the future of creator collaborations.', progress: 20 },
-  { step: 2, title: 'Connect Your Socials', description: 'To ensure trust and efficiency, we use API connections to verify your social media presence. Your data is safe with us.', progress: 40 },
-  { step: 3, title: 'Audience Analysis', description: 'We\'re running a quick scan to ensure a high-quality community.', progress: 60 },
-  { step: 4, title: 'Professionalism Pledge', description: 'Our community is built on trust and reliability. Please confirm your commitment.', progress: 80 },
-  { step: 5, title: 'Application Submitted!', description: 'Thank you for applying to be a Founding Creator.', progress: 100 },
-];
-
 type ConnectionStatus = 'idle' | 'connecting' | 'connected';
 type Platform = 'instagram' | 'tiktok';
 
 function ConnectionDialog({ platform, open, onOpenChange }: { platform: Platform | null, open: boolean, onOpenChange: (open: boolean) => void }) {
   const [status, setStatus] = useState<ConnectionStatus>('idle');
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (open) {
@@ -57,9 +51,9 @@ function ConnectionDialog({ platform, open, onOpenChange }: { platform: Platform
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md text-center">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center">Connecting to {platformName}</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-center">{t('creatorJoinForm.connectionDialog.title', { platformName })}</DialogTitle>
           <DialogDescription className="text-center mt-2">
-            You'll be redirected to securely authenticate your account.
+            {t('creatorJoinForm.connectionDialog.description')}
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-center items-center h-48">
@@ -69,7 +63,7 @@ function ConnectionDialog({ platform, open, onOpenChange }: { platform: Platform
                 <div className={`absolute inset-0 rounded-full border-4 ${platform === 'instagram' ? 'border-pink-500/20' : 'border-cyan-400/20'}`}></div>
                 <div className={`absolute inset-0 rounded-full border-t-4 ${platform === 'instagram' ? 'border-pink-500' : 'border-cyan-400'} animate-spinner`}></div>
               </div>
-              <p className="text-foreground/70">Please wait...</p>
+              <p className="text-foreground/70">{t('creatorJoinForm.connectionDialog.connecting')}</p>
             </div>
           )}
           {status === 'connected' && (
@@ -77,7 +71,7 @@ function ConnectionDialog({ platform, open, onOpenChange }: { platform: Platform
                 <div className="w-16 h-16 gradient-bg rounded-full flex items-center justify-center animate-circle-grow">
                     <Check className="w-8 h-8 text-black animate-check-grow" strokeWidth={4} />
                 </div>
-                <p className="font-bold text-lg">Successfully Connected!</p>
+                <p className="font-bold text-lg">{t('creatorJoinForm.connectionDialog.connected')}</p>
             </div>
           )}
         </div>
@@ -93,6 +87,15 @@ export function CreatorJoinForm() {
   const [connectingPlatform, setConnectingPlatform] = useState<Platform | null>(null);
   const [connectedPlatforms, setConnectedPlatforms] = useState<Platform[]>([]);
   const router = useRouter();
+  const { t } = useLanguage();
+
+  const steps = [
+    { step: 1, title: t('creatorJoinForm.steps.1.title'), description: t('creatorJoinForm.steps.1.description'), progress: 20 },
+    { step: 2, title: t('creatorJoinForm.steps.2.title'), description: t('creatorJoinForm.steps.2.description'), progress: 40 },
+    { step: 3, title: t('creatorJoinForm.steps.3.title'), description: t('creatorJoinForm.steps.3.description'), progress: 60 },
+    { step: 4, title: t('creatorJoinForm.steps.4.title'), description: t('creatorJoinForm.steps.4.description'), progress: 80 },
+    { step: 5, title: t('creatorJoinForm.steps.5.title'), description: t('creatorJoinForm.steps.5.description'), progress: 100 },
+  ];
 
   useEffect(() => {
     if (currentStep === 3) {
@@ -147,13 +150,13 @@ export function CreatorJoinForm() {
                         </svg>
                         </div>
                     </div>
-                    <h1 className="text-3xl font-black tracking-tighter sm:text-4xl lg:text-5xl gradient-text">Thank you for your application.</h1>
+                    <h1 className="text-3xl font-black tracking-tighter sm:text-4xl lg:text-5xl gradient-text">{t('creatorJoinForm.finalStep.title')}</h1>
                     <p className="text-lg text-foreground/70 max-w-xl mx-auto">
-                        Our team is reviewing your profile and you will receive a response within <span className="font-bold text-foreground">48 hours</span>.
+                      {t('creatorJoinForm.finalStep.description')}
                     </p>
                     <div className="pt-4">
                         <Button size="lg" className="gradient-bg text-black font-bold py-3 px-8 rounded-full hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/50" onClick={() => router.push('/')}>
-                            Back to Homepage
+                            {t('creatorJoinForm.finalStep.backButton')}
                         </Button>
                     </div>
                 </div>
@@ -176,7 +179,7 @@ export function CreatorJoinForm() {
             {currentStep < 5 && 
                 <>
                     <div className="flex gap-6 justify-between">
-                        <p className="text-sm font-medium leading-normal text-foreground/70">Step {currentStep} of 4</p>
+                        <p className="text-sm font-medium leading-normal text-foreground/70">{t('creatorJoinForm.stepCounter', { current: currentStep, total: 4 })}</p>
                     </div>
                     <Progress value={currentStepInfo.progress} className="h-2 [&>div]:gradient-bg" />
                 </>
@@ -186,17 +189,17 @@ export function CreatorJoinForm() {
         {currentStep === 1 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold">Welcome to the Inner Circle</h2>
-              <p className="mt-2 text-foreground/70">As a Founding Creator, you'll get early access to VibeMatch, directly influence our platform's development, and connect with a curated network of top-tier talent and brands. Let's get started.</p>
+              <h2 className="text-2xl font-bold">{t('creatorJoinForm.step1.header')}</h2>
+              <p className="mt-2 text-foreground/70">{t('creatorJoinForm.step1.description')}</p>
             </div>
             <div className="space-y-4">
                 <div className="flex flex-col flex-1">
-                    <Label htmlFor="fullName" className="text-sm font-medium pb-2">Full Name</Label>
-                    <Input id="fullName" placeholder="Enter your full name" />
+                    <Label htmlFor="fullName" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.nameLabel')}</Label>
+                    <Input id="fullName" placeholder={t('creatorJoinForm.step1.namePlaceholder')} />
                 </div>
                 <div className="flex flex-col flex-1">
-                    <Label htmlFor="email" className="text-sm font-medium pb-2">Email Address</Label>
-                    <Input id="email" type="email" placeholder="Enter your email address" />
+                    <Label htmlFor="email" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.emailLabel')}</Label>
+                    <Input id="email" type="email" placeholder={t('creatorJoinForm.step1.emailPlaceholder')} />
                 </div>
             </div>
           </div>
@@ -213,8 +216,8 @@ export function CreatorJoinForm() {
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
                     </div>
                     <div className="flex-1">
-                        <h3 className="text-lg font-bold">Connect Instagram</h3>
-                        <p className="text-foreground/70">Securely connect via API to verify your account and import key metrics.</p>
+                        <h3 className="text-lg font-bold">{t('creatorJoinForm.step2.instagramTitle')}</h3>
+                        <p className="text-foreground/70">{t('creatorJoinForm.step2.instagramDescription')}</p>
                     </div>
                     {connectedPlatforms.includes('instagram') ? (
                        <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center animate-icon-spin">
@@ -233,8 +236,8 @@ export function CreatorJoinForm() {
                        <TikTokIcon />
                     </div>
                     <div className="flex-1">
-                        <h3 className="text-lg font-bold">Connect TikTok</h3>
-                        <p className="text-foreground/70">Link your TikTok account to showcase your engagement and reach.</p>
+                        <h3 className="text-lg font-bold">{t('creatorJoinForm.step2.tiktokTitle')}</h3>
+                        <p className="text-foreground/70">{t('creatorJoinForm.step2.tiktokDescription')}</p>
                     </div>
                     {connectedPlatforms.includes('tiktok') ? (
                       <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center animate-icon-spin">
@@ -245,7 +248,7 @@ export function CreatorJoinForm() {
                     )}
                 </button>
                  <div className="mt-6 text-center">
-                    <a className="text-sm text-foreground/60 hover:text-primary" href="#">Why do I need to connect my accounts?</a>
+                    <a className="text-sm text-foreground/60 hover:text-primary" href="#">{t('creatorJoinForm.step2.whyConnectLink')}</a>
                 </div>
             </div>
         )}
@@ -261,8 +264,8 @@ export function CreatorJoinForm() {
                         </span>
                     </div>
                 </div>
-                <h2 className="mt-8 text-2xl font-bold">Analyzing your audience...</h2>
-                <p className="mt-2 text-foreground/70 animate-pulse">This might take a few moments. Please don't close this window.</p>
+                <h2 className="mt-8 text-2xl font-bold">{t('creatorJoinForm.step3.header')}</h2>
+                <p className="mt-2 text-foreground/70 animate-pulse">{t('creatorJoinForm.step3.description')}</p>
             </div>
         )}
 
@@ -276,13 +279,13 @@ export function CreatorJoinForm() {
                             shield
                         </span>
                     </div>
-                    <h2 className="text-2xl font-bold text-center">Our Pledge for Quality</h2>
-                    <p className="text-center text-foreground/70 max-w-md">To ensure VibeMatch remains a high-trust platform, we require all creators to commit to professional standards. This helps us maintain a reliable environment for everyone.</p>
+                    <h2 className="text-2xl font-bold text-center">{t('creatorJoinForm.step4.header')}</h2>
+                    <p className="text-center text-foreground/70 max-w-md">{t('creatorJoinForm.step4.description')}</p>
                 </div>
                 <div className="rounded-lg bg-muted/50 p-6">
                     <label className="flex items-start space-x-4 cursor-pointer">
                          <Checkbox id="pledge" className="custom-checkbox mt-1" />
-                        <span className="font-medium text-foreground/80">I commit to meeting deadlines and not using fake engagement.</span>
+                        <span className="font-medium text-foreground/80">{t('creatorJoinForm.step4.pledge')}</span>
                     </label>
                 </div>
             </div>
@@ -292,20 +295,20 @@ export function CreatorJoinForm() {
         {currentStep < 3 && (
           <div className="flex justify-between gap-4 mt-6">
              <Button variant="outline" onClick={handleBack} className={currentStep === 1 ? 'invisible' : ''}>
-              Back
+              {t('creatorJoinForm.backButton')}
             </Button>
             <Button onClick={handleNext} className="gradient-bg text-black">
-              Next Step
+              {t('creatorJoinForm.nextButton')}
             </Button>
           </div>
         )}
         {currentStep === 4 && (
              <div className="flex justify-between gap-4 mt-6">
              <Button variant="outline" onClick={handleBack}>
-              Back
+              {t('creatorJoinForm.backButton')}
             </Button>
             <Button onClick={handleNext} className="gradient-bg text-black">
-              Submit Application
+              {t('creatorJoinForm.submitButton')}
             </Button>
           </div>
         )}

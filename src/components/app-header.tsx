@@ -1,29 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Home, LogIn } from 'lucide-react';
-
-type Language = 'EN' | 'AR' | 'FR';
+import { useLanguage } from '@/context/language-context';
 
 export function AppHeader() {
   const pathname = usePathname();
   const isLoginPage = pathname === '/login';
-  const [language, setLanguage] = useState<Language>('EN');
+  const { language, setLanguage, t } = useLanguage();
 
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('vibematch-language') as Language;
-    if (savedLanguage && ['EN', 'AR', 'FR'].includes(savedLanguage)) {
-      setLanguage(savedLanguage);
-    }
-  }, []);
+  const navLinks = useMemo(() => [
+    { href: "/#brands", label: t('header.forBrands') },
+    { href: "/#creators", label: t('header.forCreators') },
+    { href: "/faq", label: t('header.faq') },
+  ], [t]);
 
-  const handleLanguageChange = (lang: Language) => {
+  const handleLanguageChange = (lang: 'EN' | 'FR' | 'AR') => {
     setLanguage(lang);
-    localStorage.setItem('vibematch-language', lang);
-    // Here you would typically also trigger a language change in your i18n library
   };
 
   return (
@@ -35,24 +31,15 @@ export function AppHeader() {
         VibeMatch
       </Link>
       <nav className="hidden md:flex gap-8 items-center">
-        <Link
-          className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
-          href="/#brands"
-        >
-          For Brands
-        </Link>
-        <Link
-          className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
-          href="/#creators"
-        >
-          For Creators
-        </Link>
-        <Link
-          className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
-          href="/faq"
-        >
-          FAQ
-        </Link>
+        {navLinks.map((link) => (
+            <Link
+            key={link.href}
+            className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
+            href={link.href}
+            >
+            {link.label}
+            </Link>
+        ))}
       </nav>
       <div className="flex items-center gap-4">
         <Button variant="outline" className="rounded-full" asChild>
@@ -60,18 +47,18 @@ export function AppHeader() {
             {isLoginPage ? (
               <>
                 <Home className="mr-2 h-4 w-4" />
-                Home
+                {t('header.home')}
               </>
             ) : (
               <>
                 <LogIn className="mr-2 h-4 w-4" />
-                Login
+                {t('header.login')}
               </>
             )}
           </Link>
         </Button>
         <div className="flex items-center gap-1 border rounded-full p-1 text-sm">
-          {(['EN', 'FR', 'AR'] as Language[]).map((lang) => (
+          {(['EN', 'FR', 'AR'] as const).map((lang) => (
             <Button
               key={lang}
               variant={language === lang ? 'default' : 'ghost'}

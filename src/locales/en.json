@@ -1,0 +1,323 @@
+{
+    "header": {
+        "forBrands": "For Brands",
+        "forCreators": "For Creators",
+        "faq": "FAQ",
+        "login": "Login",
+        "home": "Home"
+    },
+    "footer": {
+        "copyright": "© 2024 VibeMatch. Built in Casablanca for Morocco.",
+        "terms": "Terms of Service",
+        "privacy": "Privacy Policy"
+    },
+    "homePage": {
+        "hero": {
+            "title1": "Influence, Amplified by",
+            "title2": "Trust.",
+            "subtitle": "No more fake engagement. No more late payments. VibeMatch is the Vetted-Influencer Marketplace for Morocco's best brands and creators.",
+            "brandsButton": "For Brands",
+            "creatorsButton": "For Creators"
+        },
+        "brands": {
+            "title1": "Stop wasting money on",
+            "title2": "fake engagement.",
+            "description": "We provide vetted creators and guaranteed results. Our revolutionary Trust Engine analyzes over 50 data points to ensure every influencer you partner with has a genuine, engaged audience. No more bots, no more vanity metrics. Just real impact.",
+            "joinButton": "Join the Brand Waitlist"
+        },
+        "creators": {
+            "title1": "Stop chasing payments.",
+            "title2": "We guarantee them.",
+            "description": "Focus on what you do best: creating amazing content. VibeMatch handles the boring stuff. We guarantee your payments and automate your invoices, so you can build your brand with peace of mind.",
+            "applyButton": "Apply as a Founding Creator"
+        },
+        "results": {
+            "title1": "Stop Managing Risks.",
+            "title2": "Start Managing",
+            "title3": "Results."
+        },
+        "features": {
+            "shield": {
+                "title": "Your Shield Against Fake Engagement",
+                "description": "Stop wondering if an audience is real. Our proprietary \"Trust Score\" and manual vetting process eliminate creators with suspicious engagement. Every creator on VibeMatch is verified for authenticity."
+            },
+            "deadlines": {
+                "title": "Guaranteed Deadlines, Not Excuses",
+                "description": "No more \"I forgot to post.\" Our Smart Contract locks in the exact publication dates. If a creator is late, their Trust Score gets penalized, protecting you and your campaign schedule."
+            },
+            "autopilot": {
+                "title": "Campaign Management on Autopilot",
+                "description": "Stop juggling 10 DM conversations. Manage all your collaborations, from negotiation to approval, from a single, clear, centralized dashboard. See who's late and who's submitted content at a glance."
+            }
+        },
+        "creating": {
+            "title1": "Focus on Creating.",
+            "title2": "We'll Handle the",
+            "title3": "Rest."
+        },
+        "creatorFeatures": {
+            "paycheck": {
+                "title": "Your 100% Automated Paycheck",
+                "description": "Never create an invoice again. Never follow up on a payment again. As soon as the brand approves your post, our system generates the invoice and transfers the money to you automatically. You are a creator, not an accountant."
+            },
+            "confidence": {
+                "title": "Work with Absolute Confidence",
+                "description": "Never start a project hoping to get paid again. For every mission you accept, the brand's budget is locked and secured in our escrow account. Your payment is guaranteed before you even turn on your camera."
+            },
+            "briefs": {
+                "title": "Clear Briefs, Zero Confusion",
+                "description": "Say goodbye to \"details that change\" at the last minute. Our Smart Contract locks in the brief, deliverables, and budget. What is agreed upon is what is delivered. Protect your work and your time."
+            }
+        },
+        "testimonialsTitle1": "What",
+        "testimonialsTitle2": "Moroccan Creators",
+        "testimonialsTitle3": "are Saying.",
+        "testimonials": [
+            {
+                "quote": "Finding brands that value authentic engagement over just follower counts was a constant struggle. VibeMatch's vetting process is a game-changer. I finally feel seen for the community I've built.",
+                "name": "Ghita A.",
+                "role": "Lifestyle Creator",
+                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+            },
+            {
+                "quote": "Chasing invoices and dealing with late payments was draining my creative energy. With VibeMatch, I know I'll get paid on time, every time. It's incredibly liberating.",
+                "name": "Ayman F.",
+                "role": "Tech Reviewer",
+                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+            },
+            {
+                "quote": "As a creator, it’s hard to find partners who trust your vision. VibeMatch connects me with brands that understand the value of creative freedom and authentic storytelling.",
+                "name": "Soukaina",
+                "role": "Fashion Influencer",
+                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+            }
+        ],
+        "faq": {
+            "title1": "Your Questions,",
+            "title2": "Answered.",
+            "description": "Find quick answers to common questions about how VibeMatch works for both brands and creators.",
+            "brandsTitle": "For Brands",
+            "creatorsTitle": "For Creators",
+            "viewAllButton": "View All FAQs"
+        },
+        "brandsFaq": [
+            {
+              "question": "How does VibeMatch ensure creator quality?",
+              "answer": "Our Trust Engine analyzes over 50 data points, including audience demographics, engagement rates, and past performance, to verify every creator. We ensure you connect with influencers who have genuine, engaged audiences that match your brand values."
+            },
+            {
+              "question": "What is the pricing model for brands?",
+              "answer": "VibeMatch operates on a campaign-based fee structure. You only pay for the campaigns you launch. We are transparent about all costs upfront, so there are no hidden fees. Contact us for detailed pricing information tailored to your needs."
+            }
+        ],
+        "creatorsFaq": [
+            {
+                "question": "How do I get paid?",
+                "answer": "We guarantee your payments. Once a campaign is completed and approved, funds are released to your VibeMatch account. You can then withdraw your earnings directly to your bank account. No more chasing invoices!"
+            },
+            {
+                "question": "What are the requirements to join as a creator?",
+                "answer": "We look for creators with an authentic connection to their audience, regardless of follower size. We evaluate engagement quality, content creativity, and niche relevance. If you create high-quality content and have a loyal community, we encourage you to apply."
+            }
+        ],
+        "connect": {
+            "title": "Where Great Brands and Great Creators Connect."
+        },
+        "waitlist": {
+            "title1": "Join the",
+            "title2": "VibeMatch",
+            "title3": "Waitlist.",
+            "description": "Be the first to experience the future of influencer marketing in Morocco.",
+            "brandsButton": "Join the Brand Waitlist",
+            "creatorsButton": "Apply as a Founding Creator"
+        }
+    },
+    "faqPage": {
+        "title": {
+            "part1": "Frequently Asked",
+            "part2": "Questions"
+        },
+        "description": "Have a question? We're here to help. Explore our FAQ to find answers to common questions about VibeMatch.",
+        "categories": "Categories",
+        "forBrands": "For Brands",
+        "forCreators": "For Creators",
+        "general": "General",
+        "stillQuestions": {
+            "title": "Still have questions?",
+            "description": "Our team is here to help. Reach out to us and we'll get back to you as soon as possible.",
+            "contactButton": "Contact Support"
+        },
+        "brandsFaq": [
+            {
+              "question": "What is VibeMatch's Trust Engine?",
+              "answer": "Our Trust Engine is a proprietary system that analyzes over 50 data points to vet influencers. It checks for fake followers, bot activity, and engagement authenticity to ensure you connect with creators who have a genuine and engaged audience, maximizing your campaign's ROI."
+            },
+            {
+              "question": "How do I find influencers for my campaign?",
+              "answer": "VibeMatch offers advanced search and filtering tools. You can search for influencers based on niche, audience demographics, engagement rates, location, and more. Our platform will recommend the best matches for your brand based on your campaign goals and our Trust Engine data."
+            },
+            {
+              "question": "How are payments handled on the platform?",
+              "answer": "Payments are held securely in escrow by VibeMatch. You fund the campaign upon agreement, and we release the payment to the creator only after you have approved the content and campaign deliverables have been met. This protects both parties and ensures a smooth collaboration."
+            }
+          ],
+          "creatorsFaq": [
+              {
+                  "question": "How do I join VibeMatch as a creator?",
+                  "answer": "To maintain a high-quality network, VibeMatch is currently invite-only or requires an application. You can apply to become a Founding Creator. We review each application based on audience engagement, content quality, and niche. Our team will get in touch if your profile is a good fit for our platform."
+              },
+              {
+                  "question": "How does VibeMatch guarantee payments?",
+                  "answer": "When a brand hires you for a campaign, they deposit the full payment into our secure escrow system. Once you've completed the agreed-upon deliverables and the brand approves them, we release the funds directly to your account. This eliminates the risk of late or missed payments, letting you focus on creating."
+              },
+              {
+                  "question": "Is there a fee to use VibeMatch?",
+                  "answer": "It is free for creators to join VibeMatch and create a profile. We take a small platform fee from your earnings on each completed campaign. This fee helps us cover payment processing, platform maintenance, and provide you with support and resources to grow your career."
+              }
+          ],
+          "generalFaq": [
+              {
+                  "question": "What makes VibeMatch different from other platforms?",
+                  "answer": "VibeMatch is built on the pillars of Trust and Efficiency. Our unique Trust Engine ensures authentic collaborations, while our automated payment system protects creators. We are specifically focused on the Moroccan market, understanding its unique dynamics and fostering a community of top-tier local talent and brands."
+              },
+              {
+                  "question": "What if I have a dispute?",
+                  "answer": "In the rare case of a disagreement between a brand and a creator, VibeMatch provides a dedicated dispute resolution process. Our support team will mediate the situation, review the campaign agreement and communication, and work towards a fair and timely resolution for both parties."
+              }
+          ]
+    },
+    "loginPage": {
+        "title": {
+            "part1": "Welcome to"
+        },
+        "description": "Connect to your dashboard.",
+        "form": {
+            "email": {
+                "label": "Email Address",
+                "placeholder": "your@email.com"
+            },
+            "password": {
+                "label": "Password",
+                "forgot": "Forgot password?"
+            },
+            "submitButton": "Login"
+        },
+        "signup": {
+            "text": "Don't have an account yet?",
+            "link": "Apply here."
+        }
+    },
+    "signupDialog": {
+        "title": "Join VibeMatch",
+        "description": "Choose your path and start your journey with us.",
+        "brand": {
+            "title": "I'm a Brand",
+            "description": "Find the perfect creators."
+        },
+        "creator": {
+            "title": "I'm a Creator",
+            "description": "Collaborate with brands."
+        }
+    },
+    "brandJoinPage": {
+        "title": {
+            "part1": "Be the First to Discover"
+        },
+        "description": "Join our exclusive waitlist for brands and discover a more transparent and efficient way to collaborate with influencers.",
+        "form": {
+            "name": {
+                "label": "Name",
+                "placeholder": "Your name"
+            },
+            "email": {
+                "label": "Email",
+                "placeholder": "Your email"
+            },
+            "company": {
+                "label": "Company Name",
+                "placeholder": "Your company name"
+            },
+            "ice": {
+                "label": "ICE",
+                "placeholder": "Your ICE number"
+            },
+            "phone": {
+                "label": "Phone (Morocco)",
+                "placeholder": "06 XX XX XX XX"
+            },
+            "city": {
+                "label": "City (Morocco)",
+                "placeholder": "Your city"
+            },
+            "submitButton": "Join the waitlist"
+        }
+    },
+    "brandJoinSuccessPage": {
+        "title": "Thanks! You're on the list.",
+        "description": "We'll contact you for priority access.",
+        "backButton": "Back to Home"
+    },
+    "creatorJoinForm": {
+        "steps": {
+            "1": {
+                "title": "Become a Founding Creator",
+                "description": "Join an exclusive community and shape the future of creator collaborations."
+            },
+            "2": {
+                "title": "Connect Your Socials",
+                "description": "To ensure trust and efficiency, we use API connections to verify your social media presence. Your data is safe with us."
+            },
+            "3": {
+                "title": "Audience Analysis",
+                "description": "We're running a quick scan to ensure a high-quality community."
+            },
+            "4": {
+                "title": "Professionalism Pledge",
+                "description": "Our community is built on trust and reliability. Please confirm your commitment."
+            },
+            "5": {
+                "title": "Application Submitted!",
+                "description": "Thank you for applying to be a Founding Creator."
+            }
+        },
+        "stepCounter": "Step {{current}} of {{total}}",
+        "backButton": "Back",
+        "nextButton": "Next Step",
+        "submitButton": "Submit Application",
+        "step1": {
+            "header": "Welcome to the Inner Circle",
+            "description": "As a Founding Creator, you'll get early access to VibeMatch, directly influence our platform's development, and connect with a curated network of top-tier talent and brands. Let's get started.",
+            "nameLabel": "Full Name",
+            "namePlaceholder": "Enter your full name",
+            "emailLabel": "Email Address",
+            "emailPlaceholder": "Enter your email address"
+        },
+        "step2": {
+            "instagramTitle": "Connect Instagram",
+            "instagramDescription": "Securely connect via API to verify your account and import key metrics.",
+            "tiktokTitle": "Connect TikTok",
+            "tiktokDescription": "Link your TikTok account to showcase your engagement and reach.",
+            "whyConnectLink": "Why do I need to connect my accounts?"
+        },
+        "step3": {
+            "header": "Analyzing your audience...",
+            "description": "This might take a few moments. Please don't close this window."
+        },
+        "step4": {
+            "header": "Our Pledge for Quality",
+            "description": "To ensure VibeMatch remains a high-trust platform, we require all creators to commit to professional standards. This helps us maintain a reliable environment for everyone.",
+            "pledge": "I commit to meeting deadlines and not using fake engagement."
+        },
+        "finalStep": {
+            "title": "Thank you for your application.",
+            "description": "Our team is reviewing your profile and you will receive a response within 48 hours.",
+            "backButton": "Back to Homepage"
+        },
+        "connectionDialog": {
+            "title": "Connecting to {{platformName}}",
+            "description": "You'll be redirected to securely authenticate your account.",
+            "connecting": "Please wait...",
+            "connected": "Successfully Connected!"
+        }
+    }
+}
