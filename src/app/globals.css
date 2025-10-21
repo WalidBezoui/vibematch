@@ -64,8 +64,8 @@
 
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 5px hsla(var(--gradient-primary), 0.7), 0 0 15px hsla(var(--gradient-primary), 0.5), 0 0 30px hsla(var(--gradient-secondary), 0.4), 0 0 50px hsla(var(--gradient-secondary), 0.3);
-    filter: drop-shadow(0 0 10px hsla(var(--gradient-primary), 0.6));
+    filter: drop-shadow(0 0 8px hsl(var(--gradient-primary)))
+            drop-shadow(0 0 20px hsl(var(--gradient-secondary)));
   }
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--gradient-primary))] to-[hsl(var(--gradient-secondary))];
