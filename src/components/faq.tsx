@@ -80,17 +80,17 @@ export function FaqSection() {
           <h3 className="font-bold text-lg mb-4 font-headline">Categories</h3>
           <ul className="space-y-3">
             <li>
-                <Link className="flex items-center gap-2 p-2 rounded-md font-medium text-foreground/70 hover:bg-muted dark:hover:bg-background/50 hover:text-primary transition-colors" href="#brands-faq">
+                <Link className="flex items-center gap-2 p-2 rounded-md font-medium text-foreground/70 hover:bg-muted hover:text-primary transition-colors" href="#brands-faq">
                     <span className="material-symbols-outlined text-lg">storefront</span> For Brands
                 </Link>
             </li>
             <li>
-                <Link className="flex items-center gap-2 p-2 rounded-md font-medium text-foreground/70 hover:bg-muted dark:hover:bg-background/50 hover:text-primary transition-colors" href="#creators-faq">
+                <Link className="flex items-center gap-2 p-2 rounded-md font-medium text-foreground/70 hover:bg-muted hover:text-primary transition-colors" href="#creators-faq">
                     <span className="material-symbols-outlined text-lg">person</span> For Creators
                 </Link>
             </li>
             <li>
-                <Link className="flex items-center gap-2 p-2 rounded-md font-medium text-foreground/70 hover:bg-muted dark:hover:bg-background/50 hover:text-primary transition-colors" href="#general-faq">
+                <Link className="flex items-center gap-2 p-2 rounded-md font-medium text-foreground/70 hover:bg-muted hover:text-primary transition-colors" href="#general-faq">
                     <span className="material-symbols-outlined text-lg">help_outline</span> General
                 </Link>
             </li>

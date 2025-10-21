@@ -76,7 +76,7 @@ export function HomeComponent() {
                     </div>
                 </div>
             </div>
-            <div className="py-24 md:py-32 scroll-mt-20 bg-muted/50 dark:bg-background/50 rounded-xl" id="creators">
+            <div className="py-24 md:py-32 scroll-mt-20 bg-muted/50 rounded-xl" id="creators">
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
                     <div className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-secondary/10 order-2 md:order-1" data-alt="A stylized illustration of a mobile phone showing an automated payment notification, with charts and graphs in the background, representing guaranteed payments." style={{backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3BWUWDOP1TY1KtnTWutXxH_m5jNXNzDWuRb3jsiE-cXlty9VKAhZVV5acYGTpJKGVKIF4HLag7g1bYC8Vb686qu2BcbSuivRtn2Oa8Uz8T9LCbrUwaycv7AOeJ0sz_NKZg7Zilhnt6ZFmXIdNvlmEz7Mn_FIY1XjIeyWHGL6-qRaHcl4Y6ZWEXEVdrYeEIxXensIGDAmfapDdj0kDlMygBkI5uSzTgXe3KF86xqiAe6rmp2Hvoy1dIv9I2esYdtrCzuwEkcQR3M3n")`}}>
                     </div>
@@ -98,21 +98,21 @@ export function HomeComponent() {
                     <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">Stop Managing Risks. <br className="hidden md:block"/> Start Managing <span className="gradient-text text-glow">Results.</span></h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                    <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 dark:bg-background/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
+                    <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
                         <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
                             <span className="material-symbols-outlined text-4xl text-black">verified_user</span>
                         </div>
                         <h3 className="text-xl font-bold mt-2">Your Shield Against Fake Engagement</h3>
                         <p className="text-foreground/70 leading-relaxed">Stop wondering if an audience is real. Our proprietary "Trust Score" and manual vetting process eliminate creators with suspicious engagement. Every creator on VibeMatch is verified for authenticity.</p>
                     </div>
-                    <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 dark:bg-background/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
+                    <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
                         <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
                             <span className="material-symbols-outlined text-4xl text-black">event_available</span>
                         </div>
                         <h3 className="text-xl font-bold mt-2">Guaranteed Deadlines, Not Excuses</h3>
                         <p className="text-foreground/70 leading-relaxed">No more "I forgot to post." Our Smart Contract locks in the exact publication dates. If a creator is late, their Trust Score gets penalized, protecting you and your campaign schedule.</p>
                     </div>
-                    <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 dark:bg-background/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
+                    <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
                         <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
                             <span className="material-symbols-outlined text-4xl text-black">dashboard_customize</span>
                         </div>
@@ -121,7 +121,7 @@ export function HomeComponent() {
                     </div>
                 </div>
             </div>
-            <div className="py-24 md:py-32 bg-muted/50 dark:bg-background/50 rounded-xl">
+            <div className="py-24 md:py-32 bg-muted/50 rounded-xl">
                 <div className="px-4 md:px-10 lg:px-12">
                     <div className="text-center mb-16 max-w-4xl mx-auto">
                         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">Focus on Creating. <br className="hidden md:block"/> We'll Handle the <span className="gradient-text text-glow">Rest.</span></h2>
@@ -156,7 +156,7 @@ export function HomeComponent() {
                    What <span className="gradient-text">Moroccan Creators</span> are Saying.
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="flex flex-col gap-4 text-left p-8 rounded-xl bg-muted/50 dark:bg-background/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
+                    <div className="flex flex-col gap-4 text-left p-8 rounded-xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
                         <p className="text-foreground/70 leading-relaxed text-lg">"Finding brands that value authentic engagement over just follower counts was a constant struggle. VibeMatch's vetting process is a game-changer. I finally feel seen for the community I've built."</p>
                         <div className="flex items-center gap-4 mt-4">
                             <div className="w-12 h-12 rounded-full bg-cover bg-center" style={{backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-')`}}></div>
@@ -166,7 +166,7 @@ export function HomeComponent() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-4 text-left p-8 rounded-xl bg-muted/50 dark:bg-background/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
+                    <div className="flex flex-col gap-4 text-left p-8 rounded-xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
                         <p className="text-foreground/70 leading-relaxed text-lg">"Chasing invoices and dealing with late payments was draining my creative energy. With VibeMatch, I know I'll get paid on time, every time. It's incredibly liberating."</p>
                         <div className="flex items-center gap-4 mt-4">
                             <div className="w-12 h-12 rounded-full bg-cover bg-center" style={{backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-')`}}></div>
@@ -176,7 +176,7 @@ export function HomeComponent() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-4 text-left p-8 rounded-xl bg-muted/50 dark:bg-background/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
+                    <div className="flex flex-col gap-4 text-left p-8 rounded-xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
                         <p className="text-foreground/70 leading-relaxed text-lg">"As a creator, it’s hard to find partners who trust your vision. VibeMatch connects me with brands that understand the value of creative freedom and authentic storytelling."</p>
                         <div className="flex items-center gap-4 mt-4">
                             <div className="w-12 h-12 rounded-full bg-cover bg-center" style={{backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-')`}}></div>
@@ -202,7 +202,7 @@ export function HomeComponent() {
                         <h3 className="text-2xl md:text-3xl font-bold tracking-tight gradient-text">For Brands</h3>
                         <Accordion type="single" collapsible className="w-full space-y-4">
                             {brandsFaq.slice(0, 2).map((faq, index) => (
-                              <AccordionItem value={`item-b-${index}`} key={index} className="bg-muted/50 dark:bg-background/50 border border-border/50 rounded-xl px-6 group">
+                              <AccordionItem value={`item-b-${index}`} key={index} className="bg-muted/50 border border-border/50 rounded-xl px-6 group">
                                 <AccordionTrigger className="hover:no-underline text-lg font-semibold text-left">
                                   {faq.question}
                                   <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">expand_more</span>
@@ -218,7 +218,7 @@ export function HomeComponent() {
                         <h3 className="text-2xl md:text-3xl font-bold tracking-tight gradient-text">For Creators</h3>
                         <Accordion type="single" collapsible className="w-full space-y-4">
                             {creatorsFaq.slice(0, 2).map((faq, index) => (
-                              <AccordionItem value={`item-c-${index}`} key={index} className="bg-muted/50 dark:bg-background/50 border border-border/50 rounded-xl px-6 group">
+                              <AccordionItem value={`item-c-${index}`} key={index} className="bg-muted/50 border border-border/50 rounded-xl px-6 group">
                                 <AccordionTrigger className="hover:no-underline text-lg font-semibold text-left">
                                   {faq.question}
                                   <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">expand_more</span>
