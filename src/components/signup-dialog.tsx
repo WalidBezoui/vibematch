@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { ArrowRight, Palette, Storefront } from 'lucide-react';
+import { ArrowRight, Palette, Store } from 'lucide-react';
 
 type SignupDialogProps = {
   open: boolean;
@@ -35,7 +35,7 @@ export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
             href="/brands/join"
             className="group relative flex flex-col items-center justify-center p-6 bg-muted/50 rounded-lg border hover:border-primary transition-all duration-300 transform hover:-translate-y-1 hover:shadow-glow-primary"
           >
-            <Storefront className="w-10 h-10 text-primary mb-3" />
+            <Store className="w-10 h-10 text-primary mb-3" />
             <h3 className="font-bold text-lg">I'm a Brand</h3>
             <p className="text-sm text-foreground/60 mt-1">
               Find the perfect creators.
