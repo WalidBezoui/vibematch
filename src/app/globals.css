@@ -84,6 +84,10 @@
                       radial-gradient(circle at 90% 80%, hsla(var(--gradient-secondary), 0.05) 0%, transparent 40%);
   }
 
+  html[lang="ar"] .hero-title-ar {
+    line-height: 1.25 !important;
+  }
+
   .icon-bg-insta {
       background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
   }

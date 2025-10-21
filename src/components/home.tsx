@@ -11,7 +11,7 @@ import { useLanguage } from '@/context/language-context';
 
 
 export function HomeComponent() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const brandsFaq = t('homePage.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const creatorsFaq = t('homePage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
@@ -22,7 +22,7 @@ export function HomeComponent() {
     <div className="flex flex-col max-w-[1200px] flex-1">
       <div className="flex flex-col items-center justify-center text-center min-h-[calc(100vh-280px)]">
         <div className="flex flex-col gap-6 items-center">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-tight">
+          <h1 className={`text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-tight ${language === 'AR' ? 'hero-title-ar' : ''}`}>
             {t('homePage.hero.title1')}{' '}
             <span className="gradient-text text-glow">{t('homePage.hero.title2')}</span>
           </h1>
@@ -200,7 +200,7 @@ export function HomeComponent() {
       <div className="py-24 md:py-32 text-center">
         <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-16">
           {t('homePage.testimonialsTitle1')}{' '}
-          <span className="gradient-text">{t('homePage.testimonialsTitle2')}</span>{' '}
+          <span className="gradient-text text-glow">{t('homePage.testimonialsTitle2')}</span>{' '}
           {t('homePage.testimonialsTitle3')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
