@@ -1,6 +1,42 @@
 "use client"
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+const brandsFaq = [
+  {
+    question: "How does VibeMatch ensure creator quality?",
+    answer: "Our Trust Engine analyzes over 50 data points, including audience demographics, engagement rates, and past performance, to verify every creator. We ensure you connect with influencers who have genuine, engaged audiences that match your brand values.",
+  },
+  {
+    question: "What is the pricing model for brands?",
+    answer: "VibeMatch operates on a campaign-based fee structure. You only pay for the campaigns you launch. We are transparent about all costs upfront, so there are no hidden fees. Contact us for detailed pricing information tailored to your needs.",
+  },
+  {
+    question: "Can I manage multiple campaigns at once?",
+    answer: "Yes! Our dashboard is designed to help you manage multiple influencer campaigns seamlessly. You can track performance, communicate with creators, and handle payments all in one place, saving you time and effort.",
+  },
+];
+
+const creatorsFaq = [
+    {
+        question: "How do I get paid?",
+        answer: "We guarantee your payments. Once a campaign is completed and approved, funds are released to your VibeMatch account. You can then withdraw your earnings directly to your bank account. No more chasing invoices!",
+    },
+    {
+        question: "What are the requirements to join as a creator?",
+        answer: "We look for creators with an authentic connection to their audience, regardless of follower size. We evaluate engagement quality, content creativity, and niche relevance. If you create high-quality content and have a loyal community, we encourage you to apply.",
+    },
+    {
+        question: "Is there a fee for creators to use VibeMatch?",
+        answer: "Joining VibeMatch is completely free for creators. We take a small commission from the brand's payment upon successful completion of a campaign. Our goal is to empower you to monetize your influence effectively.",
+    }
+]
 
 export function HomeComponent() {
     return (
@@ -150,6 +186,55 @@ export function HomeComponent() {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className="py-24 md:py-32 scroll-mt-20" id="faq">
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter">
+                        Your Questions, <span className="gradient-text">Answered.</span>
+                    </h2>
+                    <p className="text-lg md:text-xl text-foreground/70 mt-4 max-w-3xl mx-auto">
+                        Find quick answers to common questions about how VibeMatch works for both brands and creators.
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
+                    <div className="flex flex-col gap-6">
+                        <h3 className="text-2xl md:text-3xl font-bold tracking-tight gradient-text">For Brands</h3>
+                        <Accordion type="single" collapsible className="w-full space-y-4">
+                            {brandsFaq.slice(0, 2).map((faq, index) => (
+                              <AccordionItem value={`item-b-${index}`} key={index} className="bg-muted/50 dark:bg-background/50 border border-border/50 rounded-xl px-6 group">
+                                <AccordionTrigger className="hover:no-underline text-lg font-semibold text-left">
+                                  {faq.question}
+                                  <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">expand_more</span>
+                                </AccordionTrigger>
+                                <AccordionContent className="text-foreground/70 leading-relaxed pt-2">
+                                  {faq.answer}
+                                </AccordionContent>
+                              </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </div>
+                    <div className="flex flex-col gap-6">
+                        <h3 className="text-2xl md:text-3xl font-bold tracking-tight gradient-text">For Creators</h3>
+                        <Accordion type="single" collapsible className="w-full space-y-4">
+                            {creatorsFaq.slice(0, 2).map((faq, index) => (
+                              <AccordionItem value={`item-c-${index}`} key={index} className="bg-muted/50 dark:bg-background/50 border border-border/50 rounded-xl px-6 group">
+                                <AccordionTrigger className="hover:no-underline text-lg font-semibold text-left">
+                                  {faq.question}
+                                  <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">expand_more</span>
+                                </AccordionTrigger>
+                                <AccordionContent className="text-foreground/70 leading-relaxed pt-2">
+                                  {faq.answer}
+                                </AccordionContent>
+                              </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </div>
+                </div>
+                 <div className="text-center mt-16">
+                    <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base font-semibold tracking-wide rounded-full">
+                        <Link href="/faq">View All FAQs</Link>
+                    </Button>
                 </div>
             </div>
             <div className="py-24 md:py-32">
