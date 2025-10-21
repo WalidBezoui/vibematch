@@ -44,7 +44,7 @@ export function HomeComponent() {
             <div className="flex flex-col items-center justify-center text-center min-h-[calc(100vh-280px)]">
                 <div className="flex flex-col gap-6 items-center">
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-tight">
-                        Influence, Amplified by <span className="gradient-text">Trust.</span>
+                        Influence, Amplified by <span className="gradient-text text-glow">Trust.</span>
                     </h1>
                     <h2 className="text-lg md:text-xl lg:text-2xl font-normal leading-relaxed max-w-4xl text-foreground/70">
                        No more fake engagement. No more late payments. VibeMatch is the Vetted-Influencer Marketplace for Morocco's best brands and creators.
@@ -95,7 +95,7 @@ export function HomeComponent() {
             </div>
             <div className="py-24 md:py-32">
                 <div className="text-center mb-16 max-w-4xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">Stop Managing Risks. <br className="hidden md:block"/> Start Managing <span className="gradient-text">Results.</span></h2>
+                    <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">Stop Managing Risks. <br className="hidden md:block"/> Start Managing <span className="gradient-text text-glow">Results.</span></h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                     <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 dark:bg-background/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
@@ -124,7 +124,7 @@ export function HomeComponent() {
             <div className="py-24 md:py-32 bg-muted/50 dark:bg-background/50 rounded-xl">
                 <div className="px-4 md:px-10 lg:px-12">
                     <div className="text-center mb-16 max-w-4xl mx-auto">
-                        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">Focus on Creating. <br className="hidden md:block"/> We'll Handle the <span className="gradient-text">Rest.</span></h2>
+                        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">Focus on Creating. <br className="hidden md:block"/> We'll Handle the <span className="gradient-text text-glow">Rest.</span></h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                         <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
@@ -191,7 +191,7 @@ export function HomeComponent() {
             <div className="py-24 md:py-32 scroll-mt-20" id="faq">
                 <div className="text-center mb-16">
                     <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter">
-                        Your Questions, <span className="gradient-text">Answered.</span>
+                        Your Questions, <span className="gradient-text text-glow">Answered.</span>
                     </h2>
                     <p className="text-lg md:text-xl text-foreground/70 mt-4 max-w-3xl mx-auto">
                         Find quick answers to common questions about how VibeMatch works for both brands and creators.
