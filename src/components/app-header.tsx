@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { Home, LogIn } from 'lucide-react';
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -39,7 +40,17 @@ export function AppHeader() {
       <div className="flex items-center gap-4">
         <Button variant="outline" className="rounded-full" asChild>
           <Link href={isLoginPage ? '/' : '/login'}>
-            {isLoginPage ? 'Home' : 'Login'}
+            {isLoginPage ? (
+              <>
+                <Home className="mr-2 h-4 w-4" />
+                Home
+              </>
+            ) : (
+              <>
+                <LogIn className="mr-2 h-4 w-4" />
+                Login
+              </>
+            )}
           </Link>
         </Button>
         <div className="flex items-center gap-1 border rounded-full p-1 text-sm">
