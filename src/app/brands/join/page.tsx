@@ -15,7 +15,7 @@ export default function BrandWaitlistPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-[#F5F5F7] dark:bg-[#101922] p-4">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4">
       <div className="absolute inset-0 z-0">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/30 rounded-full opacity-50 blur-3xl"></div>
         <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-secondary rounded-full opacity-50 blur-3xl"></div>

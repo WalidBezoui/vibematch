@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function WaitlistSuccessPage() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-[#F5F5F7] dark:bg-[#101922] p-4">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4">
       <div className="absolute inset-0 z-0">
         <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-primary/30 opacity-50 blur-3xl"></div>
         <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-secondary/30 opacity-50 blur-3xl"></div>
