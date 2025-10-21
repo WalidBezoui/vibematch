@@ -68,8 +68,8 @@ export function HomeComponent() {
                         <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
                             We provide vetted creators and guaranteed results. Our revolutionary Trust Engine analyzes over 50 data points to ensure every influencer you partner with has a genuine, engaged audience. No more bots, no more vanity metrics. Just real impact.
                         </p>
-                        <Button className="mt-4 w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
-                            Join the Brand Waitlist
+                        <Button asChild className="mt-4 w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
+                            <Link href="/brands/join">Join the Brand Waitlist</Link>
                         </Button>
                     </div>
                     <div className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-primary/10" data-alt="A futuristic, abstract 3D visualization of a neural network or data core, glowing with bright green and cyan light, representing the Trust Engine." style={{backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCL6eHW65DQ4ZzrQ7fwD4xQ9BJ_83WO9MTKOKkj63MiCRxED8Xs9oiGQmkBlbDk6-9I4AdheUj9VByzYxivES7BAUT073DHjlmqCDlW7-2jDo1j-_dMqqRnmWe2NVq1nMylOAF1LrZHS4MpR0ZUqSs7YMF_C_p6O09lAMp0ymY_W2LgagvN6YF8F_tNnVZcr6xD8WSF1vrjrksMqBxZt744ly_5uV1k73fXAKiT6d2O1WT8jvwHZactwDm70A8weURLti21PXJdiEaX")`}}>
@@ -257,8 +257,8 @@ export function HomeComponent() {
                         Be the first to experience the future of influencer marketing in Morocco.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Button size="lg" className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
-                            Join the Brand Waitlist
+                        <Button asChild size="lg" className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
+                            <Link href="/brands/join">Join the Brand Waitlist</Link>
                         </Button>
                         <Button variant="outline" size="lg" className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full">
                            Apply as a Founding Creator
