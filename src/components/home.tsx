@@ -71,7 +71,7 @@ export function HomeComponent() {
             className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-primary/10"
             data-alt="Illustration of stacked coins with heart icons, and a thumbs-down coin floating above, symbolizing wasted money on fake engagement."
             style={{
-              backgroundImage: `url("https://storage.googleapis.com/project-starlight-test/66967735391e92d9f485121b/669695d7391e92d9f4851410.png")`,
+              backgroundImage: `url("/images/fake-engagement.png")`,
             }}
           ></div>
         </div>
@@ -85,7 +85,7 @@ export function HomeComponent() {
             className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-secondary/10 order-2 md:order-1"
             data-alt="A stylized illustration of a mobile phone showing an automated payment notification, with charts and graphs in the background, representing guaranteed payments."
             style={{
-              backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3BWUWDOP1TY1KtnTWutXxH_m5jNXNzDWuRb3jsiE-cXlty9VKAhZVV5acYGTpJKGVKIF4HLag7g1bYC8Vb686qu2BcbSuivRtn2Oa8Uz8T9LCbrUwaycv7AOeJ0sz_NKZg7Zilhnt6ZFmXIdNvlmEz7Mn_FIY1XjIeyWHGL6-qRaHcl4Y6ZWEXEVdrYeEIxXensIGDAmfapDdj0kDlMygBkI5uSzTgXe3KF86xqiAe6rmp2Hvoy1dIv9I2esYdtrCzuwEkcQR3M3nn")`,
+              backgroundImage: `url("/images/guaranteed-payments.png")`,
             }}
           ></div>
           <div className="flex flex-col gap-6 order-1 md:order-2">
@@ -295,7 +295,7 @@ export function HomeComponent() {
             className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
             data-alt="A modern, professional Moroccan team collaborating in a bright, stylish office in Casablanca."
             style={{
-              backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZOIYUTPqCIfk5_QnEpLw2cQ4QWcuLjpDGSEBF1hPT3KfS3VkKyt-M4dM3ILFvklEJ8nE4ltQoFFqqo5HvP9PND1UnmqSKygJ_6CDunIlVmRvVrV79TvICFXl5lD1g5xT5Mw6k1qMHE2_pRlMHUh1o-5F5cNAiLKF7RhkBhMu39-_-MQK2Z4J96_TFEuFCixr_gNPg0ElYjgT0ClR1WW2Wivit8cITJ-tDpTM_FTocXo74pR3NhEjFxtavcxc4udMOzphUzFoenZDA")`,
+              backgroundImage: `url("/images/moroccan-team.png")`,
             }}
           ></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>

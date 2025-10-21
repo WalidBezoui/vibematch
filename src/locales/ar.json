@@ -78,19 +78,19 @@
                 "quote": "العثور على علامات تجارية تقدر التفاعل الحقيقي كان تحديًا كبيرًا. عملية التدقيق في VibeMatch غيرت كل شيء. أشعر أخيرًا بالتقدير للمجتمع الذي بنيته بجهد.",
                 "name": "غيثة أ.",
                 "role": "صانعة محتوى لايف ستايل",
-                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+                "image": "/images/testimonial-1.png"
             },
             {
                 "quote": "مطاردة الفواتير كانت تستنزف طاقتي الإبداعية. مع VibeMatch، أعلم أن مستحقاتي ستصل في وقتها، كل مرة. هذا شعور لا يقدر بثمن.",
                 "name": "أيمن ف.",
                 "role": "مُراجع تقني",
-                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+                "image": "/images/testimonial-2.png"
             },
             {
                 "quote": "كصانعة محتوى، من الصعب إيجاد شركاء يثقون برؤيتك الإبداعية. VibeMatch يربطني بعلامات تجارية تفهم قيمة الحرية الإبداعية والقصص الأصيلة.",
                 "name": "سكينة",
                 "role": "مؤثرة في مجال الموضة",
-                "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbiSOxKWZPKMtherRkE58oMcfVlDpjnI47Ly3EOK18_QOiADRRL0soNW2Pr795ttOe0MbNnYoCrPEymfGAtZsF7RQNC3rYPL83WtbaOrIWg_doPx37roXz39V_DXFT9Anzcyr3TVbL4Sk4EbjFQcdMepgBw552hfA-gyd2SZQ1euTssfOj7XfHF_xf-gkAnO1KRffP4QhQIqOfHoHHSvL_4BZpdJmDELyDkvni-98te1VjvBFRoEl9z1ZafkiiwueykKY2rHBgqTC-"
+                "image": "/images/testimonial-3.png"
             }
         ],
         "faq": {
@@ -118,7 +118,7 @@
             },
             {
                 "question": "ما هي شروط الانضمام كصانع محتوى؟",
-                "answer": "نحن نبحث عن صناع المحتوى الذين لديهم اتصال حقيقي بجمهورهم، بغض النظر عن حجم المتابعين. نقوم بتقيim جودة التفاعل والإبداع في المحتوى وأهمية المجال. إذا كنت تنشئ محتوى عالي الجودة ولديك مجتمع مخلص، فنحن نشجعك على التقديم."
+                "answer": "نحن نبحث عن صناع المحتوى الذين لديهم اتصال حقيقي بجمهورهم، بغض النظر عن حجم المتابعين. نقوم بتقiim جودة التفاعل والإبداع في المحتوى وأهمية المجال. إذا كنت تنشئ محتوى عالي الجودة ولديك مجتمع مخلص، فنحن نشجعك على التقديم."
             }
         ],
         "connect": {
@@ -250,7 +250,7 @@
                 "label": "المدينة (المغرب)",
                 "placeholder": "مدينتك"
             },
-            "submitButton": "الانضمام إلى قائمة الانتظار"
+            "submitButton": "الانضمام إلى قائمة الانتظar"
         }
     },
     "brandJoinSuccessPage": {
@@ -317,7 +317,7 @@
         "connectionDialog": {
             "title": "جاري الاتصال بـ {{platformName}}",
             "description": "سيتم توجيهك للمصادقة على حسابك بشكل آمن.",
-            "connecting": "الرجاء الانتظار...",
+            "connecting": "الرجاء الانتظar...",
             "connected": "تم الاتصال بنجاح!"
         }
     }
