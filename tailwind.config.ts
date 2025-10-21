@@ -12,6 +12,7 @@ export default {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Poppins', 'sans-serif'],
+        arabic: ['Tajawal', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
