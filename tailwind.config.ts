@@ -11,7 +11,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        headline: ['Poppins', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
@@ -67,9 +67,15 @@ export default {
         },
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        DEFAULT: "0.75rem",
+        lg: "1.25rem",
+        md: "calc(0.75rem - 2px)",
+        sm: "calc(0.75rem - 4px)",
+        xl: "2rem",
+      },
+      boxShadow: {
+        'glow-primary': '0 0 20px 5px hsla(var(--gradient-primary), 0.4)',
+        'glow-secondary': '0 0 20px 5px hsla(var(--gradient-secondary), 0.2)',
       },
       keyframes: {
         'accordion-down': {
