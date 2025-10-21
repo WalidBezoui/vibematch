@@ -1,13 +1,30 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Home, LogIn } from 'lucide-react';
 
+type Language = 'EN' | 'AR' | 'FR';
+
 export function AppHeader() {
   const pathname = usePathname();
   const isLoginPage = pathname === '/login';
+  const [language, setLanguage] = useState<Language>('EN');
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('vibematch-language') as Language;
+    if (savedLanguage && ['EN', 'AR', 'FR'].includes(savedLanguage)) {
+      setLanguage(savedLanguage);
+    }
+  }, []);
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    localStorage.setItem('vibematch-language', lang);
+    // Here you would typically also trigger a language change in your i18n library
+  };
 
   return (
     <header className="px-4 md:px-10 lg:px-20 flex justify-between items-center py-6 backdrop-blur-md sticky top-0 z-50 bg-background/80 border-b">
@@ -54,20 +71,17 @@ export function AppHeader() {
           </Link>
         </Button>
         <div className="flex items-center gap-1 border rounded-full p-1 text-sm">
-          <Button
-            variant="default"
-            size="sm"
-            className="px-2 py-1 rounded-full h-auto text-black font-semibold text-xs"
-          >
-            EN
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="px-2 py-1 rounded-full h-auto text-xs"
-          >
-            AR
-          </Button>
+          {(['EN', 'FR', 'AR'] as Language[]).map((lang) => (
+            <Button
+              key={lang}
+              variant={language === lang ? 'default' : 'ghost'}
+              size="sm"
+              className="px-2 py-1 rounded-full h-auto text-xs font-semibold"
+              onClick={() => handleLanguageChange(lang)}
+            >
+              {lang}
+            </Button>
+          ))}
         </div>
       </div>
     </header>
