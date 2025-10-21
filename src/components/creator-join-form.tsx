@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,14 +31,17 @@ export function CreatorJoinForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const router = useRouter();
 
-  const handleNext = () => {
+  useEffect(() => {
     if (currentStep === 3) {
-        // Simulate analysis
-        setTimeout(() => {
-            setCurrentStep((prev) => prev + 1);
-        }, 2000);
-        setCurrentStep((prev) => prev + 1);
-    } else if (currentStep < 5) {
+      const timer = setTimeout(() => {
+        setCurrentStep(4);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentStep]);
+
+  const handleNext = () => {
+    if (currentStep < 5) {
         setCurrentStep((prev) => prev + 1);
     }
   };
@@ -69,13 +72,13 @@ export function CreatorJoinForm() {
                         </svg>
                         </div>
                     </div>
-                    <h1 className="text-3xl font-black tracking-tighter sm:text-4xl lg:text-5xl gradient-text">Merci pour votre candidature.</h1>
+                    <h1 className="text-3xl font-black tracking-tighter sm:text-4xl lg:text-5xl gradient-text">Thank you for your application.</h1>
                     <p className="text-lg text-foreground/70 max-w-xl mx-auto">
-                        Notre équipe examine votre profil et vous recevrez une réponse sous <span className="font-bold text-foreground">48h</span>.
+                        Our team is reviewing your profile and you will receive a response within <span className="font-bold text-foreground">48 hours</span>.
                     </p>
                     <div className="pt-4">
                         <Button size="lg" className="gradient-bg text-black font-bold py-3 px-8 rounded-full hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/50" onClick={() => router.push('/')}>
-                            Retour à l'accueil
+                            Back to Homepage
                         </Button>
                     </div>
                 </div>
@@ -162,7 +165,7 @@ export function CreatorJoinForm() {
                         </span>
                     </div>
                 </div>
-                <h2 className="mt-8 text-2xl font-bold">Analyse de votre audience en cours...</h2>
+                <h2 className="mt-8 text-2xl font-bold">Analyzing your audience...</h2>
                 <p className="mt-2 text-foreground/70 animate-pulse">This might take a few moments. Please don't close this window.</p>
             </div>
         )}
@@ -183,7 +186,7 @@ export function CreatorJoinForm() {
                 <div className="rounded-lg bg-muted/50 p-6">
                     <label className="flex items-start space-x-4 cursor-pointer">
                          <Checkbox id="pledge" className="custom-checkbox mt-1" />
-                        <span className="font-medium text-foreground/80">Je m'engage à respecter les délais et à ne pas utiliser de faux engagement.</span>
+                        <span className="font-medium text-foreground/80">I commit to meeting deadlines and not using fake engagement.</span>
                     </label>
                 </div>
             </div>
