@@ -87,8 +87,8 @@ export function HomeComponent() {
                         <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
                            Focus on what you do best: creating amazing content. VibeMatch handles the boring stuff. We guarantee your payments and automate your invoices, so you can build your brand with peace of mind.
                         </p>
-                        <Button className="mt-4 w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
-                            Apply as a Founding Creator
+                        <Button asChild className="mt-4 w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
+                            <Link href="/creators/join">Apply as a Founding Creator</Link>
                         </Button>
                     </div>
                 </div>
@@ -260,8 +260,8 @@ export function HomeComponent() {
                         <Button asChild size="lg" className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
                             <Link href="/brands/join">Join the Brand Waitlist</Link>
                         </Button>
-                        <Button variant="outline" size="lg" className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full">
-                           Apply as a Founding Creator
+                        <Button asChild variant="outline" size="lg" className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full">
+                           <Link href="/creators/join">Apply as a Founding Creator</Link>
                         </Button>
                     </div>
                 </div>

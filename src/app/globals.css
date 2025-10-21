@@ -30,24 +30,24 @@
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 222 84% 4.9%;
     --foreground: 210 40% 98%;
-    --card: 0 0% 3.9%;
+    --card: 222 84% 4.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
     --primary: 156 100% 48%;
     --primary-foreground: 0 0% 0%;
-    --secondary: 240 3.7% 15.9%;
+    --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 210 40% 64.9%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
     --accent: 172 100% 44%;
     --accent-foreground: 0 0% 0%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
     --ring: 156 100% 48%;
   }
 }
@@ -64,8 +64,7 @@
 
 @layer utilities {
   .text-glow {
-    filter: drop-shadow(0 0 5px hsl(var(--gradient-primary) / 0.5))
-            drop-shadow(0 0 10px hsl(var(--gradient-secondary) / 0.3));
+    filter: drop-shadow(0 0 2px hsl(var(--gradient-primary) / 0.8)) drop-shadow(0 0 5px hsl(var(--gradient-secondary) / 0.5));
   }
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--gradient-primary))] to-[hsl(var(--gradient-secondary))];
@@ -76,5 +75,49 @@
   .hero-bg {
     background-image: radial-gradient(circle at 10% 20%, hsla(var(--gradient-primary), 0.05) 0%, transparent 40%),
                       radial-gradient(circle at 90% 80%, hsla(var(--gradient-secondary), 0.05) 0%, transparent 40%);
+  }
+
+  .icon-bg-insta {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+  }
+  .icon-bg-tiktok {
+      background: #000000;
+  }
+
+  .custom-checkbox:checked {
+      background-image: linear-gradient(to right, hsl(var(--gradient-primary)), hsl(var(--gradient-secondary)));
+      border-color: transparent;
+  }
+  .custom-checkbox:checked + .material-symbols-outlined {
+      opacity: 1;
+      transform: scale(1);
+  }
+
+  .animate-spinner {
+    animation: spinner 1.5s linear infinite;
+  }
+
+  .animate-check-grow {
+    animation: check-grow 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) 0.2s forwards;
+  }
+
+  .animate-circle-grow {
+    animation: circle-grow 0.4s ease-out forwards;
+  }
+
+  @keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes check-grow {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes circle-grow {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
   }
 }
