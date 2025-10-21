@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Instagram, ArrowRight } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 const TikTokIcon = () => (
   <svg
@@ -27,8 +28,70 @@ const steps = [
   { step: 5, title: 'Application Submitted!', description: 'Thank you for applying to be a Founding Creator.', progress: 100 },
 ];
 
+type ConnectionStatus = 'idle' | 'connecting' | 'connected';
+type Platform = 'instagram' | 'tiktok';
+
+function ConnectionDialog({ platform, open, onOpenChange }: { platform: Platform | null, open: boolean, onOpenChange: (open: boolean) => void }) {
+  const [status, setStatus] = useState<ConnectionStatus>('idle');
+
+  useEffect(() => {
+    if (open) {
+      setStatus('connecting');
+      const timer = setTimeout(() => {
+        setStatus('connected');
+        const closeTimer = setTimeout(() => {
+            onOpenChange(false);
+        }, 1500);
+        return () => clearTimeout(closeTimer);
+      }, 2500);
+      return () => clearTimeout(timer);
+    } else {
+      setStatus('idle');
+    }
+  }, [open, onOpenChange]);
+
+  const platformName = platform === 'instagram' ? 'Instagram' : 'TikTok';
+  const platformColor = platform === 'instagram' ? 'text-pink-500' : 'text-cyan-400';
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md text-center">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-center">Connecting to {platformName}</DialogTitle>
+          <DialogDescription className="text-center mt-2">
+            You'll be redirected to securely authenticate your account.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex justify-center items-center h-48">
+          {status === 'connecting' && (
+            <div className="flex flex-col items-center gap-4">
+              <div className={`relative w-16 h-16`}>
+                <div className={`absolute inset-0 rounded-full border-4 ${platform === 'instagram' ? 'border-pink-500/20' : 'border-cyan-400/20'}`}></div>
+                <div className={`absolute inset-0 rounded-full border-t-4 ${platform === 'instagram' ? 'border-pink-500' : 'border-cyan-400'} animate-spinner`}></div>
+              </div>
+              <p className="text-foreground/70">Please wait...</p>
+            </div>
+          )}
+          {status === 'connected' && (
+            <div className="flex flex-col items-center gap-4">
+                <div className="w-16 h-16 gradient-bg rounded-full flex items-center justify-center animate-circle-grow">
+                    <Check className="w-8 h-8 text-black animate-check-grow" strokeWidth={4} />
+                </div>
+                <p className="font-bold text-lg">Successfully Connected!</p>
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+
 export function CreatorJoinForm() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [connectingPlatform, setConnectingPlatform] = useState<Platform | null>(null);
+  const [connectedPlatforms, setConnectedPlatforms] = useState<Platform[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -56,6 +119,18 @@ export function CreatorJoinForm() {
     }
   };
   
+  const handleConnect = (platform: Platform) => {
+    setConnectingPlatform(platform);
+    setDialogOpen(true);
+  };
+
+  useEffect(() => {
+    if (!dialogOpen && connectingPlatform && !connectedPlatforms.includes(connectingPlatform)) {
+      setConnectedPlatforms(prev => [...prev, connectingPlatform]);
+    }
+  }, [dialogOpen, connectingPlatform, connectedPlatforms]);
+
+
   const currentStepInfo = steps[currentStep - 1];
 
   if (currentStep === 5) {
@@ -89,6 +164,7 @@ export function CreatorJoinForm() {
 
   return (
     <div className="space-y-8">
+      <ConnectionDialog platform={connectingPlatform} open={dialogOpen} onOpenChange={setDialogOpen} />
       <div className="text-center">
         <p className="font-semibold text-primary gradient-text">VibeMatch</p>
         <h1 className="text-4xl font-black tracking-tighter sm:text-5xl">{currentStepInfo.title}</h1>
@@ -97,7 +173,7 @@ export function CreatorJoinForm() {
 
       <div className="rounded-xl border border-border bg-card p-6 sm:p-8 space-y-6">
         <div className="flex flex-col gap-3">
-            {currentStep < 4 && 
+            {currentStep < 5 && 
                 <>
                     <div className="flex gap-6 justify-between">
                         <p className="text-sm font-medium leading-normal text-foreground/70">Step {currentStep} of 4</p>
@@ -128,7 +204,11 @@ export function CreatorJoinForm() {
 
         {currentStep === 2 && (
             <div className="space-y-4">
-                <button className="w-full text-left p-4 rounded-xl border border-border hover:border-primary transition-all duration-300 flex items-center gap-4 group">
+                <button 
+                  className="w-full text-left p-4 rounded-xl border border-border hover:border-primary transition-all duration-300 flex items-center gap-4 group"
+                  onClick={() => handleConnect('instagram')}
+                  disabled={connectedPlatforms.includes('instagram')}
+                >
                     <div className="w-16 h-16 rounded-lg flex items-center justify-center icon-bg-insta flex-shrink-0">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
                     </div>
@@ -136,9 +216,19 @@ export function CreatorJoinForm() {
                         <h3 className="text-lg font-bold">Connect Instagram</h3>
                         <p className="text-foreground/70">Securely connect via API to verify your account and import key metrics.</p>
                     </div>
-                    <ArrowRight className="text-foreground/30 group-hover:text-primary transition-colors" />
+                    {connectedPlatforms.includes('instagram') ? (
+                       <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center animate-icon-spin">
+                          <Check className="w-5 h-5 text-black" strokeWidth={3} />
+                       </div>
+                    ) : (
+                      <ArrowRight className="text-foreground/30 group-hover:text-primary transition-colors" />
+                    )}
                 </button>
-                <button className="w-full text-left p-4 rounded-xl border border-border hover:border-secondary transition-all duration-300 flex items-center gap-4 group">
+                <button 
+                  className="w-full text-left p-4 rounded-xl border border-border hover:border-secondary transition-all duration-300 flex items-center gap-4 group"
+                  onClick={() => handleConnect('tiktok')}
+                  disabled={connectedPlatforms.includes('tiktok')}
+                >
                     <div className="w-16 h-16 rounded-lg flex items-center justify-center icon-bg-tiktok flex-shrink-0">
                        <TikTokIcon />
                     </div>
@@ -146,7 +236,13 @@ export function CreatorJoinForm() {
                         <h3 className="text-lg font-bold">Connect TikTok</h3>
                         <p className="text-foreground/70">Link your TikTok account to showcase your engagement and reach.</p>
                     </div>
-                    <ArrowRight className="text-foreground/30 group-hover:text-secondary transition-colors" />
+                    {connectedPlatforms.includes('tiktok') ? (
+                      <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center animate-icon-spin">
+                        <Check className="w-5 h-5 text-black" strokeWidth={3}/>
+                      </div>
+                    ) : (
+                      <ArrowRight className="text-foreground/30 group-hover:text-secondary transition-colors" />
+                    )}
                 </button>
                  <div className="mt-6 text-center">
                     <a className="text-sm text-foreground/60 hover:text-primary" href="#">Why do I need to connect my accounts?</a>
