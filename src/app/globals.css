@@ -64,7 +64,7 @@
 
 @layer utilities {
   .text-glow {
-    filter: drop-shadow(0 0 2px hsl(var(--gradient-primary) / 0.8)) drop-shadow(0 0 5px hsl(var(--gradient-secondary) / 0.5));
+    filter: drop-shadow(0 0 1px hsl(var(--gradient-primary) / 0.8)) drop-shadow(0 0 2px hsl(var(--gradient-secondary) / 0.5));
   }
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--gradient-primary))] to-[hsl(var(--gradient-secondary))];
@@ -137,4 +137,8 @@
     }
   }
 
+  .input-focus:focus-within {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsla(var(--primary), 0.3);
+  }
 }
