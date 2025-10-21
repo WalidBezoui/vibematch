@@ -69,9 +69,9 @@ export function HomeComponent() {
           </div>
           <div
             className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-primary/10"
-            data-alt="A futuristic, abstract 3D visualization of a neural network or data core, glowing with bright green and cyan light, representing the Trust Engine."
+            data-alt="Illustration of stacked coins with heart icons, and a thumbs-down coin floating above, symbolizing wasted money on fake engagement."
             style={{
-              backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCL6eHW65DQ4ZzrQ7fwD4xQ9BJ_83WO9MTKOKkj63MiCRxED8Xs9oiGQmkBlbDk6-9I4AdheUj9VByzYxivES7BAUT073DHjlmqCDlW7-2jDo1j-_dMqqRnmWe2NVq1nMylOAF1LrZHS4MpR0ZUqSs7YMF_C_p6O09lAMp0ymY_W2LgagvN6YF8F_tNnVZcr6xD8WSF1vrjrksMqBxZt744ly_5uV1k73fXAKiT6d2O1WT8jvwHZactwDm70A8weURLti21PXJdiEaX")`,
+              backgroundImage: `url("https://storage.googleapis.com/project-starlight-test/66967735391e92d9f485121b/669695d7391e92d9f4851410.png")`,
             }}
           ></div>
         </div>
@@ -85,7 +85,7 @@ export function HomeComponent() {
             className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-secondary/10 order-2 md:order-1"
             data-alt="A stylized illustration of a mobile phone showing an automated payment notification, with charts and graphs in the background, representing guaranteed payments."
             style={{
-              backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3BWUWDOP1TY1KtnTWutXxH_m5jNXNzDWuRb3jsiE-cXlty9VKAhZVV5acYGTpJKGVKIF4HLag7g1bYC8Vb686qu2BcbSuivRtn2Oa8Uz8T9LCbrUwaycv7AOeJ0sz_NKZg7Zilhnt6ZFmXIdNvlmEz7Mn_FIY1XjIeyWHGL6-qRaHcl4Y6ZWEXEVdrYeEIxXensIGDAmfapDdj0kDlMygBkI5uSzTgXe3KF86xqiAe6rmp2Hvoy1dIv9I2esYdtrCzuwEkcQR3M3n")`,
+              backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3BWUWDOP1TY1KtnTWutXxH_m5jNXNzDWuRb3jsiE-cXlty9VKAhZVV5acYGTpJKGVKIF4HLag7g1bYC8Vb686qu2BcbSuivRtn2Oa8Uz8T9LCbrUwaycv7AOeJ0sz_NKZg7Zilhnt6ZFmXIdNvlmEz7Mn_FIY1XjIeyWHGL6-qRaHcl4Y6ZWEXEVdrYeEIxXensIGDAmfapDdj0kDlMygBkI5uSzTgXe3KF86xqiAe6rmp2Hvoy1dIv9I2esYdtrCzuwEkcQR3M3nn")`,
             }}
           ></div>
           <div className="flex flex-col gap-6 order-1 md:order-2">
