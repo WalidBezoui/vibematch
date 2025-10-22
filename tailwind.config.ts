@@ -71,7 +71,9 @@ export default {
         lg: "1.25rem",
         md: "calc(0.75rem - 2px)",
         sm: "calc(0.75rem - 4px)",
-        xl: "2rem",
+        xl: "1.5rem",
+        "2xl": "2rem",
+        "3xl": "2.5rem",
       },
       boxShadow: {
         'glow-primary': '0 0 20px 5px hsla(var(--gradient-primary), 0.4)',

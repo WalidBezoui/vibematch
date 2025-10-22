@@ -72,7 +72,7 @@ export function HomeComponent() {
               <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
             </Button>
           </div>
-          <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-xl shadow-2xl shadow-primary/10">
+          <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-primary/10 overflow-hidden">
             {fakeEngagementImg && (
                 <Image
                     src={fakeEngagementImg.imageUrl}
@@ -90,7 +90,7 @@ export function HomeComponent() {
         id="creators"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
-            <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-secondary/50 via-transparent to-transparent rounded-xl shadow-2xl shadow-secondary/10 order-2 md:order-1">
+            <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-secondary/50 via-transparent to-transparent rounded-3xl shadow-2xl shadow-secondary/10 order-2 md:order-1 overflow-hidden">
                 {guaranteedPaymentsImg && (
                 <Image
                     src={guaranteedPaymentsImg.imageUrl}
