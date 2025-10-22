@@ -16,6 +16,7 @@ export function AppHeader() {
     { href: "/#brands", label: t('header.forBrands') },
     { href: "/#creators", label: t('header.forCreators') },
     { href: "/faq", label: t('header.faq') },
+    { href: "/contact", label: t('header.contact') },
   ], [t]);
 
   const handleLanguageChange = (lang: 'EN' | 'FR' | 'AR') => {

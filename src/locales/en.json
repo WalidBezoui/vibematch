@@ -3,6 +3,7 @@
         "forBrands": "For Brands",
         "forCreators": "For Creators",
         "faq": "FAQ",
+        "contact": "Contact",
         "login": "Login",
         "home": "Home"
     },
@@ -318,6 +319,28 @@
             "description": "You'll be redirected to securely authenticate your account.",
             "connecting": "Please wait...",
             "connected": "Successfully Connected!"
+        }
+    },
+    "contactPage": {
+        "title": {
+            "part1": "Get in",
+            "part2": "Touch"
+        },
+        "description": "We're here to help. Whether you have a question about our platform, a partnership inquiry, or need support, our team is ready to assist you.",
+        "phone": {
+            "title": "Talk to Support",
+            "description": "Our support team is available from 9 AM to 5 PM, Monday to Friday.",
+            "button": "Call Now"
+        },
+        "whatsapp": {
+            "title": "Chat on WhatsApp",
+            "description": "Prefer texting? Reach out to us on WhatsApp for quick answers.",
+            "button": "Start Chat"
+        },
+        "email": {
+            "title": "Send an Email",
+            "description": "For detailed inquiries or feedback, feel free to send us an email.",
+            "button": "Send Email"
         }
     }
 }

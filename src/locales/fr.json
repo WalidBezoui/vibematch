@@ -4,6 +4,7 @@
         "forBrands": "Pour les Marques",
         "forCreators": "Pour les Créateurs",
         "faq": "FAQ",
+        "contact": "Contact",
         "login": "Connexion",
         "home": "Accueil"
     },
@@ -319,6 +320,28 @@
             "description": "Vous allez être redirigé pour vous authentifier en toute sécurité.",
             "connecting": "Veuillez patienter...",
             "connected": "Connexion réussie !"
+        }
+    },
+    "contactPage": {
+        "title": {
+          "part1": "Contactez-",
+          "part2": "nous"
+        },
+        "description": "Nous sommes là pour vous aider. Que vous ayez une question, une proposition de partenariat ou besoin d'aide, notre équipe est à votre écoute.",
+        "phone": {
+          "title": "Support Téléphonique",
+          "description": "Notre équipe est disponible du lundi au vendredi, de 9h à 17h.",
+          "button": "Appeler Maintenant"
+        },
+        "whatsapp": {
+          "title": "Discuter sur WhatsApp",
+          "description": "Vous préférez les messages ? Contactez-nous sur WhatsApp pour une réponse rapide.",
+          "button": "Démarrer la Discussion"
+        },
+        "email": {
+          "title": "Envoyer un E-mail",
+          "description": "Pour toute demande détaillée ou pour nous faire part de vos suggestions.",
+          "button": "Envoyer un E-mail"
         }
     }
 }
