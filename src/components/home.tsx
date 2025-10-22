@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
   Accordion,
@@ -71,13 +72,17 @@ export function HomeComponent() {
               <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
             </Button>
           </div>
-          <div
-            className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-primary/10"
-            data-ai-hint={fakeEngagementImg?.imageHint}
-            style={{
-              backgroundImage: `url("${fakeEngagementImg?.imageUrl}")`,
-            }}
-          ></div>
+          <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-xl shadow-2xl shadow-primary/10">
+            {fakeEngagementImg && (
+                <Image
+                    src={fakeEngagementImg.imageUrl}
+                    alt={fakeEngagementImg.description}
+                    data-ai-hint={fakeEngagementImg.imageHint}
+                    fill
+                    className="object-contain"
+                />
+            )}
+          </div>
         </div>
       </div>
       <div
@@ -85,13 +90,17 @@ export function HomeComponent() {
         id="creators"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
-          <div
-            className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-secondary/10 order-2 md:order-1"
-            data-ai-hint={guaranteedPaymentsImg?.imageHint}
-            style={{
-              backgroundImage: `url("${guaranteedPaymentsImg?.imageUrl}")`,
-            }}
-          ></div>
+            <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-secondary/50 via-transparent to-transparent rounded-xl shadow-2xl shadow-secondary/10 order-2 md:order-1">
+                {guaranteedPaymentsImg && (
+                <Image
+                    src={guaranteedPaymentsImg.imageUrl}
+                    alt={guaranteedPaymentsImg.description}
+                    data-ai-hint={guaranteedPaymentsImg.imageHint}
+                    fill
+                    className="object-contain"
+                />
+                )}
+            </div>
           <div className="flex flex-col gap-6 order-1 md:order-2">
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
               {t('homePage.creators.title1')}{' '}
@@ -342,3 +351,5 @@ export function HomeComponent() {
     </div>
   );
 }
+
+    
