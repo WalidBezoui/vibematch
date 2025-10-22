@@ -303,14 +303,16 @@ export function HomeComponent() {
         </div>
       </div>
       <div className="py-24 md:py-32">
-        <div className="relative w-full h-[600px] rounded-xl overflow-hidden group">
-          <div
-            className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
-            data-ai-hint={moroccanTeamImg?.imageHint}
-            style={{
-              backgroundImage: `url("${moroccanTeamImg?.imageUrl}")`,
-            }}
-          ></div>
+        <div className="relative w-full h-[600px] rounded-3xl overflow-hidden group">
+          {moroccanTeamImg && (
+            <Image
+                src={moroccanTeamImg.imageUrl}
+                alt={moroccanTeamImg.description}
+                data-ai-hint={moroccanTeamImg.imageHint}
+                fill
+                className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
           <div className="absolute inset-0 flex flex-col justify-end p-10 md:p-16">
             <h2 className="text-white text-4xl md:text-6xl font-extrabold tracking-tighter max-w-2xl">
@@ -351,5 +353,7 @@ export function HomeComponent() {
     </div>
   );
 }
+
+    
 
     
