@@ -77,19 +77,19 @@
                 "quote": "Finding brands that value authentic engagement over just follower counts was a constant struggle. VibeMatch's vetting process is a game-changer. I finally feel seen for the community I've built.",
                 "name": "Ghita A.",
                 "role": "Lifestyle Creator",
-                "image": "/images/testimonial-1.png"
+                "image": "testimonial-1"
             },
             {
                 "quote": "Chasing invoices and dealing with late payments was draining my creative energy. With VibeMatch, I know I'll get paid on time, every time. It's incredibly liberating.",
                 "name": "Ayman F.",
                 "role": "Tech Reviewer",
-                "image": "/images/testimonial-2.png"
+                "image": "testimonial-2"
             },
             {
                 "quote": "As a creator, it’s hard to find partners who trust your vision. VibeMatch connects me with brands that understand the value of creative freedom and authentic storytelling.",
                 "name": "Soukaina",
                 "role": "Fashion Influencer",
-                "image": "/images/testimonial-3.png"
+                "image": "testimonial-3"
             }
         ],
         "faq": {

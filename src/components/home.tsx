@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useLanguage } from '@/context/language-context';
+import { getImage } from '@/lib/placeholder-images';
 
 
 export function HomeComponent() {
@@ -17,6 +18,9 @@ export function HomeComponent() {
   const creatorsFaq = t('homePage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
 
+  const fakeEngagementImg = getImage('fake-engagement');
+  const guaranteedPaymentsImg = getImage('guaranteed-payments');
+  const moroccanTeamImg = getImage('moroccan-team');
 
   return (
     <div className="flex flex-col max-w-[1200px] flex-1">
@@ -69,9 +73,9 @@ export function HomeComponent() {
           </div>
           <div
             className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-primary/10"
-            data-alt="Illustration of stacked coins with heart icons, and a thumbs-down coin floating above, symbolizing wasted money on fake engagement."
+            data-ai-hint={fakeEngagementImg?.imageHint}
             style={{
-              backgroundImage: `url("/images/fake-engagement.png")`,
+              backgroundImage: `url("${fakeEngagementImg?.imageUrl}")`,
             }}
           ></div>
         </div>
@@ -83,9 +87,9 @@ export function HomeComponent() {
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
           <div
             className="w-full bg-center bg-no-repeat aspect-square bg-contain rounded-xl shadow-2xl shadow-secondary/10 order-2 md:order-1"
-            data-alt="A stylized illustration of a mobile phone showing an automated payment notification, with charts and graphs in the background, representing guaranteed payments."
+            data-ai-hint={guaranteedPaymentsImg?.imageHint}
             style={{
-              backgroundImage: `url("/images/guaranteed-payments.png")`,
+              backgroundImage: `url("${guaranteedPaymentsImg?.imageUrl}")`,
             }}
           ></div>
           <div className="flex flex-col gap-6 order-1 md:order-2">
@@ -208,7 +212,7 @@ export function HomeComponent() {
                 <div key={index} className="flex flex-col gap-4 text-left p-8 rounded-xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
                     <p className="text-foreground/70 leading-relaxed text-lg">"{testimonial.quote}"</p>
                     <div className="flex items-center gap-4 mt-4">
-                        <div className="w-12 h-12 rounded-full bg-cover bg-center" style={{backgroundImage: `url('${testimonial.image}')`}}></div>
+                        <div className="w-12 h-12 rounded-full bg-cover bg-center" style={{backgroundImage: `url('${getImage(testimonial.image)?.imageUrl}')`}}></div>
                         <div>
                             <div className="font-bold">{testimonial.name}</div>
                             <div className="text-sm text-foreground/70">{testimonial.role}</div>
@@ -293,9 +297,9 @@ export function HomeComponent() {
         <div className="relative w-full h-[600px] rounded-xl overflow-hidden group">
           <div
             className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
-            data-alt="A modern, professional Moroccan team collaborating in a bright, stylish office in Casablanca."
+            data-ai-hint={moroccanTeamImg?.imageHint}
             style={{
-              backgroundImage: `url("/images/moroccan-team.png")`,
+              backgroundImage: `url("${moroccanTeamImg?.imageUrl}")`,
             }}
           ></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
