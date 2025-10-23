@@ -299,7 +299,10 @@
             "emailLabel": "Email Address",
             "emailPlaceholder": "Enter your email address",
             "phoneLabel": "Phone Number",
-            "phonePlaceholder": "Enter your phone number"
+            "phonePlaceholder": "Enter your phone number",
+            "differentWhatsappLabel": "My WhatsApp number is different",
+            "whatsappLabel": "WhatsApp Number",
+            "whatsappPlaceholder": "Enter your WhatsApp number"
         },
         "step2": {
             "header": "Showcase Your Influence",
@@ -360,3 +363,5 @@
         }
     }
 }
+
+    

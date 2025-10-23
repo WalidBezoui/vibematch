@@ -299,7 +299,10 @@
             "emailLabel": "البريد الإلكتروني",
             "emailPlaceholder": "أدخل بريدك الإلكتروني",
             "phoneLabel": "رقم الهاتف",
-            "phonePlaceholder": "أدخل رقم هاتفك"
+            "phonePlaceholder": "أدخل رقم هاتفك",
+            "differentWhatsappLabel": "رقمي على واتساب مختلف",
+            "whatsappLabel": "رقم واتساب",
+            "whatsappPlaceholder": "أدخل رقم واتساب الخاص بك"
         },
         "step2": {
             "header": "أبرز تأثيرك",
@@ -360,3 +363,5 @@
         }
     }
 }
+
+    

@@ -6,27 +6,25 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Check, AtSign, Phone, Palette, Sparkles, User, Search, Loader2 } from 'lucide-react';
+import { ArrowRight, Check, AtSign, Phone, User, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { validateSocialHandle } from '@/ai/flows/validate-social-handle';
 
-
-const InstagramIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+const WhatsAppIcon = () => (
+    <svg
+      role="img"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5 text-foreground/40 dark:text-foreground/50 ml-4"
+    >
+      <path
+        fill="currentColor"
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52s-.67-.165-.917-.223c-.246-.058-.496-.058-.744-.058-.247 0-.644.075-.99.422-.346.346-1.328 1.299-1.328 3.165 0 1.866 1.354 3.666 1.549 3.915.196.249 2.62 4.226 6.323 5.576.87.325 1.56.52 2.096.66.703.198 1.34.166 1.82.1.572-.075 1.758-.716 2.006-1.413.248-.697.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.487 5.468c-1.795 0-3.257-1.46-3.257-3.257 0-1.795 1.46-3.257 3.257-3.257 1.795 0 3.257 1.46 3.257 3.257 0 1.795-1.46 3.257-3.257 3.257m8.363-18.299c-3.15-3.15-8.26-3.15-11.41 0s-3.15 8.26 0 11.41c3.15 3.15 8.26 3.15 11.41 0 3.15-3.15 3.15-8.26 0-11.41M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0z"
+      />
     </svg>
-)
-
-const TikTokIcon = () => (
-     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-        <path d="M16.49 7.9h-4.11a2 2 0 0 1-2-2V2H6.26a1 1 0 0 0-1 1v14.36a1 1 0 0 0 1 1h10.48a1 1 0 0 0 1-1V9.9a2 2 0 0 0-2-2Z"></path>
-        <path d="M12.38 12.83a4.13 4.13 0 1 0-4.13-4.13v6.35"></path>
-    </svg>
-)
+  );
 
 export function CreatorJoinForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -34,6 +32,7 @@ export function CreatorJoinForm() {
   const [socialStatus, setSocialStatus] = useState({ instagram: 'idle', tiktok: 'idle' });
   const [selectedNiches, setSelectedNiches] = useState<string[]>([]);
   const [otherNiche, setOtherNiche] = useState('');
+  const [useDifferentWhatsapp, setUseDifferentWhatsapp] = useState(false);
   const router = useRouter();
   const { t } = useLanguage();
 
@@ -146,28 +145,54 @@ export function CreatorJoinForm() {
         </div>
 
         {currentStep === 1 && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold">{t('creatorJoinForm.step1.header')}</h2>
-              <p className="mt-2 text-foreground/70">{t('creatorJoinForm.step1.description')}</p>
-            </div>
-            <div className="space-y-4">
-                <div className="flex flex-col flex-1">
-                    <Label htmlFor="fullName" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.nameLabel')}</Label>
-                    <Input id="fullName" placeholder={t('creatorJoinForm.step1.namePlaceholder')} />
+            <div className="space-y-6">
+                <div>
+                    <h2 className="text-2xl font-bold">{t('creatorJoinForm.step1.header')}</h2>
+                    <p className="mt-2 text-foreground/70">{t('creatorJoinForm.step1.description')}</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col flex-1">
-                        <Label htmlFor="email" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.emailLabel')}</Label>
-                        <Input id="email" type="email" placeholder={t('creatorJoinForm.step1.emailPlaceholder')} />
+                <div className="space-y-4">
+                    <div className="flex flex-col gap-2">
+                        <Label htmlFor="fullName" className="font-semibold text-sm">{t('creatorJoinForm.step1.nameLabel')}</Label>
+                        <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
+                            <User className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4" />
+                            <Input id="fullName" placeholder={t('creatorJoinForm.step1.namePlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
+                        </div>
                     </div>
-                    <div className="flex flex-col flex-1">
-                        <Label htmlFor="phone" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.phoneLabel')}</Label>
-                        <Input id="phone" type="tel" placeholder={t('creatorJoinForm.step1.phonePlaceholder')} />
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="email" className="font-semibold text-sm">{t('creatorJoinForm.step1.emailLabel')}</Label>
+                            <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
+                                <AtSign className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4" />
+                                <Input id="email" type="email" placeholder={t('creatorJoinForm.step1.emailPlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="phone" className="font-semibold text-sm">{t('creatorJoinForm.step1.phoneLabel')}</Label>
+                            <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
+                                <Phone className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4" />
+                                <Input id="phone" type="tel" placeholder={t('creatorJoinForm.step1.phonePlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="flex items-center space-x-2">
+                            <Checkbox id="different-whatsapp" checked={useDifferentWhatsapp} onCheckedChange={(checked) => setUseDifferentWhatsapp(checked as boolean)} />
+                            <label htmlFor="different-whatsapp" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {t('creatorJoinForm.step1.differentWhatsappLabel')}
+                            </label>
+                        </div>
+                        {useDifferentWhatsapp && (
+                             <div className="flex flex-col gap-2">
+                                <Label htmlFor="whatsapp" className="font-semibold text-sm">{t('creatorJoinForm.step1.whatsappLabel')}</Label>
+                                <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
+                                    <WhatsAppIcon />
+                                    <Input id="whatsapp" type="tel" placeholder={t('creatorJoinForm.step1.whatsappPlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-          </div>
         )}
 
         {currentStep === 2 && (
@@ -294,3 +319,5 @@ export function CreatorJoinForm() {
     </div>
   );
 }
+
+    
