@@ -13,12 +13,18 @@ import { cn } from '@/lib/utils';
 export function AppHeader() {
   const pathname = usePathname();
   const isLoginPage = pathname === '/login';
-  const { language, setLanguage, t, dir } = useLanguage();
+  const { language, setLanguage, t, dir, setUserInterest } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navLinks = useMemo(() => [
-    { href: "/#brands", label: t('header.forBrands') },
-    { href: "/#creators", label: t('header.forCreators') },
+  type NavLinkItem = {
+    href: string;
+    label: string;
+    interest?: 'brand' | 'creator';
+  };
+  
+  const navLinks: NavLinkItem[] = useMemo(() => [
+    { href: "/#brands", label: t('header.forBrands'), interest: 'brand' },
+    { href: "/#creators", label: t('header.forCreators'), interest: 'creator' },
     { href: "/faq", label: t('header.faq') },
     { href: "/contact", label: t('header.contact') },
   ], [t]);
@@ -27,11 +33,18 @@ export function AppHeader() {
     setLanguage(lang);
   };
 
-  const NavLink = ({ href, label, className } : { href: string; label: string, className?: string; }) => (
+  const handleNavLinkClick = (interest?: 'brand' | 'creator') => {
+    if (interest) {
+      setUserInterest(interest);
+    }
+    setIsMobileMenuOpen(false);
+  }
+
+  const NavLink = ({ href, label, className, interest } : NavLinkItem & { className?: string; }) => (
     <Link
       href={href}
       className={cn("text-sm font-medium text-foreground/70 hover:text-primary transition-colors", className)}
-      onClick={() => setIsMobileMenuOpen(false)}
+      onClick={() => handleNavLinkClick(interest)}
     >
       {label}
     </Link>
@@ -67,7 +80,7 @@ export function AppHeader() {
 
       <nav className="hidden md:flex gap-8 items-center">
         {navLinks.map((link) => (
-          <NavLink key={link.href} href={link.href} label={link.label} />
+          <NavLink key={link.href} {...link} />
         ))}
       </nav>
 
@@ -104,11 +117,9 @@ export function AppHeader() {
 
        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent side={dir === 'rtl' ? 'left' : 'right'} className="w-[80vw] bg-background">
-          <SheetHeader className="sr-only">
-            <SheetTitle>Menu</SheetTitle>
-            <SheetDescription>
-              Main navigation menu for VibeMatch
-            </SheetDescription>
+          <SheetHeader className="text-left rtl:text-right sr-only">
+             <SheetTitle>Menu</SheetTitle>
+             <SheetDescription>Main navigation</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col h-full">
             <div className='flex justify-between items-center mb-8'>
@@ -123,7 +134,7 @@ export function AppHeader() {
             
             <nav className="flex flex-col gap-6 items-start">
               {navLinks.map((link) => (
-                <NavLink key={link.href} href={link.href} label={link.label} className="text-lg" />
+                <NavLink key={link.href} {...link} className="text-lg" />
               ))}
             </nav>
 

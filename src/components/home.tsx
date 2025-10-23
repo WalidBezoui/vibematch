@@ -256,7 +256,7 @@ export function HomeComponent() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6" onClick={() => setUserInterest('brand')}>
             <h3 className="text-2xl md:text-3xl font-bold tracking-tight gradient-text">
               {t('homePage.faq.brandsTitle')}
             </h3>
@@ -280,7 +280,7 @@ export function HomeComponent() {
               ))}
             </Accordion>
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6" onClick={() => setUserInterest('creator')}>
             <h3 className="text-2xl md:text-3xl font-bold tracking-tight gradient-text">
               {t('homePage.faq.creatorsTitle')}
             </h3>
@@ -370,5 +370,3 @@ export function HomeComponent() {
     </div>
   );
 }
-
-    

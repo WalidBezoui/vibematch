@@ -14,13 +14,15 @@ const FaqGroup = ({
   icon,
   faqs,
   id,
+  onClick,
 }: {
   title: string;
   icon: string;
   faqs: { question: string; answer: string }[];
   id: string;
+  onClick?: () => void;
 }) => (
-  <section className="scroll-mt-24 mb-16" id={id}>
+  <section className="scroll-mt-24 mb-16" id={id} onClick={onClick}>
     <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8 flex items-center gap-3">
       <span className="material-symbols-outlined text-4xl gradient-text">
         {icon}
@@ -52,7 +54,7 @@ const FaqGroup = ({
 );
 
 export function FaqSection() {
-  const { t } = useLanguage();
+  const { t, setUserInterest } = useLanguage();
 
   const brandsFaq = t('faqPage.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const creatorsFaq = t('faqPage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
@@ -70,6 +72,7 @@ export function FaqSection() {
               <Link
                 className="flex items-center gap-2 p-2 rounded-md font-medium text-foreground/70 hover:bg-muted hover:text-primary transition-colors"
                 href="#brands-faq"
+                onClick={() => setUserInterest('brand')}
               >
                 <span className="material-symbols-outlined text-lg">
                   storefront
@@ -81,6 +84,7 @@ export function FaqSection() {
               <Link
                 className="flex items-center gap-2 p-2 rounded-md font-medium text-foreground/70 hover:bg-muted hover:text-primary transition-colors"
                 href="#creators-faq"
+                onClick={() => setUserInterest('creator')}
               >
                 <span className="material-symbols-outlined text-lg">
                   person
@@ -108,12 +112,14 @@ export function FaqSection() {
           title={t('faqPage.forBrands')}
           icon="storefront"
           faqs={brandsFaq}
+          onClick={() => setUserInterest('brand')}
         />
         <FaqGroup
           id="creators-faq"
           title={t('faqPage.forCreators')}
           icon="person"
           faqs={creatorsFaq}
+          onClick={() => setUserInterest('creator')}
         />
         <FaqGroup
           id="general-faq"
