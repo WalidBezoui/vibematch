@@ -1,3 +1,4 @@
+
 {
     "header": {
         "forBrands": "Pour les Marques",
@@ -157,6 +158,7 @@
             "title2": "VibeMatch",
             "title3": ".",
             "description": "Soyez le premier à découvrir le futur du marketing d'influence au Maroc.",
+            "areYou": "Êtes-vous une marque ou un créateur ?",
             "brandsButton": "Rejoindre la liste d'attente Marques",
             "creatorsButton": "Devenir un Créateur Fondateur"
         }

@@ -1,3 +1,4 @@
+
 {
     "header": {
         "forBrands": "For Brands",
@@ -157,6 +158,7 @@
             "title2": "VibeMatch",
             "title3": "Waitlist.",
             "description": "Be the first to experience the future of influencer marketing in Morocco.",
+            "areYou": "Are you a brand or a creator?",
             "brandsButton": "Join the Brand Waitlist",
             "creatorsButton": "Apply as a Founding Creator"
         }

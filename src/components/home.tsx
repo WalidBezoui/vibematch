@@ -342,9 +342,10 @@ export function HomeComponent() {
             <span className="gradient-text">{t('homePage.waitlist.title2')}</span>{' '}
             {t('homePage.waitlist.title3')}
           </h2>
-          <p className="text-lg md:text-xl text-foreground/70 leading-relaxed mb-10">
+          <p className="text-lg md:text-xl text-foreground/70 leading-relaxed mb-8">
             {t('homePage.waitlist.description')}
           </p>
+          <p className="text-lg font-semibold text-foreground/80 mb-8">{t('homePage.waitlist.areYou')}</p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
               asChild
