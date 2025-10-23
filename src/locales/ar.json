@@ -1,3 +1,4 @@
+
 {
     "header": {
         "forBrands": "للعلامات التجارية",
@@ -278,7 +279,7 @@
                 "label": "المدينة (المغرب)",
                 "placeholder": "مدينتك"
             },
-            "submitButton": "الانضمام إلى قائمة الانتظar"
+            "submitButton": "الانضمام إلى قائمة الانتظار"
         }
     },
     "brandJoinSuccessPage": {
