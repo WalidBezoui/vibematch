@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,6 +10,23 @@ import { ArrowRight, Check, AtSign, Phone, Palette, Sparkles, User, Search, Load
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
+import { validateSocialHandle } from '@/ai/flows/validate-social-handle';
+
+
+const InstagramIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+    </svg>
+)
+
+const TikTokIcon = () => (
+     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+        <path d="M16.49 7.9h-4.11a2 2 0 0 1-2-2V2H6.26a1 1 0 0 0-1 1v14.36a1 1 0 0 0 1 1h10.48a1 1 0 0 0 1-1V9.9a2 2 0 0 0-2-2Z"></path>
+        <path d="M12.38 12.83a4.13 4.13 0 1 0-4.13-4.13v6.35"></path>
+    </svg>
+)
 
 export function CreatorJoinForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -19,14 +36,21 @@ export function CreatorJoinForm() {
   const router = useRouter();
   const { t } = useLanguage();
 
-  const handleSocialChange = (platform: 'instagram' | 'tiktok', value: string) => {
+  const handleSocialChange = async (platform: 'instagram' | 'tiktok', value: string) => {
     setSocialInputs(prev => ({ ...prev, [platform]: value }));
     if(value) {
         setSocialStatus(prev => ({...prev, [platform]: 'checking'}));
-        // Simulate an API check
-        setTimeout(() => {
-            setSocialStatus(prev => ({...prev, [platform]: 'connected'}));
-        }, 1000);
+        try {
+            const result = await validateSocialHandle({ platform, handle: value });
+            if (result.exists) {
+                setSocialStatus(prev => ({...prev, [platform]: 'connected'}));
+            } else {
+                setSocialStatus(prev => ({...prev, [platform]: 'error'}));
+            }
+        } catch (error) {
+            console.error("Validation error", error);
+            setSocialStatus(prev => ({...prev, [platform]: 'error'}));
+        }
     } else {
         setSocialStatus(prev => ({...prev, [platform]: 'idle'}));
     }
@@ -137,37 +161,43 @@ export function CreatorJoinForm() {
         )}
 
         {currentStep === 2 && (
-            <div className="space-y-4">
+            <div className="space-y-6">
                 <h2 className="text-2xl font-bold">{t('creatorJoinForm.step2.header')}</h2>
                 <div className="space-y-4">
-                    <div className="relative">
-                        <Label htmlFor="instagram" className="text-sm font-medium pb-2">{t('creatorJoinForm.step2.instagramLabel')}</Label>
-                        <AtSign className="absolute left-3 top-10 h-5 w-5 text-gray-400" />
-                        <Input 
-                            id="instagram" 
-                            placeholder={t('creatorJoinForm.step2.handlePlaceholder')}
-                            className="pl-10"
-                            value={socialInputs.instagram}
-                            onChange={(e) => handleSocialChange('instagram', e.target.value)}
-                         />
-                        <div className="absolute right-3 top-9 h-7 w-7 flex items-center justify-center">
-                            {socialStatus.instagram === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
-                            {socialStatus.instagram === 'connected' && <Check className="h-5 w-5 text-green-500" />}
+                    <div className="space-y-2">
+                        <Label htmlFor="instagram" className="text-sm font-medium">{t('creatorJoinForm.step2.instagramLabel')}</Label>
+                        <div className="relative flex items-center">
+                            <AtSign className="absolute left-3.5 h-5 w-5 text-gray-400" />
+                            <Input 
+                                id="instagram" 
+                                placeholder={t('creatorJoinForm.step2.handlePlaceholder')}
+                                className="pl-10 h-12 pr-12"
+                                value={socialInputs.instagram}
+                                onChange={(e) => handleSocialChange('instagram', e.target.value)}
+                             />
+                            <div className="absolute right-3 h-7 w-7 flex items-center justify-center">
+                                {socialStatus.instagram === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
+                                {socialStatus.instagram === 'connected' && <Check className="h-5 w-5 text-green-500" />}
+                                {socialStatus.instagram === 'error' && <span className="text-red-500 text-xs font-bold">Error</span>}
+                            </div>
                         </div>
                     </div>
-                    <div className="relative">
-                        <Label htmlFor="tiktok" className="text-sm font-medium pb-2">{t('creatorJoinForm.step2.tiktokLabel')}</Label>
-                        <AtSign className="absolute left-3 top-10 h-5 w-5 text-gray-400" />
-                        <Input 
-                            id="tiktok" 
-                            placeholder={t('creatorJoinForm.step2.handlePlaceholder')}
-                            className="pl-10"
-                            value={socialInputs.tiktok}
-                            onChange={(e) => handleSocialChange('tiktok', e.target.value)}
-                        />
-                         <div className="absolute right-3 top-9 h-7 w-7 flex items-center justify-center">
-                            {socialStatus.tiktok === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
-                            {socialStatus.tiktok === 'connected' && <Check className="h-5 w-5 text-green-500" />}
+                    <div className="space-y-2">
+                        <Label htmlFor="tiktok" className="text-sm font-medium">{t('creatorJoinForm.step2.tiktokLabel')}</Label>
+                         <div className="relative flex items-center">
+                            <AtSign className="absolute left-3.5 h-5 w-5 text-gray-400" />
+                            <Input 
+                                id="tiktok" 
+                                placeholder={t('creatorJoinForm.step2.handlePlaceholder')}
+                                className="pl-10 h-12 pr-12"
+                                value={socialInputs.tiktok}
+                                onChange={(e) => handleSocialChange('tiktok', e.target.value)}
+                            />
+                            <div className="absolute right-3 h-7 w-7 flex items-center justify-center">
+                                {socialStatus.tiktok === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
+                                {socialStatus.tiktok === 'connected' && <Check className="h-5 w-5 text-green-500" />}
+                                {socialStatus.tiktok === 'error' && <span className="text-red-500 text-xs font-bold">Error</span>}
+                            </div>
                         </div>
                     </div>
                 </div>
