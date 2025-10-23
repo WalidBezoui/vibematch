@@ -37,6 +37,22 @@ export function AppHeader() {
     </Link>
   );
 
+  const LanguageSwitcher = ({className}: {className?: string}) => (
+    <div className={cn("flex items-center gap-1 border rounded-full p-1 text-sm", className)}>
+      {(['EN', 'FR', 'AR'] as const).map((lang) => (
+        <Button
+          key={lang}
+          variant={language === lang ? 'default' : 'ghost'}
+          size="sm"
+          className="px-2 py-1 rounded-full h-auto text-xs font-semibold"
+          onClick={() => handleLanguageChange(lang)}
+        >
+          {lang}
+        </Button>
+      ))}
+    </div>
+  );
+
   return (
     <header className="px-4 md:px-10 lg:px-20 flex justify-between items-center py-4 backdrop-blur-md sticky top-0 z-50 bg-background/80 border-b">
       <Link
@@ -53,19 +69,7 @@ export function AppHeader() {
       </nav>
 
       <div className="flex items-center gap-2">
-        <div className="hidden sm:flex items-center gap-1 border rounded-full p-1 text-sm">
-          {(['EN', 'FR', 'AR'] as const).map((lang) => (
-            <Button
-              key={lang}
-              variant={language === lang ? 'default' : 'ghost'}
-              size="sm"
-              className="px-2 py-1 rounded-full h-auto text-xs font-semibold"
-              onClick={() => handleLanguageChange(lang)}
-            >
-              {lang}
-            </Button>
-          ))}
-        </div>
+        <LanguageSwitcher className="hidden sm:flex" />
         <Button variant="outline" className="hidden md:flex rounded-full" asChild>
           <Link href={isLoginPage ? '/' : '/login'}>
             {isLoginPage ? (
@@ -81,10 +85,11 @@ export function AppHeader() {
             )}
           </Link>
         </Button>
+        <LanguageSwitcher className="flex sm:hidden" />
         <Button 
           variant="ghost" 
           size="icon" 
-          className="md:hidden"
+          className="md:hidden -mr-2"
           onClick={() => setIsMobileMenuOpen(true)}
         >
           <Menu />
@@ -141,19 +146,6 @@ export function AppHeader() {
                   )}
                 </Link>
               </Button>
-              <div className="flex sm:hidden items-center gap-1 border rounded-full p-1 text-sm w-full">
-                {(['EN', 'FR', 'AR'] as const).map((lang) => (
-                  <Button
-                    key={lang}
-                    variant={language === lang ? 'default' : 'ghost'}
-                    size="sm"
-                    className="flex-1 px-2 py-1 rounded-full h-auto text-xs font-semibold"
-                    onClick={() => handleLanguageChange(lang)}
-                  >
-                    {lang}
-                  </Button>
-                ))}
-              </div>
             </div>
           </div>
         </SheetContent>
