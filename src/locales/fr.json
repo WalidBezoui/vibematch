@@ -337,7 +337,8 @@
             "instagramLabel": "Nom d'utilisateur Instagram",
             "tiktokLabel": "Nom d'utilisateur TikTok",
             "handlePlaceholder": "votre_nom_utilisateur",
-            "whyConnectLink": "Pourquoi fournir mes noms d'utilisateur ?"
+            "whyConnectLink": "Pourquoi fournir mes noms d'utilisateur ?",
+            "whyConnectAnswer": "Nous utilisons vos identifiants pour une analyse automatisée et unique de vos données de profil public, comme le nombre d'abonnés et le taux d'engagement. Cela nous aide à calculer votre Score de Confiance et à vérifier l'authenticité de votre audience. Nous ne stockons jamais vos identifiants de connexion et ne publions rien en votre nom."
         },
         "step3": {
             "header": "Quelle est votre Niche ?",

@@ -6,12 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Check, AtSign, Phone, User, Loader2, Home } from 'lucide-react';
+import { ArrowRight, Check, AtSign, Phone, User, Loader2, Home, Info } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { validateSocialHandle } from '@/ai/flows/validate-social-handle';
 import Link from 'next/link';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const WhatsAppIcon = () => (
     <svg
@@ -238,9 +240,19 @@ export function CreatorJoinForm() {
                         </div>
                     </div>
                 </div>
-                 <div className="mt-6 text-center">
-                    <a className="text-sm text-foreground/60 hover:text-primary" href="#">{t('creatorJoinForm.step2.whyConnectLink')}</a>
-                </div>
+                 <Collapsible className="mt-6 text-center">
+                    <CollapsibleTrigger className="text-sm text-foreground/60 hover:text-primary transition-colors data-[state=open]:text-primary data-[state=open]:font-medium">
+                        {t('creatorJoinForm.step2.whyConnectLink')}
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                        <Alert className="mt-4 text-left">
+                            <Info className="h-4 w-4" />
+                            <AlertDescription>
+                                {t('creatorJoinForm.step2.whyConnectAnswer')}
+                            </AlertDescription>
+                        </Alert>
+                    </CollapsibleContent>
+                </Collapsible>
             </div>
         )}
 

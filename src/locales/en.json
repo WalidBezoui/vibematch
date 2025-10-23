@@ -337,7 +337,8 @@
             "instagramLabel": "Instagram Handle",
             "tiktokLabel": "TikTok Handle",
             "handlePlaceholder": "your_handle",
-            "whyConnectLink": "Why do I need to provide my handles?"
+            "whyConnectLink": "Why do I need to provide my handles?",
+            "whyConnectAnswer": "We use your handles for a one-time, automated analysis of your public profile data, like follower count and engagement rate. This helps us calculate your Trust Score and verify your audience's authenticity. We never store your login details or post on your behalf."
         },
         "step3": {
             "header": "What's Your Niche?",
