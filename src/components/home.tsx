@@ -267,7 +267,7 @@ export function HomeComponent() {
                   key={index}
                   className="bg-muted/50 border border-border/50 rounded-xl px-6 group"
                 >
-                  <AccordionTrigger className="hover:no-underline text-lg font-semibold text-left">
+                  <AccordionTrigger className="hover:no-underline text-lg font-semibold">
                     {faq.question}
                     <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
                       expand_more
@@ -291,7 +291,7 @@ export function HomeComponent() {
                   key={index}
                   className="bg-muted/50 border border-border/50 rounded-xl px-6 group"
                 >
-                  <AccordionTrigger className="hover:no-underline text-lg font-semibold text-left">
+                  <AccordionTrigger className="hover:no-underline text-lg font-semibold">
                     {faq.question}
                     <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
                       expand_more

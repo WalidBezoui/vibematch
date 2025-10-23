@@ -114,14 +114,6 @@ export function AppHeader() {
               >
                 VibeMatch
               </Link>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <X />
-                <span className="sr-only">Close menu</span>
-              </Button>
             </div>
             
             <nav className="flex flex-col gap-6 items-start">
