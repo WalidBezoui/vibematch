@@ -21,7 +21,7 @@ export default function LoginPage() {
           <div className="relative w-full max-w-md mx-auto">
             <div className="absolute -top-24 -left-24 w-72 h-72 bg-primary/20 rounded-full filter blur-3xl opacity-50 animate-blob"></div>
             <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-secondary/20 rounded-full filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
-            <div className="relative bg-background/80 dark:bg-background/80 backdrop-blur-xl border rounded-xl shadow-2xl shadow-primary/10">
+            <div className="relative bg-background/80 dark:bg-background/80 backdrop-blur-xl border rounded-2xl shadow-2xl shadow-primary/10">
               <div className="p-8 md:p-12 flex flex-col gap-8">
                 <div className="text-center">
                   <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter leading-tight">

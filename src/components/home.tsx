@@ -25,7 +25,7 @@ export function HomeComponent() {
 
   return (
     <div className="flex flex-col max-w-[1200px] flex-1">
-      <div className="flex flex-col items-center justify-center text-center min-h-[calc(100vh-280px)]">
+      <div className="flex flex-col items-center justify-center text-center min-h-[calc(100vh-280px)] py-10">
         <div className="flex flex-col gap-6 items-center">
           <h1 className={`text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-tight ${language === 'AR' ? 'hero-title-ar' : ''}`}>
             {t('homePage.hero.title1')}{' '}
@@ -86,7 +86,7 @@ export function HomeComponent() {
         </div>
       </div>
       <div
-        className="py-24 md:py-32 scroll-mt-20 bg-muted/50 rounded-xl"
+        className="py-24 md:py-32 scroll-mt-20 bg-muted/50 rounded-3xl"
         id="creators"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
@@ -129,7 +129,7 @@ export function HomeComponent() {
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
+          <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
             <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
               <span className="material-symbols-outlined text-4xl text-black">
                 verified_user
@@ -140,7 +140,7 @@ export function HomeComponent() {
               {t('homePage.features.shield.description')}
             </p>
           </div>
-          <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
+          <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
             <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
               <span className="material-symbols-outlined text-4xl text-black">
                 event_available
@@ -151,7 +151,7 @@ export function HomeComponent() {
              {t('homePage.features.deadlines.description')}
             </p>
           </div>
-          <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
+          <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
             <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
               <span className="material-symbols-outlined text-4xl text-black">
                 dashboard_customize
@@ -164,7 +164,7 @@ export function HomeComponent() {
           </div>
         </div>
       </div>
-      <div className="py-24 md:py-32 bg-muted/50 rounded-xl">
+      <div className="py-24 md:py-32 bg-muted/50 rounded-3xl">
         <div className="px-4 md:px-10 lg:px-12">
           <div className="text-center mb-16 max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">
@@ -174,7 +174,7 @@ export function HomeComponent() {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
+            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
               <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
                 <span className="material-symbols-outlined text-4xl text-black">
                   payments
@@ -185,7 +185,7 @@ export function HomeComponent() {
                 {t('homePage.creatorFeatures.paycheck.description')}
               </p>
             </div>
-            <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
+            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
               <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
                 <span className="material-symbols-outlined text-4xl text-black">
                   lock
@@ -196,7 +196,7 @@ export function HomeComponent() {
                 {t('homePage.creatorFeatures.confidence.description')}
               </p>
             </div>
-            <div className="flex flex-col items-center gap-4 p-8 rounded-xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
+            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
               <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
                 <span className="material-symbols-outlined text-4xl text-black">
                   rule
@@ -218,10 +218,20 @@ export function HomeComponent() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-                <div key={index} className="flex flex-col gap-4 text-left p-8 rounded-xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
+                <div key={index} className="flex flex-col gap-4 text-left p-8 rounded-3xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
                     <p className="text-foreground/70 leading-relaxed text-lg">"{testimonial.quote}"</p>
                     <div className="flex items-center gap-4 mt-4">
-                        <div className="w-12 h-12 rounded-full bg-cover bg-center" style={{backgroundImage: `url('${getImage(testimonial.image)?.imageUrl}')`}}></div>
+                        <div className="w-12 h-12 rounded-full bg-cover bg-center overflow-hidden">
+                          {getImage(testimonial.image) && (
+                            <Image
+                              src={getImage(testimonial.image)!.imageUrl}
+                              alt={getImage(testimonial.image)!.description}
+                              width={48}
+                              height={48}
+                              className='object-cover w-full h-full'
+                            />
+                          )}
+                        </div>
                         <div>
                             <div className="font-bold">{testimonial.name}</div>
                             <div className="text-sm text-foreground/70">{testimonial.role}</div>
@@ -303,7 +313,7 @@ export function HomeComponent() {
         </div>
       </div>
       <div className="py-24 md:py-32">
-        <div className="relative w-full h-[600px] rounded-3xl overflow-hidden group">
+        <div className="relative w-full h-[400px] md:h-[600px] rounded-3xl overflow-hidden group">
           {moroccanTeamImg && (
             <Image
                 src={moroccanTeamImg.imageUrl}
@@ -314,7 +324,7 @@ export function HomeComponent() {
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-          <div className="absolute inset-0 flex flex-col justify-end p-10 md:p-16">
+          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-16">
             <h2 className="text-white text-4xl md:text-6xl font-extrabold tracking-tighter max-w-2xl">
               {t('homePage.connect.title')}
             </h2>
@@ -353,7 +363,3 @@ export function HomeComponent() {
     </div>
   );
 }
-
-    
-
-    

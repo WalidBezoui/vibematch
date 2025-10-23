@@ -20,7 +20,7 @@ export default function Home() {
 
         <footer className="px-4 md:px-10 lg:px-20 py-8 border-t">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-sm text-foreground/60">
+            <p className="text-sm text-center md:text-left text-foreground/60">
               {t('footer.copyright')}
             </p>
             <div className="flex gap-6">
