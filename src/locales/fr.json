@@ -8,9 +8,32 @@
         "home": "Accueil"
     },
     "promoBanner": {
-        "title": "Rejoignez le Cercle des Fondateurs.",
-        "subtitle": "Débloquez des Avantages Exclusifs Avant qu'il ne Soit Trop Tard.",
-        "cta": "Rejoindre"
+        "general": [
+            {
+                "title": "Rejoignez le Cercle des Fondateurs.",
+                "subtitle": "Débloquez des Avantages Exclusifs Avant qu'il ne Soit Trop Tard.",
+                "cta": "Rejoindre"
+            },
+            {
+                "title": "Les places sont limitées.",
+                "subtitle": "Réservez votre statut de Membre Fondateur dès aujourd'hui.",
+                "cta": "Postuler maintenant"
+            }
+        ],
+        "creator": [
+            {
+                "title": "Prêt à transformer votre contenu en carrière ?",
+                "subtitle": "Devenez un Créateur Fondateur.",
+                "cta": "Commencer à gagner"
+            }
+        ],
+        "brand": [
+            {
+                "title": "Fatigué du faux engagement ?",
+                "subtitle": "Collaborez avec les créateurs les plus authentiques du Maroc.",
+                "cta": "Trouver des influenceurs"
+            }
+        ]
     },
     "footer": {
         "copyright": "© 2024 VibeMatch. Conçu à Casablanca pour le Maroc.",

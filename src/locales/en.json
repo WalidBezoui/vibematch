@@ -8,9 +8,32 @@
         "home": "Home"
     },
     "promoBanner": {
-        "title": "Join the Inner Circle.",
-        "subtitle": "Unlock Founder Benefits Before They're Gone.",
-        "cta": "Join Now"
+        "general": [
+            {
+                "title": "Join the Inner Circle.",
+                "subtitle": "Unlock Founder Benefits Before They're Gone.",
+                "cta": "Join Now"
+            },
+            {
+                "title": "Spaces are limited.",
+                "subtitle": "Secure your spot as a Founding Member today.",
+                "cta": "Apply Now"
+            }
+        ],
+        "creator": [
+            {
+                "title": "Ready to turn your content into a career?",
+                "subtitle": "Join as a Founding Creator.",
+                "cta": "Start Earning"
+            }
+        ],
+        "brand": [
+            {
+                "title": "Tired of fake engagement?",
+                "subtitle": "Connect with Morocco's most authentic creators.",
+                "cta": "Find Influencers"
+            }
+        ]
     },
     "footer": {
         "copyright": "© 2024 VibeMatch. Built in Casablanca for Morocco.",
