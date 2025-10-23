@@ -26,7 +26,7 @@ export default function LoginPage() {
                 <div className="text-center">
                   <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter leading-tight">
                     {t('loginPage.title.part1')}{' '}
-                    <span className="gradient-text">Vibe<span className="font-logo">Match</span></span>
+                    <span className="gradient-text">VibeMatch</span>
                   </h1>
                   <p className="mt-2 text-md text-foreground/60">
                     {t('loginPage.description')}

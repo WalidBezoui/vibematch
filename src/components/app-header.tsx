@@ -29,7 +29,7 @@ export function AppHeader() {
         href="/"
         className="text-3xl font-bold tracking-tight gradient-text"
       >
-        Vibe<span className="font-logo">Match</span>
+        VibeMatch
       </Link>
       <nav className="hidden md:flex gap-8 items-center">
         {navLinks.map((link) => (

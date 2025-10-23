@@ -127,7 +127,7 @@ export function CreatorJoinForm() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <p className="font-semibold gradient-text">Vibe<span className="font-logo">Match</span></p>
+        <p className="font-semibold gradient-text">VibeMatch</p>
         <h1 className="text-4xl font-black tracking-tighter sm:text-5xl">{currentStepInfo.title}</h1>
         <p className="mt-4 text-lg text-foreground/70">{currentStepInfo.description}</p>
       </div>
