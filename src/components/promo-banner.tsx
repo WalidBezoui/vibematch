@@ -6,10 +6,12 @@ import { useLanguage } from '@/context/language-context';
 import { X, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
 export function PromoBanner() {
   const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const isDismissed = localStorage.getItem('promoBannerDismissed');
@@ -23,6 +25,8 @@ export function PromoBanner() {
     localStorage.setItem('promoBannerDismissed', 'true');
   };
 
+  const showJoinButton = !pathname.startsWith('/creators/join') && !pathname.startsWith('/brands/join');
+
   if (!isVisible) {
     return null;
   }
@@ -35,12 +39,14 @@ export function PromoBanner() {
           {t('promoBanner.title')}{' '}
           <span className="font-bold">{t('promoBanner.subtitle')}</span>
         </p>
-        <Button asChild variant="outline" size="sm" className="bg-black/10 hover:bg-black/20 border-black/20 h-auto px-4 py-1 rounded-full text-black">
-            <Link href="/creators/join">
-                {t('promoBanner.cta')}
-                <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-        </Button>
+        {showJoinButton && (
+          <Button asChild variant="outline" size="sm" className="bg-black/10 hover:bg-black/20 border-black/20 h-auto px-4 py-1 rounded-full text-black">
+              <Link href="/creators/join">
+                  {t('promoBanner.cta')}
+                  <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+          </Button>
+        )}
       </div>
       <div className="flex flex-1 justify-end">
         <button type="button" className="-m-3 p-3 focus-visible:outline-offset-[-4px]" onClick={handleDismiss}>

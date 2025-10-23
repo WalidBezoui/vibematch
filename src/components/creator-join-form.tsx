@@ -6,11 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Check, AtSign, Phone, User, Loader2 } from 'lucide-react';
+import { ArrowRight, Check, AtSign, Phone, User, Loader2, Home } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { validateSocialHandle } from '@/ai/flows/validate-social-handle';
+import Link from 'next/link';
 
 const WhatsAppIcon = () => (
     <svg
@@ -106,8 +107,8 @@ export function CreatorJoinForm() {
                       {t('creatorJoinForm.finalStep.description')}
                     </p>
                     <div className="pt-4">
-                        <Button size="lg" className="gradient-bg text-black font-bold py-3 px-8 rounded-full hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/50" onClick={() => router.push('/')}>
-                            {t('creatorJoinForm.finalStep.backButton')}
+                        <Button asChild size="lg" className="gradient-bg text-black font-bold py-3 px-8 rounded-full hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/50">
+                            <Link href="/">{t('creatorJoinForm.finalStep.backButton')}</Link>
                         </Button>
                     </div>
                 </div>
@@ -308,9 +309,18 @@ export function CreatorJoinForm() {
         )}
 
         <div className="flex justify-between gap-4 mt-8">
-            <Button variant="outline" onClick={handleBack} className={cn('rounded-full', currentStep === 1 ? 'invisible' : '')}>
-            {t('creatorJoinForm.backButton')}
-            </Button>
+            {currentStep === 1 ? (
+                <Button asChild variant="outline" className="rounded-full">
+                    <Link href="/">
+                        <Home className="mr-2 h-4 w-4" />
+                        {t('header.home')}
+                    </Link>
+                </Button>
+            ) : (
+                <Button variant="outline" onClick={handleBack} className="rounded-full">
+                    {t('creatorJoinForm.backButton')}
+                </Button>
+            )}
             <Button onClick={handleNext} className="gradient-bg text-black font-semibold rounded-full">
                 {getNextButtonText()}
                 {currentStep < 4 && <ArrowRight className="h-4 w-4 ml-2" />}
