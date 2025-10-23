@@ -7,6 +7,11 @@
         "login": "Connexion",
         "home": "Accueil"
     },
+    "promoBanner": {
+        "title": "Rejoignez le Cercle des Fondateurs.",
+        "subtitle": "Débloquez des Avantages Exclusifs Avant qu'il ne Soit Trop Tard.",
+        "cta": "Rejoindre"
+    },
     "footer": {
         "copyright": "© 2024 VibeMatch. Conçu à Casablanca pour le Maroc.",
         "terms": "Conditions d'utilisation",
@@ -363,5 +368,3 @@
         }
     }
 }
-
-    

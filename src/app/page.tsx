@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { HomeComponent } from '@/components/home';
 import { AppHeader } from '@/components/app-header';
+import { PromoBanner } from '@/components/promo-banner';
 import { useLanguage } from '@/context/language-context';
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <div className="flex h-auto w-full flex-col overflow-x-hidden">
       <div className="flex h-full grow flex-col">
+        <PromoBanner />
         <AppHeader />
 
         <main className="px-4 md:px-10 lg:px-20 py-10 md:py-20 hero-bg">

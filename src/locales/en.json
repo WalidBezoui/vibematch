@@ -7,6 +7,11 @@
         "login": "Login",
         "home": "Home"
     },
+    "promoBanner": {
+        "title": "Join the Inner Circle.",
+        "subtitle": "Unlock Founder Benefits Before They're Gone.",
+        "cta": "Join Now"
+    },
     "footer": {
         "copyright": "© 2024 VibeMatch. Built in Casablanca for Morocco.",
         "terms": "Terms of Service",
@@ -363,5 +368,3 @@
         }
     }
 }
-
-    

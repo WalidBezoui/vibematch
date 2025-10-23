@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { PromoBanner } from '@/components/promo-banner';
 import { useLanguage } from '@/context/language-context';
 import { useRouter } from 'next/navigation';
 
@@ -16,6 +17,8 @@ export default function BrandWaitlistPage() {
   };
 
   return (
+    <>
+    <PromoBanner />
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4">
       <div className="absolute inset-0 z-0">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/30 rounded-full opacity-50 blur-3xl"></div>
@@ -131,5 +134,6 @@ export default function BrandWaitlistPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
