@@ -7,6 +7,7 @@ import fr from '@/locales/fr.json';
 import ar from '@/locales/ar.json';
 
 type Language = 'EN' | 'FR' | 'AR';
+type UserInterest = 'creator' | 'brand' | null;
 
 const translations = {
   EN: en,
@@ -14,7 +15,6 @@ const translations = {
   AR: ar,
 };
 
-// A simple key-value pair for translations
 type Translations = { [key: string]: any };
 
 interface LanguageContextType {
@@ -22,23 +22,35 @@ interface LanguageContextType {
   setLanguage: (language: Language) => void;
   t: (key: string, options?: { [key: string]: string | number, returnObjects?: boolean }) => any;
   dir: 'ltr' | 'rtl';
+  userInterest: UserInterest;
+  setUserInterest: (interest: 'creator' | 'brand') => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>('EN');
+  const [userInterest, setUserInterestState] = useState<UserInterest>(null);
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('vibematch-language') as Language;
     if (savedLanguage && ['EN', 'FR', 'AR'].includes(savedLanguage)) {
       setLanguageState(savedLanguage);
     }
+    const savedInterest = localStorage.getItem('userInterest') as UserInterest;
+    if (savedInterest && ['creator', 'brand'].includes(savedInterest)) {
+        setUserInterestState(savedInterest);
+    }
   }, []);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem('vibematch-language', lang);
+  };
+
+  const setUserInterest = (interest: 'creator' | 'brand') => {
+    setUserInterestState(interest);
+    localStorage.setItem('userInterest', interest);
   };
   
   const dir = useMemo(() => language === 'AR' ? 'rtl' : 'ltr', [language]);
@@ -94,6 +106,8 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     setLanguage,
     t,
     dir,
+    userInterest,
+    setUserInterest,
   };
 
   return (
@@ -110,3 +124,5 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
+
+    

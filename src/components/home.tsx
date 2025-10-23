@@ -13,7 +13,7 @@ import { getImage } from '@/lib/placeholder-images';
 
 
 export function HomeComponent() {
-  const { t, language } = useLanguage();
+  const { t, language, setUserInterest } = useLanguage();
 
   const brandsFaq = t('homePage.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const creatorsFaq = t('homePage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
@@ -22,10 +22,6 @@ export function HomeComponent() {
   const fakeEngagementImg = getImage('fake-engagement');
   const guaranteedPaymentsImg = getImage('guaranteed-payments');
   const moroccanTeamImg = getImage('moroccan-team');
-
-  const setInterest = (interest: 'brand' | 'creator') => {
-    localStorage.setItem('userInterest', interest);
-  };
 
   return (
     <div className="flex flex-col max-w-[1200px] flex-1">
@@ -43,7 +39,7 @@ export function HomeComponent() {
               asChild
               size="lg"
               className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-              onClick={() => setInterest('brand')}
+              onClick={() => setUserInterest('brand')}
             >
               <Link href="/#brands">{t('homePage.hero.brandsButton')}</Link>
             </Button>
@@ -52,7 +48,7 @@ export function HomeComponent() {
               variant="outline"
               size="lg"
               className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
-              onClick={() => setInterest('creator')}
+              onClick={() => setUserInterest('creator')}
             >
               <Link href="/#creators">{t('homePage.hero.creatorsButton')}</Link>
             </Button>
@@ -74,7 +70,7 @@ export function HomeComponent() {
             <Button
               asChild
               className="mt-4 w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-               onClick={() => setInterest('brand')}
+               onClick={() => setUserInterest('brand')}
             >
               <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
             </Button>
@@ -121,7 +117,7 @@ export function HomeComponent() {
             <Button
               asChild
               className="mt-4 w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-               onClick={() => setInterest('creator')}
+               onClick={() => setUserInterest('creator')}
             >
               <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
             </Button>
@@ -354,7 +350,7 @@ export function HomeComponent() {
               asChild
               size="lg"
               className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-              onClick={() => setInterest('brand')}
+              onClick={() => setUserInterest('brand')}
             >
               <Link href="/brands/join">{t('homePage.waitlist.brandsButton')}</Link>
             </Button>
@@ -363,7 +359,7 @@ export function HomeComponent() {
               variant="outline"
               size="lg"
               className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
-              onClick={() => setInterest('creator')}
+              onClick={() => setUserInterest('creator')}
             >
               <Link href="/creators/join">{t('homePage.waitlist.creatorsButton')}</Link>
             </Button>
@@ -373,3 +369,5 @@ export function HomeComponent() {
     </div>
   );
 }
+
+    

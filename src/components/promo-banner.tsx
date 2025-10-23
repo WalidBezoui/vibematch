@@ -14,7 +14,7 @@ type BannerMessage = {
 };
 
 export function PromoBanner() {
-  const { t } = useLanguage();
+  const { t, userInterest, setUserInterest } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [message, setMessage] = useState<BannerMessage | null>(null);
   const pathname = usePathname();
@@ -26,7 +26,6 @@ export function PromoBanner() {
       return;
     }
 
-    const userInterest = localStorage.getItem('userInterest');
     const generalMessages = t('promoBanner.general', { returnObjects: true }) as BannerMessage[];
     const creatorMessages = t('promoBanner.creator', { returnObjects: true }) as BannerMessage[];
     const brandMessages = t('promoBanner.brand', { returnObjects: true }) as BannerMessage[];
@@ -40,7 +39,6 @@ export function PromoBanner() {
     } else if (generalMessages.length > 0) {
       selectedMessage = generalMessages[Math.floor(Math.random() * generalMessages.length)];
     } else {
-        // Fallback in case translations aren't loaded yet
         setIsVisible(false);
         return;
     }
@@ -48,7 +46,7 @@ export function PromoBanner() {
     setMessage(selectedMessage);
     setIsVisible(true);
     
-  }, [t]);
+  }, [t, userInterest]);
 
   const handleDismiss = () => {
     setIsVisible(false);
@@ -70,8 +68,10 @@ export function PromoBanner() {
           <span className="font-bold">{message.subtitle}</span>
         </p>
         {showJoinButton && (
-          <Button asChild variant="outline" size="sm" className="bg-black/10 hover:bg-black/20 border-black/20 h-auto px-4 py-1 rounded-full text-black">
-              <Link href="/creators/join">
+          <Button asChild variant="outline" size="sm" className="bg-black/10 hover:bg-black/20 border-black/20 h-auto px-4 py-1 rounded-full text-black"
+            onClick={() => setUserInterest(userInterest === 'brand' ? 'brand' : 'creator')}
+          >
+              <Link href={userInterest === 'brand' ? '/brands/join' : '/creators/join'}>
                   {message.cta}
                   <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
@@ -87,3 +87,5 @@ export function PromoBanner() {
     </div>
   );
 }
+
+    
