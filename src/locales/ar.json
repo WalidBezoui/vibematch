@@ -1,4 +1,3 @@
-
 {
     "header": {
         "forBrands": "للعلامات التجارية",
@@ -232,7 +231,7 @@
                 "placeholder": "اسمك الكامل"
             },
             "email": {
-                "label": "البريد الإلكتر الإلكتروني",
+                "label": "البريد الإلكتروني",
                 "placeholder": "بريدك الإلكتروني"
             },
             "company": {
@@ -266,12 +265,12 @@
                 "description": "انضم إلى مجتمع النخبة وساهم في تشكيل مستقبل شراكات المبدعين."
             },
             "2": {
-                "title": "اربط حساباتك الاجتماعية",
-                "description": "لضمان الثقة والشفافية، نستخدم واجهات برمجة التطبيقات (API) للتحقق من وجودك الاجتماعي. بياناتك آمنة تمامًا معنا."
+                "title": "أضف حساباتك الاجتماعية",
+                "description": "أضف أسماء المستخدمين الخاصة بك على Instagram وTikTok. سنتحقق بسرعة من أنها نشطة."
             },
             "3": {
-                "title": "تحليل الجمهور",
-                "description": "نقوم بإجراء فحص سريع لضمان الحفاظ على مجتمع عالي الجودة."
+                "title": "حدد مجالك الإبداعي",
+                "description": "ما هي مجالات خبرتك الرئيسية؟ اختر التخصصات التي تمثل محتواك بشكل أفضل."
             },
             "4": {
                 "title": "تعهد بالاحترافية",
@@ -292,18 +291,19 @@
             "nameLabel": "الاسم الكامل",
             "namePlaceholder": "أدخل اسمك الكامل",
             "emailLabel": "البريد الإلكتروني",
-            "emailPlaceholder": "أدخل بريدك الإلكتروني"
+            "emailPlaceholder": "أدخل بريدك الإلكتروني",
+            "phoneLabel": "رقم الهاتف",
+            "phonePlaceholder": "أدخل رقم هاتفك"
         },
         "step2": {
-            "instagramTitle": "ربط حساب Instagram",
-            "instagramDescription": "اتصل بأمان للتحقق من حسابك واستيراد مقاييس الأداء الرئيسية.",
-            "tiktokTitle": "ربط حساب TikTok",
-            "tiktokDescription": "اربط حساب TikTok الخاص بك لإظهار مدى وصولك وتفاعلك.",
-            "whyConnectLink": "لماذا أحتاج لربط حساباتي؟"
+            "header": "أبرز تأثيرك",
+            "instagramLabel": "اسم مستخدم انستغرام",
+            "tiktokLabel": "اسم مستخدم تيك توك",
+            "handlePlaceholder": "اسم_المستخدم_الخاص_بك",
+            "whyConnectLink": "لماذا يجب أن أقدم أسماء المستخدمين الخاصة بي؟"
         },
         "step3": {
-            "header": "نقوم بتحليل جمهورك...",
-            "description": "قد يستغرق هذا بضع لحظات. من فضلك لا تغلق هذه النافذة."
+            "header": "ما هو تخصصك؟"
         },
         "step4": {
             "header": "تعهدنا بالجودة",
@@ -315,12 +315,19 @@
             "description": "يقوم فريقنا بمراجعة ملفك الشخصي وستتلقى رداً في غضون 48 ساعة.",
             "backButton": "العودة إلى الصفحة الرئيسية"
         },
-        "connectionDialog": {
-            "title": "جاري الاتصال بـ {{platformName}}",
-            "description": "سيتم توجيهك للمصادقة على حسابك بشكل آمن.",
-            "connecting": "الرجاء الانتظar...",
-            "connected": "تم الاتصال بنجاح!"
-        }
+        "niches": [
+            {"id": "fashion", "label": "الموضة والأناقة", "icon": "diamond"},
+            {"id": "beauty", "label": "الجمال والعناية", "icon": "face"},
+            {"id": "food", "label": "الأكل والمطبخ", "icon": "restaurant"},
+            {"id": "travel", "label": "السفر والمغامرات", "icon": "flight_takeoff"},
+            {"id": "lifestyle", "label": "أسلوب الحياة", "icon": "self_improvement"},
+            {"id": "fitness", "label": "الرياضة واللياقة", "icon": "fitness_center"},
+            {"id": "comedy", "label": "الكوميديا والفكاهة", "icon": "mood"},
+            {"id": "art", "label": "الفن والموسيقى", "icon": "music_note"},
+            {"id": "gaming", "label": "التقنية والألعاب", "icon": "stadia_controller"},
+            {"id": "family", "label": "الأسرة والتربية", "icon": "family_restroom"},
+            {"id": "other", "label": "أخرى", "icon": "more_horiz"}
+        ]
     },
     "contactPage": {
         "title": {
@@ -345,7 +352,3 @@
         }
     }
 }
-
-    
-
-

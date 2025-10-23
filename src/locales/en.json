@@ -265,12 +265,12 @@
                 "description": "Join an exclusive community and shape the future of creator collaborations."
             },
             "2": {
-                "title": "Connect Your Socials",
-                "description": "To ensure trust and efficiency, we use API connections to verify your social media presence. Your data is safe with us."
+                "title": "Link Your Social Profiles",
+                "description": "Add your Instagram and TikTok handles. We'll do a quick check to verify they're active."
             },
             "3": {
-                "title": "Audience Analysis",
-                "description": "We're running a quick scan to ensure a high-quality community."
+                "title": "Define Your Vibe",
+                "description": "What are your main areas of expertise? Select the niches that best represent your content."
             },
             "4": {
                 "title": "Professionalism Pledge",
@@ -287,22 +287,23 @@
         "submitButton": "Submit Application",
         "step1": {
             "header": "Welcome to the Inner Circle",
-            "description": "As a Founding Creator, you'll get early access to VibeMatch, directly influence our platform's development, and connect with a curated network of top-tier talent and brands. Let's get started.",
+            "description": "As a Founding Creator, you'll get early access, influence our platform's development, and connect with a curated network of top-tier talent and brands. Let's get started.",
             "nameLabel": "Full Name",
             "namePlaceholder": "Enter your full name",
             "emailLabel": "Email Address",
-            "emailPlaceholder": "Enter your email address"
+            "emailPlaceholder": "Enter your email address",
+            "phoneLabel": "Phone Number",
+            "phonePlaceholder": "Enter your phone number"
         },
         "step2": {
-            "instagramTitle": "Connect Instagram",
-            "instagramDescription": "Securely connect via API to verify your account and import key metrics.",
-            "tiktokTitle": "Connect TikTok",
-            "tiktokDescription": "Link your TikTok account to showcase your engagement and reach.",
-            "whyConnectLink": "Why do I need to connect my accounts?"
+            "header": "Showcase Your Influence",
+            "instagramLabel": "Instagram Handle",
+            "tiktokLabel": "TikTok Handle",
+            "handlePlaceholder": "your_handle",
+            "whyConnectLink": "Why do I need to provide my handles?"
         },
         "step3": {
-            "header": "Analyzing your audience...",
-            "description": "This might take a few moments. Please don't close this window."
+            "header": "What's Your Niche?"
         },
         "step4": {
             "header": "Our Pledge for Quality",
@@ -314,12 +315,19 @@
             "description": "Our team is reviewing your profile and you will receive a response within 48 hours.",
             "backButton": "Back to Homepage"
         },
-        "connectionDialog": {
-            "title": "Connecting to {{platformName}}",
-            "description": "You'll be redirected to securely authenticate your account.",
-            "connecting": "Please wait...",
-            "connected": "Successfully Connected!"
-        }
+        "niches": [
+            {"id": "fashion", "label": "Fashion & Style", "icon": "diamond"},
+            {"id": "beauty", "label": "Beauty & Skincare", "icon": "face"},
+            {"id": "food", "label": "Food & Cuisine", "icon": "restaurant"},
+            {"id": "travel", "label": "Travel & Adventure", "icon": "flight_takeoff"},
+            {"id": "lifestyle", "label": "Lifestyle", "icon": "self_improvement"},
+            {"id": "fitness", "label": "Sports & Fitness", "icon": "fitness_center"},
+            {"id": "comedy", "label": "Humor & Comedy", "icon": "mood"},
+            {"id": "art", "label": "Art & Music", "icon": "music_note"},
+            {"id": "gaming", "label": "Tech & Gaming", "icon": "stadia_controller"},
+            {"id": "family", "label": "Family & Parenting", "icon": "family_restroom"},
+            {"id": "other", "label": "Other", "icon": "more_horiz"}
+        ]
     },
     "contactPage": {
         "title": {

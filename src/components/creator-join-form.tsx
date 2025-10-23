@@ -6,89 +6,40 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, AtSign, Phone, Palette, Sparkles, User, Search, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useLanguage } from '@/context/language-context';
-
-const TikTokIcon = () => (
-  <svg
-    className="w-8 h-8 text-white"
-    fill="currentColor"
-    viewBox="0 0 16 16"
-  >
-    <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3V0Z"></path>
-  </svg>
-);
-
-type ConnectionStatus = 'idle' | 'connecting' | 'connected';
-type Platform = 'instagram' | 'tiktok';
-
-function ConnectionDialog({ platform, open, onOpenChange }: { platform: Platform | null, open: boolean, onOpenChange: (open: boolean) => void }) {
-  const [status, setStatus] = useState<ConnectionStatus>('idle');
-  const { t } = useLanguage();
-
-  useEffect(() => {
-    if (open) {
-      setStatus('connecting');
-      const timer = setTimeout(() => {
-        setStatus('connected');
-        const closeTimer = setTimeout(() => {
-            onOpenChange(false);
-        }, 1500);
-        return () => clearTimeout(closeTimer);
-      }, 2500);
-      return () => clearTimeout(timer);
-    } else {
-      setStatus('idle');
-    }
-  }, [open, onOpenChange]);
-
-  const platformName = platform === 'instagram' ? 'Instagram' : 'TikTok';
-  const platformColor = platform === 'instagram' ? 'text-pink-500' : 'text-cyan-400';
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md text-center">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center">{t('creatorJoinForm.connectionDialog.title', { platformName })}</DialogTitle>
-          <DialogDescription className="text-center mt-2">
-            {t('creatorJoinForm.connectionDialog.description')}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex justify-center items-center h-48">
-          {status === 'connecting' && (
-            <div className="flex flex-col items-center gap-4">
-              <div className={`relative w-16 h-16`}>
-                <div className={`absolute inset-0 rounded-full border-4 ${platform === 'instagram' ? 'border-pink-500/20' : 'border-cyan-400/20'}`}></div>
-                <div className={`absolute inset-0 rounded-full border-t-4 ${platform === 'instagram' ? 'border-pink-500' : 'border-cyan-400'} animate-spinner`}></div>
-              </div>
-              <p className="text-foreground/70">{t('creatorJoinForm.connectionDialog.connecting')}</p>
-            </div>
-          )}
-          {status === 'connected' && (
-            <div className="flex flex-col items-center gap-4">
-                <div className="w-16 h-16 gradient-bg rounded-full flex items-center justify-center animate-circle-grow">
-                    <Check className="w-8 h-8 text-black animate-check-grow" strokeWidth={4} />
-                </div>
-                <p className="font-bold text-lg">{t('creatorJoinForm.connectionDialog.connected')}</p>
-            </div>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
+import { cn } from '@/lib/utils';
 
 export function CreatorJoinForm() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [connectingPlatform, setConnectingPlatform] = useState<Platform | null>(null);
-  const [connectedPlatforms, setConnectedPlatforms] = useState<Platform[]>([]);
+  const [socialInputs, setSocialInputs] = useState({ instagram: '', tiktok: '' });
+  const [socialStatus, setSocialStatus] = useState({ instagram: 'idle', tiktok: 'idle' });
+  const [selectedNiches, setSelectedNiches] = useState<string[]>([]);
   const router = useRouter();
   const { t } = useLanguage();
 
+  const handleSocialChange = (platform: 'instagram' | 'tiktok', value: string) => {
+    setSocialInputs(prev => ({ ...prev, [platform]: value }));
+    if(value) {
+        setSocialStatus(prev => ({...prev, [platform]: 'checking'}));
+        // Simulate an API check
+        setTimeout(() => {
+            setSocialStatus(prev => ({...prev, [platform]: 'connected'}));
+        }, 1000);
+    } else {
+        setSocialStatus(prev => ({...prev, [platform]: 'idle'}));
+    }
+  };
+
+  const handleNicheSelect = (niche: string) => {
+    setSelectedNiches(prev => 
+      prev.includes(niche) ? prev.filter(n => n !== niche) : [...prev, niche]
+    );
+  };
+  
+  const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
+  
   const steps = [
     { step: 1, title: t('creatorJoinForm.steps.1.title'), description: t('creatorJoinForm.steps.1.description'), progress: 20 },
     { step: 2, title: t('creatorJoinForm.steps.2.title'), description: t('creatorJoinForm.steps.2.description'), progress: 40 },
@@ -96,15 +47,6 @@ export function CreatorJoinForm() {
     { step: 4, title: t('creatorJoinForm.steps.4.title'), description: t('creatorJoinForm.steps.4.description'), progress: 80 },
     { step: 5, title: t('creatorJoinForm.steps.5.title'), description: t('creatorJoinForm.steps.5.description'), progress: 100 },
   ];
-
-  useEffect(() => {
-    if (currentStep === 3) {
-      const timer = setTimeout(() => {
-        setCurrentStep(4);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentStep]);
 
   const handleNext = () => {
     if (currentStep < 5) {
@@ -114,25 +56,9 @@ export function CreatorJoinForm() {
 
   const handleBack = () => {
     if(currentStep > 1) {
-        if (currentStep === 4) {
-            setCurrentStep(2); // Skip analysis step when going back
-        } else {
-            setCurrentStep((prev) => prev - 1);
-        }
+      setCurrentStep((prev) => prev - 1);
     }
   };
-  
-  const handleConnect = (platform: Platform) => {
-    setConnectingPlatform(platform);
-    setDialogOpen(true);
-  };
-
-  useEffect(() => {
-    if (!dialogOpen && connectingPlatform && !connectedPlatforms.includes(connectingPlatform)) {
-      setConnectedPlatforms(prev => [...prev, connectingPlatform]);
-    }
-  }, [dialogOpen, connectingPlatform, connectedPlatforms]);
-
 
   const currentStepInfo = steps[currentStep - 1];
 
@@ -167,7 +93,6 @@ export function CreatorJoinForm() {
 
   return (
     <div className="space-y-8">
-      <ConnectionDialog platform={connectingPlatform} open={dialogOpen} onOpenChange={setDialogOpen} />
       <div className="text-center">
         <p className="font-semibold text-primary gradient-text">VibeMatch</p>
         <h1 className="text-4xl font-black tracking-tighter sm:text-5xl">{currentStepInfo.title}</h1>
@@ -197,9 +122,15 @@ export function CreatorJoinForm() {
                     <Label htmlFor="fullName" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.nameLabel')}</Label>
                     <Input id="fullName" placeholder={t('creatorJoinForm.step1.namePlaceholder')} />
                 </div>
-                <div className="flex flex-col flex-1">
-                    <Label htmlFor="email" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.emailLabel')}</Label>
-                    <Input id="email" type="email" placeholder={t('creatorJoinForm.step1.emailPlaceholder')} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col flex-1">
+                        <Label htmlFor="email" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.emailLabel')}</Label>
+                        <Input id="email" type="email" placeholder={t('creatorJoinForm.step1.emailPlaceholder')} />
+                    </div>
+                    <div className="flex flex-col flex-1">
+                        <Label htmlFor="phone" className="text-sm font-medium pb-2">{t('creatorJoinForm.step1.phoneLabel')}</Label>
+                        <Input id="phone" type="tel" placeholder={t('creatorJoinForm.step1.phonePlaceholder')} />
+                    </div>
                 </div>
             </div>
           </div>
@@ -207,46 +138,39 @@ export function CreatorJoinForm() {
 
         {currentStep === 2 && (
             <div className="space-y-4">
-                <button 
-                  className="w-full text-left p-4 rounded-xl border border-border hover:border-primary transition-all duration-300 flex items-center gap-4 group"
-                  onClick={() => handleConnect('instagram')}
-                  disabled={connectedPlatforms.includes('instagram')}
-                >
-                    <div className="w-16 h-16 rounded-lg flex items-center justify-center icon-bg-insta flex-shrink-0">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"><rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+                <h2 className="text-2xl font-bold">{t('creatorJoinForm.step2.header')}</h2>
+                <div className="space-y-4">
+                    <div className="relative">
+                        <Label htmlFor="instagram" className="text-sm font-medium pb-2">{t('creatorJoinForm.step2.instagramLabel')}</Label>
+                        <AtSign className="absolute left-3 top-10 h-5 w-5 text-gray-400" />
+                        <Input 
+                            id="instagram" 
+                            placeholder={t('creatorJoinForm.step2.handlePlaceholder')}
+                            className="pl-10"
+                            value={socialInputs.instagram}
+                            onChange={(e) => handleSocialChange('instagram', e.target.value)}
+                         />
+                        <div className="absolute right-3 top-9 h-7 w-7 flex items-center justify-center">
+                            {socialStatus.instagram === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
+                            {socialStatus.instagram === 'connected' && <Check className="h-5 w-5 text-green-500" />}
+                        </div>
                     </div>
-                    <div className="flex-1">
-                        <h3 className="text-lg font-bold">{t('creatorJoinForm.step2.instagramTitle')}</h3>
-                        <p className="text-foreground/70">{t('creatorJoinForm.step2.instagramDescription')}</p>
+                    <div className="relative">
+                        <Label htmlFor="tiktok" className="text-sm font-medium pb-2">{t('creatorJoinForm.step2.tiktokLabel')}</Label>
+                        <AtSign className="absolute left-3 top-10 h-5 w-5 text-gray-400" />
+                        <Input 
+                            id="tiktok" 
+                            placeholder={t('creatorJoinForm.step2.handlePlaceholder')}
+                            className="pl-10"
+                            value={socialInputs.tiktok}
+                            onChange={(e) => handleSocialChange('tiktok', e.target.value)}
+                        />
+                         <div className="absolute right-3 top-9 h-7 w-7 flex items-center justify-center">
+                            {socialStatus.tiktok === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
+                            {socialStatus.tiktok === 'connected' && <Check className="h-5 w-5 text-green-500" />}
+                        </div>
                     </div>
-                    {connectedPlatforms.includes('instagram') ? (
-                       <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center animate-icon-spin">
-                          <Check className="w-5 h-5 text-black" strokeWidth={3} />
-                       </div>
-                    ) : (
-                      <ArrowRight className="text-foreground/30 group-hover:text-primary transition-colors" />
-                    )}
-                </button>
-                <button 
-                  className="w-full text-left p-4 rounded-xl border border-border hover:border-secondary transition-all duration-300 flex items-center gap-4 group"
-                  onClick={() => handleConnect('tiktok')}
-                  disabled={connectedPlatforms.includes('tiktok')}
-                >
-                    <div className="w-16 h-16 rounded-lg flex items-center justify-center icon-bg-tiktok flex-shrink-0">
-                       <TikTokIcon />
-                    </div>
-                    <div className="flex-1">
-                        <h3 className="text-lg font-bold">{t('creatorJoinForm.step2.tiktokTitle')}</h3>
-                        <p className="text-foreground/70">{t('creatorJoinForm.step2.tiktokDescription')}</p>
-                    </div>
-                    {connectedPlatforms.includes('tiktok') ? (
-                      <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center animate-icon-spin">
-                        <Check className="w-5 h-5 text-black" strokeWidth={3}/>
-                      </div>
-                    ) : (
-                      <ArrowRight className="text-foreground/30 group-hover:text-secondary transition-colors" />
-                    )}
-                </button>
+                </div>
                  <div className="mt-6 text-center">
                     <a className="text-sm text-foreground/60 hover:text-primary" href="#">{t('creatorJoinForm.step2.whyConnectLink')}</a>
                 </div>
@@ -254,18 +178,33 @@ export function CreatorJoinForm() {
         )}
 
         {currentStep === 3 && (
-             <div className="flex flex-col items-center justify-center text-center py-12">
-                <div className="relative w-24 h-24">
-                    <div className="absolute inset-0 rounded-full border-4 border-primary/20"></div>
-                    <div className="absolute inset-0 rounded-full border-t-4 border-primary animate-spinner"></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="material-symbols-outlined text-primary !text-4xl">
-                            person_search
-                        </span>
-                    </div>
+             <div className="space-y-6">
+                <h2 className="text-2xl font-bold">{t('creatorJoinForm.step3.header')}</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {niches.map((niche) => (
+                    <button 
+                      key={niche.id}
+                      onClick={() => handleNicheSelect(niche.id)}
+                      className={cn(
+                        "group flex flex-col items-center justify-center p-4 rounded-lg border-2 text-center transition-all duration-300",
+                        selectedNiches.includes(niche.id) 
+                          ? 'border-primary bg-primary/10' 
+                          : 'border-border hover:border-primary/50'
+                      )}
+                    >
+                      <span className="material-symbols-outlined !text-4xl mb-2 transition-colors duration-300 group-hover:text-primary"
+                        style={{fontVariationSettings: "'FILL' 0, 'wght' 300"}}>
+                        {niche.icon}
+                      </span>
+                      <span className={cn(
+                        "font-semibold text-sm",
+                        selectedNiches.includes(niche.id) ? 'text-primary' : 'text-foreground/80'
+                      )}>
+                        {niche.label}
+                      </span>
+                    </button>
+                  ))}
                 </div>
-                <h2 className="mt-8 text-2xl font-bold">{t('creatorJoinForm.step3.header')}</h2>
-                <p className="mt-2 text-foreground/70 animate-pulse">{t('creatorJoinForm.step3.description')}</p>
             </div>
         )}
 
@@ -291,28 +230,14 @@ export function CreatorJoinForm() {
             </div>
         )}
 
-
-        {currentStep < 3 && (
-          <div className="flex justify-between gap-4 mt-6">
-             <Button variant="outline" onClick={handleBack} className={currentStep === 1 ? 'invisible' : ''}>
-              {t('creatorJoinForm.backButton')}
+        <div className="flex justify-between gap-4 mt-8">
+            <Button variant="outline" onClick={handleBack} className={currentStep === 1 ? 'invisible' : ''}>
+            {t('creatorJoinForm.backButton')}
             </Button>
             <Button onClick={handleNext} className="gradient-bg text-black">
-              {t('creatorJoinForm.nextButton')}
+            {currentStep === 4 ? t('creatorJoinForm.submitButton') : t('creatorJoinForm.nextButton')}
             </Button>
-          </div>
-        )}
-        {currentStep === 4 && (
-             <div className="flex justify-between gap-4 mt-6">
-             <Button variant="outline" onClick={handleBack}>
-              {t('creatorJoinForm.backButton')}
-            </Button>
-            <Button onClick={handleNext} className="gradient-bg text-black">
-              {t('creatorJoinForm.submitButton')}
-            </Button>
-          </div>
-        )}
-
+        </div>
       </div>
     </div>
   );

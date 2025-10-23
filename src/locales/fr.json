@@ -1,4 +1,3 @@
-
 {
     "header": {
         "forBrands": "Pour les Marques",
@@ -263,19 +262,19 @@
         "steps": {
             "1": {
                 "title": "Devenez Créateur Fondateur",
-                "description": "Rejoignez une communauté d'élite et participez à la redéfinition des collaborations créatives."
+                "description": "Rejoignez une communauté d'élite et redéfinissez les collaborations créatives."
             },
             "2": {
-                "title": "Connectez vos Réseaux",
-                "description": "Pour garantir confiance et transparence, nous utilisons une connexion API sécurisée pour vérifier vos comptes. Vos données sont en sécurité."
+                "title": "Liez vos Profils Sociaux",
+                "description": "Indiquez vos noms d'utilisateur Instagram et TikTok. Nous vérifierons rapidement leur validité."
             },
             "3": {
-                "title": "Analyse d'Audience",
-                "description": "Nous effectuons une analyse rapide pour garantir une communauté de créateurs de premier plan."
+                "title": "Définissez votre Univers",
+                "description": "Quels sont vos domaines de prédilection ? Choisissez les niches qui vous représentent."
             },
             "4": {
-                "title": "Engagement de Professionnalisme",
-                "description": "Notre communauté est fondée sur la confiance. Confirmez votre adhésion à nos standards de qualité."
+                "title": "Engagement de Confiance",
+                "description": "Notre communauté repose sur la fiabilité. Confirmez votre adhésion à nos standards de qualité."
             },
             "5": {
                 "title": "Candidature Envoyée !",
@@ -287,23 +286,24 @@
         "nextButton": "Étape suivante",
         "submitButton": "Envoyer ma candidature",
         "step1": {
-            "header": "Bienvenue dans le cercle des pionniers",
-            "description": "En tant que Créateur Fondateur, vous aurez un accès anticipé, influencerez le développement de la plateforme et rejoindrez un réseau exclusif de marques et de talents. Commençons.",
+            "header": "Bienvenue dans le Cercle des Pionniers",
+            "description": "En tant que Créateur Fondateur, accédez en avant-première à VibeMatch, influencez son évolution et rejoignez un réseau exclusif de marques et talents. Commençons.",
             "nameLabel": "Nom complet",
             "namePlaceholder": "Entrez votre nom complet",
             "emailLabel": "Adresse e-mail",
-            "emailPlaceholder": "Entrez votre adresse e-mail"
+            "emailPlaceholder": "Entrez votre adresse e-mail",
+            "phoneLabel": "Numéro de téléphone",
+            "phonePlaceholder": "Entrez votre numéro"
         },
         "step2": {
-            "instagramTitle": "Connecter Instagram",
-            "instagramDescription": "Connectez-vous via l'API pour vérifier votre compte et importer vos métriques.",
-            "tiktokTitle": "Connecter TikTok",
-            "tiktokDescription": "Liez votre compte TikTok pour mettre en avant votre portée et engagement.",
-            "whyConnectLink": "Pourquoi connecter mes comptes ?"
+            "header": "Affichez votre Influence",
+            "instagramLabel": "Nom d'utilisateur Instagram",
+            "tiktokLabel": "Nom d'utilisateur TikTok",
+            "handlePlaceholder": "votre_nom_utilisateur",
+            "whyConnectLink": "Pourquoi fournir mes noms d'utilisateur ?"
         },
         "step3": {
-            "header": "Analyse de votre audience...",
-            "description": "Cette opération peut prendre quelques instants. Merci de ne pas fermer cette fenêtre."
+            "header": "Quelle est votre Niche ?"
         },
         "step4": {
             "header": "Notre Engagement Qualité",
@@ -315,12 +315,19 @@
             "description": "Notre équipe étudie votre profil. Vous recevrez une réponse sous 48 heures.",
             "backButton": "Retour à la page d'accueil"
         },
-        "connectionDialog": {
-            "title": "Connexion à {{platformName}}",
-            "description": "Vous allez être redirigé pour vous authentifier en toute sécurité.",
-            "connecting": "Veuillez patienter...",
-            "connected": "Connexion réussie !"
-        }
+        "niches": [
+            {"id": "fashion", "label": "Mode & Style", "icon": "diamond"},
+            {"id": "beauty", "label": "Beauté & Soins", "icon": "face"},
+            {"id": "food", "label": "Food & Cuisine", "icon": "restaurant"},
+            {"id": "travel", "label": "Voyage & Découverte", "icon": "flight_takeoff"},
+            {"id": "lifestyle", "label": "Lifestyle & Quotidien", "icon": "self_improvement"},
+            {"id": "fitness", "label": "Sport & Fitness", "icon": "fitness_center"},
+            {"id": "comedy", "label": "Humour & Comédie", "icon": "mood"},
+            {"id": "art", "label": "Art & Musique", "icon": "music_note"},
+            {"id": "gaming", "label": "Tech & Gaming", "icon": "stadia_controller"},
+            {"id": "family", "label": "Famille & Parentalité", "icon": "family_restroom"},
+            {"id": "other", "label": "Autre", "icon": "more_horiz"}
+        ]
     },
     "contactPage": {
         "title": {
@@ -345,5 +352,3 @@
         }
     }
 }
-
-    
