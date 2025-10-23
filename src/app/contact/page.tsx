@@ -59,7 +59,7 @@ export default function ContactPage() {
   };
   
   return (
-    <div className="flex h-auto w-full flex-col overflow-x-hidden">
+    <div className="flex h-auto w-full flex-col">
       <AppHeader />
       <main className="px-4 md:px-10 lg:px-20 py-16 md:py-24 hero-bg">
         <div className="max-w-5xl mx-auto">

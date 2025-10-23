@@ -9,7 +9,7 @@ import { useLanguage } from '@/context/language-context';
 export default function FaqPage() {
   const { t } = useLanguage();
   return (
-    <div className="flex h-auto w-full flex-col overflow-x-hidden">
+    <div className="flex h-auto w-full flex-col">
       <div className="flex h-full grow flex-col">
         <AppHeader />
 

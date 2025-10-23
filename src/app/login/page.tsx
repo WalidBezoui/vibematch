@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="relative flex h-screen w-full flex-col overflow-hidden">
+      <div className="relative flex h-screen w-full flex-col">
         <AppHeader />
         <main className="flex-1 flex items-center justify-center hero-bg px-4 py-10">
           <div className="relative w-full max-w-md mx-auto">
