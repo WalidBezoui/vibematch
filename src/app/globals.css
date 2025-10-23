@@ -6,6 +6,7 @@
   :root {
     --font-body: 'Inter', sans-serif;
     --font-headline: 'Poppins', sans-serif;
+    --font-logo: 'Imperial Script', cursive;
 
     --gradient-primary: 156 100% 48%;
     --gradient-secondary: 184 100% 46%;
@@ -70,6 +71,10 @@
 }
 
 @layer utilities {
+  .font-logo {
+    font-family: var(--font-logo);
+    font-style: italic;
+  }
   .text-glow {
     filter: drop-shadow(0 0 1px hsl(var(--gradient-primary) / 0.8)) drop-shadow(0 0 2px hsl(var(--gradient-secondary) / 0.5));
   }
