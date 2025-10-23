@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Home, LogIn, Menu, X } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 
 
@@ -94,6 +94,12 @@ export function AppHeader() {
 
        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
         <SheetContent side="right" className="w-[80vw] bg-background">
+          <SheetHeader className="sr-only">
+            <SheetTitle>Menu</SheetTitle>
+            <SheetDescription>
+              Main navigation menu for VibeMatch
+            </SheetDescription>
+          </SheetHeader>
           <div className="flex flex-col h-full">
             <div className='flex justify-between items-center mb-8'>
                <Link
