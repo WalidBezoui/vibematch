@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, X } from 'lucide-react';
+import { Home, LogIn, Menu } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 export function AppHeader() {
   const pathname = usePathname();
   const isLoginPage = pathname === '/login';
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage, t, dir } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = useMemo(() => [
@@ -44,7 +44,10 @@ export function AppHeader() {
           key={lang}
           variant={language === lang ? 'default' : 'ghost'}
           size="sm"
-          className="px-2 py-1 rounded-full h-auto text-xs font-semibold"
+          className={cn(
+            "px-2 py-1 rounded-full h-auto text-xs font-semibold",
+            language === lang && "gradient-bg text-black",
+          )}
           onClick={() => handleLanguageChange(lang)}
         >
           {lang}
@@ -85,20 +88,22 @@ export function AppHeader() {
             )}
           </Link>
         </Button>
-        <LanguageSwitcher className="flex sm:hidden" />
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="md:hidden -mr-2"
-          onClick={() => setIsMobileMenuOpen(true)}
-        >
-          <Menu />
-          <span className="sr-only">Open menu</span>
-        </Button>
+        <div className='flex items-center gap-2 md:hidden'>
+          <LanguageSwitcher />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="-mr-2"
+            onClick={() => setIsMobileMenuOpen(true)}
+          >
+            <Menu />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </div>
       </div>
 
        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-        <SheetContent side="right" className="w-[80vw] bg-background">
+        <SheetContent side={dir === 'rtl' ? 'left' : 'right'} className="w-[80vw] bg-background">
           <SheetHeader className="sr-only">
             <SheetTitle>Menu</SheetTitle>
             <SheetDescription>
