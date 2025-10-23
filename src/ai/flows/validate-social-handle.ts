@@ -41,19 +41,45 @@ const validateSocialHandleFlow = ai.defineFlow(
     outputSchema: ValidateSocialHandleOutputSchema,
   },
   async ({platform, handle}) => {
-    // In a real-world scenario, you would use a social media API
-    // or a web scraping service to check if the handle actually exists.
-    // For this simulation, we'll just check for a non-empty handle.
+    // This is a more robust simulation of a real-world validation.
+    // It checks for common handle patterns and constraints.
+    // In a production app, you would replace this with a real API call.
     console.log(`Simulating validation for @${handle} on ${platform}...`);
     
-    // Simulate network delay
+    // Simulate network delay to feel like a real API call
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Basic validation: not empty and no special characters.
-    const isValid = handle.length > 0 && /^[a-zA-Z0-9._]+$/.test(handle);
+    let isValid = false;
+    
+    if (platform === 'instagram') {
+        // Instagram handles: 1-30 chars, letters, numbers, periods, underscores.
+        // Cannot start or end with a period. No consecutive periods.
+        isValid = /^(?!.*\.\.)(?!.*\.$)[a-zA-Z0-9_.]{1,30}$/.test(handle);
+    } else if (platform === 'tiktok') {
+        // TikTok handles: 2-24 chars, letters, numbers, underscores, periods.
+        // Cannot end with a period.
+        isValid = /^[a-zA-Z0-9_.]+$/.test(handle) &&
+                  handle.length >= 2 &&
+                  handle.length <= 24 &&
+                  !handle.endsWith('.');
+    }
+    
+    // Simulate that some valid-looking handles might not exist.
+    // For this example, let's say handles containing "test" or "vibematch" are valid
+    // and others have a 50% chance of being "taken" (not existing for a new user, but valid in format).
+    // For the purpose of this form, we'll assume we're checking if it *exists* for a user to claim,
+    // so we'll treat most valid formats as existing.
+    if (isValid) {
+        if (handle.includes('test') || handle.includes('vibematch')) {
+            // These will always be "non-existent" for our test.
+            return { exists: false };
+        }
+        // Let's pretend most valid-looking handles exist.
+        return { exists: true };
+    }
 
     return {
-        exists: isValid,
+        exists: false,
     }
   }
 );

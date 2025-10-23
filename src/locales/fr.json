@@ -309,7 +309,9 @@
             "whyConnectLink": "Pourquoi fournir mes noms d'utilisateur ?"
         },
         "step3": {
-            "header": "Quelle est votre Niche ?"
+            "header": "Quelle est votre Niche ?",
+            "otherNicheLabel": "Veuillez préciser votre niche",
+            "otherNichePlaceholder": "ex: Vie durable, Contenu animalier"
         },
         "step4": {
             "header": "Notre Engagement Qualité",
@@ -358,5 +360,3 @@
         }
     }
 }
-
-    

@@ -33,6 +33,7 @@ export function CreatorJoinForm() {
   const [socialInputs, setSocialInputs] = useState({ instagram: '', tiktok: '' });
   const [socialStatus, setSocialStatus] = useState({ instagram: 'idle', tiktok: 'idle' });
   const [selectedNiches, setSelectedNiches] = useState<string[]>([]);
+  const [otherNiche, setOtherNiche] = useState('');
   const router = useRouter();
   const { t } = useLanguage();
 
@@ -244,6 +245,17 @@ export function CreatorJoinForm() {
                     </button>
                   ))}
                 </div>
+                {selectedNiches.includes('other') && (
+                    <div className="space-y-2 pt-4">
+                        <Label htmlFor="otherNiche" className="text-sm font-medium">{t('creatorJoinForm.step3.otherNicheLabel')}</Label>
+                        <Input 
+                            id="otherNiche"
+                            placeholder={t('creatorJoinForm.step3.otherNichePlaceholder')}
+                            value={otherNiche}
+                            onChange={(e) => setOtherNiche(e.target.value)}
+                        />
+                    </div>
+                )}
             </div>
         )}
 
@@ -282,5 +294,3 @@ export function CreatorJoinForm() {
     </div>
   );
 }
-
-    

@@ -309,7 +309,9 @@
             "whyConnectLink": "Why do I need to provide my handles?"
         },
         "step3": {
-            "header": "What's Your Niche?"
+            "header": "What's Your Niche?",
+            "otherNicheLabel": "Please specify your niche",
+            "otherNichePlaceholder": "e.g., Sustainable Living, Pet Content"
         },
         "step4": {
             "header": "Our Pledge for Quality",
@@ -358,5 +360,3 @@
         }
     }
 }
-
-    
