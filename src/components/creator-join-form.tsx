@@ -115,6 +115,15 @@ export function CreatorJoinForm() {
     )
   }
 
+  const getNextButtonText = () => {
+    if (currentStep === 4) return t('creatorJoinForm.submitButton');
+    const nextStepTitle = steps[currentStep]?.title;
+    if (nextStepTitle) {
+      return `${t('creatorJoinForm.nextButtonText')} ${t(`creatorJoinForm.steps.${currentStep + 1}.short_title`)}`;
+    }
+    return t('creatorJoinForm.nextButton');
+  }
+
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -123,7 +132,7 @@ export function CreatorJoinForm() {
         <p className="mt-4 text-lg text-foreground/70">{currentStepInfo.description}</p>
       </div>
 
-      <div className="rounded-xl border border-border bg-card p-6 sm:p-8 space-y-6">
+      <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6">
         <div className="flex flex-col gap-3">
             {currentStep < 5 && 
                 <>
@@ -175,7 +184,7 @@ export function CreatorJoinForm() {
                                 value={socialInputs.instagram}
                                 onChange={(e) => handleSocialChange('instagram', e.target.value)}
                              />
-                            <div className="absolute right-3 h-7 w-7 flex items-center justify-center">
+                            <div className="absolute right-3 h-full flex items-center justify-center">
                                 {socialStatus.instagram === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
                                 {socialStatus.instagram === 'connected' && <Check className="h-5 w-5 text-green-500" />}
                                 {socialStatus.instagram === 'error' && <span className="text-red-500 text-xs font-bold">Error</span>}
@@ -193,7 +202,7 @@ export function CreatorJoinForm() {
                                 value={socialInputs.tiktok}
                                 onChange={(e) => handleSocialChange('tiktok', e.target.value)}
                             />
-                            <div className="absolute right-3 h-7 w-7 flex items-center justify-center">
+                            <div className="absolute right-3 h-full flex items-center justify-center">
                                 {socialStatus.tiktok === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
                                 {socialStatus.tiktok === 'connected' && <Check className="h-5 w-5 text-green-500" />}
                                 {socialStatus.tiktok === 'error' && <span className="text-red-500 text-xs font-bold">Error</span>}
@@ -264,11 +273,14 @@ export function CreatorJoinForm() {
             <Button variant="outline" onClick={handleBack} className={currentStep === 1 ? 'invisible' : ''}>
             {t('creatorJoinForm.backButton')}
             </Button>
-            <Button onClick={handleNext} className="gradient-bg text-black">
-            {currentStep === 4 ? t('creatorJoinForm.submitButton') : t('creatorJoinForm.nextButton')}
+            <Button onClick={handleNext} className="gradient-bg text-black font-semibold">
+                {getNextButtonText()}
+                {currentStep < 4 && <ArrowRight className="h-4 w-4 ml-2" />}
             </Button>
         </div>
       </div>
     </div>
   );
 }
+
+    

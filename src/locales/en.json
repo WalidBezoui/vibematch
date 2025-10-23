@@ -262,28 +262,34 @@
         "steps": {
             "1": {
                 "title": "Become a Founding Creator",
+                "short_title": "Info",
                 "description": "Join an exclusive community and shape the future of creator collaborations."
             },
             "2": {
                 "title": "Link Your Social Profiles",
+                "short_title": "Profiles",
                 "description": "Add your Instagram and TikTok handles. We'll do a quick check to verify they're active."
             },
             "3": {
                 "title": "Define Your Vibe",
+                "short_title": "Niche",
                 "description": "What are your main areas of expertise? Select the niches that best represent your content."
             },
             "4": {
                 "title": "Professionalism Pledge",
+                "short_title": "Pledge",
                 "description": "Our community is built on trust and reliability. Please confirm your commitment."
             },
             "5": {
                 "title": "Application Submitted!",
+                "short_title": "Done",
                 "description": "Thank you for applying to be a Founding Creator."
             }
         },
         "stepCounter": "Step {{current}} of {{total}}",
         "backButton": "Back",
         "nextButton": "Next Step",
+        "nextButtonText": "Next:",
         "submitButton": "Submit Application",
         "step1": {
             "header": "Welcome to the Inner Circle",
@@ -352,3 +358,5 @@
         }
     }
 }
+
+    

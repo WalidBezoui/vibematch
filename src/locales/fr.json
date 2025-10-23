@@ -262,28 +262,34 @@
         "steps": {
             "1": {
                 "title": "Devenez Créateur Fondateur",
+                "short_title": "Infos",
                 "description": "Rejoignez une communauté d'élite et redéfinissez les collaborations créatives."
             },
             "2": {
                 "title": "Liez vos Profils Sociaux",
+                "short_title": "Profils",
                 "description": "Indiquez vos noms d'utilisateur Instagram et TikTok. Nous vérifierons rapidement leur validité."
             },
             "3": {
                 "title": "Définissez votre Univers",
+                "short_title": "Niche",
                 "description": "Quels sont vos domaines de prédilection ? Choisissez les niches qui vous représentent."
             },
             "4": {
                 "title": "Engagement de Confiance",
+                "short_title": "Charte",
                 "description": "Notre communauté repose sur la fiabilité. Confirmez votre adhésion à nos standards de qualité."
             },
             "5": {
                 "title": "Candidature Envoyée !",
+                "short_title": "Fait",
                 "description": "Merci d'avoir postulé pour devenir un Créateur Fondateur."
             }
         },
         "stepCounter": "Étape {{current}} sur {{total}}",
         "backButton": "Retour",
         "nextButton": "Étape suivante",
+        "nextButtonText": "Suivant:",
         "submitButton": "Envoyer ma candidature",
         "step1": {
             "header": "Bienvenue dans le Cercle des Pionniers",
@@ -352,3 +358,5 @@
         }
     }
 }
+
+    
