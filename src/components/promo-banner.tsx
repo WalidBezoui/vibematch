@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/language-context';
-import { X, ArrowRight, Sparkles } from 'lucide-react';
+import { X, ArrowRight, Sparkles, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -14,7 +14,7 @@ type BannerMessage = {
 };
 
 export function PromoBanner() {
-  const { t, userInterest, setUserInterest } = useLanguage();
+  const { t, userInterest, setUserInterest, dir } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [message, setMessage] = useState<BannerMessage | null>(null);
   const pathname = usePathname();
@@ -54,6 +54,7 @@ export function PromoBanner() {
   };
 
   const showJoinButton = !pathname.startsWith('/creators/join') && !pathname.startsWith('/brands/join');
+  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   if (!isVisible || !message) {
     return null;
@@ -63,7 +64,7 @@ export function PromoBanner() {
     <div className="relative gradient-bg text-black isolate flex items-center gap-x-6 overflow-hidden px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <p className="text-sm leading-6 font-medium">
-          <Sparkles className="inline-block w-4 h-4 mr-2" />
+          <Sparkles className="inline-block w-4 h-4 mr-2 rtl:mr-0 rtl:ml-2" />
           {message.title}{' '}
           <span className="font-bold">{message.subtitle}</span>
         </p>
@@ -73,7 +74,7 @@ export function PromoBanner() {
           >
               <Link href={userInterest === 'brand' ? '/brands/join' : '/creators/join'}>
                   {message.cta}
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  <Arrow className="w-4 h-4 ml-2 rtl:ml-0 rtl:mr-2" />
               </Link>
           </Button>
         )}
@@ -87,5 +88,3 @@ export function PromoBanner() {
     </div>
   );
 }
-
-    

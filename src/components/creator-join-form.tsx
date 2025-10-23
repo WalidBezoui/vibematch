@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Check, AtSign, Phone, User, Loader2, Home, Info } from 'lucide-react';
+import { ArrowRight, Check, AtSign, Phone, User, Loader2, Home, Info, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
@@ -20,7 +20,7 @@ const WhatsAppIcon = () => (
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      className="h-5 w-5 text-foreground/40 dark:text-foreground/50 ml-4"
+      className="h-5 w-5 text-foreground/40 dark:text-foreground/50 ml-4 rtl:ml-0 rtl:mr-4"
     >
       <path
         fill="currentColor"
@@ -38,7 +38,7 @@ export function CreatorJoinForm() {
   const [otherNiche, setOtherNiche] = useState('');
   const [useDifferentWhatsapp, setUseDifferentWhatsapp] = useState(false);
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, dir } = useLanguage();
 
   const handleSocialChange = async (platform: 'instagram' | 'tiktok', value: string) => {
     setSocialInputs(prev => ({ ...prev, [platform]: value }));
@@ -158,28 +158,28 @@ export function CreatorJoinForm() {
                     <div className="flex flex-col gap-2">
                         <Label htmlFor="fullName" className="font-semibold text-sm">{t('creatorJoinForm.step1.nameLabel')}</Label>
                         <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
-                            <User className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4" />
-                            <Input id="fullName" placeholder={t('creatorJoinForm.step1.namePlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
+                            <User className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4 rtl:ml-0 rtl:mr-4" />
+                            <Input id="fullName" placeholder={t('creatorJoinForm.step1.namePlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 rtl:pr-3 rtl:pl-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
                         </div>
                     </div>
                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="email" className="font-semibold text-sm">{t('creatorJoinForm.step1.emailLabel')}</Label>
                             <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
-                                <AtSign className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4" />
-                                <Input id="email" type="email" placeholder={t('creatorJoinForm.step1.emailPlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
+                                <AtSign className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4 rtl:ml-0 rtl:mr-4" />
+                                <Input id="email" type="email" placeholder={t('creatorJoinForm.step1.emailPlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 rtl:pr-3 rtl:pl-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="phone" className="font-semibold text-sm">{t('creatorJoinForm.step1.phoneLabel')}</Label>
                             <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
-                                <Phone className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4" />
-                                <Input id="phone" type="tel" placeholder={t('creatorJoinForm.step1.phonePlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
+                                <Phone className="text-foreground/40 dark:text-foreground/50 w-5 h-5 ml-4 rtl:ml-0 rtl:mr-4" />
+                                <Input id="phone" type="tel" placeholder={t('creatorJoinForm.step1.phonePlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 rtl:pr-3 rtl:pl-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
                             </div>
                         </div>
                     </div>
                     <div className="space-y-4">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 rtl:space-x-reverse">
                             <Checkbox id="different-whatsapp" checked={useDifferentWhatsapp} onCheckedChange={(checked) => setUseDifferentWhatsapp(checked as boolean)} />
                             <label htmlFor="different-whatsapp" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                 {t('creatorJoinForm.step1.differentWhatsappLabel')}
@@ -190,7 +190,7 @@ export function CreatorJoinForm() {
                                 <Label htmlFor="whatsapp" className="font-semibold text-sm">{t('creatorJoinForm.step1.whatsappLabel')}</Label>
                                 <div className="flex items-center bg-muted/50 border rounded-lg transition-all duration-300 input-focus">
                                     <WhatsAppIcon />
-                                    <Input id="whatsapp" type="tel" placeholder={t('creatorJoinForm.step1.whatsappPlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
+                                    <Input id="whatsapp" type="tel" placeholder={t('creatorJoinForm.step1.whatsappPlaceholder')} className="h-12 w-full bg-transparent p-3 pr-4 rtl:pr-3 rtl:pl-4 placeholder:text-foreground/40 outline-none border-none focus:ring-0" />
                                 </div>
                             </div>
                         )}
@@ -206,15 +206,15 @@ export function CreatorJoinForm() {
                     <div className="space-y-2">
                         <Label htmlFor="instagram" className="text-sm font-medium">{t('creatorJoinForm.step2.instagramLabel')}</Label>
                         <div className="relative flex items-center">
-                            <AtSign className="absolute left-3.5 h-5 w-5 text-gray-400" />
+                            <AtSign className="absolute left-3.5 rtl:left-auto rtl:right-3.5 h-5 w-5 text-gray-400" />
                             <Input 
                                 id="instagram" 
                                 placeholder={t('creatorJoinForm.step2.handlePlaceholder')}
-                                className="pl-10 h-12 pr-12"
+                                className="pl-10 rtl:pl-3 rtl:pr-10 h-12 pr-12 rtl:pr-3 rtl:pl-12"
                                 value={socialInputs.instagram}
                                 onChange={(e) => handleSocialChange('instagram', e.target.value)}
                              />
-                            <div className="absolute right-3 h-full flex items-center justify-center">
+                            <div className="absolute right-3 rtl:right-auto rtl:left-3 h-full flex items-center justify-center">
                                 {socialStatus.instagram === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
                                 {socialStatus.instagram === 'connected' && <Check className="h-5 w-5 text-green-500" />}
                                 {socialStatus.instagram === 'error' && <span className="text-red-500 text-xs font-bold">Error</span>}
@@ -224,15 +224,15 @@ export function CreatorJoinForm() {
                     <div className="space-y-2">
                         <Label htmlFor="tiktok" className="text-sm font-medium">{t('creatorJoinForm.step2.tiktokLabel')}</Label>
                          <div className="relative flex items-center">
-                            <AtSign className="absolute left-3.5 h-5 w-5 text-gray-400" />
+                            <AtSign className="absolute left-3.5 rtl:left-auto rtl:right-3.5 h-5 w-5 text-gray-400" />
                             <Input 
                                 id="tiktok" 
                                 placeholder={t('creatorJoinForm.step2.handlePlaceholder')}
-                                className="pl-10 h-12 pr-12"
+                                className="pl-10 rtl:pl-3 rtl:pr-10 h-12 pr-12 rtl:pr-3 rtl:pl-12"
                                 value={socialInputs.tiktok}
                                 onChange={(e) => handleSocialChange('tiktok', e.target.value)}
                             />
-                            <div className="absolute right-3 h-full flex items-center justify-center">
+                            <div className="absolute right-3 rtl:right-auto rtl:left-3 h-full flex items-center justify-center">
                                 {socialStatus.tiktok === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
                                 {socialStatus.tiktok === 'connected' && <Check className="h-5 w-5 text-green-500" />}
                                 {socialStatus.tiktok === 'error' && <span className="text-red-500 text-xs font-bold">Error</span>}
@@ -245,7 +245,7 @@ export function CreatorJoinForm() {
                         {t('creatorJoinForm.step2.whyConnectLink')}
                     </CollapsibleTrigger>
                     <CollapsibleContent>
-                        <Alert className="mt-4 text-left">
+                        <Alert className="mt-4 text-left rtl:text-right">
                             <Info className="h-4 w-4" />
                             <AlertDescription>
                                 {t('creatorJoinForm.step2.whyConnectAnswer')}
@@ -312,7 +312,7 @@ export function CreatorJoinForm() {
                     <p className="text-center text-foreground/70 max-w-md">{t('creatorJoinForm.step4.description')}</p>
                 </div>
                 <div className="rounded-lg bg-muted/50 p-6">
-                    <label className="flex items-start space-x-4 cursor-pointer">
+                    <label className="flex items-start space-x-4 rtl:space-x-reverse cursor-pointer">
                          <Checkbox id="pledge" className="custom-checkbox mt-1" />
                         <span className="font-medium text-foreground/80">{t('creatorJoinForm.step4.pledge')}</span>
                     </label>
@@ -324,7 +324,7 @@ export function CreatorJoinForm() {
             {currentStep === 1 ? (
                 <Button asChild variant="outline" className="rounded-full">
                     <Link href="/">
-                        <Home className="mr-2 h-4 w-4" />
+                        <Home className="mr-2 rtl:mr-0 rtl:ml-2 h-4 w-4" />
                         {t('header.home')}
                     </Link>
                 </Button>
@@ -335,7 +335,7 @@ export function CreatorJoinForm() {
             )}
             <Button onClick={handleNext} className="gradient-bg text-black font-semibold rounded-full">
                 {getNextButtonText()}
-                {currentStep < 4 && <ArrowRight className="h-4 w-4 ml-2" />}
+                {currentStep < 4 && (dir === 'ltr' ? <ArrowRight className="h-4 w-4 ml-2" /> : <ArrowLeft className="h-4 w-4 mr-2" />)}
             </Button>
         </div>
       </div>

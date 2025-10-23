@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { ArrowRight, Palette, Store } from 'lucide-react';
+import { ArrowRight, Palette, Store, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 
 type SignupDialogProps = {
@@ -17,7 +17,8 @@ type SignupDialogProps = {
 };
 
 export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
-  const { t } = useLanguage();
+  const { t, dir } = useLanguage();
+  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -43,9 +44,9 @@ export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
             <p className="text-sm text-foreground/60 mt-1">
               {t('signupDialog.brand.description')}
             </p>
-            <span className="absolute -bottom-px -right-px h-8 w-8">
-              <span className="absolute inset-0.5 bg-primary/20 rounded-br-lg rounded-tl-lg group-hover:bg-primary/40 transition-colors duration-300"></span>
-              <ArrowRight className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary w-4 h-4" />
+            <span className="absolute -bottom-px -right-px rtl:-right-auto rtl:-left-px h-8 w-8">
+              <span className="absolute inset-0.5 bg-primary/20 rounded-br-lg rounded-tl-lg rtl:rounded-bl-lg rtl:rounded-tr-lg group-hover:bg-primary/40 transition-colors duration-300"></span>
+              <Arrow className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary w-4 h-4" />
             </span>
           </Link>
           <Link
@@ -57,9 +58,9 @@ export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
             <p className="text-sm text-foreground/60 mt-1">
               {t('signupDialog.creator.description')}
             </p>
-            <span className="absolute -bottom-px -right-px h-8 w-8">
-              <span className="absolute inset-0.5 bg-accent/20 rounded-br-lg rounded-tl-lg group-hover:bg-accent/40 transition-colors duration-300"></span>
-               <ArrowRight className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-accent w-4 h-4" />
+            <span className="absolute -bottom-px -right-px rtl:-right-auto rtl:-left-px h-8 w-8">
+              <span className="absolute inset-0.5 bg-accent/20 rounded-br-lg rounded-tl-lg rtl:rounded-bl-lg rtl:rounded-tr-lg group-hover:bg-accent/40 transition-colors duration-300"></span>
+               <Arrow className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-accent w-4 h-4" />
             </span>
           </Link>
         </div>
