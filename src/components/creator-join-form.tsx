@@ -18,10 +18,10 @@ import Link from 'next/link';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useFirestore } from '@/firebase';
-import { collection, serverTimestamp } from 'firebase/firestore';
-import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { useFirestore, useAuth } from '@/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
+import { signInAnonymously } from 'firebase/auth';
 
 const creatorApplicationSchema = z.object({
   fullName: z.string().min(2, "Full name is required."),
@@ -68,6 +68,7 @@ export function CreatorJoinForm() {
   const router = useRouter();
   const { t, dir } = useLanguage();
   const firestore = useFirestore();
+  const auth = useAuth();
   const { toast } = useToast();
 
   const form = useForm<CreatorApplicationForm>({
@@ -98,11 +99,12 @@ export function CreatorJoinForm() {
   ];
   
   const onSubmit: SubmitHandler<CreatorApplicationForm> = async (data) => {
-    if (!firestore) return;
+    if (!firestore || !auth) return;
     try {
+      await signInAnonymously(auth);
       const collectionRef = collection(firestore, 'creator-applications');
       const { useDifferentWhatsapp, ...submissionData } = data;
-      await addDocumentNonBlocking(collectionRef, {
+      await addDoc(collectionRef, {
         ...submissionData,
         createdAt: serverTimestamp(),
       });

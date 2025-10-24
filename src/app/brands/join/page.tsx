@@ -10,10 +10,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { PromoBanner } from '@/components/promo-banner';
 import { useLanguage } from '@/context/language-context';
 import { useRouter } from 'next/navigation';
-import { useFirestore } from '@/firebase';
-import { collection, serverTimestamp } from 'firebase/firestore';
-import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { useFirestore, useAuth } from '@/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
+import { signInAnonymously } from 'firebase/auth';
 
 const brandApplicationSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -30,6 +30,7 @@ export default function BrandWaitlistPage() {
   const router = useRouter();
   const { t } = useLanguage();
   const firestore = useFirestore();
+  const auth = useAuth();
   const { toast } = useToast();
 
   const form = useForm<BrandApplicationForm>({
@@ -45,10 +46,11 @@ export default function BrandWaitlistPage() {
   });
 
   const onSubmit: SubmitHandler<BrandApplicationForm> = async (data) => {
-    if (!firestore) return;
+    if (!firestore || !auth) return;
     try {
+      await signInAnonymously(auth);
       const collectionRef = collection(firestore, 'brand-applications');
-      await addDocumentNonBlocking(collectionRef, {
+      await addDoc(collectionRef, {
         ...data,
         createdAt: serverTimestamp(),
       });
