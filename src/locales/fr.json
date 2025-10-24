@@ -53,7 +53,11 @@
             "title1": "Cessez d'investir dans le",
             "title2": "faux engagement.",
             "description": "Nous vous offrons des créateurs certifiés et des résultats tangibles. Notre Trust Engine révolutionnaire analyse plus de 50 points de données pour garantir que chaque partenaire a une audience réelle et engagée. Fini les bots et les vanity metrics. Place à l'impact réel.",
-            "joinButton": "Rejoindre la liste d'attente"
+            "joinButton": "Rejoindre la liste d'attente",
+            "cta": {
+                "title": "Pour les marques visionnaires prêtes pour un vrai ROI.",
+                "subtitle": "Places sur la liste d'attente limitées. Assurez votre accès prioritaire."
+            }
         },
         "creators": {
             "title1": "Ne courez plus après vos paiements.",

@@ -53,7 +53,11 @@
             "title1": "Stop wasting money on",
             "title2": "fake engagement.",
             "description": "We provide vetted creators and guaranteed results. Our revolutionary Trust Engine analyzes over 50 data points to ensure every influencer you partner with has a genuine, engaged audience. No more bots, no more vanity metrics. Just real impact.",
-            "joinButton": "Join the Brand Waitlist"
+            "joinButton": "Join the Brand Waitlist",
+            "cta": {
+                "title": "For visionary brands ready for real ROI.",
+                "subtitle": "Waitlist spots are limited. Secure your priority access."
+            }
         },
         "creators": {
             "title1": "Stop chasing payments.",

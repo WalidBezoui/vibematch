@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/accordion';
 import { useLanguage } from '@/context/language-context';
 import { getImage } from '@/lib/placeholder-images';
+import { Sparkles } from 'lucide-react';
 
 
 export function HomeComponent() {
@@ -67,13 +68,24 @@ export function HomeComponent() {
             <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
               {t('homePage.brands.description')}
             </p>
-            <Button
-              asChild
-              className="mt-4 w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-               onClick={() => setUserInterest('brand')}
-            >
-              <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
-            </Button>
+            <div className="mt-4 flex flex-col items-start gap-4">
+              <div className="text-left">
+                <p className="font-semibold text-foreground flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  {t('homePage.brands.cta.title')}
+                </p>
+                <p className="text-sm text-foreground/60 italic">
+                  {t('homePage.brands.cta.subtitle')}
+                </p>
+              </div>
+              <Button
+                asChild
+                className="w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
+                onClick={() => setUserInterest('brand')}
+              >
+                <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
+              </Button>
+            </div>
           </div>
           <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-primary/10 overflow-hidden">
             {fakeEngagementImg && (
