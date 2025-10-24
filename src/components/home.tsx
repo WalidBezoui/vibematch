@@ -10,14 +10,25 @@ import {
 } from '@/components/ui/accordion';
 import { useLanguage } from '@/context/language-context';
 import { getImage } from '@/lib/placeholder-images';
+import { useEffect, useState } from 'react';
+import { Sparkles } from 'lucide-react';
 
 
 export function HomeComponent() {
   const { t, language, setUserInterest } = useLanguage();
+  const [ctaMessage, setCtaMessage] = useState('');
 
   const brandsFaq = t('homePage.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const creatorsFaq = t('homePage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
+  const brandCtas = t('homePage.brands.ctas', { returnObjects: true }) as string[];
+
+  useEffect(() => {
+    if (brandCtas && brandCtas.length > 0) {
+      const randomIndex = Math.floor(Math.random() * brandCtas.length);
+      setCtaMessage(brandCtas[randomIndex]);
+    }
+  }, [brandCtas]);
 
   const fakeEngagementImg = getImage('fake-engagement');
   const guaranteedPaymentsImg = getImage('guaranteed-payments');
@@ -68,15 +79,12 @@ export function HomeComponent() {
               {t('homePage.brands.description')}
             </p>
             <div className="mt-4 flex flex-col gap-4">
-               <div className="relative bg-primary/5 border border-primary/20 rounded-lg p-4 text-left">
-                  <p className="font-semibold text-foreground">
-                    {t('homePage.brands.cta.title')}
-                  </p>
-                  <p className="text-sm text-primary/80 italic mt-1">
-                    {t('homePage.brands.cta.subtitle')}
-                  </p>
-                   <div className="absolute left-8 -bottom-2.5 w-5 h-5 bg-primary/5 rotate-45 transform border-r border-b border-primary/20"></div>
-              </div>
+               {ctaMessage && (
+                 <div className="flex items-center justify-start gap-2 text-sm font-semibold gradient-text text-glow animate-fade-in">
+                    <Sparkles className="w-4 h-4" />
+                    <p>{ctaMessage}</p>
+                 </div>
+               )}
               <Button
                 asChild
                 className="w-full md:w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
@@ -381,3 +389,5 @@ export function HomeComponent() {
     </div>
   );
 }
+
+    
