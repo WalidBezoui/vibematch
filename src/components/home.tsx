@@ -10,23 +10,35 @@ import {
 } from '@/components/ui/accordion';
 import { useLanguage } from '@/context/language-context';
 import { getImage } from '@/lib/placeholder-images';
-import { useEffect, useState } from 'react';
-import { Sparkles } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import * as lucideIcons from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+
+const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
+  const Icon = (lucideIcons as any)[name];
+  if (!Icon) {
+    // Fallback or return null if icon not found
+    return <lucideIcons.Sparkles className={className} />;
+  }
+  return <Icon className={className} />;
+};
 
 
 export function HomeComponent() {
   const { t, language, setUserInterest } = useLanguage();
-  const [ctaMessage, setCtaMessage] = useState('');
+  const [cta, setCta] = useState<{ text: string, icon: string } | null>(null);
 
   const brandsFaq = t('homePage.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const creatorsFaq = t('homePage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
-  const brandCtas = t('homePage.brands.ctas', { returnObjects: true }) as string[];
+  const brandCtas = t('homePage.brands.ctas', { returnObjects: true }) as {text: string, icon: string}[];
 
   useEffect(() => {
     if (brandCtas && brandCtas.length > 0) {
+      // This runs only on the client, after hydration, to avoid mismatch
       const randomIndex = Math.floor(Math.random() * brandCtas.length);
-      setCtaMessage(brandCtas[randomIndex]);
+      setCta(brandCtas[randomIndex]);
     }
   }, [brandCtas]);
 
@@ -79,10 +91,10 @@ export function HomeComponent() {
               {t('homePage.brands.description')}
             </p>
             <div className="mt-4 flex flex-col gap-4">
-               {ctaMessage && (
-                 <div className="flex items-center justify-start gap-2 text-sm font-semibold gradient-text text-glow animate-fade-in">
-                    <Sparkles className="w-4 h-4" />
-                    <p>{ctaMessage}</p>
+               {cta && (
+                 <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
+                    <DynamicIcon name={cta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
+                    <p>{cta.text}</p>
                  </div>
                )}
               <Button
@@ -123,7 +135,7 @@ export function HomeComponent() {
                 />
                 )}
             </div>
-          <div className="flex flex-col gap-6 order-1 md:order-2">
+          <div className="flex flex-col gap-6 order-1 md:order-2" onClick={() => setUserInterest('creator')}>
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
               {t('homePage.creators.title1')}{' '}
               <span className="gradient-text text-glow">
@@ -286,8 +298,8 @@ export function HomeComponent() {
                   key={index}
                   className="bg-muted/50 border border-border/50 rounded-xl px-6 group"
                 >
-                  <AccordionTrigger className="hover:no-underline text-lg font-semibold">
-                    <span className="text-left rtl:text-right">{faq.question}</span>
+                  <AccordionTrigger className="hover:no-underline text-lg font-semibold rtl:text-right">
+                    <span className="rtl:text-right">{faq.question}</span>
                     <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
                       expand_more
                     </span>
@@ -310,8 +322,8 @@ export function HomeComponent() {
                   key={index}
                   className="bg-muted/50 border border-border/50 rounded-xl px-6 group"
                 >
-                  <AccordionTrigger className="hover:no-underline text-lg font-semibold">
-                    <span className="text-left rtl:text-right">{faq.question}</span>
+                  <AccordionTrigger className="hover:no-underline text-lg font-semibold rtl:text-right">
+                    <span className="rtl:text-right">{faq.question}</span>
                     <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
                       expand_more
                     </span>
@@ -389,5 +401,3 @@ export function HomeComponent() {
     </div>
   );
 }
-
-    

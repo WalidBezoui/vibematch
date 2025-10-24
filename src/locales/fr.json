@@ -55,10 +55,10 @@
             "description": "Nous vous offrons des créateurs certifiés et des résultats tangibles. Notre Trust Engine révolutionnaire analyse plus de 50 points de données pour garantir que chaque partenaire a une audience réelle et engagée. Fini les bots et les vanity metrics. Place à l'impact réel.",
             "joinButton": "Rejoindre la liste d'attente",
             "ctas": [
-                "Pour les marques visionnaires prêtes pour un vrai ROI.",
-                "Places sur la liste d'attente limitées. Assurez votre accès prioritaire.",
-                "Le top 1% des créateurs marocains vous attend.",
-                "Arrêtez de parier. Obtenez des résultats garantis."
+                { "text": "Pour les marques visionnaires prêtes pour un vrai ROI.", "icon": "Target" },
+                { "text": "Places sur la liste d'attente limitées. Assurez votre accès prioritaire.", "icon": "BadgePercent" },
+                { "text": "Le top 1% des créateurs marocains vous attend.", "icon": "Gem" },
+                { "text": "Arrêtez de parier. Obtenez des résultats garantis.", "icon": "TrendingUp" }
             ]
         },
         "creators": {
@@ -400,5 +400,3 @@
         }
     }
 }
-
-    
