@@ -65,7 +65,13 @@
             "title1": "Ne courez plus après vos paiements.",
             "title2": "Nous les garantissons.",
             "description": "Concentrez-vous sur votre passion : créer du contenu exceptionnel. VibeMatch s'occupe du reste. Nous garantissons vos paiements et automatisons votre facturation, pour que vous puissiez développer votre marque l'esprit tranquille.",
-            "applyButton": "Devenir un Créateur Fondateur"
+            "applyButton": "Devenir un Créateur Fondateur",
+            "ctas": [
+                { "text": "Pour le top 1% des créateurs qui valorisent leur temps.", "icon": "Gem" },
+                { "text": "Fatigué de courir après les paiements ? Nous les automatisons.", "icon": "DollarSign" },
+                { "text": "Places limitées pour les Créateurs Fondateurs.", "icon": "PenTool" },
+                { "text": "Débloquez des partenariats avec les meilleures marques marocaines.", "icon": "Briefcase" }
+            ]
         },
         "results": {
             "title1": "Ne Gérez Plus les Risques.",

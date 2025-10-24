@@ -27,20 +27,26 @@ const DynamicIcon = ({ name, className }: { name: string, className?: string }) 
 
 export function HomeComponent() {
   const { t, language, setUserInterest } = useLanguage();
-  const [cta, setCta] = useState<{ text: string, icon: string } | null>(null);
+  const [brandCta, setBrandCta] = useState<{ text: string, icon: string } | null>(null);
+  const [creatorCta, setCreatorCta] = useState<{ text: string, icon: string } | null>(null);
 
   const brandsFaq = t('homePage.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const creatorsFaq = t('homePage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
   const brandCtas = t('homePage.brands.ctas', { returnObjects: true }) as {text: string, icon: string}[];
+  const creatorCtas = t('homePage.creators.ctas', { returnObjects: true }) as {text: string, icon: string}[];
 
   useEffect(() => {
     if (brandCtas && brandCtas.length > 0) {
       // This runs only on the client, after hydration, to avoid mismatch
       const randomIndex = Math.floor(Math.random() * brandCtas.length);
-      setCta(brandCtas[randomIndex]);
+      setBrandCta(brandCtas[randomIndex]);
     }
-  }, [brandCtas]);
+    if (creatorCtas && creatorCtas.length > 0) {
+      const randomIndex = Math.floor(Math.random() * creatorCtas.length);
+      setCreatorCta(creatorCtas[randomIndex]);
+    }
+  }, [brandCtas, creatorCtas]);
 
   const fakeEngagementImg = getImage('fake-engagement');
   const guaranteedPaymentsImg = getImage('guaranteed-payments');
@@ -90,11 +96,11 @@ export function HomeComponent() {
             <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
               {t('homePage.brands.description')}
             </p>
-            <div className="mt-4 flex flex-col gap-4">
-               {cta && (
+            <div className="mt-4 flex flex-col items-start gap-4">
+               {brandCta && (
                  <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
-                    <DynamicIcon name={cta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
-                    <p>{cta.text}</p>
+                    <DynamicIcon name={brandCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
+                    <p>{brandCta.text}</p>
                  </div>
                )}
               <Button
@@ -145,13 +151,21 @@ export function HomeComponent() {
             <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
               {t('homePage.creators.description')}
             </p>
-            <Button
-              asChild
-              className="mt-4 w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-               onClick={() => setUserInterest('creator')}
-            >
-              <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
-            </Button>
+            <div className="mt-4 flex flex-col items-start gap-4">
+              {creatorCta && (
+                  <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
+                    <DynamicIcon name={creatorCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
+                    <p>{creatorCta.text}</p>
+                  </div>
+              )}
+              <Button
+                asChild
+                className="w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
+                onClick={() => setUserInterest('creator')}
+              >
+                <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -298,7 +312,7 @@ export function HomeComponent() {
                   key={index}
                   className="bg-muted/50 border border-border/50 rounded-xl px-6 group"
                 >
-                  <AccordionTrigger className="hover:no-underline text-lg font-semibold rtl:text-right">
+                  <AccordionTrigger className="hover:no-underline text-lg font-semibold" onClick={() => setUserInterest('brand')}>
                     <span className="rtl:text-right">{faq.question}</span>
                     <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
                       expand_more
@@ -322,7 +336,7 @@ export function HomeComponent() {
                   key={index}
                   className="bg-muted/50 border border-border/50 rounded-xl px-6 group"
                 >
-                  <AccordionTrigger className="hover:no-underline text-lg font-semibold rtl:text-right">
+                  <AccordionTrigger className="hover:no-underline text-lg font-semibold" onClick={() => setUserInterest('creator')}>
                     <span className="rtl:text-right">{faq.question}</span>
                     <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
                       expand_more

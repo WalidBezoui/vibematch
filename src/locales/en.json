@@ -65,7 +65,13 @@
             "title1": "Stop chasing payments.",
             "title2": "We guarantee them.",
             "description": "Focus on what you do best: creating amazing content. VibeMatch handles the boring stuff. We guarantee your payments and automate your invoices, so you can build your brand with peace of mind.",
-            "applyButton": "Apply as a Founding Creator"
+            "applyButton": "Apply as a Founding Creator",
+            "ctas": [
+                { "text": "For the top 1% of creators who value their time.", "icon": "Gem" },
+                { "text": "Tired of chasing payments? We automate them.", "icon": "DollarSign" },
+                { "text": "Limited spots for Founding Creators are now open.", "icon": "PenTool" },
+                { "text": "Unlock partnerships with Morocco's leading brands.", "icon": "Briefcase" }
+            ]
         },
         "results": {
             "title1": "Stop Managing Risks.",
