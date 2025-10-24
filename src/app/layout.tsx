@@ -2,7 +2,8 @@
 
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { LanguageProvider, useLanguage } from '@/context/language-context';
+import { LanguageProvider } from '@/context/language-context';
+import { FirebaseClientProvider } from '@/firebase';
 
 /*
 export const metadata: Metadata = {
@@ -37,10 +38,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
       </head>
       <LanguageProvider>
-        <AppBody>
-          {children}
-          <Toaster />
-        </AppBody>
+        <FirebaseClientProvider>
+          <AppBody>
+            {children}
+            <Toaster />
+          </AppBody>
+        </FirebaseClientProvider>
       </LanguageProvider>
     </html>
   );

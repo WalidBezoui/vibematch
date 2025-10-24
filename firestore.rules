@@ -1,114 +1,123 @@
 /**
  * @fileoverview Firestore Security Rules for VibeMatch.
  *
- * Core Philosophy:
- * This ruleset enforces a strict user-ownership model for influencer and brand profiles,
- * where users can only read and write their own data. Campaigns are similarly restricted to
- * the brand that owns them. Waiting list entries can be created by anyone, but only read by admins (currently not implemented).
+ * Core Philosophy: This ruleset enforces a strict user-ownership model for influencer and brand profiles,
+ * with brands also owning their campaigns. Waiting list entries can be created by anyone,
+ * but are not readable by the client.
  *
  * Data Structure:
- * - /influencers/{influencerId}: Stores influencer profiles, accessible only to the influencer.
- * - /brands/{brandId}: Stores brand profiles, accessible only to the brand.
- * - /brands/{brandId}/campaigns/{campaignId}: Stores campaign data, accessible only to the owning brand.
- * - /waiting_list_entries/{waitingListEntryId}: Stores waiting list entries; create is public, read is restricted.
+ * - /influencers/{influencerId}: Stores influencer profiles, accessible only by the influencer.
+ * - /brands/{brandId}: Stores brand profiles, accessible only by the brand.
+ * - /brands/{brandId}/campaigns/{campaignId}: Stores campaigns, accessible only by the owning brand.
+ * - /waiting_list_entries/{waitingListEntryId}: Stores waiting list entries, creatable by anyone, not readable by the client.
  *
  * Key Security Decisions:
- * - User listing is disallowed for both influencers and brands.
- * - Write operations on campaigns are restricted to the owning brand.
- * - Waiting list entries can be created by anyone. Listing waiting list entries is disallowed.
- * - Data validation is minimal in this prototype, focusing on authorization and relational integrity only.
+ * - Influencers and brands can only read and write their own profiles.
+ * - Brands can only read and write their own campaigns.
+ * - Anyone can create a waiting list entry, but they are not readable by the client.
+ * - No user listing is allowed for influencers, brands, or campaigns.
+ * - Data shape validation is relaxed to allow for rapid prototyping and iteration. Only authorization-critical data is validated.
  *
  * Denormalization for Authorization:
- * - The `brands/{brandId}/campaigns/{campaignId}` path demonstrates authorization independence. Access to a campaign is only determined by checking the brandId of the campaign, so the rules do not rely on fetching any other documents.
+ * - The /brands/{brandId}/campaigns/{campaignId} path is designed to provide authorization independence.
+ *   If access to a campaign needs to depend on brand membership or role, those attributes should be denormalized
+ *   into each campaign document. This avoids `get()` calls to the `/brands/{brandId}` document within security rules.
+ *
+ * Structural Segregation:
+ * - The `waiting_list_entries` collection is dedicated to waiting list entries. This means list operations on this
+ *   collection can be secured with a single rule.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Protects influencer profiles. Influencers can only read/write their own profile.
+     * @description Secures influencer profiles. Influencers can only read/write their own profile.
      * @path /influencers/{influencerId}
-     * @allow (create, update, get, delete) - An influencer with UID 'user_abc' can create, update, get, or delete their own profile at /influencers/user_abc if request.auth.uid == 'user_abc'.
-     * @deny (create, update, get, delete) - An influencer with UID 'user_abc' cannot create, update, get, or delete the profile of another influencer at /influencers/user_xyz.
-     * @principle Enforces document ownership for writes and restricts access to a user's own data.
+     * @allow (create) - Authenticated user with UID 'user_abc' can create a profile at /influencers/user_abc
+     * @allow (get) - Authenticated user with UID 'user_abc' can get their profile at /influencers/user_abc
+     * @deny (get) - Authenticated user with UID 'user_abc' cannot get profile /influencers/user_xyz
+     * @principle Enforces document ownership for writes.
      */
     match /influencers/{influencerId} {
-      // Helper function to check if the user is signed in and is the owner of the document.
-      function isOwner(influencerId) {
-        return request.auth != null && request.auth.uid == influencerId;
+      function isSignedIn() {
+        return request.auth != null;
       }
-
-      // Helper function to check if the user is signed in and is the owner of the document.
+      function isOwner(influencerId) {
+        return request.auth.uid == influencerId;
+      }
       function isExistingOwner(influencerId) {
         return isOwner(influencerId) && resource != null;
       }
 
-      allow get: if isOwner(influencerId);
+      allow get: if isSignedIn() && isOwner(influencerId);
       allow list: if false;
 
-      allow create: if isOwner(influencerId) && request.resource.data.id == influencerId;
+      allow create: if isSignedIn() && isOwner(influencerId) && request.resource.data.id == request.auth.uid;
       allow update: if isExistingOwner(influencerId) && request.resource.data.id == resource.data.id;
       allow delete: if isExistingOwner(influencerId);
     }
 
     /**
-     * @description Protects brand profiles. Brands can only read/write their own profile.
+     * @description Secures brand profiles. Brands can only read/write their own profile.
      * @path /brands/{brandId}
-     * @allow (create, update, get, delete) - A brand with UID 'brand_123' can create, update, get, or delete its own profile at /brands/brand_123 if request.auth.uid == 'brand_123'.
-     * @deny (create, update, get, delete) - A brand with UID 'brand_123' cannot create, update, get, or delete the profile of another brand at /brands/brand_xyz.
-     * @principle Enforces document ownership for writes and restricts access to a user's own data.
+     * @allow (create) - Authenticated user with UID 'brand_123' can create a profile at /brands/brand_123.
+     * @allow (get) - Authenticated user with UID 'brand_123' can get their profile at /brands/brand_123.
+     * @deny (get) - Authenticated user with UID 'brand_123' cannot get profile /brands/brand_xyz.
+     * @principle Enforces document ownership for writes.
      */
     match /brands/{brandId} {
-      // Helper function to check if the user is signed in and is the owner of the document.
-      function isOwner(brandId) {
-        return request.auth != null && request.auth.uid == brandId;
+      function isSignedIn() {
+        return request.auth != null;
       }
-
-      // Helper function to check if the user is signed in and is the owner of the document and resource is not null.
+      function isOwner(brandId) {
+        return request.auth.uid == brandId;
+      }
       function isExistingOwner(brandId) {
         return isOwner(brandId) && resource != null;
       }
 
-      allow get: if isOwner(brandId);
+      allow get: if isSignedIn() && isOwner(brandId);
       allow list: if false;
 
-      allow create: if isOwner(brandId) && request.resource.data.id == brandId;
+      allow create: if isSignedIn() && isOwner(brandId) && request.resource.data.id == request.auth.uid;
       allow update: if isExistingOwner(brandId) && request.resource.data.id == resource.data.id;
       allow delete: if isExistingOwner(brandId);
     }
 
     /**
-     * @description Protects campaigns created by brands. Brands can only read/write their own campaigns.
+     * @description Secures campaigns created by brands. Brands can only read/write their own campaigns.
      * @path /brands/{brandId}/campaigns/{campaignId}
-     * @allow (create, update, get, delete) - A brand with UID 'brand_123' can create, update, get, or delete a campaign at /brands/brand_123/campaigns/campaign_456 if request.auth.uid == 'brand_123'.
-     * @deny (create, update, get, delete) - A brand with UID 'brand_123' cannot create, update, get, or delete a campaign belonging to another brand at /brands/brand_xyz/campaigns/campaign_456.
-     * @principle Enforces document ownership for writes.
+     * @allow (create) - Authenticated user with UID 'brand_123' can create a campaign at /brands/brand_123/campaigns/camp_abc
+     * @allow (get) - Authenticated user with UID 'brand_123' can get their campaign at /brands/brand_123/campaigns/camp_abc
+     * @deny (get) - Authenticated user with UID 'brand_123' cannot get campaign /brands/brand_xyz/campaigns/camp_abc
+     * @principle Enforces document ownership for writes, validating brandId on create.
      */
     match /brands/{brandId}/campaigns/{campaignId} {
-      // Helper function to check if the user is signed in and is the owner of the document.
-      function isOwner(brandId) {
-        return request.auth != null && request.auth.uid == brandId;
+      function isSignedIn() {
+        return request.auth != null;
       }
-
-      // Helper function to check if the user is signed in and is the owner of the document and resource is not null.
+      function isOwner(brandId) {
+        return request.auth.uid == brandId;
+      }
       function isExistingOwner(brandId) {
         return isOwner(brandId) && resource != null;
       }
 
-      allow get: if isOwner(brandId);
-      allow list: if isOwner(brandId);
+      allow get: if isSignedIn() && isOwner(brandId);
+      allow list: if false;
 
-      allow create: if isOwner(brandId) && request.resource.data.brandId == brandId;
+      allow create: if isSignedIn() && isOwner(brandId) && request.resource.data.brandId == brandId;
       allow update: if isExistingOwner(brandId) && request.resource.data.brandId == resource.data.brandId;
       allow delete: if isExistingOwner(brandId);
     }
 
     /**
-     * @description Stores entries for users joining the waiting list. Anyone can create an entry.  Entries can only be read by admins (if admin roles are implemented).
+     * @description Secures waiting list entries. Anyone can create an entry. Entries are not readable by the client.
      * @path /waiting_list_entries/{waitingListEntryId}
-     * @allow (create) - Anyone can create a waiting list entry at /waiting_list_entries/{waitingListEntryId}.
-     * @deny (get, list, update, delete) - No one can get, list, update, or delete waiting list entries without admin permissions.
-     * @principle Allows public creation but restricts all other access.
+     * @allow (create) - Any authenticated or unauthenticated user can create a waiting list entry.
+     * @deny (get) - No user can read a waiting list entry.
+     * @principle Allows public creation, restricts all reads.
      */
     match /waiting_list_entries/{waitingListEntryId} {
       allow get: if false;

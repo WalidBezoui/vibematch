@@ -51,7 +51,7 @@ export default function FaqPage() {
             <div className="flex gap-6">
               <Link
                 className="text-sm text-foreground/60 hover:text-primary"
-                href="#"
+                href="/terms"
               >
                 {t('footer.terms')}
               </Link>

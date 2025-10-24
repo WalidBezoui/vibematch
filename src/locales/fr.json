@@ -362,7 +362,11 @@
         "step4": {
             "header": "Notre Engagement Qualité",
             "description": "Pour que VibeMatch reste une plateforme de confiance, nous demandons à tous les créateurs de s'engager à un haut niveau de professionnalisme. C'est notre garantie collective.",
-            "pledge": "Je m'engage à respecter les délais et à ne jamais utiliser de faux engagement."
+            "pledge": "Je m'engage à respecter les délais et à ne jamais utiliser de faux engagement.",
+            "terms": {
+                "label": "J'accepte les",
+                "link": "Termes et Conditions"
+            }
         },
         "finalStep": {
             "title": "Merci pour votre candidature.",

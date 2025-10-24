@@ -362,7 +362,11 @@
         "step4": {
             "header": "Our Pledge for Quality",
             "description": "To ensure VibeMatch remains a high-trust platform, we require all creators to commit to professional standards. This helps us maintain a reliable environment for everyone.",
-            "pledge": "I commit to meeting deadlines and not using fake engagement."
+            "pledge": "I commit to meeting deadlines and not using fake engagement.",
+            "terms": {
+                "label": "I agree to the",
+                "link": "Terms and Agreements"
+            }
         },
         "finalStep": {
             "title": "Thank you for your application.",
