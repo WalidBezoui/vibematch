@@ -1,0 +1,396 @@
+{
+  "entities": {
+    "Influencer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Influencer",
+      "type": "object",
+      "description": "Represents an influencer profile on the VibeMatch platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the influencer."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The influencer's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The influencer's last name."
+        },
+        "email": {
+          "type": "string",
+          "description": "The influencer's email address.",
+          "format": "email"
+        },
+        "profileName": {
+          "type": "string",
+          "description": "The influencer's profile name or username (e.g., on social media)."
+        },
+        "profilePicture": {
+          "type": "string",
+          "description": "URL to the influencer's profile picture.",
+          "format": "uri"
+        },
+        "location": {
+          "type": "string",
+          "description": "The location of the influencer (city, country)."
+        },
+        "niches": {
+          "type": "array",
+          "description": "An array of niches or categories the influencer specializes in.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "socialMediaLinks": {
+          "type": "array",
+          "description": "An array of links to the influencer's social media profiles.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "engagementRate": {
+          "type": "number",
+          "description": "The influencer's engagement rate (as a percentage)."
+        },
+        "audienceDemographics": {
+          "type": "string",
+          "description": "Description of the influencer's audience demographics (e.g., age, gender, location)."
+        },
+        "portfolioLinks": {
+          "type": "array",
+          "description": "An array of links to the influencer's portfolio or previous work.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aesthetic": {
+          "type": "string",
+          "description": "Aesthetic of the influencer (e.g., minimalist, vibrant, vintage)."
+        },
+        "bio": {
+          "type": "string",
+          "description": "A short biography or description of the influencer."
+        },
+        "termsAgreement": {
+          "type": "boolean",
+          "description": "Indicates whether the influencer has agreed to the platform's terms and agreements."
+        },
+        "commitToDeadlines": {
+          "type": "boolean",
+          "description": "Indicates whether the influencer commits to meeting deadlines and not using fake engagement."
+        },
+        "applicationStatus": {
+          "type": "string",
+          "description": "Status of the influencer's application (e.g., pending, approved, rejected)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the influencer profile was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the influencer profile was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "profileName",
+        "profilePicture",
+        "location",
+        "niches",
+        "socialMediaLinks",
+        "engagementRate",
+        "audienceDemographics",
+        "portfolioLinks",
+        "aesthetic",
+        "bio",
+        "termsAgreement",
+        "commitToDeadlines",
+        "applicationStatus",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Brand": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Brand",
+      "type": "object",
+      "description": "Represents a brand that uses the VibeMatch platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the brand."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the brand."
+        },
+        "email": {
+          "type": "string",
+          "description": "The brand's email address.",
+          "format": "email"
+        },
+        "logo": {
+          "type": "string",
+          "description": "URL to the brand's logo.",
+          "format": "uri"
+        },
+        "website": {
+          "type": "string",
+          "description": "URL to the brand's website.",
+          "format": "uri"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the brand and its products/services."
+        },
+        "categories": {
+          "type": "array",
+          "description": "An array of categories the brand belongs to.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "socialMediaLinks": {
+          "type": "array",
+          "description": "An array of links to the brand's social media profiles.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aesthetic": {
+          "type": "string",
+          "description": "Aesthetic of the brand (e.g., modern, classic, luxury)."
+        },
+        "termsAgreement": {
+          "type": "boolean",
+          "description": "Indicates whether the brand has agreed to the platform's terms and agreements."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the brand profile was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the brand profile was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "logo",
+        "website",
+        "description",
+        "categories",
+        "socialMediaLinks",
+        "aesthetic",
+        "termsAgreement",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Campaign": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Campaign",
+      "type": "object",
+      "description": "Represents a marketing campaign created by a brand on the VibeMatch platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the campaign."
+        },
+        "brandId": {
+          "type": "string",
+          "description": "Reference to Brand. (Relationship: Brand 1:N Campaign)"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the campaign."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the campaign goals and objectives."
+        },
+        "startDate": {
+          "type": "string",
+          "description": "The start date of the campaign.",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "The end date of the campaign.",
+          "format": "date-time"
+        },
+        "budget": {
+          "type": "number",
+          "description": "The budget allocated for the campaign."
+        },
+        "targetAudience": {
+          "type": "string",
+          "description": "Description of the campaign's target audience (demographics, interests)."
+        },
+        "requiredAesthetic": {
+          "type": "string",
+          "description": "The desired aesthetic for the campaign's content."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the campaign (e.g., draft, active, completed)."
+        },
+        "influencerIds": {
+          "type": "array",
+          "description": "References to Influencers participating in the campaign. (Relationship: Influencer N:N Campaign)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the campaign was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the campaign was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "brandId",
+        "name",
+        "description",
+        "startDate",
+        "endDate",
+        "budget",
+        "targetAudience",
+        "requiredAesthetic",
+        "status",
+        "influencerIds",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "WaitingListEntry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "WaitingListEntry",
+      "type": "object",
+      "description": "Represents an entry in the waiting list.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the waiting list entry."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person joining the waiting list.",
+          "format": "email"
+        },
+        "role": {
+          "type": "string",
+          "description": "The role selected when joining the waiting list (e.g., Brand, Influencer)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the waiting list entry was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "role",
+        "createdAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/influencers/{influencerId}",
+        "definition": {
+          "entityName": "Influencer",
+          "schema": {
+            "$ref": "#/backend/entities/Influencer"
+          },
+          "description": "Stores influencer profiles. Includes all necessary influencer data for matching and engagement rate calculation. Influencer can only read/write their own profile.",
+          "params": [
+            {
+              "name": "influencerId",
+              "description": "The unique identifier of the influencer."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/brands/{brandId}",
+        "definition": {
+          "entityName": "Brand",
+          "schema": {
+            "$ref": "#/backend/entities/Brand"
+          },
+          "description": "Stores brand profiles. Brands can only read/write their own profile.",
+          "params": [
+            {
+              "name": "brandId",
+              "description": "The unique identifier of the brand."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/brands/{brandId}/campaigns/{campaignId}",
+        "definition": {
+          "entityName": "Campaign",
+          "schema": {
+            "$ref": "#/backend/entities/Campaign"
+          },
+          "description": "Stores campaigns created by brands. Includes denormalized data from the brand profile (if needed for authorization purposes) to ensure authorization independence.  Brands can only read/write their own campaigns.",
+          "params": [
+            {
+              "name": "brandId",
+              "description": "The unique identifier of the brand."
+            },
+            {
+              "name": "campaignId",
+              "description": "The unique identifier of the campaign."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/waiting_list_entries/{waitingListEntryId}",
+        "definition": {
+          "entityName": "WaitingListEntry",
+          "schema": {
+            "$ref": "#/backend/entities/WaitingListEntry"
+          },
+          "description": "Stores entries for users joining the waiting list. Anyone can create an entry.  Entries can only be read by admins (if admin roles are implemented).",
+          "params": [
+            {
+              "name": "waitingListEntryId",
+              "description": "The unique identifier of the waiting list entry."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support VibeMatch's core features while adhering to the principles of Authorization Independence, Structural Segregation, Access Modeling, and Data Clarity.  It leverages denormalization to avoid `get()` calls in security rules, enabling atomic operations and simplifying security logic.  Structural segregation is used to separate data with different access control needs (e.g., separating application data from user-owned profiles). Access modeling employs path-based ownership for user-related data and membership maps for collaborative scenarios (if any collaboration feature are added later on).  The structure prioritizes explicit state modeling and predictable schemas for improved debuggability. All timestamps (`createdAt`, `updatedAt`) can be used to optimize listing operations. Each influencer and brand must agree to a terms agreement and the influencers must agree to commit to deadlines. \n\n**Authorization Independence:**\n*   The `brands/{brandId}/campaigns/{campaignId}` path is designed to provide authorization independence. If, for example, access to a campaign needs to depend on brand membership or role, those attributes should be denormalized into each campaign document. This avoids `get()` calls to the `/brands/{brandId}` document within security rules.\n*   The `waiting_list_entries` collection does not require any special authorization consideration.\n\n**QAPs Support:**\n*   The structure uses Structural Segregation, by dedicating the entire `waiting_list_entries` collection to waiting list entries.  This means list operations on this collection can be secured with a single rule.\n*   The influencer and brand applications are stored in dedicated collections, enabling secure listing based on roles."
+  }
+}
