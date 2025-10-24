@@ -68,13 +68,14 @@ export function HomeComponent() {
               {t('homePage.brands.description')}
             </p>
             <div className="mt-4 flex flex-col gap-4">
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 text-center">
-                <p className="font-semibold text-foreground">
-                  {t('homePage.brands.cta.title')}
-                </p>
-                <p className="text-sm text-primary/80 italic mt-1">
-                  {t('homePage.brands.cta.subtitle')}
-                </p>
+               <div className="relative bg-primary/5 border border-primary/20 rounded-lg p-4 text-left">
+                  <p className="font-semibold text-foreground">
+                    {t('homePage.brands.cta.title')}
+                  </p>
+                  <p className="text-sm text-primary/80 italic mt-1">
+                    {t('homePage.brands.cta.subtitle')}
+                  </p>
+                   <div className="absolute left-8 -bottom-2.5 w-5 h-5 bg-primary/5 rotate-45 transform border-r border-b border-primary/20"></div>
               </div>
               <Button
                 asChild
@@ -278,7 +279,7 @@ export function HomeComponent() {
                   className="bg-muted/50 border border-border/50 rounded-xl px-6 group"
                 >
                   <AccordionTrigger className="hover:no-underline text-lg font-semibold">
-                    {faq.question}
+                    <span className="text-left rtl:text-right">{faq.question}</span>
                     <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
                       expand_more
                     </span>
@@ -302,7 +303,7 @@ export function HomeComponent() {
                   className="bg-muted/50 border border-border/50 rounded-xl px-6 group"
                 >
                   <AccordionTrigger className="hover:no-underline text-lg font-semibold">
-                    {faq.question}
+                    <span className="text-left rtl:text-right">{faq.question}</span>
                     <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
                       expand_more
                     </span>
