@@ -9,13 +9,24 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 type Applicant = {
     id: string;
@@ -202,15 +213,31 @@ export default function ManageApplicationsPage() {
                                         </div>
                                     </div>
                                 </CardHeader>
-                                <CardContent className="flex-grow">
-                                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><FileText className="h-4 w-4 text-muted-foreground" /> Cover Letter</h4>
-                                    <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border break-words">{applicant.coverLetter}</p>
+                                <CardContent className="flex-grow space-y-4">
+                                    <div className="space-y-2">
+                                        <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Cover Letter</h4>
+                                        <p className="text-sm text-muted-foreground line-clamp-3">{applicant.coverLetter}</p>
+                                    </div>
+                                     <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button variant="link" className="p-0 h-auto text-primary">
+                                                Read Full Letter
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                            <AlertDialogTitle>Cover Letter from {applicant.profile?.name?.split(' ')[0] || 'Creator'}</AlertDialogTitle>
+                                            <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
+                                                {applicant.coverLetter}
+                                            </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                            <AlertDialogAction>Close</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                 </CardContent>
-                                <CardFooter className="flex-col items-stretch gap-2">
-                                     <Button variant="outline" className="w-full">
-                                        <User className="mr-2 h-4 w-4" />
-                                        View Profile
-                                    </Button>
+                                <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
                                     <div className="flex gap-2">
                                         <Button className="w-full flex-1" onClick={() => handleAccept(applicant.id, applicant.creatorId)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                             <CheckCircle className="mr-2 h-4 w-4" />
@@ -221,6 +248,10 @@ export default function ManageApplicationsPage() {
                                             Reject
                                         </Button>
                                     </div>
+                                     <Button variant="ghost" className="w-full">
+                                        <User className="mr-2 h-4 w-4" />
+                                        View Profile
+                                    </Button>
                                 </CardFooter>
                             </Card>
                         ))}
