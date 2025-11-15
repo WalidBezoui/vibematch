@@ -31,12 +31,20 @@ export function AppHeader() {
     interest?: 'brand' | 'creator';
   };
   
-  const navLinks: NavLinkItem[] = useMemo(() => [
-    { href: "/#brands", label: t('header.forBrands'), interest: 'brand' },
-    { href: "/#creators", label: t('header.forCreators'), interest: 'creator' },
-    { href: "/faq", label: t('header.faq') },
-    { href: "/contact", label: t('header.contact') },
-  ], [t]);
+  const navLinks: NavLinkItem[] = useMemo(() => {
+    if (user) {
+        return [
+            { href: "/faq", label: t('header.faq') },
+            { href: "/contact", label: t('header.contact') },
+        ]
+    }
+    return [
+        { href: "/#brands", label: t('header.forBrands'), interest: 'brand' },
+        { href: "/#creators", label: t('header.forCreators'), interest: 'creator' },
+        { href: "/faq", label: t('header.faq') },
+        { href: "/contact", label: t('header.contact') },
+    ];
+  }, [t, user]);
 
   const handleLanguageChange = (lang: 'EN' | 'FR' | 'AR') => {
     setLanguage(lang);
