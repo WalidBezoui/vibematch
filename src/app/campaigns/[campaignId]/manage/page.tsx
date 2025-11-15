@@ -66,8 +66,18 @@ export default function ManageApplicationsPage() {
                 const enrichedApplicants = await Promise.all(
                     applications.map(async (app) => {
                         const profileRef = doc(firestore, 'users', app.creatorId);
-                        const profileSnap = await getDoc(profileRef);
-                        return { ...app, profile: profileSnap.exists() ? profileSnap.data() : null };
+                        try {
+                            const profileSnap = await getDoc(profileRef);
+                            return { ...app, profile: profileSnap.exists() ? profileSnap.data() : null };
+                        } catch (error) {
+                             const permissionError = new FirestorePermissionError({
+                                path: profileRef.path,
+                                operation: 'get',
+                            });
+                            errorEmitter.emit('permission-error', permissionError);
+                            // Return the app without a profile on error
+                            return { ...app, profile: null };
+                        }
                     })
                 );
                 setApplicants(enrichedApplicants);
