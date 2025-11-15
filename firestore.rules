@@ -2,22 +2,22 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Users can read their own profile, and anyone can create one.
+    // Users can read/update their own profile.
+    // A user can be created if the UID in the document matches the authenticated user's UID.
     match /users/{userId} {
-      allow read: if request.auth.uid == userId;
-      allow create: if request.auth.uid == userId;
-      allow update: if request.auth.uid == userId;
+      allow read, update: if request.auth.uid == userId;
+      allow create: if request.auth.uid == request.resource.data.uid;
     }
 
     // Brands can create jobs.
     // Both brand and creator can read/update the job they are part of.
     match /jobs/{jobId} {
       allow read, update: if resource.data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
-      allow create: if request.auth.uid != null && request.resource.data.brandId == request.auth.uid;
+      allow create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'brand' && request.resource.data.brandId == request.auth.uid;
     }
     
     // Invites can be read by anyone with the link (ID).
-    // The creator who is invited can update it (to accept).
+    // The creator who is invited can update it (to accept), linking their creatorId.
     match /invites/{inviteId} {
       allow read: if true;
       allow update: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.email == resource.data.creatorEmail;
