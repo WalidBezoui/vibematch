@@ -2,19 +2,28 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-
+import { useUser } from '@/firebase';
+import { getAuth, signOut } from 'firebase/auth';
 
 export function AppHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const isLoginPage = pathname === '/login';
   const { language, setLanguage, t, dir, setUserInterest } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, isUserLoading } = useUser();
+
+  const handleLogout = async () => {
+    const auth = getAuth();
+    await signOut(auth);
+    router.push('/');
+  };
 
   type NavLinkItem = {
     href: string;
@@ -69,6 +78,88 @@ export function AppHeader() {
     </div>
   );
 
+  const renderAuthButtons = () => {
+    if (isUserLoading) {
+      return <div className="h-10 w-24 bg-muted rounded-full animate-pulse"></div>;
+    }
+
+    if (user) {
+      return (
+        <>
+          <Button variant="outline" className="hidden md:flex rounded-full" asChild>
+            <Link href="/dashboard">
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              {t('header.dashboard')}
+            </Link>
+          </Button>
+          <Button onClick={handleLogout} variant="ghost" className="hidden md:flex rounded-full">
+            <LogOut className="mr-2 h-4 w-4" />
+            {t('header.logout')}
+          </Button>
+        </>
+      );
+    }
+
+    return (
+      <Button variant="outline" className="hidden md:flex rounded-full" asChild>
+        <Link href={isLoginPage ? '/' : '/login'}>
+          {isLoginPage ? (
+            <>
+              <Home className="mr-2 h-4 w-4" />
+              {t('header.home')}
+            </>
+          ) : (
+            <>
+              <LogIn className="mr-2 h-4 w-4" />
+              {t('header.login')}
+            </>
+          )}
+        </Link>
+      </Button>
+    );
+  };
+  
+  const renderMobileAuthButtons = () => {
+    if (isUserLoading) {
+        return <div className="h-10 w-full bg-muted rounded-full animate-pulse"></div>
+    }
+
+    if (user) {
+        return (
+            <>
+                <Button variant="outline" className="w-full flex rounded-full" asChild>
+                    <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        {t('header.dashboard')}
+                    </Link>
+                </Button>
+                <Button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} variant="ghost" className="w-full flex rounded-full">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    {t('header.logout')}
+                </Button>
+            </>
+        )
+    }
+
+    return (
+        <Button variant="outline" className="w-full flex rounded-full" asChild>
+            <Link href={isLoginPage ? '/' : '/login'} onClick={() => setIsMobileMenuOpen(false)}>
+                {isLoginPage ? (
+                    <>
+                        <Home className="mr-2 h-4 w-4" />
+                        {t('header.home')}
+                    </>
+                ) : (
+                    <>
+                        <LogIn className="mr-2 h-4 w-4" />
+                        {t('header.login')}
+                    </>
+                )}
+            </Link>
+        </Button>
+    )
+  }
+
   return (
     <header className="px-4 md:px-10 lg:px-20 flex justify-between items-center py-4 backdrop-blur-md sticky top-0 z-50 bg-background/80 border-b">
       <Link
@@ -86,21 +177,7 @@ export function AppHeader() {
 
       <div className="flex items-center gap-2">
         <LanguageSwitcher className="hidden sm:flex" />
-        <Button variant="outline" className="hidden md:flex rounded-full" asChild>
-          <Link href={isLoginPage ? '/' : '/login'}>
-            {isLoginPage ? (
-              <>
-                <Home className="mr-2 h-4 w-4" />
-                {t('header.home')}
-              </>
-            ) : (
-              <>
-                <LogIn className="mr-2 h-4 w-4" />
-                {t('header.login')}
-              </>
-            )}
-          </Link>
-        </Button>
+        {renderAuthButtons()}
         <div className='flex items-center gap-2 md:hidden'>
           <LanguageSwitcher />
           <Button 
@@ -139,21 +216,7 @@ export function AppHeader() {
             </nav>
 
             <div className="mt-auto space-y-4">
-              <Button variant="outline" className="w-full flex rounded-full" asChild>
-                <Link href={isLoginPage ? '/' : '/login'}>
-                  {isLoginPage ? (
-                    <>
-                      <Home className="mr-2 h-4 w-4" />
-                      {t('header.home')}
-                    </>
-                  ) : (
-                    <>
-                      <LogIn className="mr-2 h-4 w-4" />
-                      {t('header.login')}
-                    </>
-                  )}
-                </Link>
-              </Button>
+              {renderMobileAuthButtons()}
             </div>
           </div>
         </SheetContent>

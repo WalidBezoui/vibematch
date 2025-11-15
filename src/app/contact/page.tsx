@@ -61,7 +61,7 @@ export default function ContactPage() {
   return (
     <div className="flex h-auto w-full flex-col">
       <AppHeader />
-      <main className="px-4 md:px-10 lg:px-20 py-16 md:py-24 hero-bg">
+      <main className="flex-1 px-4 md:px-10 lg:px-20 py-16 md:py-24 hero-bg">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16 md:mb-24">
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight">

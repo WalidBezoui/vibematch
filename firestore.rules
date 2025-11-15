@@ -1,59 +1,26 @@
-/**
- * @fileoverview Firestore Security Rules for VibeMatch applications.
- *
- * Core Philosophy:
- * This ruleset provides a public "create-only" access for waitlist applications
- * while restricting read, update, and delete operations to prevent unauthorized data access.
- *
- * Data Structure:
- * The data is organized into two top-level collections: `brand-applications` and `creator-applications`.
- * Each collection stores application documents with a unique ID.
- *
- * Key Security Decisions:
- * - Public applications creation: Anyone can create a brand or creator application.
- * - No listing of applications: Regular users cannot list any applications.
- * - No reading of applications: Regular users cannot read any application.
- * - No updates or deletion: Applications cannot be updated or deleted by regular users.
- * - Data written to each document is NOT validated.
- */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    /**
-     * @description Allows anyone to create a brand application, but restricts all other operations.
-     * @path /brand-applications/{applicationId}
-     * @allow (create) - Any unauthenticated user can create a brand application.
-     * @deny (get) - An unauthenticated user cannot get a brand application.
-     * @deny (list) - An unauthenticated user cannot list brand applications.
-     * @deny (update) - An unauthenticated user cannot update a brand application.
-     * @deny (delete) - An unauthenticated user cannot delete a brand application.
-     * @principle Allows public applications creation while restricting access to application data.
-     */
-    match /brand-applications/{applicationId} {
-      allow get: if false;
-      allow list: if false;
-      allow create: if true;
-      allow update: if false;
-      allow delete: if false;
+    
+    // Users can read their own profile, and anyone can create one.
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId;
+      allow create: if request.auth.uid == userId;
+      allow update: if request.auth.uid == userId;
     }
 
-    /**
-     * @description Allows anyone to create a creator application, but restricts all other operations.
-     * @path /creator-applications/{applicationId}
-     * @allow (create) - Any unauthenticated user can create a creator application.
-     * @deny (get) - An unauthenticated user cannot get a creator application.
-     * @deny (list) - An unauthenticated user cannot list creator applications.
-     * @deny (update) - An unauthenticated user cannot update a creator application.
-     * @deny (delete) - An unauthenticated user cannot delete a creator application.
-     * @principle Allows public applications creation while restricting access to application data.
-     */
-    match /creator-applications/{applicationId} {
-      allow get: if false;
-      allow list: if false;
-      allow create: if true;
-      allow update: if false;
-      allow delete: if false;
+    // Brands can create jobs.
+    // Both brand and creator can read/update the job they are part of.
+    match /jobs/{jobId} {
+      allow read, update: if resource.data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
+      allow create: if request.auth.uid != null && request.resource.data.brandId == request.auth.uid;
+    }
+    
+    // Invites can be read by anyone with the link (ID).
+    // The creator who is invited can update it (to accept).
+    match /invites/{inviteId} {
+      allow read: if true;
+      allow update: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.email == resource.data.creatorEmail;
     }
   }
 }

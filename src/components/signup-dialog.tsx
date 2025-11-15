@@ -36,8 +36,9 @@ export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
         </DialogHeader>
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link
-            href="/brands/join"
+            href="/signup/brand"
             className="group relative flex flex-col items-center justify-center p-6 bg-muted/50 rounded-lg border hover:border-primary transition-all duration-300 transform hover:-translate-y-1 hover:shadow-glow-primary"
+            onClick={() => onOpenChange(false)}
           >
             <Store className="w-10 h-10 text-primary mb-3" />
             <h3 className="font-bold text-lg">{t('signupDialog.brand.title')}</h3>
@@ -50,8 +51,9 @@ export function SignupDialog({ open, onOpenChange }: SignupDialogProps) {
             </span>
           </Link>
           <Link
-            href="/creators/join"
+            href="/signup/creator"
             className="group relative flex flex-col items-center justify-center p-6 bg-muted/50 rounded-lg border hover:border-secondary transition-all duration-300 transform hover:-translate-y-1 hover:shadow-glow-secondary"
+            onClick={() => onOpenChange(false)}
           >
             <Palette className="w-10 h-10 text-accent mb-3" />
             <h3 className="font-bold text-lg">{t('signupDialog.creator.title')}</h3>

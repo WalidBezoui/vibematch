@@ -1,130 +1,191 @@
 {
   "entities": {
-    "BrandApplication": {
+    "UserProfile": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Brand Application",
+      "title": "User Profile",
       "type": "object",
-      "description": "Represents a brand's application to join the VibeMatch waitlist.",
+      "description": "Represents a user's public and private profile information.",
       "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The user's unique ID from Firebase Authentication."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
         "name": {
           "type": "string",
-          "description": "Full name of the contact person."
+          "description": "The user's full name or company name."
         },
-        "email": {
+        "role": {
           "type": "string",
-          "format": "email",
-          "description": "Contact email for the brand."
-        },
-        "company": {
-          "type": "string",
-          "description": "The name of the brand's company."
-        },
-        "ice": {
-          "type": "string",
-          "description": "The company's ICE number (Identifiant Commun de l'Entreprise) in Morocco."
-        },
-        "phone": {
-          "type": "string",
-          "description": "Contact phone number."
-        },
-        "city": {
-          "type": "string",
-          "description": "The city where the brand is located."
+          "enum": ["brand", "creator"],
+          "description": "The role of the user, determining their permissions and view."
         },
         "createdAt": {
           "type": "string",
           "format": "date-time",
-          "description": "Timestamp of when the application was submitted."
+          "description": "Timestamp of when the user profile was created."
         }
       },
-      "required": ["name", "email", "company", "createdAt"]
+      "required": ["uid", "email", "name", "role", "createdAt"]
     },
-    "CreatorApplication": {
+    "Job": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Creator Application",
+      "title": "Job",
       "type": "object",
-      "description": "Represents a creator's application to join the VibeMatch platform.",
+      "description": "Represents a collaboration contract between a Brand and a Creator.",
       "properties": {
-        "fullName": {
+        "title": {
           "type": "string",
-          "description": "The creator's full name."
+          "description": "The title of the job or campaign."
         },
-        "email": {
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the deliverables and requirements."
+        },
+        "price": {
+          "type": "number",
+          "description": "The payment amount for the job in Moroccan Dirhams (DH)."
+        },
+        "brandId": {
+          "type": "string",
+          "description": "The UID of the Brand who created the job."
+        },
+        "creatorId": {
+          "type": "string",
+          "description": "The UID of the Creator assigned to the job."
+        },
+        "creatorEmail": {
           "type": "string",
           "format": "email",
-          "description": "The creator's contact email."
+          "description": "The email of the creator who is invited to the job."
         },
-        "phone": {
+        "status": {
           "type": "string",
-          "description": "The creator's primary phone number."
-        },
-        "whatsapp": {
-          "type": "string",
-          "description": "The creator's WhatsApp number, if different from the primary phone."
-        },
-        "instagram": {
-          "type": "string",
-...
+          "enum": [
+            "PENDING_CREATOR_APPROVAL",
+            "PENDING_PAYMENT",
+            "IN_PROGRESS",
+            "DELIVERED",
+            "COMPLETED",
+            "REJECTED"
+          ],
+          "description": "The current status of the job workflow."
         },
         "createdAt": {
           "type": "string",
-          "format": "date-time",
-          "description": "Timestamp of when the application was submitted."
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "inviteId": {
+          "type": "string",
+          "description": "The ID of the associated job invitation."
+        },
+        "deliverables": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "url": {"type": "string"},
+                    "fileName": {"type": "string"},
+                    "uploadedAt": {"type": "string", "format": "date-time"}
+                }
+            }
         }
       },
-      "required": [
-        "fullName",
-        "email",
-        "phone",
-        "instagram",
-        "niches",
-        "pledge",
-        "terms",
-        "createdAt"
-      ]
+      "required": ["title", "price", "brandId", "creatorEmail", "status", "createdAt", "updatedAt"]
+    },
+    "JobInvite": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Job Invite",
+      "type": "object",
+      "description": "Represents a unique, one-time invitation for a Creator to accept a Job.",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "description": "The ID of the job this invitation is for."
+        },
+        "creatorEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "The email of the creator the invitation was sent to."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "accepted", "expired"],
+          "description": "The status of the invitation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["jobId", "creatorEmail", "status", "createdAt"]
     }
   },
   "auth": {
-    "providers": [
-      "password",
-      "anonymous"
-    ]
+    "providers": ["password", "anonymous"]
   },
   "firestore": {
     "structure": [
       {
-        "path": "/brand-applications/{applicationId}",
+        "path": "/users/{userId}",
         "definition": {
-          "entityName": "BrandApplication",
+          "entityName": "UserProfile",
           "schema": {
-            "$ref": "#/entities/BrandApplication"
+            "$ref": "#/entities/UserProfile"
           },
-          "description": "Stores applications from brands wanting to join the waitlist. Anyone can create an application. Only admins should be able to read/list them.",
+          "description": "Stores public and private information for each user.",
           "params": [
             {
-              "name": "applicationId",
-              "description": "The unique identifier for the brand application."
+              "name": "userId",
+              "description": "The unique ID of the user."
             }
           ]
         }
       },
       {
-        "path": "/creator-applications/{applicationId}",
+        "path": "/jobs/{jobId}",
         "definition": {
-          "entityName": "CreatorApplication",
+          "entityName": "Job",
           "schema": {
-            "$ref": "#/entities/CreatorApplication"
+            "$ref": "#/entities/Job"
           },
-          "description": "Stores applications from creators wanting to join the platform. Anyone can create an application. Only admins should be able to read/list them.",
+          "description": "Stores all job contracts between brands and creators.",
           "params": [
             {
-              "name": "applicationId",
-              "description": "The unique identifier for the creator application."
+              "name": "jobId",
+              "description": "The unique ID for the job."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/invites/{inviteId}",
+        "definition": {
+          "entityName": "JobInvite",
+          "schema": {
+            "$ref": "#/entities/JobInvite"
+          },
+          "description": "Stores unique invitation tokens for creators.",
+          "params": [
+            {
+              "name": "inviteId",
+              "description": "The unique ID for the job invitation."
             }
           ]
         }
       }
-    ],
-    "reasoning": "The structure is designed to securely capture waitlist applications. By using top-level collections `brand-applications` and `creator-applications`, we can apply simple and effective security rules: allow public `create` access while restricting all `read`, `update`, and `delete` operations to prevent data exposure. This ensures that applicant data is private and write-only for anonymous users, adhering to the principle of least privilege."
+    ]
   }
 }

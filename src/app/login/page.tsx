@@ -8,10 +8,36 @@ import { SignupDialog } from '@/components/signup-dialog';
 import { AppHeader } from '@/components/app-header';
 import { Lock, Mail } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
+import { useAuth } from '@/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { t } = useLanguage();
+  const auth = useAuth();
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/dashboard');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: error.message,
+      });
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -32,7 +58,7 @@ export default function LoginPage() {
                     {t('loginPage.description')}
                   </p>
                 </div>
-                <form className="flex flex-col gap-6">
+                <form className="flex flex-col gap-6" onSubmit={handleLogin}>
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="email" className="font-semibold text-sm">
                       {t('loginPage.form.email.label')}
@@ -44,6 +70,9 @@ export default function LoginPage() {
                         id="email"
                         placeholder={t('loginPage.form.email.placeholder')}
                         type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
                       />
                     </div>
                   </div>
@@ -69,14 +98,19 @@ export default function LoginPage() {
                         id="password"
                         placeholder="••••••••"
                         type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
                       />
                     </div>
                   </div>
                   <Button
+                    type="submit"
                     size="lg"
+                    disabled={isLoading}
                     className="flex mt-4 w-full h-14 px-8 gradient-bg text-black text-base font-bold leading-normal tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
                   >
-                    {t('loginPage.form.submitButton')}
+                    {isLoading ? 'Logging in...' : t('loginPage.form.submitButton')}
                   </Button>
                 </form>
                 <div className="text-center">

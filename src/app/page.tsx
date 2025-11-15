@@ -14,7 +14,7 @@ export default function Home() {
         <PromoBanner />
         <AppHeader />
 
-        <main className="px-4 md:px-10 lg:px-20 py-10 md:py-20 hero-bg">
+        <main className="flex-1 px-4 md:px-10 lg:px-20 py-10 md:py-20 hero-bg">
           <div className="max-w-[1200px] mx-auto flex-1">
             <HomeComponent />
           </div>

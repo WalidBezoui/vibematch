@@ -6,6 +6,8 @@
         "faq": "FAQ",
         "contact": "Contact",
         "login": "Login",
+        "logout": "Logout",
+        "dashboard": "Dashboard",
         "home": "Home"
     },
     "promoBanner": {

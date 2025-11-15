@@ -4,18 +4,15 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/context/language-context';
 import { FirebaseClientProvider } from '@/firebase';
-
-/*
-export const metadata: Metadata = {
-  title: 'VibeMatch - Moroccan Influencer Marketplace',
-  description: 'Connecting brands with influencers based on aesthetic and campaign goals.',
-};
-*/
+import { usePathname } from 'next/navigation';
 
 function AppBody({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isDashboard = pathname.startsWith('/dashboard');
+
   return (
     <body
-      className={`bg-background text-foreground/90 antialiased selection:bg-primary/20`}
+      className={`bg-background text-foreground/90 antialiased selection:bg-primary/20 ${isDashboard ? 'bg-muted/50' : ''}`}
     >
       {children}
     </body>

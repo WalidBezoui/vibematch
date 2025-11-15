@@ -6,6 +6,8 @@
         "faq": "FAQ",
         "contact": "Contact",
         "login": "Connexion",
+        "logout": "Déconnexion",
+        "dashboard": "Tableau de bord",
         "home": "Accueil"
     },
     "promoBanner": {
