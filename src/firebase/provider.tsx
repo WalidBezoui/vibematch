@@ -2,7 +2,7 @@
 
 import React, { DependencyList, createContext, useContext, ReactNode, useMemo, useState, useEffect } from 'react';
 import { FirebaseApp } from 'firebase/app';
-import { Firestore } from 'firebase/firestore';
+import { Firestore, doc, getDoc } from 'firebase/firestore';
 import { Auth, User, onAuthStateChanged } from 'firebase/auth';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
 
@@ -18,6 +18,12 @@ interface UserAuthState {
   user: User | null;
   isUserLoading: boolean;
   userError: Error | null;
+}
+
+interface UserProfileState {
+  userProfile: any | null;
+  isLoading: boolean;
+  error: Error | null;
 }
 
 // Combined state for the Firebase context
@@ -43,7 +49,7 @@ export interface FirebaseServicesAndUser {
 }
 
 // Return type for useUser() - specific to user auth state
-export interface UserHookResult { // Renamed from UserAuthHookResult for consistency if desired, or keep as UserAuthHookResult
+export interface UserHookResult { 
   user: User | null;
   isUserLoading: boolean;
   userError: Error | null;
@@ -170,7 +176,47 @@ export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T | 
  * This provides the User object, loading status, and any auth errors.
  * @returns {UserHookResult} Object with user, isUserLoading, userError.
  */
-export const useUser = (): UserHookResult => { // Renamed from useAuthUser
+export const useUser = (): UserHookResult => {
   const { user, isUserLoading, userError } = useFirebase(); // Leverages the main hook
   return { user, isUserLoading, userError };
 };
+
+export const useUserProfile = (): UserProfileState => {
+    const { user, isUserLoading } = useUser();
+    const firestore = useFirestore();
+    const [profileState, setProfileState] = useState<UserProfileState>({
+      userProfile: null,
+      isLoading: true,
+      error: null,
+    });
+  
+    useEffect(() => {
+      if (isUserLoading) {
+        setProfileState({ userProfile: null, isLoading: true, error: null });
+        return;
+      }
+      if (!user) {
+        setProfileState({ userProfile: null, isLoading: false, error: null });
+        return;
+      }
+  
+      const fetchProfile = async () => {
+        setProfileState({ userProfile: null, isLoading: true, error: null });
+        const userDocRef = doc(firestore, 'users', user.uid);
+        try {
+          const docSnap = await getDoc(userDocRef);
+          if (docSnap.exists()) {
+            setProfileState({ userProfile: docSnap.data(), isLoading: false, error: null });
+          } else {
+            setProfileState({ userProfile: null, isLoading: false, error: new Error('User profile not found.') });
+          }
+        } catch (error: any) {
+          setProfileState({ userProfile: null, isLoading: false, error });
+        }
+      };
+  
+      fetchProfile();
+    }, [user, isUserLoading, firestore]);
+  
+    return profileState;
+  };
