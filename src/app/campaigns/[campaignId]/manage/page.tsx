@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -205,7 +205,7 @@ export default function ManageApplicationsPage() {
                                     <div className="flex-1">
                                         <div className="flex justify-between items-center">
                                             <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Creator'}</CardTitle>
-                                            {applicant.badge && <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">✅ {applicant.badge}</Badge>}
+                                            {applicant.badge && <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200"><ShieldCheck className="h-3 w-3 mr-1" /> {applicant.badge}</Badge>}
                                         </div>
                                         <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
                                             <ShieldCheck className="h-4 w-4 text-green-500" />
@@ -216,7 +216,7 @@ export default function ManageApplicationsPage() {
                                 <CardContent className="flex-grow space-y-4">
                                     <div className="space-y-2">
                                         <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Cover Letter</h4>
-                                        <p className="text-sm text-muted-foreground line-clamp-3">{applicant.coverLetter}</p>
+                                        <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
                                     </div>
                                      <AlertDialog>
                                         <AlertDialogTrigger asChild>
