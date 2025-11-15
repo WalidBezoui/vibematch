@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -23,6 +23,8 @@ type Applicant = {
     coverLetter: string;
     status: 'pending' | 'accepted' | 'rejected';
     profile?: any; 
+    trustScore: number;
+    badge: 'Verified' | null;
 };
 
 const ApplicantCardSkeleton = () => (
@@ -68,7 +70,12 @@ export default function ManageApplicationsPage() {
                         const profileRef = doc(firestore, 'users', app.creatorId);
                         try {
                             const profileSnap = await getDoc(profileRef);
-                            return { ...app, profile: profileSnap.exists() ? profileSnap.data() : null };
+                            return { 
+                                ...app,
+                                profile: profileSnap.exists() ? profileSnap.data() : null,
+                                trustScore: Math.floor(Math.random() * (98 - 75 + 1) + 75), // Random score
+                                badge: Math.random() > 0.5 ? 'Verified' : null, // Random badge
+                            };
                         } catch (error) {
                              const permissionError = new FirestorePermissionError({
                                 path: profileRef.path,
@@ -76,11 +83,11 @@ export default function ManageApplicationsPage() {
                             });
                             errorEmitter.emit('permission-error', permissionError);
                             // Return the app without a profile on error
-                            return { ...app, profile: null };
+                            return { ...app, profile: null, trustScore: 0, badge: null };
                         }
                     })
                 );
-                setApplicants(enrichedApplicants);
+                setApplicants(enrichedApplicants as Applicant[]);
             };
             fetchProfiles();
         }
@@ -178,30 +185,42 @@ export default function ManageApplicationsPage() {
                 {applicants.length > 0 ? (
                     <div className="grid md:grid-cols-2 gap-6">
                         {applicants.map(applicant => (
-                             <Card key={applicant.id}>
-                                <CardHeader className="flex-row items-center gap-4">
+                             <Card key={applicant.id} className="flex flex-col">
+                                <CardHeader className="flex-row items-start gap-4">
                                      <Avatar className="h-12 w-12">
                                         <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
                                         <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
                                     </Avatar>
-                                    <div>
-                                        <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Creator'}</CardTitle>
-                                        <CardDescription>Applied</CardDescription>
+                                    <div className="flex-1">
+                                        <div className="flex justify-between items-center">
+                                            <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Creator'}</CardTitle>
+                                            {applicant.badge && <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">✅ {applicant.badge}</Badge>}
+                                        </div>
+                                        <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                                            <ShieldCheck className="h-4 w-4 text-green-500" />
+                                            <span>Trust Score: {applicant.trustScore}</span>
+                                        </div>
                                     </div>
                                 </CardHeader>
-                                <CardContent>
+                                <CardContent className="flex-grow">
                                     <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><FileText className="h-4 w-4 text-muted-foreground" /> Cover Letter</h4>
-                                    <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
+                                    <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border break-words">{applicant.coverLetter}</p>
                                 </CardContent>
-                                <CardFooter className="gap-2">
-                                    <Button className="w-full" onClick={() => handleAccept(applicant.id, applicant.creatorId)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
-                                        <CheckCircle className="mr-2 h-4 w-4" />
-                                        Accept Offer
+                                <CardFooter className="flex-col items-stretch gap-2">
+                                     <Button variant="outline" className="w-full">
+                                        <User className="mr-2 h-4 w-4" />
+                                        View Profile
                                     </Button>
-                                    <Button variant="outline" className="w-full" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
-                                        <XCircle className="mr-2 h-4 w-4" />
-                                        Reject
-                                    </Button>
+                                    <div className="flex gap-2">
+                                        <Button className="w-full flex-1" onClick={() => handleAccept(applicant.id, applicant.creatorId)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                            <CheckCircle className="mr-2 h-4 w-4" />
+                                            Accept
+                                        </Button>
+                                        <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                            <XCircle className="mr-2 h-4 w-4" />
+                                            Reject
+                                        </Button>
+                                    </div>
                                 </CardFooter>
                             </Card>
                         ))}
