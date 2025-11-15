@@ -24,6 +24,8 @@ service cloud.firestore {
         // The brand who owns the campaign can read/update applications.
         // The creator who made the application can read their own application.
         allow read, update: if get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
+        // The brand who owns the campaign can list all applications for that campaign.
+        allow list: if get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid;
       }
     }
     

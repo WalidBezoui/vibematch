@@ -115,7 +115,7 @@ export default function ManageApplicationsPage() {
         )
     }
 
-    if (!campaign || campaign.brandId !== user?.uid) {
+    if (!user || !campaign || campaign.brandId !== user?.uid) {
          return (
              <>
                 <AppHeader />
