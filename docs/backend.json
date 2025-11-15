@@ -74,20 +74,17 @@
           "type": "string",
           "description": "The UID of the Creator assigned to the job."
         },
-        "creatorEmail": {
-          "type": "string",
-          "format": "email",
-          "description": "The email of the creator who is invited to the job."
-        },
         "status": {
           "type": "string",
           "enum": [
-            "PENDING_CREATOR_APPROVAL",
+            "OPEN_FOR_APPLICATIONS",
+            "PENDING_SELECTION",
+            "PENDING_CREATOR_ACCEPTANCE",
             "PENDING_PAYMENT",
             "IN_PROGRESS",
             "DELIVERED",
             "COMPLETED",
-            "REJECTED"
+            "REJECTED_BY_CREATOR"
           ],
           "description": "The current status of the job workflow."
         },
@@ -98,10 +95,6 @@
         "updatedAt": {
           "type": "string",
           "format": "date-time"
-        },
-        "inviteId": {
-          "type": "string",
-          "description": "The ID of the associated job invitation."
         }
       },
       "required": [
@@ -110,48 +103,52 @@
         "deliverables",
         "price",
         "brandId",
-        "creatorEmail",
         "status",
         "createdAt",
         "updatedAt"
       ]
     },
-    "JobInvite": {
+    "CampaignApplication": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Job Invite",
+      "title": "Campaign Application",
       "type": "object",
-      "description": "Represents a unique, one-time invitation for a Creator to accept a Job.",
+      "description": "Represents a Creator's application to a specific campaign.",
       "properties": {
         "jobId": {
           "type": "string",
-          "description": "The ID of the job this invitation is for."
+          "description": "The ID of the job this application is for."
         },
-        "creatorEmail": {
+        "creatorId": {
           "type": "string",
-          "format": "email",
-          "description": "The email of the creator the invitation was sent to."
+          "description": "The UID of the Creator who is applying."
+        },
+        "brandId": {
+          "type": "string",
+          "description": "The UID of the Brand who owns the job."
+        },
+        "coverLetter": {
+          "type": "string",
+          "description": "The creator's message to the brand for this application."
         },
         "status": {
           "type": "string",
           "enum": [
             "pending",
             "accepted",
-            "expired"
+            "rejected"
           ],
-          "description": "The status of the invitation."
+          "description": "The status of the application."
         },
         "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "expiresAt": {
           "type": "string",
           "format": "date-time"
         }
       },
       "required": [
         "jobId",
-        "creatorEmail",
+        "creatorId",
+        "brandId",
+        "coverLetter",
         "status",
         "createdAt"
       ]
@@ -195,23 +192,29 @@
               "description": "The unique ID for the job."
             }
           ]
-        }
-      },
-      {
-        "path": "/invites/{inviteId}",
-        "definition": {
-          "entityName": "JobInvite",
-          "schema": {
-            "$ref": "#/entities/JobInvite"
-          },
-          "description": "Stores unique invitation tokens for creators.",
-          "params": [
-            {
-              "name": "inviteId",
-              "description": "The unique ID for the job invitation."
+        },
+        "subcollections": [
+          {
+            "path": "/jobs/{jobId}/applications/{applicationId}",
+            "definition": {
+              "entityName": "CampaignApplication",
+              "schema": {
+                "$ref": "#/entities/CampaignApplication"
+              },
+              "description": "Stores applications from creators for a specific job.",
+              "params": [
+                {
+                  "name": "jobId",
+                  "description": "The unique ID of the parent job."
+                },
+                {
+                  "name": "applicationId",
+                  "description": "The unique ID for the application."
+                }
+              ]
             }
-          ]
-        }
+          }
+        ]
       }
     ]
   }

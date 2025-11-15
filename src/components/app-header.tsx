@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -29,14 +29,29 @@ export function AppHeader() {
     href: string;
     label: string;
     interest?: 'brand' | 'creator';
+    role?: 'creator';
   };
   
   const navLinks: NavLinkItem[] = useMemo(() => {
     if (user) {
-        return [
+        const commonLinks = [
             { href: "/faq", label: t('header.faq') },
             { href: "/contact", label: t('header.contact') },
-        ]
+        ];
+        // Assuming user role can be determined from the user object or another context
+        // For now, let's just show a creator-specific link as an example
+        const creatorLinks = [
+            { href: "/discover", label: 'Discover', role: 'creator' as const },
+        ];
+
+        // A real app would have role-based logic here
+        // For this example, let's check a hypothetical role property on the user object
+        // const userRole = 'creator'; // Replace with actual user role logic
+        // if (userRole === 'creator') {
+            return [...creatorLinks, ...commonLinks];
+        // }
+        
+        // return commonLinks;
     }
     return [
         { href: "/#brands", label: t('header.forBrands'), interest: 'brand' },
@@ -168,6 +183,11 @@ export function AppHeader() {
     )
   }
 
+  // A simple way to check if a user is a creator
+  // In a real app, this might come from a context or a hook like `useUserRole()`
+  // For now, we'll just check if the "Discover" link is present to show the icon
+  const isCreator = navLinks.some(link => link.href === '/discover');
+
   return (
     <header className="px-4 md:px-10 lg:px-20 flex justify-between items-center py-4 backdrop-blur-md sticky top-0 z-50 bg-background/80 border-b">
       <Link
@@ -178,7 +198,15 @@ export function AppHeader() {
       </Link>
 
       <nav className="hidden md:flex gap-8 items-center">
-        {navLinks.map((link) => (
+        {user && isCreator && (
+             <Button variant="ghost" className="rounded-full" asChild>
+                <Link href="/discover">
+                    <Compass className="mr-2 h-4 w-4" />
+                    Discover Campaigns
+                </Link>
+            </Button>
+        )}
+        {navLinks.filter(l => l.href !== '/discover').map((link) => (
           <NavLink key={link.href} {...link} />
         ))}
       </nav>
@@ -218,7 +246,13 @@ export function AppHeader() {
             </div>
             
             <nav className="flex flex-col gap-6 items-start">
-              {navLinks.map((link) => (
+              {user && isCreator && (
+                  <Link href="/discover" className="text-lg font-medium text-foreground/70 hover:text-primary transition-colors flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Compass className="h-5 w-5" />
+                      Discover Campaigns
+                  </Link>
+              )}
+              {navLinks.filter(l => l.href !== '/discover').map((link) => (
                 <NavLink key={link.href} {...link} className="text-lg" />
               ))}
             </nav>

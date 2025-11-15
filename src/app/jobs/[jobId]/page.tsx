@@ -1,7 +1,7 @@
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,15 +10,19 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check } from 'lucide-react';
+import { Check, Send } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const statusStyles: { [key: string]: string } = {
-    PENDING_CREATOR_APPROVAL: 'bg-yellow-100 text-yellow-800',
+    OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
+    PENDING_SELECTION: 'bg-yellow-100 text-yellow-800',
+    PENDING_CREATOR_ACCEPTANCE: 'bg-yellow-100 text-yellow-800',
     PENDING_PAYMENT: 'bg-blue-100 text-blue-800',
-    IN_PROGRESS: 'bg-green-100 text-green-800',
+    IN_PROGRESS: 'bg-indigo-100 text-indigo-800',
     DELIVERED: 'bg-purple-100 text-purple-800',
     COMPLETED: 'bg-gray-100 text-gray-800',
-    REJECTED: 'bg-red-100 text-red-800',
+    REJECTED_BY_CREATOR: 'bg-red-100 text-red-800',
 };
 
 
@@ -37,28 +41,82 @@ const JobDetailSkeleton = () => (
     </Card>
 )
 
-const CreatorWorkspace = ({ job }: { job: any }) => {
-    // Placeholder for creator's view
+const CreatorWorkspace = ({ job, jobRef }: { job: any, jobRef: any }) => {
+    const { toast } = useToast();
+
+    const handleDeliver = async () => {
+        toast({ title: "Submitting work..." });
+        // Simulate upload
+        await new Promise(res => setTimeout(res, 1500));
+        try {
+            await updateDoc(jobRef, {
+                status: 'DELIVERED',
+                updatedAt: serverTimestamp(),
+            });
+            toast({ title: "Deliverables submitted!", description: "The brand has been notified to review your work." });
+        } catch (e: any) {
+             toast({ variant: 'destructive', title: "Submission failed", description: e.message });
+        }
+    }
+
+    if (job.status === 'PENDING_CREATOR_ACCEPTANCE') {
+        return (
+             <Card>
+                <CardHeader>
+                    <CardTitle>You've Been Selected!</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                     <p className="mb-4">The brand has chosen you for this campaign. Please accept the offer to proceed.</p>
+                     <Button onClick={async () => {
+                         await updateDoc(jobRef, { status: 'PENDING_PAYMENT', updatedAt: serverTimestamp() });
+                     }}>Accept Campaign Offer</Button>
+                     <Button variant="ghost" className="ml-2" onClick={async () => {
+                         await updateDoc(jobRef, { status: 'REJECTED_BY_CREATOR', updatedAt: serverTimestamp() });
+                     }}>Decline</Button>
+                </CardContent>
+            </Card>
+        )
+    }
+
     return (
         <Card>
             <CardHeader>
                 <CardTitle>Creator Workspace</CardTitle>
-                <CardDescription>Upload your deliverables here.</CardDescription>
+                <CardDescription>Upload your deliverables here once they are ready.</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="p-8 border-2 border-dashed rounded-lg text-center">
-                    <p>Upload Area</p>
-                    {/* Placeholder for upload component */}
+                <div className="p-8 border-2 border-dashed rounded-lg text-center bg-muted/50">
+                    <p className="font-semibold">Upload Area</p>
+                    <p className="text-sm text-muted-foreground mt-1">(File upload simulation)</p>
                 </div>
-                 <Button className="w-full mt-6" disabled={job.status !== 'IN_PROGRESS'}>Mark as Delivered</Button>
+                 <Button onClick={handleDeliver} className="w-full mt-6" disabled={job.status !== 'IN_PROGRESS'}>
+                     <Send className="mr-2 h-4 w-4" />
+                     Mark as Delivered
+                </Button>
             </CardContent>
         </Card>
     )
 }
 
-const BrandWorkspace = ({ job, jobId }: { job: any, jobId: string }) => {
-    // Placeholder for brand's view
+const BrandWorkspace = ({ job, jobId, jobRef }: { job: any, jobId: string, jobRef: any }) => {
     const router = useRouter();
+    const { toast } = useToast();
+
+    const handleApprove = async () => {
+        toast({ title: "Releasing Payment..." });
+        // Simulate payment processing
+        await new Promise(res => setTimeout(res, 1500));
+         try {
+            await updateDoc(jobRef, {
+                status: 'COMPLETED',
+                updatedAt: serverTimestamp(),
+            });
+            toast({ title: "Campaign Complete!", description: "Payment has been released to the creator." });
+        } catch (e: any) {
+             toast({ variant: 'destructive', title: "Approval Failed", description: e.message });
+        }
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -78,16 +136,26 @@ const BrandWorkspace = ({ job, jobId }: { job: any, jobId: string }) => {
                     <div className="text-center p-8 bg-purple-50 border border-purple-200 rounded-lg">
                         <h3 className="text-xl font-semibold text-purple-800">Deliverables Ready for Review</h3>
                         <p className="text-purple-700 mt-2">The creator has submitted the work. Please review and approve to release payment.</p>
-                        <Button className="mt-6">
+                        <Button className="mt-6" onClick={handleApprove}>
                            ✅ Validate & Release Payment
                         </Button>
                     </div>
+                )}
+                {(job.status === 'OPEN_FOR_APPLICATIONS' || job.status === 'PENDING_SELECTION') && (
+                     <Alert>
+                        <AlertDescription className="text-center">
+                            <Link href={`/jobs/${jobId}/manage`} className="font-semibold text-primary hover:underline">Manage applications</Link> to select a creator for this campaign.
+                        </AlertDescription>
+                    </Alert>
                 )}
                 {job.status === 'IN_PROGRESS' && (
                      <p className="text-muted-foreground">The campaign is currently in progress. You will be notified when the creator submits the deliverables.</p>
                 )}
                  {job.status === 'COMPLETED' && (
                      <p className="text-muted-foreground">This campaign is complete and payment has been released.</p>
+                )}
+                 {job.status === 'PENDING_CREATOR_ACCEPTANCE' && (
+                     <p className="text-muted-foreground">Waiting for the selected creator to accept the campaign offer.</p>
                 )}
             </CardContent>
         </Card>
@@ -118,7 +186,7 @@ export default function JobPage() {
         )
     }
 
-    if (!job) {
+    if (!job || error) {
         return (
              <>
                 <AppHeader />
@@ -133,6 +201,21 @@ export default function JobPage() {
 
     const isBrand = user?.uid === job.brandId;
     const isCreator = user?.uid === job.creatorId;
+    const canView = isBrand || isCreator || job.status === 'OPEN_FOR_APPLICATIONS' || job.status === 'PENDING_CREATOR_ACCEPTANCE' && user?.uid === job.creatorId;
+
+    if(!canView) {
+         return (
+             <>
+                <AppHeader />
+                <main className="max-w-4xl mx-auto p-8 text-center">
+                    <h1 className="text-2xl font-bold">Access Denied</h1>
+                    <p className="text-muted-foreground">You do not have permission to view this campaign.</p>
+                    <Button asChild className="mt-4"><Link href="/dashboard">Back to Dashboard</Link></Button>
+                </main>
+            </>
+        )
+    }
+
 
     return (
         <>
@@ -148,7 +231,7 @@ export default function JobPage() {
                                 </Badge>
                             </div>
                             <CardDescription className="text-lg">
-                                Collaboration between Brand and Creator
+                                Collaboration Campaign
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
@@ -176,8 +259,8 @@ export default function JobPage() {
                         </CardContent>
                     </Card>
 
-                    {isBrand && <BrandWorkspace job={job} jobId={jobId as string} />}
-                    {isCreator && <CreatorWorkspace job={job} />}
+                    {isBrand && <BrandWorkspace job={job} jobId={jobId as string} jobRef={jobRef} />}
+                    {isCreator && <CreatorWorkspace job={job} jobRef={jobRef} />}
                 </div>
             </main>
         </>

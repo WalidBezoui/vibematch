@@ -10,11 +10,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppHeader } from '@/components/app-header';
 import { useFirestore, useUser } from '@/firebase';
-import { collection, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { v4 as uuidv4 } from 'uuid';
 import { PlusCircle, XCircle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { PartyPopper } from 'lucide-react';
 
 const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -24,7 +25,6 @@ const campaignSchema = z.object({
     (a) => parseFloat(z.string().parse(a)),
     z.number().positive('Price must be a positive number.')
   ),
-  creatorEmail: z.string().email('Please enter a valid email for the creator.'),
 });
 
 type CampaignForm = z.infer<typeof campaignSchema>;
@@ -34,7 +34,8 @@ export default function CreateCampaignPage() {
   const firestore = useFirestore();
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
-  const [newInviteLink, setNewInviteLink] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [newCampaignId, setNewCampaignId] = useState('');
 
   const form = useForm<CampaignForm>({
     resolver: zodResolver(campaignSchema),
@@ -42,7 +43,6 @@ export default function CreateCampaignPage() {
       title: '',
       campaignBrief: '',
       deliverables: [{ value: '' }],
-      creatorEmail: '',
     },
   });
 
@@ -59,38 +59,23 @@ export default function CreateCampaignPage() {
 
     const submissionData = {
       ...data,
-      deliverables: data.deliverables.map(d => d.value) // Extract just the string value
-    }
+      deliverables: data.deliverables.map(d => d.value), // Extract just the string value
+      brandId: user.uid,
+      status: 'OPEN_FOR_APPLICATIONS',
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
 
     try {
-        // Create an invite first
-        const inviteId = uuidv4();
-        const inviteRef = doc(firestore, 'invites', inviteId);
-        
-        // Create the campaign document
         const campaignsCollectionRef = collection(firestore, 'jobs');
-        const campaignDocRef = await addDoc(campaignsCollectionRef, {
-            ...submissionData,
-            brandId: user.uid,
-            status: 'PENDING_CREATOR_APPROVAL',
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-            inviteId: inviteId,
-        });
-
-        // Now set the invite document
-        await setDoc(inviteRef, {
-            jobId: campaignDocRef.id,
-            creatorEmail: data.creatorEmail,
-            status: 'pending',
-            createdAt: serverTimestamp(),
-        });
+        const campaignDocRef = await addDoc(campaignsCollectionRef, submissionData);
 
       toast({
-        title: 'Campaign Created!',
-        description: 'Invitation link is ready to be shared.',
+        title: 'Campaign Published!',
+        description: 'Your campaign is now open for applications.',
       });
-      setNewInviteLink(`${window.location.origin}/invites/${inviteId}`);
+      setNewCampaignId(campaignDocRef.id);
+      setIsSuccess(true);
     } catch (e: any) {
       toast({
         variant: "destructive",
@@ -105,6 +90,7 @@ export default function CreateCampaignPage() {
   }
 
   if (!user) {
+      // It might be better to use middleware for this, but for now this works
       router.push('/login');
       return null;
   }
@@ -114,23 +100,22 @@ export default function CreateCampaignPage() {
       <AppHeader />
       <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold tracking-tight">Create a New Campaign Brief</h1>
-          <p className="text-muted-foreground mt-2">This will be sent to the creator for approval.</p>
+          <h1 className="text-4xl font-bold tracking-tight">Create a New Campaign</h1>
+          <p className="text-muted-foreground mt-2">This will be visible to creators on the platform.</p>
         </div>
         
-        {newInviteLink ? (
-             <div className="p-6 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
-                <h3 className="font-bold text-green-800">Campaign Created Successfully!</h3>
-                <p className="text-green-700 mt-2">Share this unique invitation link with your creator:</p>
-                <div className="mt-4 flex items-center gap-2">
-                    <Input readOnly value={newInviteLink} className="bg-white"/>
-                    <Button onClick={() => navigator.clipboard.writeText(newInviteLink)}>Copy</Button>
-                </div>
-                <p className="text-xs text-green-600 mt-2">
-                    Once the creator accepts, you will be prompted for payment.
-                </p>
-                <Button variant="outline" onClick={() => router.push('/dashboard')} className="mt-4">Back to Dashboard</Button>
-             </div>
+        {isSuccess ? (
+             <Alert className="border-green-500 text-green-700">
+                <PartyPopper className="h-4 w-4" />
+                <AlertTitle className="font-bold">Campaign Published!</AlertTitle>
+                <AlertDescription>
+                    Your campaign is now live and creators can start applying.
+                    <div className="mt-4 flex gap-4">
+                         <Button onClick={() => router.push(`/jobs/${newCampaignId}/manage`)}>Manage Applications</Button>
+                         <Button variant="outline" onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
+                    </div>
+                </AlertDescription>
+             </Alert>
         ) : (
             <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -204,37 +189,22 @@ export default function CreateCampaignPage() {
                 </div>
 
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Price (in DH)</FormLabel>
-                        <FormControl>
-                            <Input type="number" placeholder="500" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                    <FormField
-                    control={form.control}
-                    name="creatorEmail"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Creator's Email</FormLabel>
-                        <FormControl>
-                            <Input type="email" placeholder="creator@email.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                </div>
+                <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Price (in DH)</FormLabel>
+                    <FormControl>
+                        <Input type="number" placeholder="500" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
 
                 <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-                {form.formState.isSubmitting ? 'Creating Campaign...' : 'Create Campaign & Get Invite Link'}
+                {form.formState.isSubmitting ? 'Publishing Campaign...' : 'Publish Campaign'}
                 </Button>
             </form>
             </Form>

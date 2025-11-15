@@ -2,21 +2,23 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Users } from 'lucide-react';
 import Link from 'next/link';
-import { collection, query, where } from 'firebase/firestore';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { collection, query, where, getCountFromServer } from 'firebase/firestore';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 const statusStyles: { [key: string]: string } = {
-    PENDING_CREATOR_APPROVAL: 'bg-yellow-100 text-yellow-800',
+    OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
+    PENDING_SELECTION: 'bg-yellow-100 text-yellow-800',
+    PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800',
     PENDING_PAYMENT: 'bg-blue-100 text-blue-800',
-    IN_PROGRESS: 'bg-green-100 text-green-800',
+    IN_PROGRESS: 'bg-indigo-100 text-indigo-800',
     DELIVERED: 'bg-purple-100 text-purple-800',
     COMPLETED: 'bg-gray-100 text-gray-800',
-    REJECTED: 'bg-red-100 text-red-800',
 };
 
 const JobCardSkeleton = () => (
@@ -26,11 +28,61 @@ const JobCardSkeleton = () => (
             <Skeleton className="h-4 w-1/4 mt-2" />
         </CardHeader>
         <CardContent>
-            <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-2/3 mt-2" />
         </CardContent>
+        <CardFooter>
+            <Skeleton className="h-8 w-1/2" />
+        </CardFooter>
     </Card>
 )
+
+const CampaignCard = ({ job }: { job: any }) => {
+    const firestore = useFirestore();
+    const [applicationCount, setApplicationCount] = useState(0);
+
+    useEffect(() => {
+        const fetchCount = async () => {
+            if (firestore && job.id) {
+                const applicationsRef = collection(firestore, 'jobs', job.id, 'applications');
+                const snapshot = await getCountFromServer(applicationsRef);
+                setApplicationCount(snapshot.data().count);
+            }
+        };
+        fetchCount();
+    }, [firestore, job.id]);
+
+    return (
+        <Card className="hover:shadow-md transition-shadow flex flex-col">
+            <CardHeader>
+                <div className="flex justify-between items-start">
+                    <CardTitle className="text-xl">{job.title}</CardTitle>
+                    <Badge className={cn('whitespace-nowrap', statusStyles[job.status])}>
+                        {job.status.replace(/_/g, ' ')}
+                    </Badge>
+                </div>
+                <CardDescription>{job.price} DH</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-grow">
+                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{job.campaignBrief}</p>
+            </CardContent>
+            <CardFooter>
+                {job.status === 'OPEN_FOR_APPLICATIONS' || job.status === 'PENDING_SELECTION' ? (
+                     <Button asChild variant="secondary" className="w-full">
+                        <Link href={`/jobs/${job.id}/manage`}>
+                            <Users className="mr-2 h-4 w-4" />
+                            Manage Applications ({applicationCount})
+                        </Link>
+                    </Button>
+                ) : (
+                    <Button asChild className="w-full">
+                        <Link href={`/jobs/${job.id}`}>View Campaign</Link>
+                    </Button>
+                )}
+            </CardFooter>
+        </Card>
+    );
+};
+
 
 export default function BrandDashboard() {
   const { user } = useUser();
@@ -65,23 +117,7 @@ export default function BrandDashboard() {
       {!isLoading && jobs && jobs.length > 0 && (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {jobs.map((job) => (
-            <Link href={`/jobs/${job.id}`} key={job.id}>
-                <Card className="hover:shadow-md transition-shadow">
-                    <CardHeader>
-                        <div className="flex justify-between items-start">
-                            <CardTitle className="text-xl">{job.title}</CardTitle>
-                            <Badge className={cn('whitespace-nowrap', statusStyles[job.status])}>
-                                {job.status.replace(/_/g, ' ')}
-                            </Badge>
-                        </div>
-                         <CardDescription>to {job.creatorEmail}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground line-clamp-2">{job.description}</p>
-                        <p className="text-lg font-bold mt-4">{job.price} DH</p>
-                    </CardContent>
-                </Card>
-            </Link>
+            <CampaignCard job={job} key={job.id} />
           ))}
         </div>
       )}
