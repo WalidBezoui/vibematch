@@ -3,22 +3,20 @@
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
 import Link from 'next/link';
-import { collection, query, where, or } from 'firebase/firestore';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { collection, query, where } from 'firebase/firestore';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Compass } from 'lucide-react';
 
 const statusStyles: { [key: string]: string } = {
-    OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
-    PENDING_SELECTION: 'bg-yellow-100 text-yellow-800',
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800',
     PENDING_PAYMENT: 'bg-blue-100 text-blue-800',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800',
     DELIVERED: 'bg-purple-100 text-purple-800',
     COMPLETED: 'bg-gray-100 text-gray-800',
-    APPLIED: 'bg-gray-100 text-gray-800', // Custom status for UI
+    REJECTED_BY_CREATOR: 'bg-red-100 text-red-800',
 };
 
 const CampaignCardSkeleton = () => (
@@ -31,6 +29,9 @@ const CampaignCardSkeleton = () => (
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-2/3 mt-2" />
         </CardContent>
+        <CardFooter>
+            <Skeleton className="h-10 w-full" />
+        </CardFooter>
     </Card>
 )
 
@@ -41,27 +42,13 @@ export default function CreatorDashboard() {
   const campaignsQuery = useMemoFirebase(
     () => user && firestore ? query(
         collection(firestore, 'campaigns'), 
-        or(
-            where('creatorId', '==', user.uid),
-            where('status', '==', 'PENDING_CREATOR_ACCEPTANCE') // Needs more specific query if we only want ones user is selected for
-        )
+        where('creatorId', '==', user.uid)
     ) : null,
     [user, firestore]
   );
-
-  const applicationsQuery = useMemoFirebase(
-    () => user && firestore ? query(collection(firestore, 'campaigns'), where('applications', 'array-contains', user.uid)) : null,
-    // This is a simplified query. A real implementation would need a subcollection query, 
-    // which is more complex to set up with hooks for a list.
-    // For now, we'll focus on campaigns the creator has been assigned to.
-    [user, firestore]
-  );
   
-  const { data: activeCampaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
-  const { data: appliedCampaigns, isLoading: isLoadingApplied } = useCollection(applicationsQuery); // This won't work as intended without more complex logic
-
-  const isLoading = isLoadingCampaigns; // || isLoadingApplied;
-
+  const { data: activeCampaigns, isLoading } = useCollection(campaignsQuery);
+  
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
@@ -69,7 +56,7 @@ export default function CreatorDashboard() {
         <Button asChild>
           <Link href="/discover">
             <Compass className="mr-2 h-4 w-4" />
-            Discover Campaigns
+            Discover New Campaigns
           </Link>
         </Button>
       </div>
@@ -83,30 +70,33 @@ export default function CreatorDashboard() {
 
       {!isLoading && activeCampaigns && activeCampaigns.length > 0 && (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {activeCampaigns.map((campaign) => {
-            // Creators should only see campaigns they are assigned to or have an action on
-            if(campaign.creatorId !== user?.uid && campaign.status !== 'PENDING_CREATOR_ACCEPTANCE') return null;
-
-            return (
-                <Link href={`/campaigns/${campaign.id}`} key={campaign.id}>
-                    <Card className="hover:shadow-md transition-shadow">
-                        <CardHeader>
-                            <div className="flex justify-between items-start">
-                                <CardTitle className="text-xl">{campaign.title}</CardTitle>
+          {activeCampaigns.map((campaign) => (
+                <Card key={campaign.id} className="hover:shadow-md transition-shadow flex flex-col">
+                    <CardHeader>
+                        <div className="flex justify-between items-start">
+                            <CardTitle className="text-xl">{campaign.title}</CardTitle>
+                             {campaign.status && (
                                 <Badge className={cn('whitespace-nowrap', statusStyles[campaign.status])}>
                                     {campaign.status.replace(/_/g, ' ')}
                                 </Badge>
-                            </div>
-                            <CardDescription>From a Brand</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-muted-foreground line-clamp-2">{campaign.campaignBrief}</p>
-                            <p className="text-lg font-bold mt-4">{campaign.price} DH</p>
-                        </CardContent>
-                    </Card>
-                </Link>
+                             )}
+                        </div>
+                        <CardDescription>Collaboration</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                        <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
+                        <p className="text-lg font-bold mt-4 gradient-text">{campaign.price} DH</p>
+                    </CardContent>
+                    <CardFooter>
+                        <Button asChild className="w-full">
+                          <Link href={`/campaigns/${campaign.id}`}>
+                            View Details
+                          </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
             )
-          })}
+          )}
         </div>
       )}
 
@@ -117,7 +107,7 @@ export default function CreatorDashboard() {
              <Button asChild className="mt-6">
                 <Link href="/discover">
                     <Compass className="mr-2 h-4 w-4" />
-                    Discover New Campaigns
+                    Find Your First Campaign
                 </Link>
             </Button>
         </div>
