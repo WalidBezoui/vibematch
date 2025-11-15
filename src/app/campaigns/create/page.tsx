@@ -43,6 +43,7 @@ export default function CreateCampaignPage() {
       title: '',
       campaignBrief: '',
       deliverables: [{ value: '' }],
+      price: '',
     },
   });
 
