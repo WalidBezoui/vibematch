@@ -78,7 +78,7 @@ export default function DiscoverPage() {
                                     </CardContent>
                                     <CardFooter>
                                         <Button asChild className="w-full">
-                                            <Link href={`/campaigns/${campaign.id}/apply`}>
+                                            <Link href={`/campaigns/${campaign.id}`}>
                                                 View & Apply
                                                 <ArrowRight className="ml-2 h-4 w-4" />
                                             </Link>

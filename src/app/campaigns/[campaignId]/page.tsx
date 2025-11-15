@@ -1,11 +1,11 @@
 'use client';
 
-import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
+import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -168,6 +168,7 @@ export default function CampaignPage() {
     const firestore = useFirestore();
     const router = useRouter();
     const { user, isUserLoading } = useUser();
+    const { userProfile } = useUserProfile();
 
     const campaignRef = useMemoFirebase(
         () => firestore ? doc(firestore, 'campaigns', campaignId as string) : null,
@@ -201,7 +202,8 @@ export default function CampaignPage() {
 
     const isBrand = user?.uid === campaign.brandId;
     const isCreator = user?.uid === campaign.creatorId;
-    const canView = isBrand || isCreator || campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_CREATOR_ACCEPTANCE' && user?.uid === campaign.creatorId;
+    const isPotentialApplicant = userProfile?.role === 'creator' && !isBrand && !isCreator;
+    const canView = isBrand || isCreator || campaign.status === 'OPEN_FOR_APPLICATIONS';
 
     if(!canView) {
          return (
@@ -257,6 +259,13 @@ export default function CampaignPage() {
                                 <p className="text-xl font-bold gradient-text">{campaign.price} DH</p>
                             </div>
                         </CardContent>
+                        {isPotentialApplicant && campaign.status === 'OPEN_FOR_APPLICATIONS' && (
+                            <CardFooter>
+                                <Button asChild className="w-full">
+                                    <Link href={`/campaigns/${campaignId}/apply`}>Apply Now</Link>
+                                </Button>
+                            </CardFooter>
+                        )}
                     </Card>
 
                     {isBrand && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} campaignRef={campaignRef} />}
