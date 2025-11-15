@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, List } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -50,7 +50,7 @@ export function AppHeader() {
         
         if (userProfile.role === 'brand') {
              return [
-                 { href: "/dashboard", label: 'My Campaigns', role: 'brand' as const, icon: List },
+                 { href: "/creators", label: 'Creators', role: 'brand' as const, icon: Users },
                  { href: "/campaigns/create", label: 'Create Campaign', role: 'brand' as const, icon: PlusCircle },
                 ...commonLinks,
             ];
