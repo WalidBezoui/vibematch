@@ -8,6 +8,7 @@ import { AppHeader } from '@/components/app-header';
 import BrandDashboard from '@/components/dashboards/brand-dashboard';
 import CreatorDashboard from '@/components/dashboards/creator-dashboard';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLanguage } from '@/context/language-context';
 
 export default function DashboardPage() {
   const { user, isUserLoading } = useUser();
@@ -15,6 +16,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [userRole, setUserRole] = useState<string | null>(null);
   const [isLoadingRole, setIsLoadingRole] = useState(true);
+  const { userInterest } = useLanguage();
 
   useEffect(() => {
     // If auth is done loading and there's no user, redirect to login
@@ -33,9 +35,17 @@ export default function DashboardPage() {
           if (userDoc.exists()) {
             setUserRole(userDoc.data().role);
           } else {
-            // Handle case where user document doesn't exist
-            console.error("User profile not found in Firestore.");
-            setUserRole(null);
+            // User exists in Auth, but not in Firestore. This can happen if
+            // the profile creation failed after signup.
+            // We redirect them to the appropriate signup page to create their profile.
+            if (userInterest === 'brand') {
+                router.push('/signup/brand');
+            } else if (userInterest === 'creator') {
+                router.push('/signup/creator');
+            } else {
+                // Fallback if no interest is set
+                router.push('/login');
+            }
           }
         } catch (error) {
           console.error("Error fetching user role:", error);
@@ -46,7 +56,7 @@ export default function DashboardPage() {
       };
       fetchUserRole();
     }
-  }, [user, firestore]);
+  }, [user, firestore, router, userInterest]);
 
   const isLoading = isUserLoading || isLoadingRole;
   
