@@ -31,7 +31,7 @@ export default function DiscoverPage() {
     const firestore = useFirestore();
 
     const campaignsQuery = useMemoFirebase(
-        () => firestore ? query(collection(firestore, 'jobs'), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
+        () => firestore ? query(collection(firestore, 'campaigns'), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
         [firestore]
     );
 
@@ -78,7 +78,7 @@ export default function DiscoverPage() {
                                     </CardContent>
                                     <CardFooter>
                                         <Button asChild className="w-full">
-                                            <Link href={`/jobs/${campaign.id}/apply`}>
+                                            <Link href={`/campaigns/${campaign.id}/apply`}>
                                                 View & Apply
                                                 <ArrowRight className="ml-2 h-4 w-4" />
                                             </Link>

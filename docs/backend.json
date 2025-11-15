@@ -41,9 +41,9 @@
         "createdAt"
       ]
     },
-    "Job": {
+    "Campaign": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Job",
+      "title": "Campaign",
       "type": "object",
       "description": "Represents a collaboration contract between a Brand and a Creator.",
       "properties": {
@@ -68,11 +68,11 @@
         },
         "brandId": {
           "type": "string",
-          "description": "The UID of the Brand who created the job."
+          "description": "The UID of the Brand who created the campaign."
         },
         "creatorId": {
           "type": "string",
-          "description": "The UID of the Creator assigned to the job."
+          "description": "The UID of the Creator assigned to the campaign."
         },
         "status": {
           "type": "string",
@@ -86,7 +86,7 @@
             "COMPLETED",
             "REJECTED_BY_CREATOR"
           ],
-          "description": "The current status of the job workflow."
+          "description": "The current status of the campaign workflow."
         },
         "createdAt": {
           "type": "string",
@@ -114,9 +114,9 @@
       "type": "object",
       "description": "Represents a Creator's application to a specific campaign.",
       "properties": {
-        "jobId": {
+        "campaignId": {
           "type": "string",
-          "description": "The ID of the job this application is for."
+          "description": "The ID of the campaign this application is for."
         },
         "creatorId": {
           "type": "string",
@@ -124,7 +124,7 @@
         },
         "brandId": {
           "type": "string",
-          "description": "The UID of the Brand who owns the job."
+          "description": "The UID of the Brand who owns the campaign."
         },
         "coverLetter": {
           "type": "string",
@@ -145,7 +145,7 @@
         }
       },
       "required": [
-        "jobId",
+        "campaignId",
         "creatorId",
         "brandId",
         "coverLetter",
@@ -179,33 +179,33 @@
         }
       },
       {
-        "path": "/jobs/{jobId}",
+        "path": "/campaigns/{campaignId}",
         "definition": {
-          "entityName": "Job",
+          "entityName": "Campaign",
           "schema": {
-            "$ref": "#/entities/Job"
+            "$ref": "#/entities/Campaign"
           },
-          "description": "Stores all job contracts between brands and creators.",
+          "description": "Stores all campaign contracts between brands and creators.",
           "params": [
             {
-              "name": "jobId",
-              "description": "The unique ID for the job."
+              "name": "campaignId",
+              "description": "The unique ID for the campaign."
             }
           ]
         },
         "subcollections": [
           {
-            "path": "/jobs/{jobId}/applications/{applicationId}",
+            "path": "/campaigns/{campaignId}/applications/{applicationId}",
             "definition": {
               "entityName": "CampaignApplication",
               "schema": {
                 "$ref": "#/entities/CampaignApplication"
               },
-              "description": "Stores applications from creators for a specific job.",
+              "description": "Stores applications from creators for a specific campaign.",
               "params": [
                 {
-                  "name": "jobId",
-                  "description": "The unique ID of the parent job."
+                  "name": "campaignId",
+                  "description": "The unique ID of the parent campaign."
                 },
                 {
                   "name": "applicationId",

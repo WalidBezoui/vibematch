@@ -21,7 +21,7 @@ const statusStyles: { [key: string]: string } = {
     COMPLETED: 'bg-gray-100 text-gray-800',
 };
 
-const JobCardSkeleton = () => (
+const CampaignCardSkeleton = () => (
     <Card>
         <CardHeader>
             <Skeleton className="h-6 w-3/4" />
@@ -36,46 +36,46 @@ const JobCardSkeleton = () => (
     </Card>
 )
 
-const CampaignCard = ({ job }: { job: any }) => {
+const CampaignCard = ({ campaign }: { campaign: any }) => {
     const firestore = useFirestore();
     const [applicationCount, setApplicationCount] = useState(0);
 
     useEffect(() => {
         const fetchCount = async () => {
-            if (firestore && job.id) {
-                const applicationsRef = collection(firestore, 'jobs', job.id, 'applications');
+            if (firestore && campaign.id) {
+                const applicationsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
                 const snapshot = await getCountFromServer(applicationsRef);
                 setApplicationCount(snapshot.data().count);
             }
         };
         fetchCount();
-    }, [firestore, job.id]);
+    }, [firestore, campaign.id]);
 
     return (
         <Card className="hover:shadow-md transition-shadow flex flex-col">
             <CardHeader>
                 <div className="flex justify-between items-start">
-                    <CardTitle className="text-xl">{job.title}</CardTitle>
-                    <Badge className={cn('whitespace-nowrap', statusStyles[job.status])}>
-                        {job.status.replace(/_/g, ' ')}
+                    <CardTitle className="text-xl">{campaign.title}</CardTitle>
+                    <Badge className={cn('whitespace-nowrap', statusStyles[campaign.status])}>
+                        {campaign.status.replace(/_/g, ' ')}
                     </Badge>
                 </div>
-                <CardDescription>{job.price} DH</CardDescription>
+                <CardDescription>{campaign.price} DH</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
-                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{job.campaignBrief}</p>
+                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
             </CardContent>
             <CardFooter>
-                {job.status === 'OPEN_FOR_APPLICATIONS' || job.status === 'PENDING_SELECTION' ? (
+                {campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION' ? (
                      <Button asChild variant="secondary" className="w-full">
-                        <Link href={`/jobs/${job.id}/manage`}>
+                        <Link href={`/campaigns/${campaign.id}/manage`}>
                             <Users className="mr-2 h-4 w-4" />
                             Manage Applications ({applicationCount})
                         </Link>
                     </Button>
                 ) : (
                     <Button asChild className="w-full">
-                        <Link href={`/jobs/${job.id}`}>View Campaign</Link>
+                        <Link href={`/campaigns/${campaign.id}`}>View Campaign</Link>
                     </Button>
                 )}
             </CardFooter>
@@ -88,18 +88,18 @@ export default function BrandDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
 
-  const jobsQuery = useMemoFirebase(
-    () => user && firestore ? query(collection(firestore, 'jobs'), where('brandId', '==', user.uid)) : null,
+  const campaignsQuery = useMemoFirebase(
+    () => user && firestore ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
     [user, firestore]
   );
-  const { data: jobs, isLoading } = useCollection(jobsQuery);
+  const { data: campaigns, isLoading } = useCollection(campaignsQuery);
 
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold tracking-tight">Your Campaigns</h1>
         <Button asChild>
-          <Link href="/jobs/create">
+          <Link href="/campaigns/create">
             <PlusCircle className="mr-2 h-4 w-4" />
             Create New Campaign
           </Link>
@@ -108,26 +108,26 @@ export default function BrandDashboard() {
 
       {isLoading && (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <JobCardSkeleton />
-            <JobCardSkeleton />
-            <JobCardSkeleton />
+            <CampaignCardSkeleton />
+            <CampaignCardSkeleton />
+            <CampaignCardSkeleton />
         </div>
       )}
 
-      {!isLoading && jobs && jobs.length > 0 && (
+      {!isLoading && campaigns && campaigns.length > 0 && (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {jobs.map((job) => (
-            <CampaignCard job={job} key={job.id} />
+          {campaigns.map((campaign) => (
+            <CampaignCard campaign={campaign} key={campaign.id} />
           ))}
         </div>
       )}
 
-      {!isLoading && (!jobs || jobs.length === 0) && (
+      {!isLoading && (!campaigns || campaigns.length === 0) && (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
             <h2 className="text-2xl font-semibold">No active campaigns yet.</h2>
             <p className="text-muted-foreground mt-2">Ready to find your next collaboration?</p>
             <Button asChild className="mt-6">
-                <Link href="/jobs/create">
+                <Link href="/campaigns/create">
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Create Your First Campaign
                 </Link>

@@ -9,21 +9,21 @@ service cloud.firestore {
       allow create: if request.auth.uid == request.resource.data.uid;
     }
 
-    // Brands can create jobs.
-    // Authenticated users can read jobs (for discovery).
-    // The assigned brand or creator can update the job.
-    match /jobs/{jobId} {
+    // Brands can create campaigns.
+    // Authenticated users can read campaigns (for discovery).
+    // The assigned brand or creator can update the campaign.
+    match /campaigns/{campaignId} {
       allow create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'brand' && request.resource.data.brandId == request.auth.uid;
       allow read: if request.auth != null;
       allow update: if resource.data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
 
       // Applications subcollection rules
       match /applications/{applicationId} {
-        // A creator can create an application for a job.
+        // A creator can create an application for a campaign.
         allow create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'creator' && request.resource.data.creatorId == request.auth.uid;
-        // The brand who owns the job can read/update applications.
+        // The brand who owns the campaign can read/update applications.
         // The creator who made the application can read their own application.
-        allow read, update: if get(/databases/$(database)/documents/jobs/$(jobId)).data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
+        allow read, update: if get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
       }
     }
     

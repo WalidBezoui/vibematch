@@ -21,7 +21,7 @@ const statusStyles: { [key: string]: string } = {
     APPLIED: 'bg-gray-100 text-gray-800', // Custom status for UI
 };
 
-const JobCardSkeleton = () => (
+const CampaignCardSkeleton = () => (
     <Card>
         <CardHeader>
             <Skeleton className="h-6 w-3/4" />
@@ -38,9 +38,9 @@ export default function CreatorDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
 
-  const jobsQuery = useMemoFirebase(
+  const campaignsQuery = useMemoFirebase(
     () => user && firestore ? query(
-        collection(firestore, 'jobs'), 
+        collection(firestore, 'campaigns'), 
         or(
             where('creatorId', '==', user.uid),
             where('status', '==', 'PENDING_CREATOR_ACCEPTANCE') // Needs more specific query if we only want ones user is selected for
@@ -50,17 +50,17 @@ export default function CreatorDashboard() {
   );
 
   const applicationsQuery = useMemoFirebase(
-    () => user && firestore ? query(collection(firestore, 'jobs'), where('applications', 'array-contains', user.uid)) : null,
+    () => user && firestore ? query(collection(firestore, 'campaigns'), where('applications', 'array-contains', user.uid)) : null,
     // This is a simplified query. A real implementation would need a subcollection query, 
     // which is more complex to set up with hooks for a list.
-    // For now, we'll focus on jobs the creator has been assigned to.
+    // For now, we'll focus on campaigns the creator has been assigned to.
     [user, firestore]
   );
   
-  const { data: activeJobs, isLoading: isLoadingJobs } = useCollection(jobsQuery);
-  const { data: appliedJobs, isLoading: isLoadingApplied } = useCollection(applicationsQuery); // This won't work as intended without more complex logic
+  const { data: activeCampaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
+  const { data: appliedCampaigns, isLoading: isLoadingApplied } = useCollection(applicationsQuery); // This won't work as intended without more complex logic
 
-  const isLoading = isLoadingJobs; // || isLoadingApplied;
+  const isLoading = isLoadingCampaigns; // || isLoadingApplied;
 
   return (
     <div>
@@ -76,32 +76,32 @@ export default function CreatorDashboard() {
 
       {isLoading && (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <JobCardSkeleton />
-            <JobCardSkeleton />
+            <CampaignCardSkeleton />
+            <CampaignCardSkeleton />
         </div>
       )}
 
-      {!isLoading && activeJobs && activeJobs.length > 0 && (
+      {!isLoading && activeCampaigns && activeCampaigns.length > 0 && (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {activeJobs.map((job) => {
-            // Creators should only see jobs they are assigned to or have an action on
-            if(job.creatorId !== user?.uid && job.status !== 'PENDING_CREATOR_ACCEPTANCE') return null;
+          {activeCampaigns.map((campaign) => {
+            // Creators should only see campaigns they are assigned to or have an action on
+            if(campaign.creatorId !== user?.uid && campaign.status !== 'PENDING_CREATOR_ACCEPTANCE') return null;
 
             return (
-                <Link href={`/jobs/${job.id}`} key={job.id}>
+                <Link href={`/campaigns/${campaign.id}`} key={campaign.id}>
                     <Card className="hover:shadow-md transition-shadow">
                         <CardHeader>
                             <div className="flex justify-between items-start">
-                                <CardTitle className="text-xl">{job.title}</CardTitle>
-                                <Badge className={cn('whitespace-nowrap', statusStyles[job.status])}>
-                                    {job.status.replace(/_/g, ' ')}
+                                <CardTitle className="text-xl">{campaign.title}</CardTitle>
+                                <Badge className={cn('whitespace-nowrap', statusStyles[campaign.status])}>
+                                    {campaign.status.replace(/_/g, ' ')}
                                 </Badge>
                             </div>
                             <CardDescription>From a Brand</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-muted-foreground line-clamp-2">{job.campaignBrief}</p>
-                            <p className="text-lg font-bold mt-4">{job.price} DH</p>
+                            <p className="text-sm text-muted-foreground line-clamp-2">{campaign.campaignBrief}</p>
+                            <p className="text-lg font-bold mt-4">{campaign.price} DH</p>
                         </CardContent>
                     </Card>
                 </Link>
@@ -110,7 +110,7 @@ export default function CreatorDashboard() {
         </div>
       )}
 
-      {!isLoading && (!activeJobs || activeJobs.length === 0) && (
+      {!isLoading && (!activeCampaigns || activeCampaigns.length === 0) && (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
             <h2 className="text-2xl font-semibold">No active campaigns yet.</h2>
             <p className="text-muted-foreground mt-2">When you apply for or are accepted to a campaign, it will appear here.</p>
