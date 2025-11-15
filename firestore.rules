@@ -5,7 +5,8 @@ service cloud.firestore {
     // Users can read/update their own profile.
     // A user can be created if the UID in the document matches the authenticated user's UID.
     match /users/{userId} {
-      allow get, update: if request.auth.uid == userId;
+      allow get: if request.auth != null;
+      allow update: if request.auth.uid == userId;
       allow create: if request.auth.uid == request.resource.data.uid;
       allow list: if request.auth != null;
     }
@@ -26,7 +27,7 @@ service cloud.firestore {
         // The brand who owns the campaign can read/update applications.
         // The creator who made the application can read their own application.
         // The brand who owns the campaign can list all applications for that campaign.
-        allow read, update: if get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
+        allow get, update: if get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
         allow list: if get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid;
       }
     }
