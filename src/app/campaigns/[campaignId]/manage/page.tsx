@@ -185,8 +185,8 @@ export default function ManageApplicationsPage() {
                                         <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
                                     </Avatar>
                                     <div>
-                                        <CardTitle>{applicant.profile?.name || 'Creator Profile'}</CardTitle>
-                                        <CardDescription>{applicant.profile?.email}</CardDescription>
+                                        <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Creator'}</CardTitle>
+                                        <CardDescription>Applied</CardDescription>
                                     </div>
                                 </CardHeader>
                                 <CardContent>
