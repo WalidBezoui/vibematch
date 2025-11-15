@@ -21,7 +21,10 @@
         },
         "role": {
           "type": "string",
-          "enum": ["brand", "creator"],
+          "enum": [
+            "brand",
+            "creator"
+          ],
           "description": "The role of the user, determining their permissions and view."
         },
         "createdAt": {
@@ -30,7 +33,13 @@
           "description": "Timestamp of when the user profile was created."
         }
       },
-      "required": ["uid", "email", "name", "role", "createdAt"]
+      "required": [
+        "uid",
+        "email",
+        "name",
+        "role",
+        "createdAt"
+      ]
     },
     "Job": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -40,11 +49,18 @@
       "properties": {
         "title": {
           "type": "string",
-          "description": "The title of the job or campaign."
+          "description": "The title of the campaign."
         },
-        "description": {
+        "campaignBrief": {
           "type": "string",
-          "description": "Detailed description of the deliverables and requirements."
+          "description": "Detailed description of the campaign, goals, and requirements."
+        },
+        "deliverables": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "A list of specific deliverables required from the creator."
         },
         "price": {
           "type": "number",
@@ -86,20 +102,19 @@
         "inviteId": {
           "type": "string",
           "description": "The ID of the associated job invitation."
-        },
-        "deliverables": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "url": {"type": "string"},
-                    "fileName": {"type": "string"},
-                    "uploadedAt": {"type": "string", "format": "date-time"}
-                }
-            }
         }
       },
-      "required": ["title", "price", "brandId", "creatorEmail", "status", "createdAt", "updatedAt"]
+      "required": [
+        "title",
+        "campaignBrief",
+        "deliverables",
+        "price",
+        "brandId",
+        "creatorEmail",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
     },
     "JobInvite": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -118,7 +133,11 @@
         },
         "status": {
           "type": "string",
-          "enum": ["pending", "accepted", "expired"],
+          "enum": [
+            "pending",
+            "accepted",
+            "expired"
+          ],
           "description": "The status of the invitation."
         },
         "createdAt": {
@@ -130,11 +149,19 @@
           "format": "date-time"
         }
       },
-      "required": ["jobId", "creatorEmail", "status", "createdAt"]
+      "required": [
+        "jobId",
+        "creatorEmail",
+        "status",
+        "createdAt"
+      ]
     }
   },
   "auth": {
-    "providers": ["password", "anonymous"]
+    "providers": [
+      "password",
+      "anonymous"
+    ]
   },
   "firestore": {
     "structure": [

@@ -1,6 +1,6 @@
 'use client';
 
-import { useDoc, useFirestore, useUser } from '@/firebase';
+import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
@@ -57,7 +57,7 @@ export default function PaymentPage() {
                 status: 'IN_PROGRESS',
                 updatedAt: serverTimestamp(),
             });
-            toast({ title: "Payment Successful!", description: "The job has started. The creator has been notified."});
+            toast({ title: "Payment Successful!", description: "The campaign has started. The creator has been notified."});
             router.push(`/jobs/${jobId}`);
         } catch (e: any) {
             toast({ variant: 'destructive', title: 'Payment Failed', description: e.message });
@@ -82,8 +82,8 @@ export default function PaymentPage() {
              <>
                 <AppHeader />
                 <main className="max-w-4xl mx-auto p-8 text-center">
-                    <h1 className="text-2xl font-bold">Job not found</h1>
-                    <p className="text-muted-foreground">The job you are looking for does not exist or you do not have permission to view it.</p>
+                    <h1 className="text-2xl font-bold">Campaign not found</h1>
+                    <p className="text-muted-foreground">The campaign you are looking for does not exist or you do not have permission to view it.</p>
                     <Button asChild className="mt-4"><Link href="/dashboard">Back to Dashboard</Link></Button>
                 </main>
             </>
@@ -98,7 +98,7 @@ export default function PaymentPage() {
                      <Alert variant="destructive">
                         <AlertTriangle className="h-4 w-4" />
                         <AlertTitle>Access Denied</AlertTitle>
-                        <AlertDescription>You are not authorized to pay for this job.</AlertDescription>
+                        <AlertDescription>You are not authorized to pay for this campaign.</AlertDescription>
                     </Alert>
                 </main>
             </>
@@ -114,8 +114,8 @@ export default function PaymentPage() {
                         <AlertTriangle className="h-4 w-4" />
                         <AlertTitle>Payment Not Required</AlertTitle>
                         <AlertDescription>
-                            This job is not currently awaiting payment. Its status is: {job.status.replace(/_/g, ' ')}.
-                            <Button asChild variant="link" className="p-0 h-auto ml-2"><Link href={`/jobs/${jobId}`}>View Job</Link></Button>
+                            This campaign is not currently awaiting payment. Its status is: {job.status.replace(/_/g, ' ')}.
+                            <Button asChild variant="link" className="p-0 h-auto ml-2"><Link href={`/jobs/${jobId}`}>View Campaign</Link></Button>
                         </AlertDescription>
                     </Alert>
                 </main>
@@ -131,7 +131,7 @@ export default function PaymentPage() {
                 <Card>
                     <CardHeader className="text-center">
                         <CardTitle className="text-3xl">Secure Payment</CardTitle>
-                        <CardDescription>You are about to fund the job: <strong>{job.title}</strong></CardDescription>
+                        <CardDescription>You are about to fund the campaign: <strong>{job.title}</strong></CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="flex justify-between items-center text-xl p-4 bg-muted rounded-lg">
@@ -149,7 +149,7 @@ export default function PaymentPage() {
                     </CardContent>
                     <CardFooter>
                         <Button onClick={handlePayment} disabled={isPaying} className="w-full" size="lg">
-                            {isPaying ? 'Processing...' : `Pay ${job.price} DH and Start Job`}
+                            {isPaying ? 'Processing...' : `Pay ${job.price} DH and Start Campaign`}
                         </Button>
                     </CardFooter>
                 </Card>

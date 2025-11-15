@@ -57,7 +57,7 @@ export default function CreatorDashboard() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold tracking-tight">Your Jobs</h1>
+        <h1 className="text-4xl font-bold tracking-tight">Your Campaigns</h1>
       </div>
 
       {isLoading && (
@@ -96,8 +96,8 @@ export default function CreatorDashboard() {
 
       {!isLoading && (!uniqueJobs || uniqueJobs.length === 0) && (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
-            <h2 className="text-2xl font-semibold">No jobs yet.</h2>
-            <p className="text-muted-foreground mt-2">When brands invite you to collaborate, your jobs will appear here.</p>
+            <h2 className="text-2xl font-semibold">No campaigns yet.</h2>
+            <p className="text-muted-foreground mt-2">When brands invite you to collaborate, your campaigns will appear here.</p>
         </div>
       )}
     </div>

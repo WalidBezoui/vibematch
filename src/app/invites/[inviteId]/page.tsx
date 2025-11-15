@@ -50,7 +50,7 @@ export default function InvitePage() {
         if (jobSnap.exists()) {
           setJob(jobSnap.data());
         } else {
-          setError('The job associated with this invitation could not be found.');
+          setError('The campaign associated with this invitation could not be found.');
         }
       } catch (e) {
         console.error(e);
@@ -96,7 +96,7 @@ export default function InvitePage() {
         router.push('/dashboard');
     } catch(e) {
         console.error(e);
-        setError("Failed to accept the job. Please try again.");
+        setError("Failed to accept the campaign. Please try again.");
     } finally {
         setIsLoading(false);
     }
@@ -139,17 +139,30 @@ export default function InvitePage() {
             <Card>
                 <CardHeader className="text-center">
                     <CardTitle className="text-3xl">You're Invited!</CardTitle>
-                    <CardDescription>A brand has invited you to collaborate on a new job.</CardDescription>
+                    <CardDescription>A brand has invited you to collaborate on a new campaign.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6 text-lg">
                     <div className="space-y-2">
-                        <h3 className="font-semibold text-muted-foreground text-sm uppercase tracking-wider">Job Title</h3>
+                        <h3 className="font-semibold text-muted-foreground text-sm uppercase tracking-wider">Campaign Title</h3>
                         <p className="text-2xl font-bold">{job?.title}</p>
                     </div>
                     <div className="space-y-2">
-                        <h3 className="font-semibold text-muted-foreground text-sm uppercase tracking-wider">Deliverables</h3>
-                        <p className="text-foreground/80 whitespace-pre-wrap">{job?.description}</p>
+                        <h3 className="font-semibold text-muted-foreground text-sm uppercase tracking-wider">Campaign Brief</h3>
+                        <p className="text-foreground/80 whitespace-pre-wrap">{job?.campaignBrief}</p>
                     </div>
+                    {job?.deliverables && job.deliverables.length > 0 && (
+                      <div className="space-y-2">
+                          <h3 className="font-semibold text-muted-foreground text-sm uppercase tracking-wider">Deliverables</h3>
+                          <ul className="space-y-2">
+                              {job.deliverables.map((item: string, index: number) => (
+                                  <li key={index} className="flex items-start gap-3">
+                                      <Check className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
+                                      <span>{item}</span>
+                                  </li>
+                              ))}
+                          </ul>
+                      </div>
+                    )}
                      <div className="space-y-2">
                         <h3 className="font-semibold text-muted-foreground text-sm uppercase tracking-wider">Payment</h3>
                         <p className="text-3xl font-bold gradient-text">{job?.price} DH</p>
@@ -161,7 +174,7 @@ export default function InvitePage() {
                     ) : user ? (
                         <Button onClick={handleAccept} className="w-full" size="lg" disabled={isLoading}>
                             <Check className="mr-2 h-5 w-5" />
-                            Accept Job & Notify Brand
+                            Accept Campaign & Notify Brand
                         </Button>
                     ) : (
                         <Button asChild className="w-full" size="lg">
@@ -171,7 +184,7 @@ export default function InvitePage() {
                     {user && user.email !== invite.creatorEmail && (
                         <Alert variant="destructive" className="text-center">
                             <AlertDescription>
-                                Please log in with the account for <strong>{invite.creatorEmail}</strong> to accept this job.
+                                Please log in with the account for <strong>{invite.creatorEmail}</strong> to accept this campaign.
                             </AlertDescription>
                         </Alert>
                     )}

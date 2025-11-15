@@ -8,6 +8,7 @@ import { collection, query, where } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 const statusStyles: { [key: string]: string } = {
     PENDING_CREATOR_APPROVAL: 'bg-yellow-100 text-yellow-800',
@@ -44,11 +45,11 @@ export default function BrandDashboard() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold tracking-tight">Your Jobs</h1>
+        <h1 className="text-4xl font-bold tracking-tight">Your Campaigns</h1>
         <Button asChild>
           <Link href="/jobs/create">
             <PlusCircle className="mr-2 h-4 w-4" />
-            Create New Job
+            Create New Campaign
           </Link>
         </Button>
       </div>
@@ -87,12 +88,12 @@ export default function BrandDashboard() {
 
       {!isLoading && (!jobs || jobs.length === 0) && (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
-            <h2 className="text-2xl font-semibold">No active jobs yet.</h2>
+            <h2 className="text-2xl font-semibold">No active campaigns yet.</h2>
             <p className="text-muted-foreground mt-2">Ready to find your next collaboration?</p>
             <Button asChild className="mt-6">
                 <Link href="/jobs/create">
                     <PlusCircle className="mr-2 h-4 w-4" />
-                    Create Your First Job
+                    Create Your First Campaign
                 </Link>
             </Button>
         </div>

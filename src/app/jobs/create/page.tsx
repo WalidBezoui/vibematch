@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -14,10 +14,12 @@ import { collection, addDoc, serverTimestamp, doc, setDoc } from 'firebase/fires
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { v4 as uuidv4 } from 'uuid';
+import { PlusCircle, XCircle } from 'lucide-react';
 
-const jobSchema = z.object({
+const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
-  description: z.string().min(20, 'Description must be at least 20 characters.'),
+  campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
+  deliverables: z.array(z.object({ value: z.string().min(3, 'Deliverable cannot be empty.') })).min(1, 'Please add at least one deliverable.'),
   price: z.preprocess(
     (a) => parseFloat(z.string().parse(a)),
     z.number().positive('Price must be a positive number.')
@@ -25,28 +27,39 @@ const jobSchema = z.object({
   creatorEmail: z.string().email('Please enter a valid email for the creator.'),
 });
 
-type JobForm = z.infer<typeof jobSchema>;
+type CampaignForm = z.infer<typeof campaignSchema>;
 
-export default function CreateJobPage() {
+export default function CreateCampaignPage() {
   const router = useRouter();
   const firestore = useFirestore();
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
   const [newInviteLink, setNewInviteLink] = useState('');
 
-  const form = useForm<JobForm>({
-    resolver: zodResolver(jobSchema),
+  const form = useForm<CampaignForm>({
+    resolver: zodResolver(campaignSchema),
     defaultValues: {
       title: '',
-      description: '',
+      campaignBrief: '',
+      deliverables: [{ value: '' }],
       creatorEmail: '',
     },
   });
 
-  const onSubmit = async (data: JobForm) => {
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "deliverables"
+  });
+
+  const onSubmit = async (data: CampaignForm) => {
     if (!firestore || !user) {
-        toast({ variant: 'destructive', title: 'You must be logged in to create a job.'});
+        toast({ variant: 'destructive', title: 'You must be logged in to create a campaign.'});
         return;
+    }
+
+    const submissionData = {
+      ...data,
+      deliverables: data.deliverables.map(d => d.value) // Extract just the string value
     }
 
     try {
@@ -54,10 +67,10 @@ export default function CreateJobPage() {
         const inviteId = uuidv4();
         const inviteRef = doc(firestore, 'invites', inviteId);
         
-        // Create the job document
-        const jobsCollectionRef = collection(firestore, 'jobs');
-        const jobDocRef = await addDoc(jobsCollectionRef, {
-            ...data,
+        // Create the campaign document
+        const campaignsCollectionRef = collection(firestore, 'jobs');
+        const campaignDocRef = await addDoc(campaignsCollectionRef, {
+            ...submissionData,
             brandId: user.uid,
             status: 'PENDING_CREATOR_APPROVAL',
             createdAt: serverTimestamp(),
@@ -67,24 +80,22 @@ export default function CreateJobPage() {
 
         // Now set the invite document
         await setDoc(inviteRef, {
-            jobId: jobDocRef.id,
+            jobId: campaignDocRef.id,
             creatorEmail: data.creatorEmail,
             status: 'pending',
             createdAt: serverTimestamp(),
         });
 
       toast({
-        title: 'Job Created!',
+        title: 'Campaign Created!',
         description: 'Invitation link is ready to be shared.',
       });
       setNewInviteLink(`${window.location.origin}/invites/${inviteId}`);
-      // In a real app, this would trigger an email. For now, we'll show the link.
-      // router.push(`/jobs/${jobDocRef.id}/pay`);
     } catch (e: any) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: e.message || "Could not create the job.",
+        description: e.message || "Could not create the campaign.",
       });
     }
   };
@@ -103,13 +114,13 @@ export default function CreateJobPage() {
       <AppHeader />
       <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold tracking-tight">Create a New Job Brief</h1>
+          <h1 className="text-4xl font-bold tracking-tight">Create a New Campaign Brief</h1>
           <p className="text-muted-foreground mt-2">This will be sent to the creator for approval.</p>
         </div>
         
         {newInviteLink ? (
              <div className="p-6 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
-                <h3 className="font-bold text-green-800">Job Created Successfully!</h3>
+                <h3 className="font-bold text-green-800">Campaign Created Successfully!</h3>
                 <p className="text-green-700 mt-2">Share this unique invitation link with your creator:</p>
                 <div className="mt-4 flex items-center gap-2">
                     <Input readOnly value={newInviteLink} className="bg-white"/>
@@ -122,34 +133,78 @@ export default function CreateJobPage() {
              </div>
         ) : (
             <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Job Title</FormLabel>
-                    <FormControl>
-                        <Input placeholder="e.g., Instagram Story for Summer Campaign" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>Campaign Title</FormLabel>
+                      <FormControl>
+                          <Input placeholder="e.g., Summer Skincare Campaign" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                      </FormItem>
+                  )}
                 />
                 <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Description & Deliverables</FormLabel>
-                    <FormControl>
-                        <Textarea placeholder="Describe the campaign, what you expect from the creator, and the specific deliverables (e.g., 3 stories, 1 post)." {...field} rows={6} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
+                  control={form.control}
+                  name="campaignBrief"
+                  render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>Campaign Brief</FormLabel>
+                      <FormControl>
+                          <Textarea placeholder="Describe the campaign goals, target audience, key messages, and overall vibe." {...field} rows={6} />
+                      </FormControl>
+                      <FormMessage />
+                      </FormItem>
+                  )}
                 />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div className="space-y-4">
+                  <FormLabel>Deliverables</FormLabel>
+                  <div className="space-y-3">
+                    {fields.map((item, index) => (
+                      <div key={item.id} className="flex items-center gap-2">
+                        <FormField
+                          control={form.control}
+                          name={`deliverables.${index}.value`}
+                          render={({ field }) => (
+                            <FormItem className="flex-1">
+                              <FormControl>
+                                <Input placeholder={`e.g., 3 Instagram Stories with product link`} {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                         {fields.length > 1 && (
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="text-muted-foreground hover:text-destructive"
+                                onClick={() => remove(index)}
+                            >
+                                <XCircle className="h-5 w-5" />
+                            </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => append({ value: "" })}
+                  >
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Add Deliverable
+                  </Button>
+                </div>
+
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <FormField
                     control={form.control}
                     name="price"
@@ -179,7 +234,7 @@ export default function CreateJobPage() {
                 </div>
 
                 <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-                {form.formState.isSubmitting ? 'Creating Job...' : 'Create Job & Get Invite Link'}
+                {form.formState.isSubmitting ? 'Creating Campaign...' : 'Create Campaign & Get Invite Link'}
                 </Button>
             </form>
             </Form>
