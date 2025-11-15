@@ -14,6 +14,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 type Applicant = {
     id: string;
@@ -77,24 +79,37 @@ export default function ManageApplicationsPage() {
     const handleAccept = async (applicationId: string, creatorId: string) => {
         if (!campaignRef || !firestore) return;
         toast({ title: 'Accepting Application...' });
+        
+        const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicationId);
+        const campaignUpdateData = {
+            creatorId: creatorId,
+            status: 'PENDING_CREATOR_ACCEPTANCE',
+            updatedAt: serverTimestamp(),
+        };
+        const applicationUpdateData = {
+            status: 'accepted',
+        };
 
-        try {
-            const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicationId);
-            // Update campaign
-            await updateDoc(campaignRef, {
-                creatorId: creatorId,
-                status: 'PENDING_CREATOR_ACCEPTANCE',
-                updatedAt: serverTimestamp(),
+        // Non-blocking optimistic updates
+        updateDoc(campaignRef, campaignUpdateData).catch(error => {
+            const permissionError = new FirestorePermissionError({
+                path: campaignRef.path,
+                operation: 'update',
+                requestResourceData: campaignUpdateData,
             });
-            // Update application
-            await updateDoc(applicationRef, {
-                status: 'accepted',
-            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
 
-            toast({ title: 'Creator Selected!', description: "They've been notified to accept the offer." });
-        } catch (e: any) {
-            toast({ variant: 'destructive', title: 'Failed to accept', description: e.message });
-        }
+        updateDoc(applicationRef, applicationUpdateData).catch(error => {
+             const permissionError = new FirestorePermissionError({
+                path: applicationRef.path,
+                operation: 'update',
+                requestResourceData: applicationUpdateData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
+
+        toast({ title: 'Creator Selected!', description: "They've been notified to accept the offer." });
     };
     
     const isLoading = isUserLoading || isCampaignLoading || areApplicationsLoading || (applications && applicants.length !== applications.length);
