@@ -28,6 +28,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast';
+import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800 border-green-200',
@@ -215,23 +216,13 @@ export default function BrandDashboard() {
 
     const campaignRef = doc(firestore, 'campaigns', campaignId);
     
-    try {
-        // This will cascade delete subcollections in a real backend, but for Firestore client
-        // we need to delete them manually if rules don't allow group deletes.
-        // For now, let's assume a backend function or security rule handles this.
-        await deleteDoc(campaignRef);
+    // Non-blocking delete
+    deleteDocumentNonBlocking(campaignRef);
 
-        toast({
-            title: 'Campaign Deleted',
-            description: 'The campaign has been successfully removed.',
-        });
-    } catch (error: any) {
-        toast({
-            variant: 'destructive',
-            title: 'Error Deleting Campaign',
-            description: error.message || 'Could not delete the campaign.',
-        });
-    }
+    toast({
+        title: 'Campaign Deletion Initiated',
+        description: 'The campaign will be removed shortly.',
+    });
   };
 
 
