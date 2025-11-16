@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState } from 'react';
@@ -47,6 +48,7 @@ const campaignSchema = z.object({
     z.number({ invalid_type_error: 'Budget must be a number.' }).positive('Budget must be a positive number.')
   ),
   tags: z.array(z.string()).min(1, "Please select at least one tag."),
+  otherTag: z.string().optional(),
 }).refine(data => {
     // Custom refinement to check if deliverable types are valid for the selected platform
     return data.deliverables.every(d => {
@@ -190,6 +192,7 @@ export default function CreateCampaignPage() {
       deliverables: [{ platform: 'instagram', type: 'Post', quantity: 1, note: '' }],
       budget: 0,
       tags: [],
+      otherTag: '',
     },
   });
 
@@ -203,15 +206,29 @@ export default function CreateCampaignPage() {
         toast({ variant: 'destructive', title: 'You must be logged in to create a campaign.'});
         return;
     }
+    
+    // Combine tags and otherTag
+    const finalTags = [...data.tags];
+    if (data.tags.includes('Other') && data.otherTag) {
+        finalTags.push(data.otherTag);
+    }
+    const otherIndex = finalTags.indexOf('Other');
+    if (otherIndex > -1) {
+        finalTags.splice(otherIndex, 1);
+    }
+
 
     const submissionData = {
       ...data,
+      tags: finalTags,
       deliverables: data.deliverables.map(d => `${d.quantity} ${d.platform} ${d.type}(s)${d.note ? ` - ${d.note}`: ''}`),
       brandId: user.uid,
       status: 'OPEN_FOR_APPLICATIONS',
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
+    
+    delete submissionData.otherTag;
 
     try {
         const campaignsCollectionRef = collection(firestore, 'campaigns');
@@ -311,40 +328,57 @@ export default function CreateCampaignPage() {
                   <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
                 </div>
                 
-                <FormField
-                  control={form.control}
-                  name="tags"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tags</FormLabel>
-                      <FormControl>
-                        <div className="flex flex-wrap gap-2">
-                          {niches.map((niche) => (
-                            <Button
-                              key={niche.id}
-                              type="button"
-                              variant="outline"
-                              className={cn(
-                                "rounded-full",
-                                field.value.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
-                              )}
-                              onClick={() => {
-                                const currentTags = field.value || [];
-                                const newTags = currentTags.includes(niche.label)
-                                  ? currentTags.filter(t => t !== niche.label)
-                                  : [...currentTags, niche.label];
-                                field.onChange(newTags);
-                              }}
-                            >
-                              {niche.label}
-                            </Button>
-                          ))}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="space-y-4">
+                    <FormField
+                    control={form.control}
+                    name="tags"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Tags</FormLabel>
+                        <FormControl>
+                            <div className="flex flex-wrap gap-2">
+                            {niches.map((niche) => (
+                                <Button
+                                key={niche.id}
+                                type="button"
+                                variant="outline"
+                                className={cn(
+                                    "rounded-full",
+                                    field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+                                )}
+                                onClick={() => {
+                                    const currentTags = field.value || [];
+                                    const newTags = currentTags.includes(niche.label)
+                                    ? currentTags.filter(t => t !== niche.label)
+                                    : [...currentTags, niche.label];
+                                    field.onChange(newTags);
+                                }}
+                                >
+                                {niche.label}
+                                </Button>
+                            ))}
+                            </div>
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    {form.watch('tags')?.includes('Other') && (
+                        <FormField
+                            control={form.control}
+                            name="otherTag"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Custom Tag</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Specify your custom tag" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    )}
+                </div>
 
 
                 <FormField
