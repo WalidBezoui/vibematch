@@ -208,14 +208,20 @@ export default function CreateCampaignPage() {
     }
     
     // Combine tags and otherTag
-    const finalTags = [...data.tags];
+    let finalTags = [...data.tags];
     if (data.tags.includes('Other') && data.otherTag) {
-        finalTags.push(data.otherTag);
+        const customTags = data.otherTag.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+        finalTags.push(...customTags);
     }
+    
+    // Remove 'Other' placeholder from the final list
     const otherIndex = finalTags.indexOf('Other');
     if (otherIndex > -1) {
         finalTags.splice(otherIndex, 1);
     }
+
+    // Remove duplicates
+    finalTags = [...new Set(finalTags)];
 
 
     const submissionData = {
@@ -369,9 +375,9 @@ export default function CreateCampaignPage() {
                             name="otherTag"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Custom Tag</FormLabel>
+                                    <FormLabel>Custom Tag(s)</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Specify your custom tag" {...field} />
+                                        <Input placeholder="e.g. Sustainable, Vegan. Separate with commas." {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
