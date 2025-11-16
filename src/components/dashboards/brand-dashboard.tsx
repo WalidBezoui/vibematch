@@ -80,9 +80,16 @@ const CampaignCard = ({ campaign }: { campaign: any }) => {
                         {campaign.status.replace(/_/g, ' ')}
                     </Badge>
                 </div>
-                <CardDescription className="gradient-text font-bold text-base">{campaign.price} DH</CardDescription>
+                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
+                {campaign.tags && campaign.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {campaign.tags.map((tag: string) => (
+                            <Badge key={tag} variant="secondary">{tag}</Badge>
+                        ))}
+                    </div>
+                )}
                 <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
             </CardContent>
             <CardFooter className="bg-muted/50 p-4">
@@ -132,7 +139,7 @@ export default function BrandDashboard() {
             const allApplicationsSnapshots = await Promise.all(applicationPromises);
             allApplicationsSnapshots.forEach(snapshot => totalApplications += snapshot.size);
 
-            totalBudget = campaigns.reduce((sum, c) => sum + c.price, 0);
+            totalBudget = campaigns.reduce((sum, c) => sum + c.budget, 0);
 
             setStats({ activeCampaigns, totalApplications, totalBudget });
             setIsStatsLoading(false);

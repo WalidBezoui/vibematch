@@ -125,15 +125,21 @@ export default function DiscoverPage() {
                                     <Card key={campaign.id} className="flex flex-col hover:shadow-lg transition-shadow">
                                         <CardHeader>
                                             <CardTitle>{campaign.title}</CardTitle>
-                                            <CardDescription>A new opportunity awaits</CardDescription>
+                                            {campaign.tags && campaign.tags.length > 0 && (
+                                                <div className="flex flex-wrap gap-2 pt-2">
+                                                    {campaign.tags.map((tag: string) => (
+                                                        <Badge key={tag} variant="secondary">{tag}</Badge>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </CardHeader>
                                         <CardContent className="flex-grow space-y-4">
                                             <p className="text-sm text-muted-foreground line-clamp-3 h-[60px]">
                                                 {campaign.campaignBrief}
                                             </p>
                                             <div>
-                                                <Badge variant="secondary">Budget</Badge>
-                                                <p className="font-bold text-lg gradient-text mt-1">{campaign.price} DH</p>
+                                                <Badge variant="outline">Budget</Badge>
+                                                <p className="font-bold text-lg gradient-text mt-1">{campaign.budget} DH</p>
                                             </div>
                                         </CardContent>
                                         <CardFooter className="flex-col items-stretch gap-2">

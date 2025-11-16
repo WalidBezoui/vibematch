@@ -4,7 +4,7 @@
         "forBrands": "For Brands",
         "forCreators": "For Creators",
         "faq": "FAQ",
-        "contact": "Contact",
+        "support": "Support",
         "login": "Login",
         "logout": "Logout",
         "dashboard": "Dashboard",
@@ -212,7 +212,7 @@
                   "answer": "To maintain a high-quality network, VibeMatch is currently invite-only or requires an application. You can apply to become a Founding Creator. We review each application based on audience engagement, content quality, and niche. Our team will get in touch if your profile is a good fit for our platform."
               },
               {
-                  "question": "How does VibeMatch guarantee payments?",
+                  "question": "How does VibeMatch guarantee my payments?",
                   "answer": "When a brand hires you for a campaign, they deposit the full payment into our secure escrow system. Once you've completed the agreed-upon deliverables and the brand approves them, we release the funds directly to your account. This eliminates the risk of late or missed payments, letting you focus on creating."
               },
               {

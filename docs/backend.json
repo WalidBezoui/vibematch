@@ -62,9 +62,16 @@
           },
           "description": "A list of specific deliverables required from the creator."
         },
-        "price": {
+        "budget": {
           "type": "number",
           "description": "The payment amount for the job in Moroccan Dirhams (DH)."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Keywords or tags to categorize the campaign (e.g., 'Fashion', 'Tech')."
         },
         "brandId": {
           "type": "string",
@@ -101,7 +108,7 @@
         "title",
         "campaignBrief",
         "deliverables",
-        "price",
+        "budget",
         "brandId",
         "status",
         "createdAt",

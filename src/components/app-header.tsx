@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, User, Store } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, Store } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { useUser, useUserProfile } from '@/firebase';
@@ -196,7 +196,7 @@ export function AppHeader() {
     if (user && userProfile) {
         const commonLinks = [
             { href: "/faq", label: t('header.faq'), icon: HelpCircle },
-            { href: "/contact", label: t('header.contact'), icon: MessageSquare },
+            { href: "/contact", label: t('header.support'), icon: MessageSquare },
         ];
 
         let roleSpecificLinks: NavLinkItem[] = [];
@@ -226,7 +226,7 @@ export function AppHeader() {
         { href: "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Store },
         { href: "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users },
         { href: "/faq", label: t('header.faq'), icon: HelpCircle },
-        { href: "/contact", label: t('header.contact'), icon: MessageSquare },
+        { href: "/contact", label: t('header.support'), icon: MessageSquare },
     ];
   }, [t, user, userProfile]);
 
