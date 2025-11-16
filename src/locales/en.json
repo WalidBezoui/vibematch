@@ -386,6 +386,7 @@
             {"id": "art", "label": "Art & Music", "icon": "music_note"},
             {"id": "gaming", "label": "Tech & Gaming", "icon": "stadia_controller"},
             {"id": "family", "label": "Family & Parenting", "icon": "family_restroom"},
+            {"id": "ugc", "label": "UGC", "icon": "groups"},
             {"id": "other", "label": "Other", "icon": "more_horiz"}
         ]
     },

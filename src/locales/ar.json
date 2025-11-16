@@ -386,6 +386,7 @@
             {"id": "art", "label": "الفن والموسيقى", "icon": "music_note"},
             {"id": "gaming", "label": "التقنية والألعاب", "icon": "stadia_controller"},
             {"id": "family", "label": "الأسرة والتربية", "icon": "family_restroom"},
+            {"id": "ugc", "label": "محتوى من إنشاء المستخدم", "icon": "groups"},
             {"id": "other", "label": "أخرى", "icon": "more_horiz"}
         ]
     },
