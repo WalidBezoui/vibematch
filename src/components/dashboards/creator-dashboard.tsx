@@ -81,8 +81,12 @@ export default function CreatorDashboard() {
     () => user && firestore ? query(
         collection(firestore, 'campaigns'), 
         where('creatorId', '==', user.uid),
-        where('status', '!=', 'COMPLETED'),
-        where('status', '!=', 'REJECTED_BY_CREATOR'),
+        where('status', 'in', [
+            'PENDING_CREATOR_ACCEPTANCE',
+            'PENDING_PAYMENT',
+            'IN_PROGRESS',
+            'DELIVERED'
+        ]),
     ) : null,
     [user, firestore]
   );
