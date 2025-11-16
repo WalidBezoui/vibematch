@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, Store } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, Building } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { useUser, useUserProfile } from '@/firebase';
@@ -42,8 +42,18 @@ const LanguageSwitcher = ({className}: {className?: string}) => {
     );
 };
 
-const DesktopNav = ({ navLinks, onLinkClick }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void }) => {
+const DesktopNav = ({ navLinks, onLinkClick, isLoading }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, isLoading: boolean }) => {
     const pathname = usePathname();
+
+    if (isLoading) {
+        return (
+            <div className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
+                <Skeleton className="h-9 w-24 rounded-full" />
+                <Skeleton className="h-9 w-24 rounded-full" />
+                <Skeleton className="h-9 w-24 rounded-full" />
+            </div>
+        )
+    }
 
     return (
         <nav className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
@@ -68,7 +78,7 @@ const DesktopNav = ({ navLinks, onLinkClick }: { navLinks: NavLinkItem[], onLink
     )
 }
 
-const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout }: { isOpen: boolean, navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, onClose: () => void, onLogout: () => void }) => {
+const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading }: { isOpen: boolean, navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, onClose: () => void, onLogout: () => void, isLoading: boolean }) => {
     const { user, isUserLoading } = useUser();
     const { t } = useLanguage();
     const pathname = usePathname();
@@ -92,7 +102,13 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout }: { isOpe
             </div>
             
             <nav className="flex flex-col gap-4">
-                 {navLinks.map((link) => {
+                 {isLoading ? (
+                     <>
+                        <Skeleton className="h-16 w-full rounded-lg" />
+                        <Skeleton className="h-16 w-full rounded-lg" />
+                        <Skeleton className="h-16 w-full rounded-lg" />
+                     </>
+                 ) : navLinks.map((link) => {
                     const isActive = pathname === link.href;
                     return (
                         <Link
@@ -138,8 +154,13 @@ const AuthButtons = ({ onLogout }: { onLogout: () => void }) => {
     const { userProfile, isLoading: isProfileLoading } = useUserProfile();
     const { t } = useLanguage();
 
-    if (isUserLoading || isProfileLoading) {
-      return <Skeleton className="h-10 w-24 rounded-full" />;
+    if (isUserLoading || (user && isProfileLoading)) {
+      return (
+        <div className="flex items-center gap-2">
+            <Skeleton className="h-9 w-9 rounded-full" />
+            <Skeleton className="h-9 w-9 rounded-full hidden md:block" />
+        </div>
+      );
     }
 
     if (user) {
@@ -173,8 +194,10 @@ export function AppHeader() {
   const router = useRouter();
   const { t, setUserInterest } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user } = useUser();
-  const { userProfile } = useUserProfile();
+  const { user, isUserLoading } = useUser();
+  const { userProfile, isLoading: isProfileLoading } = useUserProfile();
+
+  const isNavLoading = isUserLoading || (user && isProfileLoading);
 
   useEffect(() => {
     // Prevent body scroll when mobile menu is open
@@ -193,6 +216,17 @@ export function AppHeader() {
   };
 
   const navLinks: NavLinkItem[] = useMemo(() => {
+    const loggedOutLinks: NavLinkItem[] = [
+        { href: "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Building },
+        { href: "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users },
+        { href: "/faq", label: t('header.faq'), icon: HelpCircle },
+        { href: "/contact", label: t('header.support'), icon: MessageSquare },
+    ];
+
+    if (isNavLoading) {
+      return [];
+    }
+
     if (user && userProfile) {
         const commonLinks = [
             { href: "/faq", label: t('header.faq'), icon: HelpCircle },
@@ -221,14 +255,11 @@ export function AppHeader() {
         ];
 
     }
+
     // Logged-out users
-    return [
-        { href: "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Store },
-        { href: "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users },
-        { href: "/faq", label: t('header.faq'), icon: HelpCircle },
-        { href: "/contact", label: t('header.support'), icon: MessageSquare },
-    ];
-  }, [t, user, userProfile]);
+    return loggedOutLinks;
+
+  }, [t, user, userProfile, isNavLoading]);
 
   const handleNavLinkClick = (interest?: 'brand' | 'creator') => {
     if (interest) {
@@ -246,7 +277,7 @@ export function AppHeader() {
             VibeMatch
         </Link>
 
-        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} />
+        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} isLoading={isNavLoading} />
 
         <div className="flex items-center gap-2">
             <LanguageSwitcher className="hidden sm:flex" />
@@ -271,6 +302,7 @@ export function AppHeader() {
             onLinkClick={handleNavLinkClick}
             onClose={() => setIsMobileMenuOpen(false)}
             onLogout={handleLogout}
+            isLoading={isNavLoading}
         />
     </>
   );
