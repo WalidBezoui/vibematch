@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -74,13 +74,27 @@ const deliverableTypes = {
     ]
 };
 
-const DeliverableItem = ({ index, control, remove }: { index: number, control: any, remove: (index: number) => void}) => {
+const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
     const platformValue = useWatch({
         control,
         name: `deliverables.${index}.platform`
     });
 
     const availableTypes = deliverableTypes[platformValue as keyof typeof deliverableTypes] || [];
+
+    useEffect(() => {
+        if (platformValue && availableTypes.length > 0) {
+            // Check if the current type is valid for the new platform
+            const currentType = control._getWatch(`deliverables.${index}.type`);
+            const isTypeValid = availableTypes.some(t => t.value === currentType);
+
+            // If not valid, set the first available type as default
+            if (!isTypeValid) {
+                setValue(`deliverables.${index}.type`, availableTypes[0].value, { shouldValidate: true });
+            }
+        }
+    }, [platformValue, availableTypes, index, setValue, control]);
+
 
     return (
         <div className="p-4 border rounded-lg bg-muted/50 space-y-4 relative">
@@ -319,7 +333,7 @@ export default function CreateCampaignPage() {
                   <FormLabel>Deliverables</FormLabel>
                   <div className="space-y-3">
                     {fields.map((item, index) => (
-                      <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} />
+                      <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
                     ))}
                   </div>
                   <Button
