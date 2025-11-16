@@ -2,14 +2,32 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { collection, query, where, getCountFromServer, getDocs } from 'firebase/firestore';
+import { collection, query, where, getCountFromServer, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useToast } from '@/hooks/use-toast';
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800 border-green-200',
@@ -53,7 +71,7 @@ const StatCard = ({ title, value, icon, isLoading }: { title: string; value: str
     </Card>
 );
 
-const CampaignCard = ({ campaign }: { campaign: any }) => {
+const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campaignId: string) => Promise<void> }) => {
     const firestore = useFirestore();
     const [applicationCount, setApplicationCount] = useState(0);
     const [isLoadingCount, setIsLoadingCount] = useState(true);
@@ -75,12 +93,50 @@ const CampaignCard = ({ campaign }: { campaign: any }) => {
         <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
             <CardHeader>
                 <div className="flex justify-between items-start gap-2">
-                    <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
-                    <Badge className={cn('whitespace-nowrap text-xs', statusStyles[campaign.status])}>
-                        {campaign.status.replace(/_/g, ' ')}
-                    </Badge>
+                     <div className='flex-1'>
+                        <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
+                        <Badge className={cn('whitespace-nowrap text-xs mt-2', statusStyles[campaign.status])}>
+                            {campaign.status.replace(/_/g, ' ')}
+                        </Badge>
+                     </div>
+                     <AlertDialog>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                    <MoreVertical className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem asChild>
+                                    <Link href={`/campaigns/${campaign.id}/edit`}>
+                                        <Edit className="mr-2 h-4 w-4" />
+                                        <span>Edit</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <AlertDialogTrigger asChild>
+                                    <DropdownMenuItem className="text-destructive focus:bg-destructive/10 focus:text-destructive">
+                                        <Trash2 className="mr-2 h-4 w-4" />
+                                        <span>Delete</span>
+                                    </DropdownMenuItem>
+                                </AlertDialogTrigger>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                         <AlertDialogContent>
+                            <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete your campaign
+                                and all of its applications from our servers.
+                            </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => onDelete(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Continue</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </div>
-                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
+                 <CardDescription className="gradient-text font-bold text-base pt-2">{campaign.budget} DH</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
                 {campaign.tags && campaign.tags.length > 0 && (
@@ -115,6 +171,7 @@ const CampaignCard = ({ campaign }: { campaign: any }) => {
 export default function BrandDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
+  const { toast } = useToast();
   const [stats, setStats] = useState({ activeCampaigns: 0, totalApplications: 0, totalBudget: 0 });
   const [isStatsLoading, setIsStatsLoading] = useState(true);
 
@@ -132,14 +189,16 @@ export default function BrandDashboard() {
             let totalBudget = 0;
             const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED').length;
 
-            const applicationPromises = campaigns.map(c => 
-                getDocs(query(collection(firestore, 'campaigns', c.id, 'applications')))
-            );
+            if (campaigns.length > 0) {
+                const applicationPromises = campaigns.map(c => 
+                    getDocs(query(collection(firestore, 'campaigns', c.id, 'applications')))
+                );
 
-            const allApplicationsSnapshots = await Promise.all(applicationPromises);
-            allApplicationsSnapshots.forEach(snapshot => totalApplications += snapshot.size);
+                const allApplicationsSnapshots = await Promise.all(applicationPromises);
+                allApplicationsSnapshots.forEach(snapshot => totalApplications += snapshot.size);
 
-            totalBudget = campaigns.reduce((sum, c) => sum + c.budget, 0);
+                totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0), 0);
+            }
 
             setStats({ activeCampaigns, totalApplications, totalBudget });
             setIsStatsLoading(false);
@@ -149,6 +208,36 @@ export default function BrandDashboard() {
         setIsStatsLoading(false);
     }
   }, [campaigns, firestore, user, isLoading]);
+
+  const handleDeleteCampaign = async (campaignId: string) => {
+    if (!firestore) return;
+    toast({ title: 'Deleting campaign...' });
+
+    try {
+        const campaignRef = doc(firestore, 'campaigns', campaignId);
+        
+        // Delete subcollections first (applications)
+        const applicationsRef = collection(campaignRef, 'applications');
+        const applicationsSnapshot = await getDocs(applicationsRef);
+        const deletePromises = applicationsSnapshot.docs.map(doc => deleteDoc(doc.ref));
+        await Promise.all(deletePromises);
+
+        // Delete the campaign doc itself
+        await deleteDoc(campaignRef);
+
+        toast({
+            title: 'Campaign Deleted',
+            description: 'The campaign and all its applications have been removed.',
+        });
+    } catch (error: any) {
+        console.error('Error deleting campaign:', error);
+        toast({
+            variant: 'destructive',
+            title: 'Error Deleting Campaign',
+            description: error.message,
+        });
+    }
+  };
 
 
   return (
@@ -181,7 +270,7 @@ export default function BrandDashboard() {
       {!isLoading && campaigns && campaigns.length > 0 ? (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {campaigns.map((campaign) => (
-            <CampaignCard campaign={campaign} key={campaign.id} />
+            <CampaignCard campaign={campaign} key={campaign.id} onDelete={handleDeleteCampaign} />
           ))}
         </div>
       ) : null}
