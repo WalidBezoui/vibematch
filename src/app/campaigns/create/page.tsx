@@ -14,16 +14,35 @@ import { useFirestore, useUser } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { PlusCircle, XCircle } from 'lucide-react';
+import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PartyPopper } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+const TikTokIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+    </svg>
+);
+
+
+const deliverableSchema = z.object({
+  platform: z.enum(['instagram', 'tiktok'], { required_error: "Platform is required."}),
+  type: z.enum(['Post', 'Story', 'Reel', 'Video'], { required_error: "Type is required."}),
+  quantity: z.preprocess(
+    (val) => (val === '' ? undefined : Number(val)),
+    z.number({ invalid_type_error: 'Qty must be a number.' }).min(1, 'Quantity must be at least 1.')
+  ),
+  note: z.string().optional(),
+});
+
 
 const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
   campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
-  deliverables: z.array(z.object({ value: z.string().min(3, 'Deliverable cannot be empty.') })).min(1, 'Please add at least one deliverable.'),
+  deliverables: z.array(deliverableSchema).min(1, 'Please add at least one deliverable.'),
   budget: z.preprocess(
     (val) => (val === '' ? undefined : Number(val)),
     z.number({ invalid_type_error: 'Budget must be a number.' }).positive('Budget must be a positive number.')
@@ -49,7 +68,7 @@ export default function CreateCampaignPage() {
     defaultValues: {
       title: '',
       campaignBrief: '',
-      deliverables: [{ value: '' }],
+      deliverables: [{ platform: 'instagram', type: 'Post', quantity: 1, note: '' }],
       budget: 0,
       tags: [],
     },
@@ -68,7 +87,7 @@ export default function CreateCampaignPage() {
 
     const submissionData = {
       ...data,
-      deliverables: data.deliverables.map(d => d.value),
+      deliverables: data.deliverables.map(d => `${d.quantity} ${d.platform} ${d.type}(s)${d.note ? ` - ${d.note}`: ''}`),
       brandId: user.uid,
       status: 'OPEN_FOR_APPLICATIONS',
       createdAt: serverTimestamp(),
@@ -158,25 +177,85 @@ export default function CreateCampaignPage() {
                   <FormLabel>Deliverables</FormLabel>
                   <div className="space-y-3">
                     {fields.map((item, index) => (
-                      <div key={item.id} className="flex items-center gap-2">
-                        <FormField
-                          control={form.control}
-                          name={`deliverables.${index}.value`}
-                          render={({ field }) => (
-                            <FormItem className="flex-1">
-                              <FormControl>
-                                <Input placeholder={`e.g., 3 Instagram Stories with product link`} {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                      <div key={item.id} className="p-4 border rounded-lg bg-muted/50 space-y-4 relative">
+                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                           <FormField
+                              control={form.control}
+                              name={`deliverables.${index}.platform`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Platform</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select platform" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="instagram"><div className="flex items-center gap-2"><Instagram className="h-4 w-4" /> Instagram</div></SelectItem>
+                                      <SelectItem value="tiktok"><div className="flex items-center gap-2"><TikTokIcon /> TikTok</div></SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                             <FormField
+                              control={form.control}
+                              name={`deliverables.${index}.type`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Type</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="Post"><div className="flex items-center gap-2"><Video className="h-4 w-4" /> Post</div></SelectItem>
+                                      <SelectItem value="Story"><div className="flex items-center gap-2"><Repeat className="h-4 w-4" /> Story</div></SelectItem>
+                                      <SelectItem value="Reel"><div className="flex items-center gap-2"><Video className="h-4 w-4" /> Reel</div></SelectItem>
+                                       <SelectItem value="Video"><div className="flex items-center gap-2"><Video className="h-4 w-4" /> Video</div></SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                             <FormField
+                              control={form.control}
+                              name={`deliverables.${index}.quantity`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Quantity</FormLabel>
+                                  <FormControl>
+                                      <Input type="number" placeholder="1" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                         </div>
+                          <FormField
+                              control={form.control}
+                              name={`deliverables.${index}.note`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Optional Note</FormLabel>
+                                  <FormControl>
+                                      <Input placeholder="e.g., must include product link" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
                          {fields.length > 1 && (
                             <Button
                                 type="button"
                                 variant="ghost"
                                 size="icon"
-                                className="text-muted-foreground hover:text-destructive"
+                                className="absolute -top-3 -right-3 text-muted-foreground hover:text-destructive bg-muted/80 hover:bg-destructive/10 rounded-full h-7 w-7"
                                 onClick={() => remove(index)}
                             >
                                 <XCircle className="h-5 w-5" />
@@ -189,11 +268,12 @@ export default function CreateCampaignPage() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => append({ value: "" })}
+                    onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}
                   >
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Add Deliverable
                   </Button>
+                  <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
                 </div>
                 
                 <FormField
@@ -204,7 +284,7 @@ export default function CreateCampaignPage() {
                       <FormLabel>Tags</FormLabel>
                       <FormControl>
                         <div className="flex flex-wrap gap-2">
-                          {niches.filter(n => n.id !== 'other').map((niche) => (
+                          {niches.map((niche) => (
                             <Button
                               key={niche.id}
                               type="button"
@@ -256,3 +336,4 @@ export default function CreateCampaignPage() {
     </>
   );
 }
+
