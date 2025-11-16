@@ -136,7 +136,7 @@ export default function PaymentPage() {
                     <CardContent className="space-y-6">
                         <div className="flex justify-between items-center text-xl p-4 bg-muted rounded-lg">
                             <span>Total Amount</span>
-                            <span className="font-bold text-2xl gradient-text">{campaign.price} DH</span>
+                            <span className="font-bold text-2xl gradient-text">{campaign.budget} DH</span>
                         </div>
                         <div className="text-center text-sm text-muted-foreground">
                             <p>Your payment will be held securely by VibeMatch and only released to the creator upon your approval of the final deliverables.</p>
@@ -149,7 +149,7 @@ export default function PaymentPage() {
                     </CardContent>
                     <CardFooter>
                         <Button onClick={handlePayment} disabled={isPaying} className="w-full" size="lg">
-                            {isPaying ? 'Processing...' : `Pay ${campaign.price} DH and Start Campaign`}
+                            {isPaying ? 'Processing...' : `Pay ${campaign.budget} DH and Start Campaign`}
                         </Button>
                     </CardFooter>
                 </Card>
