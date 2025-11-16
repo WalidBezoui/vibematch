@@ -136,7 +136,7 @@ export default function CreatorDashboard() {
         const pendingCount = pendingCampaigns?.length || 0;
         
         // This is a placeholder for total earnings. In a real app you'd query completed campaigns.
-        const totalEarnings = activeCampaigns?.reduce((sum, c) => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED' ? sum + c.price : sum, 0) || 0;
+        const totalEarnings = activeCampaigns?.reduce((sum, c) => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED' ? sum + c.budget : sum, 0) || 0;
 
         setStats({
             activeCollaborations: activeCount,
@@ -191,7 +191,7 @@ export default function CreatorDashboard() {
                                         </Badge>
                                      )}
                                 </div>
-                                <CardDescription className="gradient-text font-bold text-base">{campaign.price} DH</CardDescription>
+                                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                             </CardHeader>
                             <CardContent className="flex-grow">
                                 <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
@@ -235,7 +235,7 @@ export default function CreatorDashboard() {
                                         Application Sent
                                     </Badge>
                                 </div>
-                                <CardDescription className="gradient-text font-bold text-base">{campaign.price} DH</CardDescription>
+                                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                             </CardHeader>
                             <CardContent className="flex-grow">
                                 <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>

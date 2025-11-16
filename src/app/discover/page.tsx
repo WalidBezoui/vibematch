@@ -151,7 +151,7 @@ export default function DiscoverPage() {
                                                     </Button>
                                                     <AlertDialog>
                                                         <AlertDialogTrigger asChild>
-                                                            <Button variant="ghost" size="sm" className="text-muted-foreground">
+                                                            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
                                                                 <Trash2 className="mr-2 h-3 w-3" />
                                                                 Withdraw Application
                                                             </Button>
