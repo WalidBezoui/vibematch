@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -27,7 +27,6 @@ const TikTokIcon = () => (
     </svg>
 );
 
-
 const deliverableSchema = z.object({
   platform: z.enum(['instagram', 'tiktok'], { required_error: "Platform is required."}),
   type: z.enum(['Post', 'Story', 'Reel', 'Video'], { required_error: "Type is required."}),
@@ -44,13 +43,133 @@ const campaignSchema = z.object({
   campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
   deliverables: z.array(deliverableSchema).min(1, 'Please add at least one deliverable.'),
   budget: z.preprocess(
-    (val) => (val === '' ? undefined : Number(val)),
+    (val) => (val === '' ? 0 : Number(val)),
     z.number({ invalid_type_error: 'Budget must be a number.' }).positive('Budget must be a positive number.')
   ),
   tags: z.array(z.string()).min(1, "Please select at least one tag."),
+}).refine(data => {
+    // Custom refinement to check if deliverable types are valid for the selected platform
+    return data.deliverables.every(d => {
+        if (d.platform === 'instagram') return ['Post', 'Story', 'Reel'].includes(d.type);
+        if (d.platform === 'tiktok') return ['Video'].includes(d.type);
+        return false;
+    });
+}, {
+    message: "Invalid deliverable type for the selected platform.",
+    path: ['deliverables'],
 });
 
 type CampaignForm = z.infer<typeof campaignSchema>;
+
+const deliverableTypes = {
+    instagram: [
+        { value: 'Post', label: 'Post', icon: StickyNote },
+        { value: 'Story', label: 'Story', icon: Repeat },
+        { value: 'Reel', label: 'Reel', icon: Video },
+    ],
+    tiktok: [
+        { value: 'Video', label: 'Video', icon: Video },
+    ]
+};
+
+const DeliverableItem = ({ index, control, remove }: { index: number, control: any, remove: (index: number) => void}) => {
+    const platformValue = useWatch({
+        control,
+        name: `deliverables.${index}.platform`
+    });
+
+    const availableTypes = deliverableTypes[platformValue as keyof typeof deliverableTypes] || [];
+
+    return (
+        <div className="p-4 border rounded-lg bg-muted/50 space-y-4 relative">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <FormField
+                control={control}
+                name={`deliverables.${index}.platform`}
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Platform</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                        <SelectTrigger>
+                        <SelectValue placeholder="Select platform" />
+                        </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                        <SelectItem value="instagram"><div className="flex items-center gap-2"><Instagram className="h-4 w-4" /> Instagram</div></SelectItem>
+                        <SelectItem value="tiktok"><div className="flex items-center gap-2"><TikTokIcon /> TikTok</div></SelectItem>
+                    </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+            <FormField
+                control={control}
+                name={`deliverables.${index}.type`}
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value} disabled={!platformValue}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select type" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {availableTypes.map(type => {
+                                const Icon = type.icon;
+                                return (
+                                <SelectItem key={type.value} value={type.value}>
+                                    <div className="flex items-center gap-2"><Icon className="h-4 w-4" /> {type.label}</div>
+                                </SelectItem>
+                                )
+                            })}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+            <FormField
+                control={control}
+                name={`deliverables.${index}.quantity`}
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Quantity</FormLabel>
+                    <FormControl>
+                        <Input type="number" placeholder="1" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+            </div>
+            <FormField
+                control={control}
+                name={`deliverables.${index}.note`}
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Optional Note</FormLabel>
+                    <FormControl>
+                        <Input placeholder="e.g., must include product link" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+            <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute -top-3 -right-3 text-muted-foreground hover:text-destructive bg-muted/80 hover:bg-destructive/10 rounded-full h-7 w-7"
+                onClick={() => remove(index)}
+            >
+                <XCircle className="h-5 w-5" />
+            </Button>
+        </div>
+    )
+}
 
 export default function CreateCampaignPage() {
   const router = useRouter();
@@ -177,91 +296,7 @@ export default function CreateCampaignPage() {
                   <FormLabel>Deliverables</FormLabel>
                   <div className="space-y-3">
                     {fields.map((item, index) => (
-                      <div key={item.id} className="p-4 border rounded-lg bg-muted/50 space-y-4 relative">
-                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                           <FormField
-                              control={form.control}
-                              name={`deliverables.${index}.platform`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Platform</FormLabel>
-                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Select platform" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="instagram"><div className="flex items-center gap-2"><Instagram className="h-4 w-4" /> Instagram</div></SelectItem>
-                                      <SelectItem value="tiktok"><div className="flex items-center gap-2"><TikTokIcon /> TikTok</div></SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                             <FormField
-                              control={form.control}
-                              name={`deliverables.${index}.type`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Type</FormLabel>
-                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Select type" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Post"><div className="flex items-center gap-2"><Video className="h-4 w-4" /> Post</div></SelectItem>
-                                      <SelectItem value="Story"><div className="flex items-center gap-2"><Repeat className="h-4 w-4" /> Story</div></SelectItem>
-                                      <SelectItem value="Reel"><div className="flex items-center gap-2"><Video className="h-4 w-4" /> Reel</div></SelectItem>
-                                       <SelectItem value="Video"><div className="flex items-center gap-2"><Video className="h-4 w-4" /> Video</div></SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                             <FormField
-                              control={form.control}
-                              name={`deliverables.${index}.quantity`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Quantity</FormLabel>
-                                  <FormControl>
-                                      <Input type="number" placeholder="1" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                         </div>
-                          <FormField
-                              control={form.control}
-                              name={`deliverables.${index}.note`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Optional Note</FormLabel>
-                                  <FormControl>
-                                      <Input placeholder="e.g., must include product link" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                         {fields.length > 1 && (
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="absolute -top-3 -right-3 text-muted-foreground hover:text-destructive bg-muted/80 hover:bg-destructive/10 rounded-full h-7 w-7"
-                                onClick={() => remove(index)}
-                            >
-                                <XCircle className="h-5 w-5" />
-                            </Button>
-                        )}
-                      </div>
+                      <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} />
                     ))}
                   </div>
                   <Button
