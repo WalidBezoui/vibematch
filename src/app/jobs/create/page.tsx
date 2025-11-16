@@ -21,9 +21,9 @@ const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
   campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
   deliverables: z.array(z.object({ value: z.string().min(3, 'Deliverable cannot be empty.') })).min(1, 'Please add at least one deliverable.'),
-  price: z.preprocess(
+  budget: z.preprocess(
     (a) => parseFloat(z.string().parse(a)),
-    z.number().positive('Price must be a positive number.')
+    z.number().positive('Budget must be a positive number.')
   ),
 });
 
@@ -191,10 +191,10 @@ export default function CreateCampaignPage() {
 
                 <FormField
                 control={form.control}
-                name="price"
+                name="budget"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Price (in DH)</FormLabel>
+                    <FormLabel>Budget (in DH)</FormLabel>
                     <FormControl>
                         <Input type="number" placeholder="500" {...field} />
                     </FormControl>

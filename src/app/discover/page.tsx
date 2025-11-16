@@ -149,6 +149,9 @@ export default function DiscoverPage() {
                                                         <CheckCircle className="mr-2 h-4 w-4" />
                                                         Application Sent
                                                     </Button>
+                                                     <Button asChild className="w-full" variant="secondary">
+                                                        <Link href={`/campaigns/${campaign.id}`}>View Campaign</Link>
+                                                    </Button>
                                                     <AlertDialog>
                                                         <AlertDialogTrigger asChild>
                                                             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">

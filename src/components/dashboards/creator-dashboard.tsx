@@ -3,14 +3,26 @@
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
 import Link from 'next/link';
-import { collection, query, where, getDocs, collectionGroup, documentId } from 'firebase/firestore';
+import { collection, query, where, getDocs, collectionGroup, documentId, doc, deleteDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, FileText, CircleDollarSign } from 'lucide-react';
+import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { useEffect, useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 const statusStyles: { [key: string]: string } = {
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
@@ -72,9 +84,12 @@ const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: an
 export default function CreatorDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
+  const { toast } = useToast();
+
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
   const [isLoadingPending, setIsLoadingPending] = useState(true);
   const [stats, setStats] = useState({ activeCollaborations: 0, pendingApplications: 0, totalEarnings: 0 });
+  const [userApplications, setUserApplications] = useState<Map<string, string>>(new Map());
 
   // Fetch active campaigns (where creator is assigned)
   const activeCampaignsQuery = useMemoFirebase(
@@ -92,7 +107,7 @@ export default function CreatorDashboard() {
   );
   const { data: activeCampaigns, isLoading: isLoadingActive } = useCollection(activeCampaignsQuery);
   
-  // Fetch pending applications
+  // Fetch pending applications and their associated campaign data
   useEffect(() => {
     if (user && firestore) {
         setIsLoadingPending(true);
@@ -101,7 +116,13 @@ export default function CreatorDashboard() {
                 // 1. Find all application documents by this creator
                 const applicationsQuery = query(collectionGroup(firestore, 'applications'), where('creatorId', '==', user.uid));
                 const appsSnapshot = await getDocs(applicationsQuery);
+                
                 const appliedCampaignIds = appsSnapshot.docs.map(doc => doc.data().campaignId);
+                const appMap = new Map<string, string>();
+                appsSnapshot.docs.forEach(doc => {
+                    appMap.set(doc.data().campaignId, doc.id);
+                });
+                setUserApplications(appMap);
 
                 if (appliedCampaignIds.length > 0) {
                     // 2. Fetch the campaign details for those applications
@@ -146,6 +167,30 @@ export default function CreatorDashboard() {
     }
   }, [isLoadingActive, isLoadingPending, activeCampaigns, pendingCampaigns]);
 
+  const handleWithdrawApplication = async (campaignId: string) => {
+    if (!firestore || !userApplications.has(campaignId)) return;
+    
+    const applicationId = userApplications.get(campaignId);
+    if (!applicationId) return;
+
+    const applicationRef = doc(firestore, 'campaigns', campaignId, 'applications', applicationId);
+    
+    try {
+        await deleteDoc(applicationRef);
+        toast({
+            title: 'Application Withdrawn',
+            description: 'You can apply again in the future if you change your mind.',
+        });
+        // Refetch pending applications
+        setPendingCampaigns(prev => prev.filter(c => c.id !== campaignId));
+    } catch (error: any) {
+        toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: `Could not withdraw application: ${error.message}`,
+        });
+    }
+};
 
   const isLoading = isLoadingActive || isLoadingPending;
 
@@ -240,12 +285,34 @@ export default function CreatorDashboard() {
                             <CardContent className="flex-grow">
                                 <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
                             </CardContent>
-                            <CardFooter className="bg-muted/50 p-4">
+                            <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
                                 <Button asChild className="w-full" variant="outline">
                                   <Link href={`/campaigns/${campaign.id}`}>
                                     View Campaign
                                   </Link>
                                 </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
+                                            <Trash2 className="mr-2 h-3 w-3" />
+                                            Withdraw Application
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This will remove your application for "{campaign.title}". The brand will no longer be able to see it. You can apply again later if the campaign is still open.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={() => handleWithdrawApplication(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                                Yes, Withdraw
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </CardFooter>
                         </Card>
                     )

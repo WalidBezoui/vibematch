@@ -253,8 +253,8 @@ export default function JobPage() {
                                 </div>
                             )}
                              <div>
-                                <h3 className="font-semibold text-muted-foreground text-sm uppercase">Price</h3>
-                                <p className="text-xl font-bold gradient-text">{job.price} DH</p>
+                                <h3 className="font-semibold text-muted-foreground text-sm uppercase">Budget</h3>
+                                <p className="text-xl font-bold gradient-text">{job.budget} DH</p>
                             </div>
                         </CardContent>
                     </Card>
