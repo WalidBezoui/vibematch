@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -30,39 +30,44 @@ export function AppHeader() {
     href: string;
     label: string;
     interest?: 'brand' | 'creator';
-    role?: 'creator' | 'brand';
-    icon?: React.ComponentType<{ className?: string }>;
+    icon: React.ComponentType<{ className?: string }>;
   };
   
   const navLinks: NavLinkItem[] = useMemo(() => {
     if (user && userProfile) {
         const commonLinks = [
-            { href: "/faq", label: t('header.faq') },
-            { href: "/contact", label: t('header.contact') },
+            { href: "/faq", label: t('header.faq'), icon: HelpCircle },
+            { href: "/contact", label: t('header.contact'), icon: MessageSquare },
         ];
 
+        let roleSpecificLinks: NavLinkItem[] = [];
+
         if (userProfile.role === 'creator') {
-            return [
-                 { href: "/discover", label: 'Discover', role: 'creator' as const, icon: Compass },
-                ...commonLinks,
+            roleSpecificLinks = [
+                 { href: "/discover", label: 'Discover', icon: Compass },
             ];
         }
         
         if (userProfile.role === 'brand') {
-             return [
-                 { href: "/creators", label: 'Creators', role: 'brand' as const, icon: Users },
-                 { href: "/campaigns/create", label: 'Create Campaign', role: 'brand' as const, icon: PlusCircle },
-                ...commonLinks,
+             roleSpecificLinks = [
+                 { href: "/creators", label: 'Creators', icon: Users },
+                 { href: "/campaigns/create", label: 'Create Campaign', icon: PlusCircle },
             ];
         }
-        return commonLinks;
+        
+        return [
+            { href: "/dashboard", label: t('header.dashboard'), icon: LayoutDashboard },
+            ...roleSpecificLinks,
+            ...commonLinks
+        ];
 
     }
+    // Logged-out users
     return [
-        { href: "/#brands", label: t('header.forBrands'), interest: 'brand' },
-        { href: "/#creators", label: t('header.forCreators'), interest: 'creator' },
-        { href: "/faq", label: t('header.faq') },
-        { href: "/contact", label: t('header.contact') },
+        { href: "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Home },
+        { href: "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Home },
+        { href: "/faq", label: t('header.faq'), icon: HelpCircle },
+        { href: "/contact", label: t('header.contact'), icon: MessageSquare },
     ];
   }, [t, user, userProfile]);
 
@@ -77,15 +82,24 @@ export function AppHeader() {
     setIsMobileMenuOpen(false);
   }
 
-  const NavLink = ({ href, label, className, interest } : NavLinkItem & { className?: string; }) => (
-    <Link
-      href={href}
-      className={cn("text-sm font-medium text-foreground/70 hover:text-primary transition-colors", className)}
-      onClick={() => handleNavLinkClick(interest)}
-    >
-      {label}
-    </Link>
-  );
+  const NavLink = ({ href, label, className, interest, icon: Icon } : NavLinkItem & { className?: string; }) => {
+    const isActive = pathname === href;
+    return (
+        <Link
+            href={href}
+            className={cn(
+                "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-foreground/70 transition-colors hover:text-primary hover:bg-muted",
+                isActive && "bg-muted text-primary font-semibold",
+                className
+            )}
+            onClick={() => handleNavLinkClick(interest)}
+            >
+            <Icon className="h-4 w-4" />
+            <span>{label}</span>
+        </Link>
+    )
+  };
+  
 
   const LanguageSwitcher = ({className}: {className?: string}) => (
     <div className={cn("flex items-center gap-1 border rounded-full p-1 text-sm", className)}>
@@ -113,18 +127,10 @@ export function AppHeader() {
 
     if (user) {
       return (
-        <>
-          <Button variant="outline" className="hidden md:flex rounded-full" asChild>
-            <Link href="/dashboard">
-              <LayoutDashboard className="mr-2 h-4 w-4" />
-              {t('header.dashboard')}
-            </Link>
-          </Button>
           <Button onClick={handleLogout} variant="ghost" className="hidden md:flex rounded-full">
             <LogOut className="mr-2 h-4 w-4" />
             {t('header.logout')}
           </Button>
-        </>
       );
     }
 
@@ -154,32 +160,24 @@ export function AppHeader() {
 
     if (user) {
         return (
-            <>
-                <Button variant="outline" className="w-full flex rounded-full" asChild>
-                    <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                        {t('header.dashboard')}
-                    </Link>
-                </Button>
-                <Button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} variant="ghost" className="w-full flex rounded-full">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    {t('header.logout')}
-                </Button>
-            </>
+            <Button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} variant="outline" className="w-full flex justify-center rounded-full text-lg py-6">
+                <LogOut className="mr-2 h-5 w-5" />
+                {t('header.logout')}
+            </Button>
         )
     }
 
     return (
-        <Button variant="outline" className="w-full flex rounded-full" asChild>
+        <Button variant="outline" className="w-full flex justify-center rounded-full text-lg py-6" asChild>
             <Link href={isLoginPage ? '/' : '/login'} onClick={() => setIsMobileMenuOpen(false)}>
                 {isLoginPage ? (
                     <>
-                        <Home className="mr-2 h-4 w-4" />
+                        <Home className="mr-2 h-5 w-5" />
                         {t('header.home')}
                     </>
                 ) : (
                     <>
-                        <LogIn className="mr-2 h-4 w-4" />
+                        <LogIn className="mr-2 h-5 w-5" />
                         {t('header.login')}
                     </>
                 )}
@@ -189,7 +187,7 @@ export function AppHeader() {
   }
 
   return (
-    <header className="px-4 md:px-10 lg:px-20 flex justify-between items-center py-4 backdrop-blur-md sticky top-0 z-50 bg-background/80 border-b">
+    <header className="px-4 md:px-6 lg:px-8 flex justify-between items-center py-3 backdrop-blur-md sticky top-0 z-50 bg-background/80 border-b">
       <Link
         href="/"
         className="text-3xl font-bold tracking-tight gradient-text"
@@ -197,14 +195,9 @@ export function AppHeader() {
         VibeMatch
       </Link>
 
-      <nav className="hidden md:flex gap-8 items-center">
+      <nav className="hidden md:flex gap-1 items-center">
         {navLinks.map((link) => (
-          <Button key={link.href} variant="ghost" className="rounded-full" asChild>
-            <Link href={link.href}>
-              {link.icon && <link.icon className="mr-2 h-4 w-4" />}
-              {link.label}
-            </Link>
-          </Button>
+          <NavLink key={link.href} {...link} />
         ))}
       </nav>
 
@@ -212,11 +205,10 @@ export function AppHeader() {
         <LanguageSwitcher className="hidden sm:flex" />
         {renderAuthButtons()}
         <div className='flex items-center gap-2 md:hidden'>
-          <LanguageSwitcher />
           <Button 
             variant="ghost" 
             size="icon" 
-            className="-mr-2"
+            className="rounded-full"
             onClick={() => setIsMobileMenuOpen(true)}
           >
             <Menu />
@@ -226,7 +218,7 @@ export function AppHeader() {
       </div>
 
        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-        <SheetContent side={dir === 'rtl' ? 'left' : 'right'} className="w-[80vw] bg-background">
+        <SheetContent side={dir === 'rtl' ? 'left' : 'right'} className="w-[85vw] bg-background">
           <SheetHeader className="text-left rtl:text-right sr-only">
              <SheetTitle>Menu</SheetTitle>
              <SheetDescription>Main navigation</SheetDescription>
@@ -242,17 +234,19 @@ export function AppHeader() {
               </Link>
             </div>
             
-            <nav className="flex flex-col gap-6 items-start">
+            <nav className="flex flex-col gap-2 items-stretch">
               {navLinks.map((link) => (
-                <Link key={link.href} href={link.href} className="text-lg font-medium text-foreground/70 hover:text-primary transition-colors flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                  {link.icon && <link.icon className="h-5 w-5" />}
-                  {link.label}
-                </Link>
+                 <NavLink 
+                    key={link.href} 
+                    {...link} 
+                    className="text-lg justify-start py-3 px-4"
+                 />
               ))}
             </nav>
 
             <div className="mt-auto space-y-4">
-              {renderMobileAuthButtons()}
+               <LanguageSwitcher className="w-full justify-center" />
+               {renderMobileAuthButtons()}
             </div>
           </div>
         </SheetContent>
