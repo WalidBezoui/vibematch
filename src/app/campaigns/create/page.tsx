@@ -15,12 +15,11 @@ import { useFirestore, useUser } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { PartyPopper } from 'lucide-react';
+import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, PartyPopper } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent } from '@/components/ui/card';
 
 const TikTokIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -282,144 +281,152 @@ export default function CreateCampaignPage() {
     <>
       <AppHeader />
       <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold tracking-tight">Create a New Campaign</h1>
-          <p className="text-muted-foreground mt-2">This will be visible to creators on the platform.</p>
-        </div>
         
         {isSuccess ? (
-             <Alert className="border-green-500 text-green-700">
-                <PartyPopper className="h-4 w-4" />
-                <AlertTitle className="font-bold">Campaign Published!</AlertTitle>
-                <AlertDescription>
-                    Your campaign is now live and creators can start applying.
-                    <div className="mt-4 flex gap-4">
-                         <Button onClick={() => router.push(`/campaigns/${newCampaignId}/manage`)}>Manage Applications</Button>
-                         <Button variant="outline" onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
+            <Card className="text-center p-8 border-green-500/50 shadow-lg shadow-green-500/10">
+                <CardContent className="p-0">
+                    <div className="w-20 h-20 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30 animate-circle-grow">
+                         <svg className="w-12 h-12 text-black animate-check-grow" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" viewBox="0 0 52 52">
+                            <path d="M14 27l8.5 8.5L38 20"></path>
+                        </svg>
                     </div>
-                </AlertDescription>
-             </Alert>
+                    <h2 className="text-3xl font-bold tracking-tight gradient-text">Campaign Published!</h2>
+                    <p className="text-muted-foreground mt-2 mb-8">
+                        Your campaign is now live. Creators on VibeMatch can now see and apply to it.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                         <Button size="lg" onClick={() => router.push(`/campaigns/${newCampaignId}/manage`)}>Manage Applications</Button>
+                         <Button size="lg" variant="outline" onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
+                    </div>
+                </CardContent>
+            </Card>
         ) : (
-            <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                      <FormItem>
-                      <FormLabel>Campaign Title</FormLabel>
-                      <FormControl>
-                          <Input placeholder="e.g., Summer Skincare Campaign" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                      </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="campaignBrief"
-                  render={({ field }) => (
-                      <FormItem>
-                      <FormLabel>Campaign Brief</FormLabel>
-                      <FormControl>
-                          <Textarea placeholder="Describe the campaign goals, target audience, key messages, and overall vibe." {...field} rows={6} />
-                      </FormControl>
-                      <FormMessage />
-                      </FormItem>
-                  )}
-                />
-
-                <div className="space-y-4">
-                  <FormLabel>Deliverables</FormLabel>
-                  <div className="space-y-3">
-                    {fields.map((item, index) => (
-                      <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
-                    ))}
-                  </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}
-                  >
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Add Deliverable
-                  </Button>
-                  <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
+            <>
+                <div className="text-center mb-10">
+                    <h1 className="text-4xl font-bold tracking-tight">Create a New Campaign</h1>
+                    <p className="text-muted-foreground mt-2">This will be visible to creators on the platform.</p>
                 </div>
-                
-                <div className="space-y-4">
+                <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
                     control={form.control}
-                    name="tags"
+                    name="title"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Tags</FormLabel>
+                        <FormLabel>Campaign Title</FormLabel>
                         <FormControl>
-                            <div className="flex flex-wrap gap-2">
-                            {niches.map((niche) => (
-                                <Button
-                                key={niche.id}
-                                type="button"
-                                variant="outline"
-                                className={cn(
-                                    "rounded-full",
-                                    field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
-                                )}
-                                onClick={() => {
-                                    const currentTags = field.value || [];
-                                    const newTags = currentTags.includes(niche.label)
-                                    ? currentTags.filter(t => t !== niche.label)
-                                    : [...currentTags, niche.label];
-                                    field.onChange(newTags);
-                                }}
-                                >
-                                {niche.label}
-                                </Button>
-                            ))}
-                            </div>
+                            <Input placeholder="e.g., Summer Skincare Campaign" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
                     )}
                     />
-                    {form.watch('tags')?.includes('Other') && (
-                        <FormField
-                            control={form.control}
-                            name="otherTag"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Custom Tag(s)</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="e.g. Sustainable, Vegan. Separate with commas." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <FormField
+                    control={form.control}
+                    name="campaignBrief"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Campaign Brief</FormLabel>
+                        <FormControl>
+                            <Textarea placeholder="Describe the campaign goals, target audience, key messages, and overall vibe." {...field} rows={6} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
                     )}
-                </div>
+                    />
+
+                    <div className="space-y-4">
+                    <FormLabel>Deliverables</FormLabel>
+                    <div className="space-y-3">
+                        {fields.map((item, index) => (
+                        <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
+                        ))}
+                    </div>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}
+                    >
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add Deliverable
+                    </Button>
+                    <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
+                    </div>
+                    
+                    <div className="space-y-4">
+                        <FormField
+                        control={form.control}
+                        name="tags"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Tags</FormLabel>
+                            <FormControl>
+                                <div className="flex flex-wrap gap-2">
+                                {niches.map((niche) => (
+                                    <Button
+                                    key={niche.id}
+                                    type="button"
+                                    variant="outline"
+                                    className={cn(
+                                        "rounded-full",
+                                        field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+                                    )}
+                                    onClick={() => {
+                                        const currentTags = field.value || [];
+                                        const newTags = currentTags.includes(niche.label)
+                                        ? currentTags.filter(t => t !== niche.label)
+                                        : [...currentTags, niche.label];
+                                        field.onChange(newTags);
+                                    }}
+                                    >
+                                    {niche.label}
+                                    </Button>
+                                ))}
+                                </div>
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                        {form.watch('tags')?.includes('Other') && (
+                            <FormField
+                                control={form.control}
+                                name="otherTag"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Custom Tag(s)</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="e.g. Sustainable, Vegan. Separate with commas." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+                    </div>
 
 
-                <FormField
-                control={form.control}
-                name="budget"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Budget (in DH)</FormLabel>
-                    <FormControl>
-                        <Input type="number" placeholder="500" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
+                    <FormField
+                    control={form.control}
+                    name="budget"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Budget (in DH)</FormLabel>
+                        <FormControl>
+                            <Input type="number" placeholder="500" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
 
-                <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-                {form.formState.isSubmitting ? 'Publishing Campaign...' : 'Publish Campaign'}
-                </Button>
-            </form>
-            </Form>
+                    <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
+                    {form.formState.isSubmitting ? 'Publishing Campaign...' : 'Publish Campaign'}
+                    </Button>
+                </form>
+                </Form>
+            </>
         )}
       </div>
     </>
