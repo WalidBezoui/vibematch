@@ -28,6 +28,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast';
+import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800 border-green-200',
@@ -213,29 +216,39 @@ export default function BrandDashboard() {
     if (!firestore) return;
     toast({ title: 'Deleting campaign...' });
 
+    const campaignRef = doc(firestore, 'campaigns', campaignId);
+    
     try {
-        const campaignRef = doc(firestore, 'campaigns', campaignId);
-        
         // Delete subcollections first (applications)
         const applicationsRef = collection(campaignRef, 'applications');
         const applicationsSnapshot = await getDocs(applicationsRef);
-        const deletePromises = applicationsSnapshot.docs.map(doc => deleteDoc(doc.ref));
-        await Promise.all(deletePromises);
-
-        // Delete the campaign doc itself
-        await deleteDoc(campaignRef);
+        
+        // Use non-blocking deletes for each application
+        applicationsSnapshot.docs.forEach(doc => {
+            deleteDocumentNonBlocking(doc.ref);
+        });
+        
+        // After starting subcollection deletions, delete the main campaign document
+        deleteDocumentNonBlocking(campaignRef);
 
         toast({
-            title: 'Campaign Deleted',
-            description: 'The campaign and all its applications have been removed.',
+            title: 'Campaign Deletion Started',
+            description: 'The campaign and its applications are being removed.',
         });
     } catch (error: any) {
-        console.error('Error deleting campaign:', error);
+        console.error('Error initiating campaign deletion:', error);
+        // This catch block might not be hit if the permissions are wrong,
+        // as the non-blocking calls don't await. Errors are handled globally.
         toast({
             variant: 'destructive',
             title: 'Error Deleting Campaign',
-            description: error.message,
+            description: "Could not start the deletion process.",
         });
+        // Emit a specific error if needed for debugging
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: campaignRef.path,
+            operation: 'delete'
+        }));
     }
   };
 
@@ -292,3 +305,5 @@ export default function BrandDashboard() {
     </div>
   );
 }
+
+    
