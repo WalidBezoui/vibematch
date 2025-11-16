@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -16,16 +17,18 @@ import { useToast } from '@/hooks/use-toast';
 import { PlusCircle, XCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PartyPopper } from 'lucide-react';
+import { useLanguage } from '@/context/language-context';
+import { cn } from '@/lib/utils';
 
 const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
   campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
   deliverables: z.array(z.object({ value: z.string().min(3, 'Deliverable cannot be empty.') })).min(1, 'Please add at least one deliverable.'),
   budget: z.preprocess(
-    (a) => parseFloat(z.string().parse(a)),
-    z.number().positive('Budget must be a positive number.')
+    (val) => (val === '' ? undefined : Number(val)),
+    z.number({ invalid_type_error: 'Budget must be a number.' }).positive('Budget must be a positive number.')
   ),
-  tags: z.string().optional(),
+  tags: z.array(z.string()).min(1, "Please select at least one tag."),
 });
 
 type CampaignForm = z.infer<typeof campaignSchema>;
@@ -37,6 +40,9 @@ export default function CreateCampaignPage() {
   const { toast } = useToast();
   const [isSuccess, setIsSuccess] = useState(false);
   const [newCampaignId, setNewCampaignId] = useState('');
+  const { t } = useLanguage();
+
+  const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
 
   const form = useForm<CampaignForm>({
     resolver: zodResolver(campaignSchema),
@@ -44,8 +50,8 @@ export default function CreateCampaignPage() {
       title: '',
       campaignBrief: '',
       deliverables: [{ value: '' }],
-      budget: '',
-      tags: '',
+      budget: 0,
+      tags: [],
     },
   });
 
@@ -63,7 +69,6 @@ export default function CreateCampaignPage() {
     const submissionData = {
       ...data,
       deliverables: data.deliverables.map(d => d.value),
-      tags: data.tags ? data.tags.split(',').map(tag => tag.trim()) : [],
       brandId: user.uid,
       status: 'OPEN_FOR_APPLICATIONS',
       createdAt: serverTimestamp(),
@@ -192,18 +197,40 @@ export default function CreateCampaignPage() {
                 </div>
                 
                 <FormField
-                control={form.control}
-                name="tags"
-                render={({ field }) => (
+                  control={form.control}
+                  name="tags"
+                  render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Tags</FormLabel>
-                    <FormControl>
-                        <Input placeholder="Fashion, Skincare, Tech (comma-separated)" {...field} />
-                    </FormControl>
-                    <FormMessage />
+                      <FormLabel>Tags</FormLabel>
+                      <FormControl>
+                        <div className="flex flex-wrap gap-2">
+                          {niches.filter(n => n.id !== 'other').map((niche) => (
+                            <Button
+                              key={niche.id}
+                              type="button"
+                              variant="outline"
+                              className={cn(
+                                "rounded-full",
+                                field.value.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+                              )}
+                              onClick={() => {
+                                const currentTags = field.value || [];
+                                const newTags = currentTags.includes(niche.label)
+                                  ? currentTags.filter(t => t !== niche.label)
+                                  : [...currentTags, niche.label];
+                                field.onChange(newTags);
+                              }}
+                            >
+                              {niche.label}
+                            </Button>
+                          ))}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
                     </FormItem>
-                )}
+                  )}
                 />
+
 
                 <FormField
                 control={form.control}
