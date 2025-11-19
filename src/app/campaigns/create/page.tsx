@@ -15,7 +15,7 @@ import { useFirestore, useUser } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, PartyPopper } from 'lucide-react';
+import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, PartyPopper, Users } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -45,6 +45,10 @@ const campaignSchema = z.object({
   budget: z.preprocess(
     (val) => (val === '' ? 0 : Number(val)),
     z.number({ invalid_type_error: 'Budget must be a number.' }).positive('Budget must be a positive number.')
+  ),
+  numberOfCreators: z.preprocess(
+    (val) => (val === '' ? 1 : Number(val)),
+    z.number({ invalid_type_error: 'Must be a number.' }).min(1, 'You must hire at least 1 creator.')
   ),
   tags: z.array(z.string()).min(1, "Please select at least one tag."),
   otherTag: z.string().optional(),
@@ -204,6 +208,7 @@ export default function CreateCampaignPage() {
       campaignBrief: '',
       deliverables: [{ platform: 'instagram', type: 'Post', quantity: 1, note: '' }],
       budget: 0,
+      numberOfCreators: 1,
       tags: [],
       otherTag: '',
     },
@@ -245,6 +250,7 @@ export default function CreateCampaignPage() {
       status: 'OPEN_FOR_APPLICATIONS',
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
+      creatorIds: [],
     };
     
     delete submissionData.otherTag;
@@ -407,19 +413,35 @@ export default function CreateCampaignPage() {
                     </div>
 
 
-                    <FormField
-                    control={form.control}
-                    name="budget"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Budget (in DH)</FormLabel>
-                        <FormControl>
-                            <Input type="number" placeholder="500" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <FormField
+                        control={form.control}
+                        name="budget"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Budget per Creator (in DH)</FormLabel>
+                            <FormControl>
+                                <Input type="number" placeholder="500" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name="numberOfCreators"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Number of Creators</FormLabel>
+                                <FormControl>
+                                    <Input type="number" placeholder="1" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
 
                     <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
                     {form.formState.isSubmitting ? 'Publishing Campaign...' : 'Publish Campaign'}
@@ -432,4 +454,3 @@ export default function CreateCampaignPage() {
     </>
   );
 }
-

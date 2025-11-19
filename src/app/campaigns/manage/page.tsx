@@ -1,7 +1,7 @@
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { collection, doc, query, updateDoc, serverTimestamp, getDoc, addDoc } from 'firebase/firestore';
+import { collection, doc, query, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -26,8 +26,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { v4 as uuidv4 } from 'uuid';
+} from "@/components/ui/alert-dialog";
+import { Progress } from '@/components/ui/progress';
 
 type Applicant = {
     id: string;
@@ -58,6 +58,28 @@ const ApplicantCardSkeleton = () => (
         </CardFooter>
     </Card>
 )
+
+const HiringProgress = ({ campaign }: { campaign: any }) => {
+    const hiredCount = campaign.creatorIds?.length || 0;
+    const totalNeeded = campaign.numberOfCreators || 1;
+    const progress = Math.round((hiredCount / totalNeeded) * 100);
+
+    return (
+        <Card className="mb-8">
+            <CardHeader>
+                <CardTitle>Hiring Progress</CardTitle>
+                <CardDescription>You've hired {hiredCount} out of {totalNeeded} creators for this campaign.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Progress value={progress} className="h-3" />
+                <div className="flex justify-between text-sm text-muted-foreground mt-2">
+                    <span>{hiredCount} Hired</span>
+                    <span>{totalNeeded} Goal</span>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
 
 export default function ManageApplicationsPage() {
     const { campaignId } = useParams();
@@ -109,33 +131,50 @@ export default function ManageApplicationsPage() {
         if (!campaignRef || !firestore || !campaign) return;
         toast({ title: 'Accepting Application...' });
         
-        try {
-            const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicationId);
-            // 1. Update application status
-            await updateDoc(applicationRef, { status: 'accepted' });
+        // Prevent adding a creator who is already hired
+        if (campaign.creatorIds?.includes(creatorId)) {
+            toast({ variant: 'destructive', title: 'Creator Already Hired', description: 'This creator is already part of the campaign.' });
+            return;
+        }
 
-            // 2. Create conversation
-            const conversationId = uuidv4();
-            const conversationRef = doc(firestore, 'conversations', conversationId);
-            await addDoc(collection(firestore, 'conversations'), {
-                id: conversationId,
-                campaign_id: campaignId,
-                application_id: applicationId,
-                brand_id: campaign.brandId,
-                creator_id: creatorId,
-                status: 'NEGOTIATION',
-                agreed_budget: campaign.budget,
-                is_funded: false,
-                lastMessage: 'Deal initiated. Start negotiating.',
-                updatedAt: serverTimestamp(),
+        const newCreatorIds = [...(campaign.creatorIds || []), creatorId];
+        const newHiredCount = newCreatorIds.length;
+        const totalNeeded = campaign.numberOfCreators || 1;
+        const isCampaignFull = newHiredCount >= totalNeeded;
+
+        const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicationId);
+        const campaignUpdateData = {
+            creatorIds: newCreatorIds,
+            status: isCampaignFull ? 'PENDING_PAYMENT' : 'PENDING_SELECTION',
+            updatedAt: serverTimestamp(),
+        };
+        const applicationUpdateData = {
+            status: 'accepted',
+        };
+
+        // Non-blocking optimistic updates
+        updateDoc(campaignRef, campaignUpdateData).catch(error => {
+            const permissionError = new FirestorePermissionError({
+                path: campaignRef.path,
+                operation: 'update',
+                requestResourceData: campaignUpdateData,
             });
+            errorEmitter.emit('permission-error', permissionError);
+        });
 
-            toast({ title: 'Creator Selected!', description: "A deal chat has been created to finalize terms." });
-            router.push(`/chat/${conversationId}`);
+        updateDoc(applicationRef, applicationUpdateData).catch(error => {
+             const permissionError = new FirestorePermissionError({
+                path: applicationRef.path,
+                operation: 'update',
+                requestResourceData: applicationUpdateData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
 
-        } catch(e: any) {
-            toast({ variant: 'destructive', title: 'Failed to accept', description: e.message });
-            console.error(e);
+        toast({ title: 'Creator Hired!', description: "They've been added to the campaign." });
+        
+        if (isCampaignFull) {
+            toast({ title: 'Campaign Full!', description: 'All creator spots have been filled. Proceed to payment.' });
         }
     };
     
@@ -148,6 +187,7 @@ export default function ManageApplicationsPage() {
                 <main className="max-w-4xl mx-auto p-8">
                     <Skeleton className="h-10 w-1/2 mb-4" />
                     <Skeleton className="h-6 w-3/4 mb-8" />
+                    <Skeleton className="h-32 w-full mb-8" />
                     <div className="grid md:grid-cols-2 gap-6">
                         <ApplicantCardSkeleton />
                         <ApplicantCardSkeleton />
@@ -171,6 +211,9 @@ export default function ManageApplicationsPage() {
         )
     }
 
+    // Filter out creators who have already been hired for this campaign
+    const pendingApplicants = applicants.filter(app => !campaign.creatorIds?.includes(app.creatorId));
+
     return (
         <>
             <AppHeader />
@@ -178,9 +221,11 @@ export default function ManageApplicationsPage() {
                  <div className="mb-8">
                     <h1 className="text-4xl font-bold tracking-tight">Manage Applications</h1>
                     <p className="text-muted-foreground mt-2 text-lg">
-                        Review and select the best creator for your campaign: <strong>{campaign.title}</strong>
+                        Review and select the best creators for your campaign: <strong>{campaign.title}</strong>
                     </p>
                 </div>
+
+                <HiringProgress campaign={campaign} />
 
                 {campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION' && (
                     <Alert>
@@ -192,9 +237,9 @@ export default function ManageApplicationsPage() {
                     </Alert>
                 )}
                 
-                {applicants.length > 0 ? (
+                {pendingApplicants.length > 0 ? (
                     <div className="grid md:grid-cols-2 gap-6">
-                        {applicants.map(applicant => (
+                        {pendingApplicants.map(applicant => (
                              <Card key={applicant.id} className="flex flex-col">
                                 <CardHeader className="flex-row items-start gap-4">
                                      <Avatar className="h-12 w-12">
@@ -238,11 +283,11 @@ export default function ManageApplicationsPage() {
                                 </CardContent>
                                 <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
                                     <div className="flex gap-2">
-                                        <Button className="w-full flex-1" onClick={() => handleAccept(applicant.id, applicant.creatorId)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                        <Button className="w-full flex-1" onClick={() => handleAccept(applicant.id, applicant.creatorId)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION'}>
                                             <CheckCircle className="mr-2 h-4 w-4" />
-                                            Accept
+                                            Hire Creator
                                         </Button>
-                                        <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                        <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION'}>
                                             <XCircle className="mr-2 h-4 w-4" />
                                             Reject
                                         </Button>
@@ -259,8 +304,8 @@ export default function ManageApplicationsPage() {
                     </div>
                 ) : (
                      <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                        <h2 className="text-2xl font-semibold">No Applications Yet</h2>
-                        <p className="text-muted-foreground mt-2">Your campaign is live. Check back soon to see who has applied!</p>
+                        <h2 className="text-2xl font-semibold">No New Applications</h2>
+                        <p className="text-muted-foreground mt-2">Check back soon to see who has applied!</p>
                         <Button asChild variant="outline" className="mt-6">
                             <Link href="/dashboard">Back to Dashboard</Link>
                         </Button>

@@ -42,7 +42,7 @@ service cloud.firestore {
     match /campaigns/{campaignId} {
       allow create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'brand' && request.resource.data.brandId == request.auth.uid;
       allow get, list: if request.auth != null;
-      allow update: if resource.data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
+      allow update: if resource.data.brandId == request.auth.uid || (resource.data.creatorIds != null && request.auth.uid in resource.data.creatorIds);
       allow delete: if resource.data.brandId == request.auth.uid;
 
       // Applications subcollection rules

@@ -62,15 +62,16 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Campaign",
       "type": "object",
-      "description": "Represents a collaboration contract between a Brand and a Creator.",
+      "description": "Represents a collaboration contract between a Brand and one or more Creators.",
       "properties": {
         "title": { "type": "string" },
         "campaignBrief": { "type": "string" },
         "deliverables": { "type": "array", "items": { "type": "string" } },
-        "budget": { "type": "number" },
+        "budget": { "type": "number", "description": "The budget allocated per creator." },
+        "numberOfCreators": { "type": "integer", "minimum": 1, "default": 1, "description": "The total number of creators to hire for the campaign." },
         "tags": { "type": "array", "items": { "type": "string" } },
         "brandId": { "type": "string" },
-        "creatorId": { "type": "string" },
+        "creatorIds": { "type": "array", "items": { "type": "string" }, "description": "An array of creator UIDs who have been accepted into the campaign." },
         "status": {
           "type": "string",
           "enum": [
@@ -81,7 +82,7 @@
         "createdAt": { "type": "string", "format": "date-time" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["title", "campaignBrief", "deliverables", "budget", "brandId", "status", "createdAt", "updatedAt"]
+      "required": ["title", "campaignBrief", "deliverables", "budget", "numberOfCreators", "brandId", "status", "createdAt", "updatedAt"]
     },
     "CampaignApplication": {
       "$schema": "http://json-schema.org/draft-07/schema#",
