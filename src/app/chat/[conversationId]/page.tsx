@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChatSidebar } from '@/components/chat-sidebar';
 import { AppHeader } from '@/components/app-header';
-import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper } from 'lucide-react';
@@ -108,6 +108,8 @@ const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, on
 
     const { icon: Icon, text, color, bgColor } = getStatusInfo();
     
+    const budgetLabel = conversation.status === 'NEGOTIATION' ? 'Proposed Budget' : 'Agreed Budget';
+
     return (
         <div className={cn("p-4 border-b", bgColor)}>
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
@@ -117,7 +119,7 @@ const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, on
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="text-sm font-semibold">
-                        Agreed Budget: <span className="text-primary">{conversation.agreed_budget || 0} MAD</span>
+                        {budgetLabel}: <span className="text-primary">{conversation.agreed_budget || 0} MAD</span>
                     </div>
 
                     {isBrand && conversation.status === 'NEGOTIATION' && (
@@ -219,6 +221,22 @@ const SystemCard = ({ message, onRespondToOffer }: any) => {
         )
     }
 
+    // For the initial context message
+    if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for campaign:')) {
+        return (
+            <div className="py-4">
+                <div className="text-center text-sm text-muted-foreground p-4 bg-muted/50 rounded-lg max-w-md mx-auto border">
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                    {message.timestamp && (
+                        <p className="text-xs mt-2">
+                            {format(message.timestamp.toDate(), 'MMM d, yyyy HH:mm')}
+                        </p>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
     return null;
 }
 
@@ -261,10 +279,10 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: any) => {
     return (
         <div className="flex-1 p-6 space-y-4 overflow-y-auto" ref={scrollRef}>
             {messages.map((msg: any) => {
-                if (msg.type === 'TEXT') {
-                    return <MessageBubble key={msg.id} message={msg} isOwnMessage={msg.sender_id === user?.uid} senderProfile={profiles[msg.sender_id]} />
-                }
-                return <SystemCard key={msg.id} message={msg} onRespondToOffer={onRespondToOffer} />
+                 if (msg.type !== 'TEXT' || msg.content.startsWith('Discussion opened for campaign:')) {
+                    return <SystemCard key={msg.id} message={msg} onRespondToOffer={onRespondToOffer} />
+                 }
+                return <MessageBubble key={msg.id} message={msg} isOwnMessage={msg.sender_id === user?.uid} senderProfile={profiles[msg.sender_id]} />
             })}
         </div>
     );
@@ -318,6 +336,12 @@ export default function SingleChatPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
 
+     useEffect(() => {
+      if (!isUserLoading && !user) {
+        router.push('/login');
+      }
+    }, [isUserLoading, user, router]);
+
     const conversationRef = useMemoFirebase(
         () => (firestore && conversationId ? doc(firestore, 'conversations', conversationId as string) : null),
         [firestore, conversationId]
@@ -329,12 +353,6 @@ export default function SingleChatPage() {
         [firestore, conversationId]
     );
     const { data: messages, isLoading: areMessagesLoading } = useCollection(messagesQuery);
-
-    useEffect(() => {
-      if (!isUserLoading && !user) {
-        router.push('/login');
-      }
-    }, [isUserLoading, user, router]);
 
     const isLoading = isUserLoading || isConversationLoading || areMessagesLoading;
     
@@ -454,3 +472,5 @@ export default function SingleChatPage() {
         </div>
     );
 }
+
+    

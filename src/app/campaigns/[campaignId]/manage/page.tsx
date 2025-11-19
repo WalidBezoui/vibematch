@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -133,7 +134,7 @@ export default function ManageApplicationsPage() {
              conversation_id: conversationDocRef.id,
              sender_id: user.uid, 
              type: 'TEXT',
-             content: `Discussion opened for campaign: "${campaign?.title}". The creator's opening bid is ${applicant.bidAmount} MAD and their cover letter is: \n\n"${applicant.coverLetter}"`,
+             content: `Discussion opened for campaign: "${campaign?.title}".\n\nThe creator's opening bid is ${applicant.bidAmount} MAD and their cover letter is: \n\n"${applicant.coverLetter}"`,
              timestamp: serverTimestamp(),
         };
         batch.set(messageDocRef, messageData);
@@ -345,3 +346,5 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
+
+    
