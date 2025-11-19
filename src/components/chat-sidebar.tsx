@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
-import { collection, query, where, getDocs, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -35,7 +35,7 @@ const ConversationCard = ({
             <div className="relative">
                 <Avatar className="h-12 w-12">
                     <AvatarImage src={avatar} />
-                    <AvatarFallback>{name[0]}</AvatarFallback>
+                    <AvatarFallback>{name?.[0]}</AvatarFallback>
                 </Avatar>
                 {hasAction && (
                      <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-red-500 ring-2 ring-background" />
@@ -58,7 +58,7 @@ const ConversationList = ({ conversations, conversationId }: { conversations: an
 
     useEffect(() => {
         const enrichConversations = async () => {
-            if (!firestore || conversations.length === 0) {
+            if (!firestore || !conversations || conversations.length === 0) {
                 setEnrichedConversations([]);
                 setIsLoading(false);
                 return;
@@ -69,11 +69,16 @@ const ConversationList = ({ conversations, conversationId }: { conversations: an
                 const otherUserId = user?.uid === convo.brand_id ? convo.creator_id : convo.brand_id;
                 
                 try {
-                    const campaignSnap = await getDocs(query(collection(firestore, 'campaigns'), where('__name__', '==', convo.campaign_id)));
-                    const userSnap = await getDocs(query(collection(firestore, 'users'), where('uid', '==', otherUserId)));
+                    const campaignDocRef = doc(firestore, 'campaigns', convo.campaign_id);
+                    const userDocRef = doc(firestore, 'users', otherUserId);
                     
-                    const campaignTitle = !campaignSnap.empty ? campaignSnap.docs[0].data().title : 'Deleted Campaign';
-                    const otherUser = !userSnap.empty ? userSnap.docs[0].data() : { name: 'Unknown User', photoURL: '' };
+                    const [campaignSnap, userSnap] = await Promise.all([
+                        getDoc(campaignDocRef),
+                        getDoc(userDocRef)
+                    ]);
+                    
+                    const campaignTitle = campaignSnap.exists() ? campaignSnap.data().title : 'Deleted Campaign';
+                    const otherUser = userSnap.exists() ? userSnap.data() : { name: 'Unknown User', photoURL: '' };
 
                     return {
                         ...convo,

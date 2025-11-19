@@ -122,14 +122,14 @@ export default function ManageApplicationsPage() {
                 application_id: applicant.id,
                 brand_id: applicant.brandId,
                 creator_id: applicant.creatorId,
-                status: 'APPLIED', // Initial status, brand can't see chat yet
+                status: 'NEGOTIATION', // Set status to NEGOTIATION
                 agreed_budget: applicant.bidAmount,
                 is_funded: false,
-                lastMessage: applicant.coverLetter,
+                lastMessage: `You opened a discussion with ${applicant.profile?.name || 'this creator'}.`,
                 updatedAt: serverTimestamp(),
             });
 
-             // Create initial message in conversation
+             // Create initial system message in conversation
             const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
             batch.set(messageDocRef, {
                  conversation_id: conversationDocRef.id,
@@ -300,5 +300,3 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
-
-    
