@@ -1,7 +1,7 @@
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp, collection, query, where, getDocs } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,9 +10,10 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Send } from 'lucide-react';
+import { Check, Send, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useState, useEffect } from 'react';
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
@@ -169,6 +170,7 @@ export default function CampaignPage() {
     const router = useRouter();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
+    const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | null>(null);
 
     const campaignRef = useMemoFirebase(
         () => firestore ? doc(firestore, 'campaigns', campaignId as string) : null,
@@ -176,7 +178,21 @@ export default function CampaignPage() {
     );
     const { data: campaign, isLoading: isCampaignLoading, error } = useDoc(campaignRef);
 
-    if (isUserLoading || isCampaignLoading) {
+    useEffect(() => {
+        if (user && firestore && campaignId) {
+            const checkApplication = async () => {
+                const applicationsRef = collection(firestore, 'campaigns', campaignId as string, 'applications');
+                const q = query(applicationsRef, where("creatorId", "==", user.uid));
+                const querySnapshot = await getDocs(q);
+                setIsAlreadyApplied(!querySnapshot.empty);
+            };
+            checkApplication();
+        }
+    }, [user, firestore, campaignId]);
+
+    const isLoading = isUserLoading || isCampaignLoading || isAlreadyApplied === null;
+
+    if (isLoading) {
         return (
              <>
                 <AppHeader />
@@ -261,9 +277,16 @@ export default function CampaignPage() {
                         </CardContent>
                         {isPotentialApplicant && campaign.status === 'OPEN_FOR_APPLICATIONS' && (
                             <CardFooter>
-                                <Button asChild className="w-full">
-                                    <Link href={`/campaigns/${campaignId}/apply`}>Apply Now</Link>
-                                </Button>
+                                {isAlreadyApplied ? (
+                                     <Button disabled className="w-full bg-green-600 hover:bg-green-600">
+                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                        Application Sent
+                                    </Button>
+                                ) : (
+                                    <Button asChild className="w-full">
+                                        <Link href={`/campaigns/${campaignId}/apply`}>Apply Now</Link>
+                                    </Button>
+                                )}
                             </CardFooter>
                         )}
                     </Card>
