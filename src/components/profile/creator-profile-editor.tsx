@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -13,10 +13,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Upload, User, MapPin, Edit } from 'lucide-react';
+import { Upload, User, MapPin, Edit, ImageIcon, Tag, Type, Lightbulb } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/context/language-context';
 
 
@@ -57,21 +56,39 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   const { t } = useLanguage();
   const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
   const { userProfile } = useUserProfile();
+  const [motivationalTip, setMotivationalTip] = useState('');
 
-   const profileCompletion = useMemo(() => {
-    if (!userProfile) return 30;
+   const { nextStep, percentage } = useMemo(() => {
+    if (!userProfile) return { percentage: 30, nextStep: { text: "Complete your profile", icon: User } };
     
     const fields = [
-        userProfile.photoURL,
-        userProfile.displayName,
-        userProfile.location,
-        userProfile.bio,
-        userProfile.tags?.length > 0
+        { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture", icon: ImageIcon },
+        { key: 'displayName', present: !!userProfile.displayName, text: "Add your display name", icon: User },
+        { key: 'location', present: !!userProfile.location, text: "Add your location", icon: MapPin },
+        { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: "Choose at least one tag", icon: Tag },
+        { key: 'bio', present: !!userProfile.bio, text: "Write a bio to tell your story", icon: Type },
     ];
-    const completedFields = fields.filter(Boolean).length;
+
+    const completedFields = fields.filter(f => f.present).length;
     const totalFields = fields.length;
-    return 30 + Math.round((completedFields / totalFields) * 70);
+    
+    const percentage = 30 + Math.round((completedFields / totalFields) * 70);
+
+    const firstIncompleteStep = fields.find(f => !f.present);
+    const nextStep = firstIncompleteStep || { text: "Profile is complete!", icon: User };
+
+    return { percentage, nextStep };
   }, [userProfile]);
+
+  useEffect(() => {
+    const tips = t('creatorProfile.completionTips', { returnObjects: true }) as string[];
+    if (tips && tips.length > 0) {
+      const randomIndex = Math.floor(Math.random() * tips.length);
+      setMotivationalTip(tips[randomIndex]);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t]);
+
 
   const form = useForm<CreatorProfileFormValues>({
     resolver: zodResolver(creatorProfileSchema),
@@ -128,17 +145,24 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   if (!isEditing) {
       return (
         <div className="space-y-8">
-            <Card>
-                 <CardHeader>
-                    <div className="flex justify-between items-center">
-                        <CardTitle>Profile Completion</CardTitle>
-                        <span className="text-sm font-bold text-primary">{profileCompletion}%</span>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    <Progress value={profileCompletion} />
-                </CardContent>
-            </Card>
+            {percentage < 100 && (
+                 <Card className="bg-secondary/50 border-primary/20">
+                     <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                           <span className="text-primary">{t('creatorProfile.nextStepTitle')}</span>
+                        </CardTitle>
+                         <CardDescription>
+                            {nextStep.text}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground bg-background/50 p-3 rounded-lg">
+                            <Lightbulb className="h-5 w-5 text-primary flex-shrink-0" />
+                            <span>{motivationalTip}</span>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
             <div className="grid md:grid-cols-3 gap-8 items-start">
                 <div className="md:col-span-1 space-y-6">
                     <Card>

@@ -390,6 +390,16 @@
             {"id": "other", "label": "Autre", "icon": "more_horiz"}
         ]
     },
+     "creatorProfile": {
+        "nextStepTitle": "Prochaine étape :",
+        "completionTips": [
+            "Les créateurs avec des profils complets ont 3 fois plus de chances d'être contactés par les marques.",
+            "Une super bio est votre chance de raconter votre histoire et d'attirer les collaborations de vos rêves.",
+            "Les marques filtrent souvent par lieu pour trouver des créateurs locaux pour des événements et des campagnes.",
+            "Votre photo de profil est la première impression que vous laissez. Assurez-vous qu'elle soit excellente !",
+            "Les tags aident notre algorithme à vous proposer les opportunités de campagnes les plus pertinentes."
+        ]
+    },
     "contactPage": {
         "title": {
           "part1": "Contactez-",

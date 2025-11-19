@@ -390,6 +390,16 @@
             {"id": "other", "label": "Other", "icon": "more_horiz"}
         ]
     },
+    "creatorProfile": {
+        "nextStepTitle": "Next Step:",
+        "completionTips": [
+            "Creators with complete profiles are 3x more likely to be contacted by brands.",
+            "A great bio is your chance to tell your story and attract your dream collaborations.",
+            "Brands often filter by location to find local creators for events and campaigns.",
+            "Your profile picture is the first impression you make. Make it a great one!",
+            "Tags help our algorithm match you with the most relevant campaign opportunities."
+        ]
+    },
     "contactPage": {
         "title": {
             "part1": "Get in",
