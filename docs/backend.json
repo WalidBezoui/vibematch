@@ -6,40 +6,58 @@
       "type": "object",
       "description": "Represents a user's public and private profile information.",
       "properties": {
-        "uid": {
-          "type": "string",
-          "description": "The user's unique ID from Firebase Authentication."
-        },
-        "email": {
-          "type": "string",
-          "format": "email",
-          "description": "The user's email address."
-        },
-        "name": {
-          "type": "string",
-          "description": "The user's full name or company name."
-        },
-        "role": {
-          "type": "string",
-          "enum": [
-            "brand",
-            "creator"
-          ],
-          "description": "The role of the user, determining their permissions and view."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp of when the user profile was created."
-        }
+        "uid": { "type": "string", "description": "The user's unique ID from Firebase Authentication." },
+        "email": { "type": "string", "format": "email" },
+        "name": { "type": "string", "description": "User's full name (for creators) or company name (for brands)." },
+        "role": { "type": "string", "enum": ["brand", "creator"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "photoURL": { "type": "string", "format": "uri", "description": "URL to the user's profile picture or brand logo."}
       },
-      "required": [
-        "uid",
-        "email",
-        "name",
-        "role",
-        "createdAt"
-      ]
+      "required": ["uid", "email", "name", "role", "createdAt"]
+    },
+    "CreatorProfile": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Creator Profile",
+        "type": "object",
+        "description": "Extended profile information for a Creator.",
+        "allOf": [{ "$ref": "#/entities/UserProfile" }],
+        "properties": {
+            "displayName": { "type": "string", "description": "First name or public nickname."},
+            "jobTitle": { "type": "string", "description": "e.g., 'Photographer', 'Lifestyle Blogger'" },
+            "location": { "type": "string" },
+            "bio": { "type": "string", "maxLength": 500 },
+            "tags": { "type": "array", "items": { "type": "string" } },
+            "adminBadge": { "type": "string", "enum": ["NONE", "VERIFIED", "RISING_STAR", "TOP_RATED"] },
+            "initialTrustScore": { "type": "integer", "minimum": 0, "maximum": 100 }
+        }
+    },
+    "BrandProfile": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Brand Profile",
+        "type": "object",
+        "description": "Extended profile information for a Brand.",
+        "allOf": [{ "$ref": "#/entities/UserProfile" }],
+        "properties": {
+            "companyName": { "type": "string" },
+            "logoUrl": { "type": "string", "format": "uri" },
+            "industry": { "type": "string" },
+            "website": { "type": "string", "format": "uri" },
+            "description": { "type": "string" },
+            "isPaymentVerified": { "type": "boolean", "default": false }
+        }
+    },
+    "PortfolioProject": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Portfolio Project",
+        "type": "object",
+        "description": "A single project in a creator's portfolio.",
+        "properties": {
+            "title": { "type": "string" },
+            "date": { "type": "string", "format": "date" },
+            "description": { "type": "string" },
+            "mediaUrl": { "type": "string", "format": "uri" }
+        },
+        "required": ["title", "date", "mediaUrl"]
     },
     "Campaign": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -47,73 +65,24 @@
       "type": "object",
       "description": "Represents a collaboration contract between a Brand and a Creator.",
       "properties": {
-        "title": {
-          "type": "string",
-          "description": "The title of the campaign."
-        },
-        "campaignBrief": {
-          "type": "string",
-          "description": "Detailed description of the campaign, goals, and requirements."
-        },
-        "deliverables": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "A list of specific deliverables required from the creator."
-        },
-        "budget": {
-          "type": "number",
-          "description": "The payment amount for the job in Moroccan Dirhams (DH)."
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Keywords or tags to categorize the campaign (e.g., 'Fashion', 'Tech')."
-        },
-        "brandId": {
-          "type": "string",
-          "description": "The UID of the Brand who created the campaign."
-        },
-        "creatorId": {
-          "type": "string",
-          "description": "The UID of the Creator assigned to the campaign."
-        },
+        "title": { "type": "string" },
+        "campaignBrief": { "type": "string" },
+        "deliverables": { "type": "array", "items": { "type": "string" } },
+        "budget": { "type": "number" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "brandId": { "type": "string" },
+        "creatorId": { "type": "string" },
         "status": {
           "type": "string",
           "enum": [
-            "OPEN_FOR_APPLICATIONS",
-            "PENDING_SELECTION",
-            "PENDING_CREATOR_ACCEPTANCE",
-            "PENDING_PAYMENT",
-            "IN_PROGRESS",
-            "DELIVERED",
-            "COMPLETED",
-            "REJECTED_BY_CREATOR"
-          ],
-          "description": "The current status of the campaign workflow."
+            "OPEN_FOR_APPLICATIONS", "PENDING_SELECTION", "PENDING_CREATOR_ACCEPTANCE",
+            "PENDING_PAYMENT", "IN_PROGRESS", "DELIVERED", "COMPLETED", "REJECTED_BY_CREATOR"
+          ]
         },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
       },
-      "required": [
-        "title",
-        "campaignBrief",
-        "deliverables",
-        "budget",
-        "brandId",
-        "status",
-        "createdAt",
-        "updatedAt"
-      ]
+      "required": ["title", "campaignBrief", "deliverables", "budget", "brandId", "status", "createdAt", "updatedAt"]
     },
     "CampaignApplication": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -121,51 +90,18 @@
       "type": "object",
       "description": "Represents a Creator's application to a specific campaign.",
       "properties": {
-        "campaignId": {
-          "type": "string",
-          "description": "The ID of the campaign this application is for."
-        },
-        "creatorId": {
-          "type": "string",
-          "description": "The UID of the Creator who is applying."
-        },
-        "brandId": {
-          "type": "string",
-          "description": "The UID of the Brand who owns the campaign."
-        },
-        "coverLetter": {
-          "type": "string",
-          "description": "The creator's message to the brand for this application."
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "pending",
-            "accepted",
-            "rejected"
-          ],
-          "description": "The status of the application."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        }
+        "campaignId": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "brandId": { "type": "string" },
+        "coverLetter": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": [
-        "campaignId",
-        "creatorId",
-        "brandId",
-        "coverLetter",
-        "status",
-        "createdAt"
-      ]
+      "required": ["campaignId", "creatorId", "brandId", "coverLetter", "status", "createdAt"]
     }
   },
   "auth": {
-    "providers": [
-      "password",
-      "anonymous"
-    ]
+    "providers": ["password", "anonymous"]
   },
   "firestore": {
     "structure": [
@@ -176,48 +112,42 @@
           "schema": {
             "$ref": "#/entities/UserProfile"
           },
-          "description": "Stores public and private information for each user.",
-          "params": [
+          "description": "Stores profile information for both Brands and Creators. The 'role' field determines which specific profile type applies.",
+          "params": [{ "name": "userId", "description": "The unique ID of the user." }]
+        },
+        "subcollections": [
             {
-              "name": "userId",
-              "description": "The unique ID of the user."
+                "path": "/users/{userId}/portfolio/{projectId}",
+                "definition": {
+                    "entityName": "PortfolioProject",
+                    "schema": { "$ref": "#/entities/PortfolioProject" },
+                    "description": "Stores a creator's portfolio projects.",
+                    "params": [
+                        { "name": "userId", "description": "The unique ID of the creator."},
+                        { "name": "projectId", "description": "The unique ID for the portfolio project."}
+                    ]
+                }
             }
-          ]
-        }
+        ]
       },
       {
         "path": "/campaigns/{campaignId}",
         "definition": {
           "entityName": "Campaign",
-          "schema": {
-            "$ref": "#/entities/Campaign"
-          },
+          "schema": { "$ref": "#/entities/Campaign" },
           "description": "Stores all campaign contracts between brands and creators.",
-          "params": [
-            {
-              "name": "campaignId",
-              "description": "The unique ID for the campaign."
-            }
-          ]
+          "params": [{ "name": "campaignId", "description": "The unique ID for the campaign." }]
         },
         "subcollections": [
           {
             "path": "/campaigns/{campaignId}/applications/{applicationId}",
             "definition": {
               "entityName": "CampaignApplication",
-              "schema": {
-                "$ref": "#/entities/CampaignApplication"
-              },
+              "schema": { "$ref": "#/entities/CampaignApplication" },
               "description": "Stores applications from creators for a specific campaign.",
               "params": [
-                {
-                  "name": "campaignId",
-                  "description": "The unique ID of the parent campaign."
-                },
-                {
-                  "name": "applicationId",
-                  "description": "The unique ID for the application."
-                }
+                { "name": "campaignId", "description": "The unique ID of the parent campaign." },
+                { "name": "applicationId", "description": "The unique ID for the application." }
               ]
             }
           }

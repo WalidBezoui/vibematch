@@ -43,8 +43,29 @@ const LanguageSwitcher = ({className}: {className?: string}) => {
     );
 };
 
-const DesktopNav = ({ navLinks, onLinkClick, isLoading }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, isLoading: boolean }) => {
+const DesktopNav = ({ navLinks, onLinkClick }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void }) => {
     const pathname = usePathname();
+
+    const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
+        if (href.startsWith('/#')) {
+            e.preventDefault();
+            const targetId = href.substring(2);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
+    
+    if (!navLinks) {
+        return (
+            <nav className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
+                <Skeleton className="h-9 w-24 rounded-full" />
+                <Skeleton className="h-9 w-24 rounded-full" />
+                <Skeleton className="h-9 w-24 rounded-full" />
+            </nav>
+        );
+    }
 
     return (
         <nav className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
@@ -55,14 +76,7 @@ const DesktopNav = ({ navLinks, onLinkClick, isLoading }: { navLinks: NavLinkIte
                         key={link.href}
                         href={link.href}
                         onClick={(e) => {
-                            if(link.isSection && pathname === '/') {
-                                e.preventDefault();
-                                const targetId = link.href.substring(link.href.indexOf('#') + 1);
-                                const targetElement = document.getElementById(targetId);
-                                if (targetElement) {
-                                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                                }
-                            }
+                            if(pathname === '/') handleScroll(e, link.href);
                             onLinkClick(link.interest);
                         }}
                         className={cn(
@@ -87,9 +101,9 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading
     if (!isOpen) return null;
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLinkItem) => {
-        if(link.isSection && pathname === '/') {
+        if(pathname === '/' && link.href.startsWith('/#')) {
             e.preventDefault();
-            const targetId = link.href.substring(link.href.indexOf('#') + 1);
+            const targetId = link.href.substring(2);
             const targetElement = document.getElementById(targetId);
             if (targetElement) {
                 targetElement.scrollIntoView({ behavior: 'smooth' });
@@ -175,12 +189,14 @@ const AuthButtons = ({ onLogout }: { onLogout: () => void }) => {
     if (user) {
       return (
         <div className="flex items-center gap-2">
-            <Avatar className="h-9 w-9">
-                <AvatarImage src={userProfile?.photoURL} alt={userProfile?.name} />
-                <AvatarFallback>
-                    {userProfile?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
-                </AvatarFallback>
-            </Avatar>
+            <Link href="/profile">
+                <Avatar className="h-9 w-9">
+                    <AvatarImage src={userProfile?.photoURL || userProfile?.logoUrl} alt={userProfile?.name} />
+                    <AvatarFallback>
+                        {userProfile?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+                    </AvatarFallback>
+                </Avatar>
+            </Link>
             <Button onClick={onLogout} variant="ghost" size="icon" className="hidden md:flex rounded-full">
                 <LogOut className="h-4 w-4" />
                 <span className="sr-only">{t('header.logout')}</span>
@@ -227,8 +243,8 @@ export function AppHeader() {
     const isHomePage = pathname === '/';
     
     const loggedOutLinks: NavLinkItem[] = [
-        { href: isHomePage ? "#brands" : "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Building, isSection: true },
-        { href: isHomePage ? "#creators" : "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users, isSection: true },
+        { href: isHomePage ? "/#brands" : "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Building, isSection: true },
+        { href: isHomePage ? "/#creators" : "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users, isSection: true },
         { href: "/faq", label: t('header.faq'), icon: HelpCircle },
         { href: "/contact", label: t('header.support'), icon: MessageSquare },
     ];
@@ -286,7 +302,7 @@ export function AppHeader() {
             VibeMatch
         </Link>
 
-        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} isLoading={isLoading} />
+        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} />
 
         <div className="flex items-center gap-2">
             <LanguageSwitcher className="hidden sm:flex" />
