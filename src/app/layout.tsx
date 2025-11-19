@@ -3,7 +3,22 @@
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/context/language-context';
-import { FirebaseClientProvider } from '@/firebase';
+import { FirebaseClientProvider, useUser, useUserProfile } from '@/firebase';
+import { ProfileCompletionBanner } from '@/components/profile-completion-banner';
+
+const AppContent = ({ children }: { children: React.ReactNode }) => {
+  const { user, isUserLoading } = useUser();
+  const { userProfile, isLoading: isProfileLoading } = useUserProfile();
+  
+  const showCompletionBanner = user && !isUserLoading && userProfile && !isProfileLoading && userProfile.role === 'creator';
+
+  return (
+    <>
+      {showCompletionBanner && <ProfileCompletionBanner />}
+      {children}
+    </>
+  )
+}
 
 export default function RootLayout({
   children,
@@ -25,7 +40,9 @@ export default function RootLayout({
           <body
             className={`bg-background text-foreground/90 antialiased selection:bg-primary/20`}
           >
-            {children}
+            <AppContent>
+              {children}
+            </AppContent>
             <Toaster />
           </body>
         </FirebaseClientProvider>

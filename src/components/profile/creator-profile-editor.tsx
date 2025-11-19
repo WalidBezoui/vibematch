@@ -65,22 +65,6 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
       photoURL: profile.photoURL || '',
     },
   });
-
-  const profileCompletion = useMemo(() => {
-    const fields = [
-        profile.photoURL,
-        profile.displayName,
-        profile.jobTitle,
-        profile.location,
-        profile.bio,
-        profile.tags?.length > 0
-        // In a real app, you'd also check for portfolio items
-    ];
-    const completedFields = fields.filter(Boolean).length;
-    const totalFields = fields.length;
-    return Math.round((completedFields / totalFields) * 100);
-  }, [profile]);
-  
   
   const handleCancel = () => {
     form.reset({
@@ -128,13 +112,6 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   if (!isEditing) {
       return (
         <div className="space-y-8">
-             <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                    <h2 className="text-lg font-medium">Profile Completion</h2>
-                    <span className="font-bold text-primary">{profileCompletion}%</span>
-                </div>
-                <Progress value={profileCompletion} />
-            </div>
             <div className="grid md:grid-cols-3 gap-8 items-start">
                 <div className="md:col-span-1 space-y-6">
                     <Card>
