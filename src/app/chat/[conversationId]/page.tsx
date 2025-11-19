@@ -318,7 +318,7 @@ export default function SingleChatPage() {
     }, [isUserLoading, user, router]);
 
     const isLoading = isUserLoading || isConversationLoading || areMessagesLoading;
-
+    
     if (isLoading) {
         return (
             <div className="h-screen w-full flex flex-col">
@@ -351,13 +351,6 @@ export default function SingleChatPage() {
             </div>
         )
     }
-
-     useEffect(() => {
-        if (!isUserLoading && !user) {
-            router.push('/login');
-        }
-    }, [isUserLoading, user, router]);
-
 
      const isParticipant = user && (user.uid === conversation.brand_id || user.uid === conversation.creator_id);
      if(!isParticipant) {
