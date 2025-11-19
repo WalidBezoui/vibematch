@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -85,7 +86,7 @@ export function HomeComponent() {
           </div>
         </div>
       </div>
-      <div className="py-24 md:py-32 scroll-mt-64" id="brands">
+      <div className="py-24 md:py-32 scroll-mt-24" id="brands">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
           <div className="flex flex-col gap-6">
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
@@ -127,7 +128,7 @@ export function HomeComponent() {
         </div>
       </div>
       <div
-        className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-64"
+        className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-24"
         id="creators"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
