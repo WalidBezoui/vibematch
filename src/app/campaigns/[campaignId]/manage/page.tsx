@@ -1,7 +1,7 @@
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { collection, doc, query, updateDoc, serverTimestamp, getDoc, writeBatch } from 'firebase/firestore';
+import { collection, doc, query, updateDoc, serverTimestamp, getDoc, writeBatch, getDocs, where } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -27,11 +27,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { cn } from '@/lib/utils';
 
 type Applicant = {
     id: string;
     creatorId: string;
     coverLetter: string;
+    bidAmount: number;
     status: 'APPLIED' | 'NEGOTIATING' | 'REJECTED';
     profile?: any; 
     trustScore: number;
@@ -103,30 +105,43 @@ export default function ManageApplicationsPage() {
         }
     }, [applications, firestore]);
 
-    const handleShortlist = async (applicationId: string) => {
+    const handleShortlist = async (applicant: Applicant) => {
         if (!firestore) return;
         toast({ title: 'Opening discussion...' });
         
         try {
             const batch = writeBatch(firestore);
-            const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicationId);
+            const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
             batch.update(applicationRef, { status: 'NEGOTIATING' });
             
-            // Find the associated conversation to update its status too
-            const conversationQuery = query(collection(firestore, 'conversations'), where('application_id', '==', applicationId));
-            const conversationSnapshot = await getDocs(conversationQuery);
+            // Create Conversation linked to Application
+            const conversationDocRef = doc(collection(firestore, 'conversations'));
+            batch.set(conversationDocRef, {
+                campaign_id: campaignId,
+                application_id: applicant.id,
+                brand_id: applicant.brandId,
+                creator_id: applicant.creatorId,
+                status: 'APPLIED', // Initial status, brand can't see chat yet
+                agreed_budget: applicant.bidAmount,
+                is_funded: false,
+                lastMessage: applicant.coverLetter,
+                updatedAt: serverTimestamp(),
+            });
 
-            if (!conversationSnapshot.empty) {
-                const conversationDocRef = conversationSnapshot.docs[0].ref;
-                batch.update(conversationDocRef, { status: 'NEGOTIATION' });
-                 router.push(`/chat/${conversationDocRef.id}`);
-            } else {
-                 throw new Error("Could not find the associated conversation.");
-            }
-
+             // Create initial message in conversation
+            const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
+            batch.set(messageDocRef, {
+                 conversation_id: conversationDocRef.id,
+                 sender_id: applicant.creatorId,
+                 type: 'TEXT',
+                 content: applicant.coverLetter,
+                 timestamp: serverTimestamp(),
+            });
+            
             await batch.commit();
 
             toast({ title: 'Chat opened!', description: "You can now negotiate the terms with the creator." });
+            router.push(`/chat/${conversationDocRef.id}`);
         } catch (error: any) {
              toast({ variant: 'destructive', title: 'Action Failed', description: error.message });
         }
@@ -195,7 +210,9 @@ export default function ManageApplicationsPage() {
                             <div>
                                 <h2 className="text-2xl font-bold mb-4">New Applicants</h2>
                                 <div className="grid md:grid-cols-2 gap-6">
-                                    {newApplicants.map(applicant => (
+                                    {newApplicants.map(applicant => {
+                                        const isBidHigher = applicant.bidAmount > campaign.budget;
+                                        return (
                                         <Card key={applicant.id} className="flex flex-col">
                                             {/* Card content */}
                                             <CardHeader className="flex-row items-start gap-4">
@@ -206,7 +223,12 @@ export default function ManageApplicationsPage() {
                                                 <div className="flex-1">
                                                     <div className="flex justify-between items-center">
                                                         <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Creator'}</CardTitle>
-                                                        {applicant.badge && <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200"><ShieldCheck className="h-3 w-3 mr-1" /> {applicant.badge}</Badge>}
+                                                         <Badge variant="secondary" className={cn(
+                                                            isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
+                                                         )}>
+                                                            {isBidHigher && <ArrowUpRight className="h-3 w-3 mr-1" />}
+                                                             {applicant.bidAmount} MAD
+                                                        </Badge>
                                                     </div>
                                                     <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
                                                         <ShieldCheck className="h-4 w-4 text-green-500" />
@@ -240,9 +262,9 @@ export default function ManageApplicationsPage() {
                                             </CardContent>
                                             <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
                                                 <div className="flex gap-2">
-                                                    <Button className="w-full flex-1" onClick={() => handleShortlist(applicant.id)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
-                                                        <CheckCircle className="mr-2 h-4 w-4" />
-                                                        Shortlist & Discuss
+                                                    <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                                        <MessageSquare className="mr-2 h-4 w-4" />
+                                                        Discuss & Negotiate
                                                     </Button>
                                                     <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                                         <XCircle className="mr-2 h-4 w-4" />
@@ -257,7 +279,8 @@ export default function ManageApplicationsPage() {
                                                 </Button>
                                             </CardFooter>
                                         </Card>
-                                    ))}
+                                        )
+                                    })}
                                 </div>
                             </div>
                         )}

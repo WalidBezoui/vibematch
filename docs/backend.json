@@ -101,6 +101,7 @@
         "brandId": { "type": "string" },
         "coverLetter": { "type": "string" },
         "bidAmount": { "type": "number" },
+        "campaignBudgetSnapshot": { "type": "number" },
         "status": { 
             "type": "string", 
             "enum": [
@@ -118,7 +119,7 @@
         },
         "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["campaignId", "creatorId", "brandId", "coverLetter", "status", "createdAt"]
+      "required": ["campaignId", "creatorId", "brandId", "coverLetter", "bidAmount", "status", "createdAt"]
     },
     "Conversation": {
         "$schema": "http://json-schema.org/draft-07/schema#",

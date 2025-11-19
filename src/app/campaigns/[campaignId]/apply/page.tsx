@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check } from 'lucide-react';
+import { Check, Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -59,6 +59,18 @@ export default function ApplyPage() {
     );
     const { data: campaign, isLoading: isCampaignLoading, error } = useDoc(campaignRef);
 
+    const form = useForm<ApplicationForm>({
+        resolver: zodResolver(applicationSchema),
+        defaultValues: {
+            coverLetter: '',
+            bidAmount: 0,
+        }
+    });
+
+    const bidAmountValue = form.watch('bidAmount');
+    const isBidHigher = campaign && bidAmountValue > campaign.budget;
+
+
     useEffect(() => {
         if (user && firestore && campaignId) {
             const checkApplication = async () => {
@@ -70,14 +82,6 @@ export default function ApplyPage() {
             checkApplication();
         }
     }, [user, firestore, campaignId]);
-
-    const form = useForm<ApplicationForm>({
-        resolver: zodResolver(applicationSchema),
-        defaultValues: {
-            coverLetter: '',
-            bidAmount: 0,
-        }
-    });
 
     useEffect(() => {
         if (campaign) {
@@ -92,45 +96,17 @@ export default function ApplyPage() {
         }
 
         try {
-            const batch = writeBatch(firestore);
-
-            // 1. Create Application
             const applicationsRef = collection(firestore, 'campaigns', campaignId as string, 'applications');
-            const applicationDocRef = doc(applicationsRef); // Create a new doc ref with an auto-generated ID
-            batch.set(applicationDocRef, {
+            await addDoc(applicationsRef, {
                 campaignId: campaignId,
                 creatorId: user.uid,
                 brandId: campaign.brandId,
                 coverLetter: data.coverLetter,
+                bidAmount: data.bidAmount,
+                campaignBudgetSnapshot: campaign.budget,
                 status: 'APPLIED',
                 createdAt: serverTimestamp(),
             });
-
-            // 2. Create Conversation linked to Application
-            const conversationDocRef = doc(collection(firestore, 'conversations'));
-            batch.set(conversationDocRef, {
-                campaign_id: campaignId,
-                application_id: applicationDocRef.id,
-                brand_id: campaign.brandId,
-                creator_id: user.uid,
-                status: 'APPLIED', // Initial status, brand can't see chat yet
-                agreed_budget: data.bidAmount,
-                is_funded: false,
-                lastMessage: data.coverLetter,
-                updatedAt: serverTimestamp(),
-            });
-
-            // 3. Create initial message in conversation
-            const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
-            batch.set(messageDocRef, {
-                 conversation_id: conversationDocRef.id,
-                 sender_id: user.uid,
-                 type: 'TEXT',
-                 content: data.coverLetter,
-                 timestamp: serverTimestamp(),
-            });
-
-            await batch.commit();
 
             toast({ title: 'Application Sent!', description: 'The brand will be notified of your interest.' });
             router.push('/dashboard');
@@ -209,11 +185,19 @@ export default function ApplyPage() {
                                     name="bidAmount"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Your Bid Amount (in DH)</FormLabel>
+                                            <FormLabel>Your Tariff for this Mission</FormLabel>
                                             <FormControl>
                                                 <Input type="number" {...field} />
                                             </FormControl>
                                             <FormMessage />
+                                             {isBidHigher && (
+                                                <Alert variant="default" className="border-orange-400 text-orange-700 mt-2">
+                                                    <Info className="h-4 w-4" />
+                                                    <AlertDescription>
+                                                        Note: Your offer is higher than the brand's budget.
+                                                    </AlertDescription>
+                                                </Alert>
+                                            )}
                                         </FormItem>
                                     )}
                                 />
@@ -222,7 +206,7 @@ export default function ApplyPage() {
                                     name="coverLetter"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Cover Letter</FormLabel>
+                                            <FormLabel>Why you?</FormLabel>
                                             <FormControl>
                                                 <Textarea
                                                     placeholder="Introduce yourself and explain why you'd be perfect for this collaboration..."
@@ -235,7 +219,7 @@ export default function ApplyPage() {
                                     )}
                                 />
                                 <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-                                    {form.formState.isSubmitting ? 'Submitting...' : 'Send Application'}
+                                    {form.formState.isSubmitting ? 'Submitting...' : 'Send my Application'}
                                 </Button>
                             </form>
                         </Form>
