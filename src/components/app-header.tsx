@@ -218,19 +218,26 @@ export function AppHeader() {
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
+    
+    // If not on the homepage, navigate there first, then scroll.
+    if (pathname !== '/') {
+        router.push(`/#${targetId}`);
+        return;
+    }
+
     const targetElement = document.getElementById(targetId);
     const headerElement = document.querySelector('header');
     
     if (targetElement && headerElement) {
         const headerHeight = headerElement.offsetHeight;
-        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 30; // 30px extra padding
+        // Adjust the final position by subtracting a portion of the window height to center it more effectively.
+        const offset = window.innerHeight / 4; 
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - offset;
 
         window.scrollTo({
             top: targetPosition,
             behavior: 'smooth',
         });
-    } else {
-      router.push(`/#${targetId}`);
     }
   };
 
