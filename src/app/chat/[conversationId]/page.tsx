@@ -223,10 +223,15 @@ const SystemCard = ({ message, onRespondToOffer }: any) => {
 
     // For the initial context message
     if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for campaign:')) {
+        const isCreator = userProfile?.role === 'creator';
+        let content = message.content;
+        if(isCreator) {
+            content = content.replace("The creator's opening bid", "Your opening bid").replace("their cover letter is", "your cover letter is");
+        }
         return (
             <div className="py-4">
                 <div className="text-center text-sm text-muted-foreground p-4 bg-muted/50 rounded-lg max-w-md mx-auto border">
-                    <p className="whitespace-pre-wrap">{message.content}</p>
+                    <p className="whitespace-pre-wrap">{content}</p>
                     {message.timestamp && (
                         <p className="text-xs mt-2">
                             {format(message.timestamp.toDate(), 'MMM d, yyyy HH:mm')}
