@@ -83,7 +83,7 @@ service cloud.firestore {
 
       match /messages/{messageId} {
         // Allow creation if sender is part of conversation
-        allow create: if request.auth.uid == request.resource.data.sender_id && (get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid);
+        allow create: if request.auth.uid == request.resource.data.sender_id;
         // Only participants can read messages.
         allow get, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid;
       }
