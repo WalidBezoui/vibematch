@@ -264,6 +264,7 @@ export function AppHeader() {
         if (userProfile.role === 'creator') {
             roleSpecificLinks = [
                  { href: "/discover", label: 'Discover', icon: Compass },
+                 { href: "/chat", label: 'Messages', icon: MessageSquare },
             ];
         }
         
@@ -271,6 +272,7 @@ export function AppHeader() {
              roleSpecificLinks = [
                  { href: "/creators", label: 'Creators', icon: Users },
                  { href: "/campaigns/create", label: 'New Campaign', icon: PlusCircle },
+                 { href: "/chat", label: 'Messages', icon: MessageSquare },
             ];
         }
         
