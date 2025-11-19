@@ -6,7 +6,7 @@ import { AppHeader } from '@/components/app-header';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot } from 'lucide-react';
+import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc } from 'firebase/firestore';
@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 const GuardianBot = {
   isSecure: (text: string): boolean => {
@@ -36,7 +37,7 @@ const GuardianBot = {
   },
 };
 
-const ActionHeader = ({ conversation, onOfferSent }: { conversation: any, onOfferSent: () => void }) => {
+const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, onOfferSent: () => void }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
     const firestore = useFirestore();
@@ -73,57 +74,66 @@ const ActionHeader = ({ conversation, onOfferSent }: { conversation: any, onOffe
     const handleFund = () => {
       router.push(`/campaigns/${conversation.campaign_id}/pay`);
     }
-    
-    // RENDER LOGIC
-    if (conversation.is_funded) {
-        return (
-            <Card className="rounded-none border-x-0 border-t-0 p-4 bg-green-50 dark:bg-green-900/30 border-b-green-200">
-                <div className="flex justify-center items-center font-semibold text-green-700">
-                    <Lock className="h-4 w-4 mr-2" />
-                    Funds Secured: {conversation.agreed_budget} MAD. Project is Active.
-                </div>
-            </Card>
-        );
+
+    const getStatusInfo = () => {
+        switch (conversation.status) {
+            case 'NEGOTIATION':
+                return { icon: Handshake, text: 'Negotiation in progress', color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-900/20' };
+            case 'OFFER_ACCEPTED':
+                return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
+            case 'ACTIVE':
+                return { icon: Shield, text: 'Project active. Funds secured.', color: 'text-green-600', bgColor: 'bg-green-50 dark:bg-green-900/20' };
+            case 'REVIEW':
+                 return { icon: Info, text: 'Work submitted. Awaiting brand review.', color: 'text-purple-600', bgColor: 'bg-purple-50 dark:bg-purple-900/20' };
+            case 'COMPLETED':
+                return { icon: PartyPopper, text: 'Campaign completed!', color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-800' };
+            case 'CANCELLED':
+                 return { icon: XCircle, text: 'This deal has been cancelled.', color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
+            default:
+                return { icon: Info, text: 'Status: ' + conversation.status, color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-800' };
+        }
     }
 
-    if (conversation.status === 'NEGOTIATION') {
-        return (
-             <Card className="rounded-none border-x-0 border-t-0 p-4">
-                <div className="flex justify-between items-center">
-                    <div className="font-semibold">
-                        Agreed Budget: <span className="text-primary">{conversation.agreed_budget} MAD</span>
+    const { icon: Icon, text, color, bgColor } = getStatusInfo();
+    
+    return (
+        <div className={cn("p-4 border-b", bgColor)}>
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div className={cn("flex items-center font-semibold", color)}>
+                    <Icon className="h-5 w-5 mr-2" />
+                    <span>{text}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="text-sm font-semibold">
+                        Agreed Budget: <span className="text-primary">{conversation.agreed_budget || 0} MAD</span>
                     </div>
-                    {isBrand && (
-                        <div className="flex gap-2">
-                             <Popover>
-                                <PopoverTrigger asChild>
-                                    <Button variant="outline">Change Offer</Button>
-                                </PopoverTrigger>
-                                <PopoverContent>
-                                    <div className="grid gap-4">
-                                        <div className="space-y-2">
-                                            <h4 className="font-medium leading-none">New Budget</h4>
-                                            <p className="text-sm text-muted-foreground">Propose a new budget for this deal.</p>
-                                        </div>
-                                        <div className="grid gap-2">
-                                             <Label htmlFor="budget">Amount (MAD)</Label>
-                                             <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                             <Button onClick={handleMakeOffer}>Send New Offer</Button>
-                                        </div>
+
+                    {isBrand && conversation.status === 'NEGOTIATION' && (
+                        <Popover>
+                            <PopoverTrigger asChild><Button variant="outline" size="sm">Change Offer</Button></PopoverTrigger>
+                            <PopoverContent>
+                                <div className="grid gap-4">
+                                    <div className="space-y-2"><h4 className="font-medium leading-none">New Budget</h4><p className="text-sm text-muted-foreground">Propose a new budget for this deal.</p></div>
+                                    <div className="grid gap-2">
+                                         <Label htmlFor="budget">Amount (MAD)</Label>
+                                         <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
+                                         <Button onClick={handleMakeOffer}>Send New Offer</Button>
                                     </div>
-                                </PopoverContent>
-                            </Popover>
-                            <Button onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>Fund & Hire ({conversation.agreed_budget} MAD)</Button>
-                        </div>
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                    )}
+                     {isBrand && conversation.status === 'OFFER_ACCEPTED' && (
+                         <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>
+                            <CircleDollarSign className="mr-2 h-4 w-4" /> Fund & Hire ({conversation.agreed_budget} MAD)
+                         </Button>
                     )}
                 </div>
-            </Card>
-        )
-    }
-
-    // Default empty header
-    return <div className="p-4 border-b"></div>;
+            </div>
+        </div>
+    );
 };
+
 
 const MessageBubble = ({ message, isOwnMessage, senderProfile }: { message: any, isOwnMessage: boolean, senderProfile: any }) => {
     return (
@@ -342,7 +352,7 @@ export default function SingleChatPage() {
     }
 
      if (!user) {
-         return <Skeleton className="h-screen w-full" />;
+        return <Skeleton className="h-screen w-full" />;
      }
 
      const isParticipant = user.uid === conversation.brand_id || user.uid === conversation.creator_id;
@@ -420,7 +430,7 @@ export default function SingleChatPage() {
             <div className="flex flex-1 overflow-hidden">
                 <ChatSidebar conversationId={conversationId as string} />
                 <main className="flex-1 flex flex-col bg-muted/50">
-                    <ActionHeader conversation={conversation} onOfferSent={() => {}} />
+                    <DealStatusHeader conversation={conversation} onOfferSent={() => {}} />
                     <MessageStream messages={messages} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     <MessageInput onSend={handleSendMessage} />
                 </main>
