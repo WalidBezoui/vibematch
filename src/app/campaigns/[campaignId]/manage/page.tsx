@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
-import { FirestorePermissionError } from '@/firebase/errors';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
 import {
   AlertDialog,
@@ -106,46 +106,61 @@ export default function ManageApplicationsPage() {
         }
     }, [applications, firestore]);
 
-    const handleShortlist = async (applicant: Applicant) => {
+    const handleShortlist = (applicant: Applicant) => {
         if (!firestore || !user) return;
         toast({ title: 'Opening discussion...' });
         
-        try {
-            const batch = writeBatch(firestore);
-            const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
-            batch.update(applicationRef, { status: 'NEGOTIATING' });
-            
-            // Create Conversation linked to Application
-            const conversationDocRef = doc(collection(firestore, 'conversations'));
-            batch.set(conversationDocRef, {
-                campaign_id: campaignId,
-                application_id: applicant.id,
-                brand_id: applicant.brandId,
-                creator_id: applicant.creatorId,
-                status: 'NEGOTIATION', // Set status to NEGOTIATION
-                agreed_budget: applicant.bidAmount,
-                is_funded: false,
-                lastMessage: `You opened a discussion with ${applicant.profile?.name || 'this creator'}.`,
-                updatedAt: serverTimestamp(),
-            });
+        const batch = writeBatch(firestore);
+        const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
+        batch.update(applicationRef, { status: 'NEGOTIATING' });
+        
+        // Create Conversation linked to Application
+        const conversationDocRef = doc(collection(firestore, 'conversations'));
+        const conversationData = {
+            campaign_id: campaignId,
+            application_id: applicant.id,
+            brand_id: applicant.brandId,
+            creator_id: applicant.creatorId,
+            status: 'NEGOTIATION', // Set status to NEGOTIATION
+            agreed_budget: applicant.bidAmount,
+            is_funded: false,
+            lastMessage: `You opened a discussion with ${applicant.profile?.name || 'this creator'}.`,
+            updatedAt: serverTimestamp(),
+        };
+        batch.set(conversationDocRef, conversationData);
 
-             // Create initial system message in conversation
-            const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
-            batch.set(messageDocRef, {
-                 conversation_id: conversationDocRef.id,
-                 sender_id: user.uid,
-                 type: 'TEXT',
-                 content: `Discussion opened for campaign: "${campaign?.title}". The creator's cover letter is: \n\n"${applicant.coverLetter}"`,
-                 timestamp: serverTimestamp(),
-            });
-            
-            await batch.commit();
+         // Create initial system message in conversation
+        const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
+        const messageData = {
+             conversation_id: conversationDocRef.id,
+             sender_id: user.uid,
+             type: 'TEXT',
+             content: `Discussion opened for campaign: "${campaign?.title}". The creator's cover letter is: \n\n"${applicant.coverLetter}"`,
+             timestamp: serverTimestamp(),
+        };
+        batch.set(messageDocRef, messageData);
+        
+        batch.commit()
+            .then(() => {
+                toast({ title: 'Chat opened!', description: "You can now negotiate the terms with the creator." });
+                router.push(`/chat/${conversationDocRef.id}`);
+            })
+            .catch(async (serverError) => {
+                // This is the new, detailed error handling.
+                // We'll create a synthetic error that describes the batch write.
+                const permissionError = new FirestorePermissionError({
+                    path: `BATCH_WRITE on /campaigns/${campaignId} and /conversations`,
+                    operation: 'write',
+                    requestResourceData: {
+                        applicationUpdate: { status: 'NEGOTIATING' },
+                        newConversation: conversationData,
+                        newMessage: messageData
+                    }
+                } satisfies SecurityRuleContext);
 
-            toast({ title: 'Chat opened!', description: "You can now negotiate the terms with the creator." });
-            router.push(`/chat/${conversationDocRef.id}`);
-        } catch (error: any) {
-             toast({ variant: 'destructive', title: 'Action Failed', description: error.message });
-        }
+                // Emit the error to be caught by the global error boundary.
+                errorEmitter.emit('permission-error', permissionError);
+            });
     };
     
     const isLoading = isUserLoading || isCampaignLoading || areApplicationsLoading || (applications && applicants.length !== applications.length);
