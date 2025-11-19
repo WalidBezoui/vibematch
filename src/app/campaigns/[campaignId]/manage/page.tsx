@@ -1,7 +1,7 @@
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { collection, doc, query, updateDoc, serverTimestamp, getDoc, writeBatch, getDocs, where } from 'firebase/firestore';
+import { collection, doc, query, updateDoc, serverTimestamp, getDoc, writeBatch, getDocs, where, arrayUnion } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -114,14 +114,13 @@ export default function ManageApplicationsPage() {
         const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
         batch.update(applicationRef, { status: 'NEGOTIATING' });
         
-        // Create Conversation linked to Application
         const conversationDocRef = doc(collection(firestore, 'conversations'));
         const conversationData = {
             campaign_id: campaignId,
             application_id: applicant.id,
             brand_id: applicant.brandId,
             creator_id: applicant.creatorId,
-            status: 'NEGOTIATION', // Set status to NEGOTIATION
+            status: 'NEGOTIATION',
             agreed_budget: applicant.bidAmount,
             is_funded: false,
             lastMessage: `You opened a discussion with ${applicant.profile?.name || 'this creator'}.`,
@@ -129,13 +128,12 @@ export default function ManageApplicationsPage() {
         };
         batch.set(conversationDocRef, conversationData);
 
-         // Create initial system message in conversation
         const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
         const messageData = {
              conversation_id: conversationDocRef.id,
-             sender_id: user.uid,
+             sender_id: user.uid, 
              type: 'TEXT',
-             content: `Discussion opened for campaign: "${campaign?.title}". The creator's cover letter is: \n\n"${applicant.coverLetter}"`,
+             content: `Discussion opened for campaign: "${campaign?.title}". The creator's opening bid is ${applicant.bidAmount} MAD and their cover letter is: \n\n"${applicant.coverLetter}"`,
              timestamp: serverTimestamp(),
         };
         batch.set(messageDocRef, messageData);
@@ -146,8 +144,6 @@ export default function ManageApplicationsPage() {
                 router.push(`/chat/${conversationDocRef.id}`);
             })
             .catch(async (serverError) => {
-                // This is the new, detailed error handling.
-                // We'll create a synthetic error that describes the batch write.
                 const permissionError = new FirestorePermissionError({
                     path: `BATCH_WRITE on /campaigns/${campaignId} and /conversations`,
                     operation: 'write',
@@ -157,10 +153,37 @@ export default function ManageApplicationsPage() {
                         newMessage: messageData
                     }
                 } satisfies SecurityRuleContext);
-
-                // Emit the error to be caught by the global error boundary.
                 errorEmitter.emit('permission-error', permissionError);
             });
+    };
+
+    const handleAcceptAndHire = async (applicant: Applicant) => {
+        if (!campaignRef || !firestore || !user) return;
+
+        toast({ title: 'Hiring Creator...' });
+        
+        try {
+            await updateDoc(campaignRef, {
+                creatorIds: arrayUnion(applicant.creatorId),
+                status: 'PENDING_CREATOR_ACCEPTANCE'
+            });
+            
+            const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
+            await updateDoc(applicationRef, { status: 'OFFER_ACCEPTED' });
+
+            toast({ title: 'Creator Hired!', description: "They've been notified to accept the campaign." });
+
+        } catch (error: any) {
+             const permissionError = new FirestorePermissionError({
+                path: campaignRef.path,
+                operation: 'update',
+                requestResourceData: {
+                    creatorIds: arrayUnion(applicant.creatorId),
+                    status: 'PENDING_CREATOR_ACCEPTANCE'
+                }
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        }
     };
     
     const isLoading = isUserLoading || isCampaignLoading || areApplicationsLoading || (applications && applicants.length !== applications.length);
@@ -278,10 +301,17 @@ export default function ManageApplicationsPage() {
                                             </CardContent>
                                             <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
                                                 <div className="flex gap-2">
-                                                    <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
-                                                        <MessageSquare className="mr-2 h-4 w-4" />
-                                                        Discuss & Negotiate
-                                                    </Button>
+                                                    {isBidHigher ? (
+                                                        <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                                            <MessageSquare className="mr-2 h-4 w-4" />
+                                                            Discuss & Negotiate
+                                                        </Button>
+                                                    ) : (
+                                                        <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                                            <CheckCircle className="mr-2 h-4 w-4" />
+                                                            Accept & Hire
+                                                        </Button>
+                                                    )}
                                                     <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                                         <XCircle className="mr-2 h-4 w-4" />
                                                         Reject
