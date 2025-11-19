@@ -18,7 +18,6 @@ export function ProfileCompletionBanner() {
     const fields = [
         userProfile.photoURL,
         userProfile.displayName,
-        userProfile.jobTitle,
         userProfile.location,
         userProfile.bio,
         userProfile.tags?.length > 0

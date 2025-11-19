@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useFirebase } from '@/firebase';
+import { useFirebase, useUserProfile } from '@/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -17,14 +17,15 @@ import { Upload, User, MapPin, Edit } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { useLanguage } from '@/context/language-context';
+
 
 const creatorProfileSchema = z.object({
   displayName: z.string().min(2, 'Display name is required.'),
-  jobTitle: z.string().min(2, 'Job title is required.'),
   location: z.string().min(2, 'Location is required.'),
   bio: z.string().max(500, 'Bio must be 500 characters or less.').optional(),
-  tags: z.array(z.string()).optional(),
-  photoURL: z.string().url().optional(),
+  tags: z.array(z.string()).min(1, "Please select at least one tag."),
+  photoURL: z.string().url().optional().or(z.literal('')),
 });
 
 type CreatorProfileFormValues = z.infer<typeof creatorProfileSchema>;
@@ -53,12 +54,29 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   const { firestore, user } = useFirebase();
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
+  const { t } = useLanguage();
+  const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
+  const { userProfile } = useUserProfile();
+
+   const profileCompletion = useMemo(() => {
+    if (!userProfile) return 30;
+    
+    const fields = [
+        userProfile.photoURL,
+        userProfile.displayName,
+        userProfile.location,
+        userProfile.bio,
+        userProfile.tags?.length > 0
+    ];
+    const completedFields = fields.filter(Boolean).length;
+    const totalFields = fields.length;
+    return 30 + Math.round((completedFields / totalFields) * 70);
+  }, [userProfile]);
 
   const form = useForm<CreatorProfileFormValues>({
     resolver: zodResolver(creatorProfileSchema),
     defaultValues: {
       displayName: profile.displayName || profile.name?.split(' ')[0] || '',
-      jobTitle: profile.jobTitle || '',
       location: profile.location || '',
       bio: profile.bio || '',
       tags: profile.tags || [],
@@ -69,7 +87,6 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   const handleCancel = () => {
     form.reset({
       displayName: profile.displayName || profile.name?.split(' ')[0] || '',
-      jobTitle: profile.jobTitle || '',
       location: profile.location || '',
       bio: profile.bio || '',
       tags: profile.tags || [],
@@ -84,7 +101,6 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
     const userDocRef = doc(firestore, 'users', user.uid);
      const updateData = {
         displayName: data.displayName,
-        jobTitle: data.jobTitle,
         location: data.location,
         bio: data.bio,
         tags: data.tags,
@@ -112,6 +128,17 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   if (!isEditing) {
       return (
         <div className="space-y-8">
+            <Card>
+                 <CardHeader>
+                    <div className="flex justify-between items-center">
+                        <CardTitle>Profile Completion</CardTitle>
+                        <span className="text-sm font-bold text-primary">{profileCompletion}%</span>
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <Progress value={profileCompletion} />
+                </CardContent>
+            </Card>
             <div className="grid md:grid-cols-3 gap-8 items-start">
                 <div className="md:col-span-1 space-y-6">
                     <Card>
@@ -129,7 +156,13 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                                 </Button>
                             </div>
                             <CardTitle>{profile.displayName}</CardTitle>
-                            <CardDescription>{profile.jobTitle}</CardDescription>
+                            {profile.tags && profile.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-1 justify-center pt-2">
+                                    {profile.tags.slice(0, 3).map((tag: string) => (
+                                        <Badge key={tag} variant="secondary" className="font-normal">{tag}</Badge>
+                                    ))}
+                                </div>
+                            )}
                             <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
                                 <MapPin className="h-4 w-4" />
                                 <span>{profile.location}</span>
@@ -156,16 +189,6 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                                 <h4 className="text-sm font-medium text-muted-foreground">Bio</h4>
                                 <p className="text-foreground/90 whitespace-pre-wrap">{profile.bio || 'No bio provided.'}</p>
                             </div>
-                            {profile.tags && profile.tags.length > 0 && (
-                                <div className="space-y-2">
-                                    <h4 className="text-sm font-medium text-muted-foreground">Tags</h4>
-                                    <div className="flex flex-wrap gap-2">
-                                        {profile.tags.map((tag: string) => (
-                                            <Badge key={tag} variant="secondary">{tag}</Badge>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
                         </CardContent>
                     </Card>
                     <Card>
@@ -219,31 +242,54 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                                 />
                             <FormField
                                 control={form.control}
-                                name="jobTitle"
+                                name="location"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Job Title</FormLabel>
+                                    <FormLabel>Location</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="e.g., Culinary Photographer" {...field} />
+                                        <Input placeholder="e.g., Marrakech, Morocco" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
                                 )}
                                 />
                         </div>
-                        <FormField
+                        
+                         <FormField
                             control={form.control}
-                            name="location"
+                            name="tags"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Location</FormLabel>
+                                <FormLabel>Tags</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="e.g., Marrakech, Morocco" {...field} />
+                                    <div className="flex flex-wrap gap-2">
+                                    {niches.map((niche) => (
+                                        <Button
+                                        key={niche.id}
+                                        type="button"
+                                        variant="outline"
+                                        className={cn(
+                                            "rounded-full",
+                                            field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+                                        )}
+                                        onClick={() => {
+                                            const currentTags = field.value || [];
+                                            const newTags = currentTags.includes(niche.label)
+                                            ? currentTags.filter(t => t !== niche.label)
+                                            : [...currentTags, niche.label];
+                                            field.onChange(newTags);
+                                        }}
+                                        >
+                                        {niche.label}
+                                        </Button>
+                                    ))}
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
                             )}
-                            />
+                         />
+
                         <FormField
                             control={form.control}
                             name="bio"
