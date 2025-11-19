@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, Building } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, Building, User } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { useUser, useUserProfile } from '@/firebase';
@@ -43,7 +43,7 @@ const LanguageSwitcher = ({className}: {className?: string}) => {
     );
 };
 
-const DesktopNav = ({ navLinks, onLinkClick }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void }) => {
+const DesktopNav = ({ navLinks, onLinkClick, isLoading }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, isLoading: boolean }) => {
     const pathname = usePathname();
 
     return (
@@ -239,7 +239,7 @@ export function AppHeader() {
 
     if (user && userProfile) {
         const commonLinks = [
-            { href: "/faq", label: t('header.faq'), icon: HelpCircle },
+            { href: "/profile", label: 'My Profile', icon: User },
             { href: "/contact", label: t('header.support'), icon: MessageSquare },
         ];
 
@@ -286,7 +286,7 @@ export function AppHeader() {
             VibeMatch
         </Link>
 
-        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} />
+        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} isLoading={isLoading} />
 
         <div className="flex items-center gap-2">
             <LanguageSwitcher className="hidden sm:flex" />
