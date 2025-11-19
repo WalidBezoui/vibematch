@@ -61,28 +61,28 @@ export function ProfileCompletionBanner() {
   const NextStepIcon = nextStep.icon;
 
   return (
-    <div className="bg-secondary/50 border-b border-primary/20 px-4 sm:px-6 py-2">
+    <div className="bg-secondary/50 border-b border-primary/20 px-4 sm:px-6 py-3">
       <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between gap-4">
-            <div className="flex-grow flex items-center gap-4">
-                 <div className="flex-shrink-0">
-                    <span className="font-bold text-primary">{percentage}%</span>
+            <div className="flex-grow flex flex-col gap-1.5">
+                <div className="flex items-center gap-4">
+                    <span className="font-bold text-primary whitespace-nowrap">{percentage}% Complete</span>
+                    <Progress value={percentage} className="h-2 w-full max-w-xs" />
                 </div>
-                <Progress value={percentage} className="h-2 w-full max-w-xs" />
-                <div className="text-sm font-medium text-foreground/80 hidden md:flex items-center gap-4">
+                <div className="text-xs text-muted-foreground hidden md:flex items-center gap-4">
                    <div className="flex items-center gap-2">
-                     <NextStepIcon className="h-4 w-4 text-muted-foreground" />
+                     <NextStepIcon className="h-3 w-3" />
                      <span>Next: {nextStep.text}</span>
                    </div>
                    {motivationalTip && (
-                     <div className="flex items-center gap-2 text-muted-foreground border-l pl-4">
-                        <Lightbulb className="h-4 w-4 text-primary/80" />
-                        <span className="text-foreground/60">{motivationalTip}</span>
+                     <div className="flex items-center gap-2 border-l pl-4">
+                        <Lightbulb className="h-3 w-3 text-primary/80" />
+                        <span>{motivationalTip}</span>
                      </div>
                    )}
                 </div>
             </div>
-          <Button asChild size="sm" className="rounded-full gradient-bg text-black font-semibold h-8">
+          <Button asChild size="sm" className="rounded-full gradient-bg text-black font-semibold h-8 flex-shrink-0">
             <Link href="/profile">
               Complete Profile <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
