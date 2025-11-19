@@ -32,10 +32,11 @@ export function HomeComponent() {
   const brandsFaq = t('homePage.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const creatorsFaq = t('homePage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
-  const brandCtas = t('homePage.brands.ctas', { returnObjects: true }) as {text: string, icon: string}[];
-  const creatorCtas = t('homePage.creators.ctas', { returnObjects: true }) as {text: string, icon: string}[];
-
+  
   useEffect(() => {
+    const brandCtas = t('homePage.brands.ctas', { returnObjects: true }) as {text: string, icon: string}[];
+    const creatorCtas = t('homePage.creators.ctas', { returnObjects: true }) as {text: string, icon: string}[];
+
     if (brandCtas && brandCtas.length > 0) {
       const randomIndex = Math.floor(Math.random() * brandCtas.length);
       setBrandCta(brandCtas[randomIndex]);
@@ -44,16 +45,9 @@ export function HomeComponent() {
       const randomIndex = Math.floor(Math.random() * creatorCtas.length);
       setCreatorCta(creatorCtas[randomIndex]);
     }
-  }, [brandCtas, creatorCtas]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t]);
 
-  const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const elementId = href.substring(1);
-    const element = document.getElementById(elementId);
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
 
   const fakeEngagementImg = getImage('fake-engagement');
   const guaranteedPaymentsImg = getImage('guaranteed-payments');
@@ -77,7 +71,7 @@ export function HomeComponent() {
               className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
               onClick={() => setUserInterest('brand')}
             >
-              <Link href="/#brands" onClick={(e) => handleScrollToSection(e, '/#brands')}>{t('homePage.hero.brandsButton')}</Link>
+              <Link href="/#brands">{t('homePage.hero.brandsButton')}</Link>
             </Button>
             <Button
               asChild
@@ -86,12 +80,12 @@ export function HomeComponent() {
               className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
               onClick={() => setUserInterest('creator')}
             >
-              <Link href="/#creators" onClick={(e) => handleScrollToSection(e, '/#creators')}>{t('homePage.hero.creatorsButton')}</Link>
+              <Link href="/#creators">{t('homePage.hero.creatorsButton')}</Link>
             </Button>
           </div>
         </div>
       </div>
-      <div className="py-24 md:py-32" id="brands">
+      <div className="py-24 md:py-32 scroll-mt-32" id="brands">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
           <div className="flex flex-col gap-6">
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
@@ -133,7 +127,7 @@ export function HomeComponent() {
         </div>
       </div>
       <div
-        className="py-24 md:py-32 bg-muted/50 rounded-3xl"
+        className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-32"
         id="creators"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
