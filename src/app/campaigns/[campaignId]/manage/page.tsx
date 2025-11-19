@@ -32,6 +32,7 @@ import { cn } from '@/lib/utils';
 type Applicant = {
     id: string;
     creatorId: string;
+    brandId: string;
     coverLetter: string;
     bidAmount: number;
     status: 'APPLIED' | 'NEGOTIATING' | 'REJECTED';
