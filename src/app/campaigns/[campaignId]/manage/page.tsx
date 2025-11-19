@@ -1,7 +1,7 @@
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { collection, doc, query, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { collection, doc, query, updateDoc, serverTimestamp, getDoc, writeBatch } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -32,7 +32,7 @@ type Applicant = {
     id: string;
     creatorId: string;
     coverLetter: string;
-    status: 'pending' | 'accepted' | 'rejected';
+    status: 'APPLIED' | 'NEGOTIATING' | 'REJECTED';
     profile?: any; 
     trustScore: number;
     badge: 'Verified' | null;
@@ -93,7 +93,6 @@ export default function ManageApplicationsPage() {
                                 operation: 'get',
                             });
                             errorEmitter.emit('permission-error', permissionError);
-                            // Return the app without a profile on error
                             return { ...app, profile: null, trustScore: 0, badge: null };
                         }
                     })
@@ -104,40 +103,33 @@ export default function ManageApplicationsPage() {
         }
     }, [applications, firestore]);
 
-    const handleAccept = async (applicationId: string, creatorId: string) => {
-        if (!campaignRef || !firestore) return;
-        toast({ title: 'Accepting Application...' });
+    const handleShortlist = async (applicationId: string) => {
+        if (!firestore) return;
+        toast({ title: 'Opening discussion...' });
         
-        const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicationId);
-        const campaignUpdateData = {
-            creatorId: creatorId,
-            status: 'PENDING_CREATOR_ACCEPTANCE',
-            updatedAt: serverTimestamp(),
-        };
-        const applicationUpdateData = {
-            status: 'accepted',
-        };
+        try {
+            const batch = writeBatch(firestore);
+            const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicationId);
+            batch.update(applicationRef, { status: 'NEGOTIATING' });
+            
+            // Find the associated conversation to update its status too
+            const conversationQuery = query(collection(firestore, 'conversations'), where('application_id', '==', applicationId));
+            const conversationSnapshot = await getDocs(conversationQuery);
 
-        // Non-blocking optimistic updates
-        updateDoc(campaignRef, campaignUpdateData).catch(error => {
-            const permissionError = new FirestorePermissionError({
-                path: campaignRef.path,
-                operation: 'update',
-                requestResourceData: campaignUpdateData,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        });
+            if (!conversationSnapshot.empty) {
+                const conversationDocRef = conversationSnapshot.docs[0].ref;
+                batch.update(conversationDocRef, { status: 'NEGOTIATION' });
+                 router.push(`/chat/${conversationDocRef.id}`);
+            } else {
+                 throw new Error("Could not find the associated conversation.");
+            }
 
-        updateDoc(applicationRef, applicationUpdateData).catch(error => {
-             const permissionError = new FirestorePermissionError({
-                path: applicationRef.path,
-                operation: 'update',
-                requestResourceData: applicationUpdateData,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        });
+            await batch.commit();
 
-        toast({ title: 'Creator Selected!', description: "They've been notified to accept the offer." });
+            toast({ title: 'Chat opened!', description: "You can now negotiate the terms with the creator." });
+        } catch (error: any) {
+             toast({ variant: 'destructive', title: 'Action Failed', description: error.message });
+        }
     };
     
     const isLoading = isUserLoading || isCampaignLoading || areApplicationsLoading || (applications && applicants.length !== applications.length);
@@ -172,6 +164,10 @@ export default function ManageApplicationsPage() {
         )
     }
 
+    const newApplicants = applicants.filter(a => a.status === 'APPLIED');
+    const negotiatingApplicants = applicants.filter(a => a.status === 'NEGOTIATING');
+
+
     return (
         <>
             <AppHeader />
@@ -183,7 +179,7 @@ export default function ManageApplicationsPage() {
                     </p>
                 </div>
 
-                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION' && (
+                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && (
                     <Alert>
                         <AlertTitle>This campaign is no longer accepting applications.</AlertTitle>
                         <AlertDescription>
@@ -194,69 +190,78 @@ export default function ManageApplicationsPage() {
                 )}
                 
                 {applicants.length > 0 ? (
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {applicants.map(applicant => (
-                             <Card key={applicant.id} className="flex flex-col">
-                                <CardHeader className="flex-row items-start gap-4">
-                                     <Avatar className="h-12 w-12">
-                                        <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
-                                        <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex-1">
-                                        <div className="flex justify-between items-center">
-                                            <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Creator'}</CardTitle>
-                                            {applicant.badge && <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200"><ShieldCheck className="h-3 w-3 mr-1" /> {applicant.badge}</Badge>}
-                                        </div>
-                                        <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                                            <ShieldCheck className="h-4 w-4 text-green-500" />
-                                            <span>Trust Score: {applicant.trustScore}</span>
-                                        </div>
-                                    </div>
-                                </CardHeader>
-                                <CardContent className="flex-grow space-y-4">
-                                    <div className="space-y-2">
-                                        <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Cover Letter</h4>
-                                        <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
-                                    </div>
-                                     <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                            <Button variant="link" className="p-0 h-auto text-primary">
-                                                Read Full Letter
-                                            </Button>
-                                        </AlertDialogTrigger>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                            <AlertDialogTitle>Cover Letter from {applicant.profile?.name?.split(' ')[0] || 'Creator'}</AlertDialogTitle>
-                                            <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
-                                                {applicant.coverLetter}
-                                            </AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                            <AlertDialogAction>Close</AlertDialogAction>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
-                                </CardContent>
-                                <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
-                                    <div className="flex gap-2">
-                                        <Button className="w-full flex-1" onClick={() => handleAccept(applicant.id, applicant.creatorId)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
-                                            <CheckCircle className="mr-2 h-4 w-4" />
-                                            Accept
-                                        </Button>
-                                        <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
-                                            <XCircle className="mr-2 h-4 w-4" />
-                                            Reject
-                                        </Button>
-                                    </div>
-                                     <Button asChild variant="ghost" className="w-full">
-                                        <Link href={`/creators/${applicant.creatorId}`}>
-                                            <User className="mr-2 h-4 w-4" />
-                                            View Profile
-                                        </Link>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                        ))}
+                    <div className="space-y-8">
+                        {newApplicants.length > 0 && (
+                            <div>
+                                <h2 className="text-2xl font-bold mb-4">New Applicants</h2>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    {newApplicants.map(applicant => (
+                                        <Card key={applicant.id} className="flex flex-col">
+                                            {/* Card content */}
+                                            <CardHeader className="flex-row items-start gap-4">
+                                                 <Avatar className="h-12 w-12">
+                                                    <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
+                                                    <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
+                                                </Avatar>
+                                                <div className="flex-1">
+                                                    <div className="flex justify-between items-center">
+                                                        <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Creator'}</CardTitle>
+                                                        {applicant.badge && <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200"><ShieldCheck className="h-3 w-3 mr-1" /> {applicant.badge}</Badge>}
+                                                    </div>
+                                                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                                                        <ShieldCheck className="h-4 w-4 text-green-500" />
+                                                        <span>Trust Score: {applicant.trustScore}</span>
+                                                    </div>
+                                                </div>
+                                            </CardHeader>
+                                            <CardContent className="flex-grow space-y-4">
+                                                <div className="space-y-2">
+                                                    <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Cover Letter</h4>
+                                                    <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
+                                                </div>
+                                                 <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <Button variant="link" className="p-0 h-auto text-primary">
+                                                            Read Full Letter
+                                                        </Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                        <AlertDialogTitle>Cover Letter from {applicant.profile?.name?.split(' ')[0] || 'Creator'}</AlertDialogTitle>
+                                                        <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
+                                                            {applicant.coverLetter}
+                                                        </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                        <AlertDialogAction>Close</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
+                                            </CardContent>
+                                            <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
+                                                <div className="flex gap-2">
+                                                    <Button className="w-full flex-1" onClick={() => handleShortlist(applicant.id)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                        Shortlist & Discuss
+                                                    </Button>
+                                                    <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                                        <XCircle className="mr-2 h-4 w-4" />
+                                                        Reject
+                                                    </Button>
+                                                </div>
+                                                 <Button asChild variant="ghost" className="w-full">
+                                                    <Link href={`/creators/${applicant.creatorId}`}>
+                                                        <User className="mr-2 h-4 w-4" />
+                                                        View Profile
+                                                    </Link>
+                                                </Button>
+                                            </CardFooter>
+                                        </Card>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {/* Here we can list shortlisted/negotiating applicants later */}
                     </div>
                 ) : (
                      <div className="text-center py-20 border-2 border-dashed rounded-lg">

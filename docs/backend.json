@@ -75,8 +75,14 @@
         "status": {
           "type": "string",
           "enum": [
-            "OPEN_FOR_APPLICATIONS", "PENDING_SELECTION", "PENDING_CREATOR_ACCEPTANCE",
-            "PENDING_PAYMENT", "IN_PROGRESS", "DELIVERED", "COMPLETED", "REJECTED_BY_CREATOR"
+            "OPEN_FOR_APPLICATIONS",
+            "PENDING_SELECTION",
+            "PENDING_CREATOR_ACCEPTANCE",
+            "PENDING_PAYMENT",
+            "IN_PROGRESS",
+            "DELIVERED",
+            "COMPLETED",
+            "REJECTED_BY_CREATOR"
           ]
         },
         "createdAt": { "type": "string", "format": "date-time" },
@@ -94,7 +100,22 @@
         "creatorId": { "type": "string" },
         "brandId": { "type": "string" },
         "coverLetter": { "type": "string" },
-        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "bidAmount": { "type": "number" },
+        "status": { 
+            "type": "string", 
+            "enum": [
+                "APPLIED",
+                "INVITED",
+                "NEGOTIATING",
+                "OFFER_ACCEPTED",
+                "ACTIVE_CONTRACT",
+                "SUBMITTED",
+                "COMPLETED",
+                "CANCELLED",
+                "REJECTED",
+                "EXPIRED"
+            ] 
+        },
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["campaignId", "creatorId", "brandId", "coverLetter", "status", "createdAt"]
@@ -109,7 +130,7 @@
             "application_id": { "type": "string" },
             "brand_id": { "type": "string" },
             "creator_id": { "type": "string" },
-            "status": { "type": "string", "enum": ["NEGOTIATION", "ACTIVE", "REVIEW", "COMPLETED", "CANCELLED"] },
+            "status": { "type": "string", "enum": ["APPLIED", "NEGOTIATION", "ACTIVE", "REVIEW", "COMPLETED", "CANCELLED"] },
             "agreed_budget": { "type": "number" },
             "is_funded": { "type": "boolean" },
             "lastMessage": { "type": "string" },

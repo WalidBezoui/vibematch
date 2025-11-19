@@ -105,7 +105,6 @@ export default function CreatorPublicProfilePage() {
 
   const isLoading = isCreatorLoading || isPortfolioLoading;
   
-  // For now, trust score is random. In the future, this would come from the Trust Engine.
   const trustScore = useMemoFirebase(() => Math.floor(Math.random() * (98 - 75 + 1) + 75), []);
 
   if (isLoading) {
@@ -202,7 +201,7 @@ export default function CreatorPublicProfilePage() {
                <CardFooter>
                  <Button className="w-full">
                     <Briefcase className="mr-2 h-4 w-4" />
-                    Propose a Campaign
+                    Invite to a Campaign
                 </Button>
                </CardFooter>
             </Card>
