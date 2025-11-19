@@ -38,7 +38,7 @@ const GuardianBot = {
   },
 };
 
-const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, onOfferSent: () => void }) => {
+const DealStatusHeader = ({ conversation, campaign, onOfferSent }: { conversation: any, campaign: any, onOfferSent: () => void }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
     const firestore = useFirestore();
@@ -103,8 +103,11 @@ const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, on
             case 'NEGOTIATION':
                 return { icon: Handshake, text: 'Negotiation in progress', color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-900/20' };
             case 'OFFER_ACCEPTED':
-                return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
+                 return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
             case 'ACTIVE':
+                if (campaign?.status === 'PENDING_PAYMENT') {
+                     return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
+                }
                 return { icon: Shield, text: 'Project active. Funds secured.', color: 'text-green-600', bgColor: 'bg-green-50 dark:bg-green-900/20' };
             case 'REVIEW':
                  return { icon: Info, text: 'Work submitted. Awaiting brand review.', color: 'text-purple-600', bgColor: 'bg-purple-50 dark:bg-purple-900/20' };
@@ -151,7 +154,7 @@ const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, on
                           </Popover>
                         </>
                     )}
-                     {isBrand && conversation.status === 'OFFER_ACCEPTED' && (
+                     {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
                          <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>
                             <CircleDollarSign className="mr-2 h-4 w-4" /> Fund & Hire ({conversation.agreed_budget} MAD)
                          </Button>
@@ -371,6 +374,12 @@ export default function SingleChatPage() {
         [firestore, conversationId]
     );
     const { data: conversation, isLoading: isConversationLoading } = useDoc(conversationRef);
+    
+    const campaignRef = useMemoFirebase(
+        () => (firestore && conversation ? doc(firestore, 'campaigns', conversation.campaign_id) : null),
+        [firestore, conversation]
+    );
+    const { data: campaign, isLoading: isCampaignLoading } = useDoc(campaignRef);
 
     const messagesQuery = useMemoFirebase(
         () => (firestore && conversationId ? query(collection(firestore, 'conversations', conversationId as string, 'messages'), orderBy('timestamp', 'asc')) : null),
@@ -378,7 +387,7 @@ export default function SingleChatPage() {
     );
     const { data: messages, isLoading: areMessagesLoading } = useCollection(messagesQuery);
 
-    const isLoading = isUserLoading || isConversationLoading || areMessagesLoading;
+    const isLoading = isUserLoading || isConversationLoading || areMessagesLoading || isCampaignLoading;
     
     if (isLoading) {
         return (
@@ -496,7 +505,7 @@ export default function SingleChatPage() {
             <div className="flex flex-1 overflow-hidden">
                 <ChatSidebar conversationId={conversationId as string} />
                 <main className="flex-1 flex flex-col bg-muted/50">
-                    <DealStatusHeader conversation={conversation} onOfferSent={() => {}} />
+                    <DealStatusHeader conversation={conversation} campaign={campaign} onOfferSent={() => {}} />
                     <MessageStream messages={messages} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     <MessageInput onSend={handleSendMessage} />
                 </main>

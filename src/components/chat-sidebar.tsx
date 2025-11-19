@@ -142,8 +142,8 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
 
   const { data: conversations, isLoading } = useCollection(conversationsQuery);
   
-  const negotiations = conversations?.filter(c => c.status === 'NEGOTIATION') || [];
-  const active = conversations?.filter(c => c.status === 'ACTIVE' || c.status === 'REVIEW') || [];
+  const negotiations = conversations?.filter(c => c.status === 'NEGOTIATION' || c.status === 'OFFER_ACCEPTED') || [];
+  const active = conversations?.filter(c => c.status === 'ACTIVE' || c.status === 'REVIEW' || c.status === 'PENDING_PAYMENT') || [];
   const completed = conversations?.filter(c => c.status === 'COMPLETED' || c.status === 'CANCELLED') || [];
 
   return (
