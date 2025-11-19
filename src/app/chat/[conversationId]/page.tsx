@@ -12,7 +12,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { formatDistanceToNow } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -67,10 +67,21 @@ const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, on
             },
             timestamp: serverTimestamp(),
         });
+
+        const convRef = doc(firestore, 'conversations', conversationId as string);
+        await updateDoc(convRef, { agreed_budget: parseFloat(newOffer) });
+
         onOfferSent();
         setNewOffer('');
         toast({ title: 'Offer Sent!' });
     };
+
+    const handleAcceptAndFund = async () => {
+      if (!firestore) return;
+      const convRef = doc(firestore, 'conversations', conversationId as string);
+      await updateDoc(convRef, { status: 'OFFER_ACCEPTED' });
+      toast({ title: 'Offer Accepted!', description: 'Proceed with funding to start the campaign.'});
+    }
 
     const handleFund = () => {
       router.push(`/campaigns/${conversation.campaign_id}/pay`);
@@ -110,19 +121,22 @@ const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, on
                     </div>
 
                     {isBrand && conversation.status === 'NEGOTIATION' && (
-                        <Popover>
-                            <PopoverTrigger asChild><Button variant="outline" size="sm">Change Offer</Button></PopoverTrigger>
-                            <PopoverContent>
-                                <div className="grid gap-4">
-                                    <div className="space-y-2"><h4 className="font-medium leading-none">New Budget</h4><p className="text-sm text-muted-foreground">Propose a new budget for this deal.</p></div>
-                                    <div className="grid gap-2">
-                                         <Label htmlFor="budget">Amount (MAD)</Label>
-                                         <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                         <Button onClick={handleMakeOffer}>Send New Offer</Button>
-                                    </div>
-                                </div>
-                            </PopoverContent>
-                        </Popover>
+                        <>
+                          <Button variant="outline" size="sm" onClick={handleAcceptAndFund}>Accept & Fund</Button>
+                          <Popover>
+                              <PopoverTrigger asChild><Button variant="outline" size="sm">Change Offer</Button></PopoverTrigger>
+                              <PopoverContent>
+                                  <div className="grid gap-4">
+                                      <div className="space-y-2"><h4 className="font-medium leading-none">New Budget</h4><p className="text-sm text-muted-foreground">Propose a new budget for this deal.</p></div>
+                                      <div className="grid gap-2">
+                                           <Label htmlFor="budget">Amount (MAD)</Label>
+                                           <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
+                                           <Button onClick={handleMakeOffer}>Send New Offer</Button>
+                                      </div>
+                                  </div>
+                              </PopoverContent>
+                          </Popover>
+                        </>
                     )}
                      {isBrand && conversation.status === 'OFFER_ACCEPTED' && (
                          <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>
@@ -168,6 +182,11 @@ const SystemCard = ({ message, onRespondToOffer }: any) => {
                 <Card className="max-w-sm mx-auto bg-muted/50">
                     <CardHeader className="text-center pb-2">
                         <CardTitle className="text-lg">Budget Proposal</CardTitle>
+                        {message.timestamp && (
+                            <p className="text-xs text-muted-foreground pt-1">
+                                {format(message.timestamp.toDate(), 'MMM d, yyyy HH:mm')}
+                            </p>
+                        )}
                     </CardHeader>
                     <CardContent className="text-center">
                         <p className="text-muted-foreground mb-2">{message.content.includes("The Brand proposed") ? "The brand proposed a new budget of" : "Creator's opening bid"}</p>
