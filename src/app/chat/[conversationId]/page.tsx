@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
-import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy } from 'firebase/firestore';
+import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatDistanceToNow } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -250,7 +250,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: any) => {
             for (const pId of participants) {
                 if (!profiles[pId]) {
                     const docRef = doc(firestore, 'users', pId);
-                    const docSnap = await doc(firestore, 'users', pId).get();
+                    const docSnap = await getDoc(docRef);
                     if(docSnap.exists()){
                         newProfiles[pId] = docSnap.data();
                     }
