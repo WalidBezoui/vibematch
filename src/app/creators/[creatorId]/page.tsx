@@ -9,8 +9,47 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase } from 'lucide-react';
+import { MapPin, Briefcase, ShieldCheck, Award, CalendarDays, BarChartBig } from 'lucide-react';
 import { useCollection } from '@/firebase/firestore/use-collection';
+
+const TrustScoreGauge = ({ score }: { score: number }) => {
+  const circumference = 2 * Math.PI * 45; // 2 * pi * radius
+  const strokeDashoffset = circumference - (score / 100) * circumference;
+
+  return (
+    <div className="relative w-32 h-32">
+      <svg className="w-full h-full" viewBox="0 0 100 100">
+        <circle
+          className="text-muted/50"
+          strokeWidth="10"
+          stroke="currentColor"
+          fill="transparent"
+          r="45"
+          cx="50"
+          cy="50"
+        />
+        <circle
+          className="text-primary"
+          strokeWidth="10"
+          strokeDasharray={circumference}
+          strokeDashoffset={strokeDashoffset}
+          strokeLinecap="round"
+          stroke="currentColor"
+          fill="transparent"
+          r="45"
+          cx="50"
+          cy="50"
+          transform="rotate(-90 50 50)"
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-2xl font-bold text-foreground">{score}</span>
+        <span className="text-xs text-muted-foreground">Trust Score</span>
+      </div>
+    </div>
+  );
+};
+
 
 const CreatorProfileSkeleton = () => (
   <div className="grid md:grid-cols-3 gap-8 items-start">
@@ -64,6 +103,9 @@ export default function CreatorPublicProfilePage() {
   const { data: portfolio, isLoading: isPortfolioLoading } = useCollection(portfolioRef);
 
   const isLoading = isCreatorLoading || isPortfolioLoading;
+  
+  // For now, trust score is random. In the future, this would come from the Trust Engine.
+  const trustScore = useMemoFirebase(() => Math.floor(Math.random() * (98 - 75 + 1) + 75), []);
 
   if (isLoading) {
     return (
@@ -114,22 +156,32 @@ export default function CreatorPublicProfilePage() {
                   <span>{creator.location}</span>
                 </div>
               </CardHeader>
-              <CardContent className="text-center">
-                {/* AdminBadgeDisplay can be added here if needed */}
+              <CardContent className="flex flex-col items-center justify-center text-center gap-4">
+                <TrustScoreGauge score={trustScore!} />
               </CardContent>
             </Card>
-            <Card>
+             <Card>
                 <CardHeader>
-                    <CardTitle>Collaboration Stats</CardTitle>
+                    <CardTitle className="text-base font-semibold text-muted-foreground">Collaboration Stats</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Campaigns Completed</span>
-                        <span className="font-bold">New Talent</span>
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center text-black">
+                            <Award className="h-6 w-6" />
+                        </div>
+                        <div>
+                            <p className="font-bold text-lg">New Talent</p>
+                            <p className="text-sm text-muted-foreground">Campaigns Completed</p>
+                        </div>
                     </div>
-                     <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Joined VibeMatch</span>
-                        <span className="font-bold">{creator.createdAt ? new Date(creator.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}</span>
+                     <div className="flex items-center gap-3">
+                         <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center text-black">
+                            <CalendarDays className="h-6 w-6" />
+                        </div>
+                        <div>
+                            <p className="font-bold text-lg">{creator.createdAt ? new Date(creator.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}</p>
+                            <p className="text-sm text-muted-foreground">Joined VibeMatch</p>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
