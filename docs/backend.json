@@ -131,7 +131,7 @@
             "application_id": { "type": "string" },
             "brand_id": { "type": "string" },
             "creator_id": { "type": "string" },
-            "status": { "type": "string", "enum": ["APPLIED", "NEGOTIATION", "ACTIVE", "REVIEW", "COMPLETED", "CANCELLED"] },
+            "status": { "type": "string", "enum": ["NEGOTIATION", "OFFER_ACCEPTED", "ACTIVE", "REVIEW", "COMPLETED", "CANCELLED"] },
             "agreed_budget": { "type": "number" },
             "is_funded": { "type": "boolean" },
             "lastMessage": { "type": "string" },

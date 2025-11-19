@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChatSidebar } from '@/components/chat-sidebar';
 import { AppHeader } from '@/components/app-header';
-import { Card } from '@/components/ui/card';
+import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot } from 'lucide-react';
@@ -43,9 +43,9 @@ const ActionHeader = ({ conversation, onOfferSent }: { conversation: any, onOffe
     const { toast } = useToast();
     const [newOffer, setNewOffer] = useState('');
     const { conversationId } = useParams();
+    const router = useRouter();
 
     const isBrand = userProfile?.role === 'brand';
-    const isCreator = userProfile?.role === 'creator';
     
     const handleMakeOffer = async () => {
         if (!firestore || !newOffer || isNaN(parseFloat(newOffer))) {
@@ -70,46 +70,8 @@ const ActionHeader = ({ conversation, onOfferSent }: { conversation: any, onOffe
         toast({ title: 'Offer Sent!' });
     };
 
-    const handleAcceptOffer = async (message: any) => {
-        if (!firestore) return;
-        
-        const convRef = doc(firestore, 'conversations', conversationId as string);
-        const msgRef = doc(firestore, 'conversations', conversationId as string, 'messages', message.id);
-        
-        await updateDoc(convRef, {
-            agreed_budget: message.metadata.offer_amount,
-            status: 'NEGOTIATION', // Stays in negotiation until funded
-        });
-        await updateDoc(msgRef, {
-            'metadata.offer_status': 'ACCEPTED',
-        });
-        toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
-    };
-
-     const handleRejectOffer = async (messageId: string) => {
-        if (!firestore) return;
-        const msgRef = doc(firestore, 'conversations', conversationId as string, 'messages', messageId);
-        await updateDoc(msgRef, { 'metadata.offer_status': 'REJECTED' });
-        toast({ title: 'Offer Rejected' });
-    };
-    
     const handleFund = () => {
-      // In a real app, this would redirect to a payment gateway like Stripe
-      toast({ title: "Redirecting to payment...", description: "This is a simulation."});
-      setTimeout(async () => {
-         const convRef = doc(firestore, 'conversations', conversationId as string);
-         await updateDoc(convRef, { is_funded: true, status: 'ACTIVE' });
-         
-         const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
-         await addDoc(messagesRef, {
-            conversation_id: conversationId,
-            sender_id: 'system',
-            type: 'SYSTEM_ESCROW',
-            content: `Funds (${conversation.agreed_budget} MAD) have been secured in VibeMatch escrow. The work can now begin safely.`,
-            timestamp: serverTimestamp(),
-        });
-         toast({ title: "Payment Successful!", description: "The project is now active."});
-      }, 2000);
+      router.push(`/campaigns/${conversation.campaign_id}/pay`);
     }
     
     // RENDER LOGIC
@@ -197,7 +159,7 @@ const SystemCard = ({ message, onRespondToOffer }: any) => {
                         <CardTitle className="text-lg">Budget Proposal</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center">
-                        <p className="text-muted-foreground mb-2">The brand proposed a new budget of</p>
+                        <p className="text-muted-foreground mb-2">{message.content.includes("The Brand proposed") ? "The brand proposed a new budget of" : "Creator's opening bid"}</p>
                         <p className="text-2xl font-bold">{message.metadata.offer_amount} MAD</p>
 
                         {status === 'PENDING' && isCreator && (
@@ -346,7 +308,7 @@ export default function SingleChatPage() {
 
     const isLoading = isUserLoading || isConversationLoading || areMessagesLoading;
 
-    if (isLoading || !user) {
+    if (isLoading) {
         return (
             <div className="h-screen w-full flex flex-col">
                 <AppHeader />
@@ -378,6 +340,10 @@ export default function SingleChatPage() {
             </div>
         )
     }
+
+     if (!user) {
+         return <Skeleton className="h-screen w-full" />;
+     }
 
      const isParticipant = user.uid === conversation.brand_id || user.uid === conversation.creator_id;
      if(!isParticipant) {
@@ -436,7 +402,7 @@ export default function SingleChatPage() {
         const updates = [];
         
         if (response === 'ACCEPTED') {
-            updates.push(updateDoc(convRef, { agreed_budget: message.metadata.offer_amount }));
+            updates.push(updateDoc(convRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED' }));
             toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
         } else {
             toast({ title: 'Offer Rejected' });
