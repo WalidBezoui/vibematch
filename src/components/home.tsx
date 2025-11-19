@@ -18,7 +18,6 @@ import { cn } from '@/lib/utils';
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
   const Icon = (lucideIcons as any)[name];
   if (!Icon) {
-    // Fallback or return null if icon not found
     return <lucideIcons.Sparkles className={className} />;
   }
   return <Icon className={className} />;
@@ -38,7 +37,6 @@ export function HomeComponent() {
 
   useEffect(() => {
     if (brandCtas && brandCtas.length > 0) {
-      // This runs only on the client, after hydration, to avoid mismatch
       const randomIndex = Math.floor(Math.random() * brandCtas.length);
       setBrandCta(brandCtas[randomIndex]);
     }
@@ -47,6 +45,15 @@ export function HomeComponent() {
       setCreatorCta(creatorCtas[randomIndex]);
     }
   }, [brandCtas, creatorCtas]);
+
+  const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const elementId = href.substring(1);
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   const fakeEngagementImg = getImage('fake-engagement');
   const guaranteedPaymentsImg = getImage('guaranteed-payments');
@@ -70,7 +77,7 @@ export function HomeComponent() {
               className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
               onClick={() => setUserInterest('brand')}
             >
-              <Link href="/#brands">{t('homePage.hero.brandsButton')}</Link>
+              <Link href="/#brands" onClick={(e) => handleScrollToSection(e, '/#brands')}>{t('homePage.hero.brandsButton')}</Link>
             </Button>
             <Button
               asChild
@@ -79,12 +86,12 @@ export function HomeComponent() {
               className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
               onClick={() => setUserInterest('creator')}
             >
-              <Link href="/#creators">{t('homePage.hero.creatorsButton')}</Link>
+              <Link href="/#creators" onClick={(e) => handleScrollToSection(e, '/#creators')}>{t('homePage.hero.creatorsButton')}</Link>
             </Button>
           </div>
         </div>
       </div>
-      <div className="py-24 md:py-32 scroll-mt-32" id="brands">
+      <div className="py-24 md:py-32" id="brands">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
           <div className="flex flex-col gap-6">
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
@@ -97,12 +104,12 @@ export function HomeComponent() {
               {t('homePage.brands.description')}
             </p>
             <div className="mt-4 flex flex-col items-start gap-4">
-               {brandCta && (
+               {brandCta ? (
                  <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
                     <DynamicIcon name={brandCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
                     <p>{brandCta.text}</p>
                  </div>
-               )}
+               ) : <div className="h-[20px]" /> }
               <Button
                 asChild
                 className="w-full md:w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
@@ -126,7 +133,7 @@ export function HomeComponent() {
         </div>
       </div>
       <div
-        className="py-24 md:py-32 scroll-mt-32 bg-muted/50 rounded-3xl"
+        className="py-24 md:py-32 bg-muted/50 rounded-3xl"
         id="creators"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
@@ -152,12 +159,12 @@ export function HomeComponent() {
               {t('homePage.creators.description')}
             </p>
             <div className="mt-4 flex flex-col items-start gap-4">
-              {creatorCta && (
+              {creatorCta ? (
                   <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
                     <DynamicIcon name={creatorCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
                     <p>{creatorCta.text}</p>
                   </div>
-              )}
+              ) : <div className="h-[20px]" />}
               <Button
                 asChild
                 className="w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
@@ -290,7 +297,7 @@ export function HomeComponent() {
             ))}
         </div>
       </div>
-      <div className="py-24 md:py-32 scroll-mt-20" id="faq">
+      <div className="py-24 md:py-32" id="faq">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter">
             {t('homePage.faq.title1')}{' '}

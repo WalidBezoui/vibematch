@@ -15,6 +15,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 type NavLinkItem = {
   href: string;
   label: string;
+  isSection?: boolean;
   interest?: 'brand' | 'creator';
   icon: React.ComponentType<{ className?: string }>;
 };
@@ -42,6 +43,15 @@ const LanguageSwitcher = ({className}: {className?: string}) => {
     );
 };
 
+const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const elementId = href.substring(1);
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+};
+
 const DesktopNav = ({ navLinks, onLinkClick, isLoading }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, isLoading: boolean }) => {
     const pathname = usePathname();
 
@@ -58,12 +68,15 @@ const DesktopNav = ({ navLinks, onLinkClick, isLoading }: { navLinks: NavLinkIte
     return (
         <nav className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
             {navLinks.map((link) => {
-                 const isActive = pathname === link.href;
+                 const isActive = pathname === link.href && !link.isSection;
                  return (
                     <Link
                         key={link.href}
                         href={link.href}
-                        onClick={() => onLinkClick(link.interest)}
+                        onClick={(e) => {
+                            onLinkClick(link.interest);
+                            if (link.isSection) handleScrollToSection(e, link.href);
+                        }}
                         className={cn(
                             "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
                             isActive ? "bg-background text-primary shadow-sm" : "text-foreground/60 hover:text-foreground/80"
@@ -85,8 +98,11 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading
 
     if (!isOpen) return null;
 
-    const handleLinkClick = (interest?: 'brand' | 'creator') => {
-        onLinkClick(interest);
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLinkItem) => {
+        onLinkClick(link.interest);
+        if (link.isSection) {
+            handleScrollToSection(e, link.href);
+        }
         onClose();
     }
     
@@ -109,12 +125,12 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading
                         <Skeleton className="h-16 w-full rounded-lg" />
                      </>
                  ) : navLinks.map((link) => {
-                    const isActive = pathname === link.href;
+                    const isActive = pathname === link.href && !link.isSection;
                     return (
                         <Link
                             key={link.href}
                             href={link.href}
-                            onClick={() => handleLinkClick(link.interest)}
+                            onClick={(e) => handleLinkClick(e, link)}
                             className={cn(
                                 "flex items-center gap-4 rounded-lg p-4 text-xl font-semibold transition-colors duration-300",
                                 isActive ? "bg-muted text-primary" : "text-foreground/80 hover:bg-muted"
@@ -196,11 +212,11 @@ export function AppHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, isUserLoading } = useUser();
   const { userProfile, isLoading: isProfileLoading } = useUserProfile();
+  const pathname = usePathname();
 
   const isNavLoading = isUserLoading || (user && isProfileLoading);
 
   useEffect(() => {
-    // Prevent body scroll when mobile menu is open
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
     return () => {
         document.body.style.overflow = '';
@@ -216,9 +232,11 @@ export function AppHeader() {
   };
 
   const navLinks: NavLinkItem[] = useMemo(() => {
+    const isHomePage = pathname === '/';
+    
     const loggedOutLinks: NavLinkItem[] = [
-        { href: "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Building },
-        { href: "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users },
+        { href: "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Building, isSection: isHomePage },
+        { href: "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users, isSection: isHomePage },
         { href: "/faq", label: t('header.faq'), icon: HelpCircle },
         { href: "/contact", label: t('header.support'), icon: MessageSquare },
     ];
@@ -256,10 +274,9 @@ export function AppHeader() {
 
     }
 
-    // Logged-out users
     return loggedOutLinks;
 
-  }, [t, user, userProfile, isNavLoading]);
+  }, [t, user, userProfile, isNavLoading, pathname]);
 
   const handleNavLinkClick = (interest?: 'brand' | 'creator') => {
     if (interest) {
