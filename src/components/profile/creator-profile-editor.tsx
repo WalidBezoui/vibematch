@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -13,9 +13,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Upload, User, MapPin, Badge as BadgeIcon, Edit } from 'lucide-react';
+import { Upload, User, MapPin, Edit } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
 
 const creatorProfileSchema = z.object({
   displayName: z.string().min(2, 'Display name is required.'),
@@ -23,7 +24,7 @@ const creatorProfileSchema = z.object({
   location: z.string().min(2, 'Location is required.'),
   bio: z.string().max(500, 'Bio must be 500 characters or less.').optional(),
   tags: z.array(z.string()).optional(),
-  headshotUrl: z.string().url().optional(),
+  photoURL: z.string().url().optional(),
 });
 
 type CreatorProfileFormValues = z.infer<typeof creatorProfileSchema>;
@@ -56,23 +57,39 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   const form = useForm<CreatorProfileFormValues>({
     resolver: zodResolver(creatorProfileSchema),
     defaultValues: {
-      displayName: profile.displayName || profile.name.split(' ')[0] || '',
+      displayName: profile.displayName || profile.name?.split(' ')[0] || '',
       jobTitle: profile.jobTitle || '',
       location: profile.location || '',
       bio: profile.bio || '',
       tags: profile.tags || [],
-      headshotUrl: profile.photoURL || '',
+      photoURL: profile.photoURL || '',
     },
   });
+
+  const profileCompletion = useMemo(() => {
+    const fields = [
+        profile.photoURL,
+        profile.displayName,
+        profile.jobTitle,
+        profile.location,
+        profile.bio,
+        profile.tags?.length > 0
+        // In a real app, you'd also check for portfolio items
+    ];
+    const completedFields = fields.filter(Boolean).length;
+    const totalFields = fields.length;
+    return Math.round((completedFields / totalFields) * 100);
+  }, [profile]);
+  
   
   const handleCancel = () => {
     form.reset({
-      displayName: profile.displayName || profile.name.split(' ')[0] || '',
+      displayName: profile.displayName || profile.name?.split(' ')[0] || '',
       jobTitle: profile.jobTitle || '',
       location: profile.location || '',
       bio: profile.bio || '',
       tags: profile.tags || [],
-      headshotUrl: profile.photoURL || '',
+      photoURL: profile.photoURL || '',
     });
     setIsEditing(false);
   }
@@ -87,6 +104,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
         location: data.location,
         bio: data.bio,
         tags: data.tags,
+        photoURL: data.photoURL,
     };
 
     try {
@@ -104,99 +122,102 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
       });
     }
   };
+
+  const photoToDisplay = form.watch('photoURL') || profile.photoURL;
   
   if (!isEditing) {
       return (
-        <div className="grid md:grid-cols-3 gap-8 items-start">
-            <div className="md:col-span-1 space-y-6">
-                <Card>
-                    <CardHeader className="items-center text-center">
-                        <Avatar className="w-32 h-32 border-4">
-                            <AvatarImage src={profile.photoURL} alt={profile.displayName} />
-                            <AvatarFallback className="text-4xl bg-muted">
-                            {profile.displayName?.[0]?.toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
-                        <CardTitle>{profile.displayName}</CardTitle>
-                        <CardDescription>{profile.jobTitle}</CardDescription>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
-                            <MapPin className="h-4 w-4" />
-                            <span>{profile.location}</span>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="text-center">
-                        <AdminBadgeDisplay badge={profile.adminBadge} />
-                    </CardContent>
-                </Card>
+        <div className="space-y-8">
+             <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                    <h2 className="text-lg font-medium">Profile Completion</h2>
+                    <span className="font-bold text-primary">{profileCompletion}%</span>
+                </div>
+                <Progress value={profileCompletion} />
             </div>
-            <div className="md:col-span-2 space-y-8">
-                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between">
-                        <div>
-                            <CardTitle>Public Profile</CardTitle>
-                            <CardDescription>This is how brands will see you.</CardDescription>
-                        </div>
-                        <Button variant="outline" onClick={() => setIsEditing(true)}>
-                            <Edit className="mr-2 h-4 w-4" /> Edit Profile
-                        </Button>
-                    </CardHeader>
-                    <CardContent className="space-y-6 pt-6">
-                        <div className="space-y-1">
-                            <h4 className="text-sm font-medium text-muted-foreground">Bio</h4>
-                            <p className="text-foreground/90 whitespace-pre-wrap">{profile.bio || 'No bio provided.'}</p>
-                        </div>
-                         {profile.tags && profile.tags.length > 0 && (
-                            <div className="space-y-2">
-                                <h4 className="text-sm font-medium text-muted-foreground">Tags</h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {profile.tags.map((tag: string) => (
-                                        <Badge key={tag} variant="secondary">{tag}</Badge>
-                                    ))}
-                                </div>
+            <div className="grid md:grid-cols-3 gap-8 items-start">
+                <div className="md:col-span-1 space-y-6">
+                    <Card>
+                        <CardHeader className="items-center text-center">
+                            <div className="relative group">
+                                <Avatar className="w-32 h-32 border-4">
+                                    <AvatarImage src={profile.photoURL} alt={profile.displayName} />
+                                    <AvatarFallback className="text-4xl bg-muted">
+                                    {profile.displayName?.[0]?.toUpperCase()}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <Button variant="outline" size="icon" className="absolute -bottom-2 -right-2 h-10 w-10 rounded-full bg-background/50 backdrop-blur group-hover:bg-background transition-colors shadow-md opacity-0 group-hover:opacity-100">
+                                    <Upload className="h-5 w-5" />
+                                    <span className="sr-only">Change Photo</span>
+                                </Button>
                             </div>
-                        )}
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>My Portfolio</CardTitle>
-                        <CardDescription>Showcase your best work.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-center py-10 border-2 border-dashed rounded-lg">
-                            <p className="text-muted-foreground">Your portfolio is empty.</p>
-                            <Button variant="outline" className="mt-4">
-                                + Add a Project
+                            <CardTitle>{profile.displayName}</CardTitle>
+                            <CardDescription>{profile.jobTitle}</CardDescription>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
+                                <MapPin className="h-4 w-4" />
+                                <span>{profile.location}</span>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="text-center">
+                            <AdminBadgeDisplay badge={profile.adminBadge} />
+                        </CardContent>
+                    </Card>
+                </div>
+                <div className="md:col-span-2 space-y-8">
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle>Public Profile</CardTitle>
+                                <CardDescription>This is how brands will see you.</CardDescription>
+                            </div>
+                            <Button variant="outline" onClick={() => setIsEditing(true)}>
+                                <Edit className="mr-2 h-4 w-4" /> Edit Profile
                             </Button>
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardHeader>
+                        <CardContent className="space-y-6 pt-6">
+                            <div className="space-y-1">
+                                <h4 className="text-sm font-medium text-muted-foreground">Bio</h4>
+                                <p className="text-foreground/90 whitespace-pre-wrap">{profile.bio || 'No bio provided.'}</p>
+                            </div>
+                            {profile.tags && profile.tags.length > 0 && (
+                                <div className="space-y-2">
+                                    <h4 className="text-sm font-medium text-muted-foreground">Tags</h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {profile.tags.map((tag: string) => (
+                                            <Badge key={tag} variant="secondary">{tag}</Badge>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>My Portfolio</CardTitle>
+                            <CardDescription>Showcase your best work.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-center py-10 border-2 border-dashed rounded-lg">
+                                <p className="text-muted-foreground">Your portfolio is empty.</p>
+                                <Button variant="outline" className="mt-4">
+                                    + Add a Project
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         </div>
       )
   }
 
+  // EDITING MODE
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
          <div className="grid md:grid-cols-3 gap-8 items-start">
             <div className="md:col-span-1 space-y-6">
-                <Card>
-                    <CardHeader className="items-center text-center">
-                        <div className="relative group w-32 h-32">
-                            <Avatar className="w-full h-full border-4">
-                                <AvatarImage src={form.watch('headshotUrl')} alt={profile.displayName} />
-                                <AvatarFallback className="text-4xl bg-muted">
-                                {profile.displayName?.[0]?.toUpperCase()}
-                                </AvatarFallback>
-                            </Avatar>
-                            <Button variant="outline" size="icon" className="absolute -bottom-2 -right-2 h-10 w-10 rounded-full bg-background/80 backdrop-blur group-hover:bg-background transition-colors shadow-md">
-                                <Upload className="h-5 w-5" />
-                                <span className="sr-only">Change Photo</span>
-                            </Button>
-                        </div>
-                    </CardHeader>
-                </Card>
+                 <h2 className="text-xl font-semibold">Editing Profile</h2>
             </div>
             <div className="md:col-span-2 space-y-8">
                 <Card>

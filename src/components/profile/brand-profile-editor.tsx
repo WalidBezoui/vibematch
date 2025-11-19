@@ -38,9 +38,21 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
       website: profile.website || '',
       industry: profile.industry || '',
       description: profile.description || '',
-      logoUrl: profile.logoUrl || '',
+      logoUrl: profile.logoUrl || profile.photoURL || '',
     },
   });
+  
+  // Re-sync form default values if the profile prop changes
+  useState(() => {
+    form.reset({
+      companyName: profile.companyName || profile.name || '',
+      website: profile.website || '',
+      industry: profile.industry || '',
+      description: profile.description || '',
+      logoUrl: profile.logoUrl || profile.photoURL || '',
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile]);
 
   const onSubmit = async (data: BrandProfileFormValues) => {
     if (!user || !firestore) return;
@@ -71,9 +83,12 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
   };
   
   const handleCancel = () => {
-      form.reset(); // Reset form to original values
+      form.reset(); // Reset form to original values from `defaultValues`
       setIsEditing(false);
   }
+
+  const logoToDisplay = form.watch('logoUrl') || profile.logoUrl || profile.photoURL;
+
 
   if (!isEditing) {
     return (
@@ -81,17 +96,21 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
         <div className="md:col-span-1 space-y-6">
             <Card className="overflow-hidden">
                 <CardHeader className="items-center text-center p-0">
-                    <div className="relative group w-full aspect-[4/3] bg-muted">
+                    <div className="relative group w-full aspect-square bg-muted">
                         <Avatar className="w-full h-full rounded-none">
-                            <AvatarImage src={profile.logoUrl} alt={profile.companyName} className="object-cover" />
+                            <AvatarImage src={logoToDisplay} alt={profile.companyName} className="object-cover" />
                             <AvatarFallback className="text-6xl bg-muted rounded-none">
                                 <Building />
                             </AvatarFallback>
                         </Avatar>
+                        <Button variant="outline" size="icon" className="absolute bottom-4 right-4 h-10 w-10 rounded-full bg-background/50 backdrop-blur group-hover:bg-background transition-colors shadow-md opacity-0 group-hover:opacity-100">
+                            <Upload className="h-5 w-5" />
+                            <span className="sr-only">Change logo</span>
+                        </Button>
                     </div>
                      <div className="p-6 w-full">
                         <CardTitle>{profile.companyName || profile.name}</CardTitle>
-                        <CardDescription>{profile.industry}</CardDescription>
+                        <CardDescription>{profile.industry || 'Industry not set'}</CardDescription>
                     </div>
                 </CardHeader>
                 {!profile.isPaymentVerified && (
@@ -138,32 +157,18 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
     );
   }
 
+  // EDITING MODE
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid md:grid-cols-3 gap-8 items-start">
           <div className="md:col-span-1 space-y-6">
-            <Card>
-              <CardHeader className="items-center text-center">
-                <div className="relative group w-32 h-32">
-                    <Avatar className="w-full h-full border-4">
-                        <AvatarImage src={form.watch('logoUrl')} alt={profile.companyName} />
-                        <AvatarFallback className="text-4xl bg-muted">
-                            <Building />
-                        </AvatarFallback>
-                    </Avatar>
-                    <Button variant="outline" size="icon" className="absolute -bottom-2 -right-2 h-10 w-10 rounded-full bg-background/80 backdrop-blur group-hover:bg-background transition-colors shadow-md">
-                        <Upload className="h-5 w-5" />
-                        <span className="sr-only">Change logo</span>
-                    </Button>
-                </div>
-              </CardHeader>
-            </Card>
+              <h2 className="text-xl font-semibold">Editing Profile</h2>
           </div>
           <div className="md:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Edit Company Profile</CardTitle>
+                  <CardTitle>Company Profile</CardTitle>
                   <CardDescription>Set your company's details here.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -226,7 +231,7 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
                       />
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4 flex justify-end gap-2">
-                   <Button variant="ghost" onClick={handleCancel}>Cancel</Button>
+                   <Button variant="ghost" type="button" onClick={handleCancel}>Cancel</Button>
                    <Button type="submit" disabled={form.formState.isSubmitting}>
                       {form.formState.isSubmitting ? 'Saving...' : 'Save Changes'}
                   </Button>
