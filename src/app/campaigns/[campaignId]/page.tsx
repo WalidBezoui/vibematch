@@ -10,15 +10,16 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Send, CheckCircle } from 'lucide-react';
+import { Check, Send, CheckCircle, Hand, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useState, useEffect } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
     PENDING_SELECTION: 'bg-yellow-100 text-yellow-800',
-    PENDING_CREATOR_ACCEPTANCE: 'bg-yellow-100 text-yellow-800',
+    PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800',
     PENDING_PAYMENT: 'bg-blue-100 text-blue-800',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800',
     DELIVERED: 'bg-purple-100 text-purple-800',
@@ -42,6 +43,60 @@ const CampaignDetailSkeleton = () => (
     </Card>
 )
 
+const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: any, campaignRef: any, brandProfile: any }) => {
+    const { toast } = useToast();
+
+    const handleAccept = async () => {
+        try {
+            await updateDoc(campaignRef, { 
+                status: 'PENDING_PAYMENT', 
+                updatedAt: serverTimestamp() 
+            });
+            toast({ title: 'Offer Accepted!', description: 'The brand has been notified to proceed with payment.'});
+        } catch (e: any) {
+            toast({ variant: 'destructive', title: 'Action Failed', description: e.message });
+        }
+    };
+    
+    const handleDecline = async () => {
+        try {
+            await updateDoc(campaignRef, { 
+                status: 'REJECTED_BY_CREATOR', 
+                updatedAt: serverTimestamp() 
+            });
+            toast({ title: 'Offer Declined', description: 'The brand has been notified.'});
+        } catch (e: any) {
+             toast({ variant: 'destructive', title: 'Action Failed', description: e.message });
+        }
+    };
+
+    return (
+        <Card className="bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-blue-900/30 dark:via-background dark:to-blue-900/30 border-blue-200 dark:border-blue-800 shadow-lg shadow-blue-500/10">
+            <CardHeader className="text-center items-center">
+                <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-black mb-4 shadow-lg shadow-primary/30">
+                    <Sparkles className="h-8 w-8" />
+                </div>
+                <CardTitle className="text-3xl font-bold tracking-tight">You've Been Invited!</CardTitle>
+                <CardDescription className="max-w-md mx-auto text-lg">
+                    <span className="font-semibold">{brandProfile?.name || 'A brand'}</span> has selected you for the campaign "{campaign.title}".
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center space-y-6">
+                <div>
+                    <p className="text-sm uppercase font-semibold text-muted-foreground">Proposed Budget</p>
+                    <p className="text-4xl font-bold gradient-text">{campaign.budget} DH</p>
+                </div>
+                <div className="flex justify-center gap-4">
+                    <Button onClick={handleAccept} size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+                        <Check className="mr-2 h-5 w-5" /> Accept Offer
+                    </Button>
+                    <Button onClick={handleDecline} size="lg" variant="ghost">Decline</Button>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
 const CreatorWorkspace = ({ campaign, campaignRef }: { campaign: any, campaignRef: any }) => {
     const { toast } = useToast();
 
@@ -58,25 +113,6 @@ const CreatorWorkspace = ({ campaign, campaignRef }: { campaign: any, campaignRe
         } catch (e: any) {
              toast({ variant: 'destructive', title: "Submission failed", description: e.message });
         }
-    }
-
-    if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
-        return (
-             <Card>
-                <CardHeader>
-                    <CardTitle>You've Been Selected!</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                     <p className="mb-4">The brand has chosen you for this campaign. Please accept the offer to proceed.</p>
-                     <Button onClick={async () => {
-                         await updateDoc(campaignRef, { status: 'PENDING_PAYMENT', updatedAt: serverTimestamp() });
-                     }}>Accept Campaign Offer</Button>
-                     <Button variant="ghost" className="ml-2" onClick={async () => {
-                         await updateDoc(campaignRef, { status: 'REJECTED_BY_CREATOR', updatedAt: serverTimestamp() });
-                     }}>Decline</Button>
-                </CardContent>
-            </Card>
-        )
     }
 
     return (
@@ -178,6 +214,12 @@ export default function CampaignPage() {
     );
     const { data: campaign, isLoading: isCampaignLoading, error } = useDoc(campaignRef);
 
+    const brandRef = useMemoFirebase(
+        () => (firestore && campaign?.brandId) ? doc(firestore, 'users', campaign.brandId) : null,
+        [firestore, campaign]
+    );
+    const { data: brandProfile, isLoading: isBrandLoading } = useDoc(brandRef);
+
     useEffect(() => {
         if (user && firestore && campaignId) {
             const checkApplication = async () => {
@@ -190,7 +232,7 @@ export default function CampaignPage() {
         }
     }, [user, firestore, campaignId]);
 
-    const isLoading = isUserLoading || isCampaignLoading || isAlreadyApplied === null;
+    const isLoading = isUserLoading || isCampaignLoading || isAlreadyApplied === null || isBrandLoading;
 
     if (isLoading) {
         return (
@@ -216,10 +258,10 @@ export default function CampaignPage() {
         )
     }
 
-    const isBrand = user?.uid === campaign.brandId;
-    const isCreator = user?.uid === campaign.creatorId;
-    const isPotentialApplicant = userProfile?.role === 'creator' && !isBrand && !isCreator;
-    const canView = isBrand || isCreator || campaign.status === 'OPEN_FOR_APPLICATIONS';
+    const isBrandOwner = user?.uid === campaign.brandId;
+    const isSelectedCreator = campaign.creatorIds?.includes(user?.uid);
+    const isPotentialApplicant = userProfile?.role === 'creator' && !isBrandOwner && !isSelectedCreator;
+    const canView = isBrandOwner || isSelectedCreator || campaign.status === 'OPEN_FOR_APPLICATIONS';
 
     if(!canView) {
          return (
@@ -234,23 +276,32 @@ export default function CampaignPage() {
         )
     }
 
+    const showInvitation = isSelectedCreator && campaign.status === 'PENDING_CREATOR_ACCEPTANCE';
+
 
     return (
         <>
             <AppHeader />
             <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="grid gap-8">
+                    {showInvitation && <CreatorInvitation campaign={campaign} campaignRef={campaignRef} brandProfile={brandProfile} />}
                     <Card>
                         <CardHeader>
                             <div className="flex justify-between items-start">
-                                <CardTitle className="text-3xl">{campaign.title}</CardTitle>
+                                <div>
+                                    <CardTitle className="text-3xl">{campaign.title}</CardTitle>
+                                    <div className="flex items-center gap-2 mt-2">
+                                        <Avatar className="h-6 w-6">
+                                            <AvatarImage src={brandProfile?.photoURL || brandProfile?.logoUrl} alt={brandProfile?.name} />
+                                            <AvatarFallback>{brandProfile?.name?.[0]}</AvatarFallback>
+                                        </Avatar>
+                                        <span className="text-sm text-muted-foreground">Posted by {brandProfile?.name}</span>
+                                    </div>
+                                </div>
                                 <Badge className={cn('whitespace-nowrap', statusStyles[campaign.status])}>
                                     {campaign.status.replace(/_/g, ' ')}
                                 </Badge>
                             </div>
-                            <CardDescription className="text-lg">
-                                Collaboration Campaign
-                            </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div>
@@ -291,8 +342,8 @@ export default function CampaignPage() {
                         )}
                     </Card>
 
-                    {isBrand && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} campaignRef={campaignRef} />}
-                    {isCreator && <CreatorWorkspace campaign={campaign} campaignRef={campaignRef} />}
+                    {isBrandOwner && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} campaignRef={campaignRef} />}
+                    {isSelectedCreator && <CreatorWorkspace campaign={campaign} campaignRef={campaignRef} />}
                 </div>
             </main>
         </>
