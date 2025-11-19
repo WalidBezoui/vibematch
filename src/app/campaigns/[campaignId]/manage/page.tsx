@@ -107,7 +107,7 @@ export default function ManageApplicationsPage() {
     }, [applications, firestore]);
 
     const handleShortlist = async (applicant: Applicant) => {
-        if (!firestore) return;
+        if (!firestore || !user) return;
         toast({ title: 'Opening discussion...' });
         
         try {
@@ -133,9 +133,9 @@ export default function ManageApplicationsPage() {
             const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
             batch.set(messageDocRef, {
                  conversation_id: conversationDocRef.id,
-                 sender_id: applicant.creatorId,
+                 sender_id: user.uid,
                  type: 'TEXT',
-                 content: applicant.coverLetter,
+                 content: `Discussion opened for campaign: "${campaign?.title}". The creator's cover letter is: \n\n"${applicant.coverLetter}"`,
                  timestamp: serverTimestamp(),
             });
             
@@ -212,7 +212,7 @@ export default function ManageApplicationsPage() {
                                 <h2 className="text-2xl font-bold mb-4">New Applicants</h2>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     {newApplicants.map(applicant => {
-                                        const isBidHigher = applicant.bidAmount > campaign.budget;
+                                        const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
                                         return (
                                         <Card key={applicant.id} className="flex flex-col">
                                             {/* Card content */}
@@ -300,3 +300,5 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
+
+    
