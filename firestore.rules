@@ -78,8 +78,10 @@ service cloud.firestore {
     match /conversations/{conversationId} {
       // Allow creation if the user is either the creator or the brand in the new document.
       allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
-      // Only brand or creator involved can read/update the conversation status.
-      allow get, update, list: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
+      // Only brand or creator involved can read/list the conversation status.
+      allow get, list: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
+       // Allow participants to update the status or agreed budget
+      allow update: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
 
       match /messages/{messageId} {
         // Allow creation if sender is part of conversation
