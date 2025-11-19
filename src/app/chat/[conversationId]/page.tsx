@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -311,9 +312,9 @@ export default function SingleChatPage() {
     const { data: messages, isLoading: areMessagesLoading } = useCollection(messagesQuery);
 
     useEffect(() => {
-        if (!isUserLoading && !user) {
-            router.push('/login');
-        }
+      if (!isUserLoading && !user) {
+        router.push('/login');
+      }
     }, [isUserLoading, user, router]);
 
     const isLoading = isUserLoading || isConversationLoading || areMessagesLoading;
@@ -351,11 +352,14 @@ export default function SingleChatPage() {
         )
     }
 
-     if (!user) {
-        return <Skeleton className="h-screen w-full" />;
-     }
+     useEffect(() => {
+        if (!isUserLoading && !user) {
+            router.push('/login');
+        }
+    }, [isUserLoading, user, router]);
 
-     const isParticipant = user.uid === conversation.brand_id || user.uid === conversation.creator_id;
+
+     const isParticipant = user && (user.uid === conversation.brand_id || user.uid === conversation.creator_id);
      if(!isParticipant) {
          return (
               <div className="h-screen w-full flex flex-col">
