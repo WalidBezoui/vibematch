@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
@@ -9,44 +10,54 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, ShieldCheck, Award, CalendarDays, BarChartBig } from 'lucide-react';
+import { MapPin, Briefcase, Award, CalendarDays, Info } from 'lucide-react';
 import { useCollection } from '@/firebase/firestore/use-collection';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const TrustScoreGauge = ({ score }: { score: number }) => {
   const circumference = 2 * Math.PI * 45; // 2 * pi * radius
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="relative w-32 h-32">
-      <svg className="w-full h-full" viewBox="0 0 100 100">
-        <circle
-          className="text-muted/50"
-          strokeWidth="10"
-          stroke="currentColor"
-          fill="transparent"
-          r="45"
-          cx="50"
-          cy="50"
-        />
-        <circle
-          className="text-primary"
-          strokeWidth="10"
-          strokeDasharray={circumference}
-          strokeDashoffset={strokeDashoffset}
-          strokeLinecap="round"
-          stroke="currentColor"
-          fill="transparent"
-          r="45"
-          cx="50"
-          cy="50"
-          transform="rotate(-90 50 50)"
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-2xl font-bold text-foreground">{score}</span>
-        <span className="text-xs text-muted-foreground">Trust Score</span>
-      </div>
-    </div>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+            <div className="relative w-32 h-32 cursor-help">
+              <svg className="w-full h-full" viewBox="0 0 100 100">
+                <circle
+                  className="text-muted/50"
+                  strokeWidth="10"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r="45"
+                  cx="50"
+                  cy="50"
+                />
+                <circle
+                  className="text-primary"
+                  strokeWidth="10"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r="45"
+                  cx="50"
+                  cy="50"
+                  transform="rotate(-90 50 50)"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-2xl font-bold text-foreground">{score}</span>
+                <span className="text-xs text-muted-foreground">Trust Score</span>
+              </div>
+            </div>
+        </TooltipTrigger>
+        <TooltipContent>
+            <p className="max-w-xs text-center">The Trust Score reflects the creator's reliability, authenticity, and professionalism based on their platform activity and profile verification.</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
