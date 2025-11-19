@@ -43,7 +43,7 @@ const LanguageSwitcher = ({className}: {className?: string}) => {
     );
 };
 
-const DesktopNav = ({ navLinks, onLinkClick, handleScroll, isLoading }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, handleScroll: (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => void, isLoading: boolean }) => {
+const DesktopNav = ({ navLinks, onLinkClick, isLoading }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, isLoading: boolean }) => {
     const pathname = usePathname();
 
     if (isLoading) {
@@ -65,10 +65,15 @@ const DesktopNav = ({ navLinks, onLinkClick, handleScroll, isLoading }: { navLin
                         key={link.href}
                         href={link.href}
                         onClick={(e) => {
-                          onLinkClick(link.interest);
-                          if (link.isSection) {
-                            handleScroll(e, link.href.substring(1));
-                          }
+                            if(link.href.startsWith('/#')) {
+                                e.preventDefault();
+                                const targetId = link.href.substring(2);
+                                const targetElement = document.getElementById(targetId);
+                                if (targetElement) {
+                                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                                }
+                            }
+                            onLinkClick(link.interest);
                         }}
                         className={cn(
                             "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
@@ -84,7 +89,7 @@ const DesktopNav = ({ navLinks, onLinkClick, handleScroll, isLoading }: { navLin
     )
 }
 
-const MobileNav = ({ isOpen, navLinks, onLinkClick, handleScroll, onClose, onLogout, isLoading }: { isOpen: boolean, navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, handleScroll: (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => void, onClose: () => void, onLogout: () => void, isLoading: boolean }) => {
+const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading }: { isOpen: boolean, navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, onClose: () => void, onLogout: () => void, isLoading: boolean }) => {
     const { user, isUserLoading } = useUser();
     const { t } = useLanguage();
     const pathname = usePathname();
@@ -92,10 +97,15 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, handleScroll, onClose, onLog
     if (!isOpen) return null;
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLinkItem) => {
-        onLinkClick(link.interest);
-        if (link.isSection) {
-          handleScroll(e, link.href.substring(1));
+        if(link.href.startsWith('/#')) {
+            e.preventDefault();
+            const targetId = link.href.substring(2);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
         }
+        onLinkClick(link.interest);
         onClose();
     }
     
@@ -207,7 +217,7 @@ export function AppHeader() {
   const { userProfile, isLoading: isProfileLoading } = useUserProfile();
   const pathname = usePathname();
 
-  const isNavLoading = isUserLoading || (user && isProfileLoading);
+  const isLoading = isUserLoading || (user && isProfileLoading);
 
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
@@ -215,37 +225,6 @@ export function AppHeader() {
         document.body.style.overflow = '';
     }
   }, [isMobileMenuOpen]);
-
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault();
-    
-    const navigateAndScroll = () => {
-      setTimeout(() => {
-        const targetElement = document.getElementById(targetId);
-        const headerElement = document.querySelector('header');
-        
-        if (targetElement && headerElement) {
-            const headerHeight = headerElement.offsetHeight;
-            const offset = 120; // A fixed pixel value for a predictable offset
-            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - offset;
-    
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth',
-            });
-        }
-      }, 0);
-    };
-
-    if (pathname !== '/') {
-        router.push(`/#${targetId}`);
-        // We need a delay to allow the new page to render before we can find the element
-        setTimeout(navigateAndScroll, 100);
-    } else {
-        navigateAndScroll();
-    }
-  };
-
 
   const handleLogout = async () => {
     const auth = getAuth();
@@ -258,13 +237,13 @@ export function AppHeader() {
     const isHomePage = pathname === '/';
     
     const loggedOutLinks: NavLinkItem[] = [
-        { href: "#brands", label: t('header.forBrands'), interest: 'brand', icon: Building, isSection: isHomePage },
-        { href: "#creators", label: t('header.forCreators'), interest: 'creator', icon: Users, isSection: isHomePage },
+        { href: "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Building, isSection: isHomePage },
+        { href: "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users, isSection: isHomePage },
         { href: "/faq", label: t('header.faq'), icon: HelpCircle },
         { href: "/contact", label: t('header.support'), icon: MessageSquare },
     ];
 
-    if (isNavLoading) {
+    if (isLoading) {
       return [];
     }
 
@@ -299,7 +278,7 @@ export function AppHeader() {
 
     return loggedOutLinks;
 
-  }, [t, user, userProfile, isNavLoading, pathname]);
+  }, [t, user, userProfile, isLoading, pathname]);
 
   const handleNavLinkClick = (interest?: 'brand' | 'creator') => {
     if (interest) {
@@ -317,7 +296,7 @@ export function AppHeader() {
             VibeMatch
         </Link>
 
-        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} handleScroll={handleScroll} isLoading={isNavLoading} />
+        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} isLoading={isLoading} />
 
         <div className="flex items-center gap-2">
             <LanguageSwitcher className="hidden sm:flex" />
@@ -340,10 +319,9 @@ export function AppHeader() {
             isOpen={isMobileMenuOpen}
             navLinks={navLinks}
             onLinkClick={handleNavLinkClick}
-            handleScroll={handleScroll}
             onClose={() => setIsMobileMenuOpen(false)}
             onLogout={handleLogout}
-            isLoading={isNavLoading}
+            isLoading={isLoading}
         />
     </>
   );
