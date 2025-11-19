@@ -231,7 +231,7 @@ export function AppHeader() {
     if (targetElement && headerElement) {
         const headerHeight = headerElement.offsetHeight;
         // Adjust the final position by subtracting a portion of the window height to center it more effectively.
-        const offset = window.innerHeight / 4; 
+        const offset = window.innerHeight / 3; 
         const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - offset;
 
         window.scrollTo({
