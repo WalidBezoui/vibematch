@@ -322,7 +322,7 @@ export default function SingleChatPage() {
     const { conversationId } = useParams();
     const router = useRouter();
     const firestore = useFirestore();
-    const { user } = useUser();
+    const { user, isUserLoading } = useUser();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
 
@@ -338,14 +338,15 @@ export default function SingleChatPage() {
     );
     const { data: messages, isLoading: areMessagesLoading } = useCollection(messagesQuery);
 
-    const isLoading = isConversationLoading || areMessagesLoading;
+    useEffect(() => {
+        if (!isUserLoading && !user) {
+            router.push('/login');
+        }
+    }, [isUserLoading, user, router]);
 
-    if (!user) {
-        router.push('/login');
-        return <Skeleton className="h-screen w-full" />;
-    }
+    const isLoading = isUserLoading || isConversationLoading || areMessagesLoading;
 
-    if (isLoading) {
+    if (isLoading || !user) {
         return (
             <div className="h-screen w-full flex flex-col">
                 <AppHeader />
