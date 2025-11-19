@@ -85,7 +85,7 @@ export function HomeComponent() {
           </div>
         </div>
       </div>
-      <div className="py-24 md:py-32 scroll-mt-32" id="brands">
+      <div className="py-24 md:py-32 scroll-mt-40" id="brands">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
           <div className="flex flex-col gap-6">
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
@@ -127,7 +127,7 @@ export function HomeComponent() {
         </div>
       </div>
       <div
-        className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-32"
+        className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-40"
         id="creators"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
