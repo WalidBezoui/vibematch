@@ -76,8 +76,8 @@ service cloud.firestore {
 
     // Smart Deal Chat Rules
     match /conversations/{conversationId} {
-      // Allow creation if the user is the creatorId in the new document.
-      allow create: if request.auth.uid == request.resource.data.creator_id;
+      // Allow creation if the user is either the creator or the brand in the new document.
+      allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
       // Only brand or creator involved can read/update the conversation status.
       allow get, update, list: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
 
