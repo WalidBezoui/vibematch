@@ -2,7 +2,7 @@
 
 import React, { DependencyList, createContext, useContext, ReactNode, useMemo, useState, useEffect } from 'react';
 import { FirebaseApp } from 'firebase/app';
-import { Firestore, doc, getDoc } from 'firebase/firestore';
+import { Firestore, doc, onSnapshot, Unsubscribe } from 'firebase/firestore';
 import { Auth, User, onAuthStateChanged } from 'firebase/auth';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
 
@@ -200,22 +200,24 @@ export const useUserProfile = (): UserProfileState => {
         return;
       }
   
-      const fetchProfile = async () => {
-        setProfileState({ userProfile: null, isLoading: true, error: null });
-        const userDocRef = doc(firestore, 'users', user.uid);
-        try {
-          const docSnap = await getDoc(userDocRef);
+      setProfileState(prevState => ({ ...prevState, isLoading: true }));
+      const userDocRef = doc(firestore, 'users', user.uid);
+      
+      const unsubscribe = onSnapshot(userDocRef, 
+        (docSnap) => {
           if (docSnap.exists()) {
             setProfileState({ userProfile: docSnap.data(), isLoading: false, error: null });
           } else {
             setProfileState({ userProfile: null, isLoading: false, error: new Error('User profile not found.') });
           }
-        } catch (error: any) {
+        },
+        (error: any) => {
           setProfileState({ userProfile: null, isLoading: false, error });
         }
-      };
+      );
   
-      fetchProfile();
+      return () => unsubscribe();
+
     }, [user, isUserLoading, firestore]);
   
     return profileState;
