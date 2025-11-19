@@ -4,7 +4,7 @@ service cloud.firestore {
     
     // Allow creators to query for their own applications across all campaigns.
     match /{path=**}/applications/{applicationId} {
-      allow list, delete: if request.query.where.creatorId == request.auth.uid || resource.data.creatorId == request.auth.uid;
+      allow list, delete: if request.auth != null && (request.query.creatorId == request.auth.uid || resource.data.creatorId == request.auth.uid);
     }
 
     match /users/{userId} {
@@ -69,6 +69,19 @@ service cloud.firestore {
     match /creator-applications/{applicationId} {
       allow create: if request.auth != null;
       allow read, update, delete: if false;
+    }
+
+    // Smart Deal Chat Rules
+    match /conversations/{conversationId} {
+      // Only brand or creator involved can read/update the conversation status.
+      allow get, update, list: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
+
+      match /messages/{messageId} {
+        // Only participants can read messages.
+        allow get, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid;
+        // Only participants can create messages.
+        allow create: if request.auth.uid == request.resource.data.sender_id && (get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid);
+      }
     }
   }
 }

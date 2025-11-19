@@ -23,7 +23,6 @@
         "allOf": [{ "$ref": "#/entities/UserProfile" }],
         "properties": {
             "displayName": { "type": "string", "description": "First name or public nickname."},
-            "jobTitle": { "type": "string", "description": "e.g., 'Photographer', 'Lifestyle Blogger'" },
             "location": { "type": "string" },
             "bio": { "type": "string", "maxLength": 500 },
             "tags": { "type": "array", "items": { "type": "string" } },
@@ -98,6 +97,45 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["campaignId", "creatorId", "brandId", "coverLetter", "status", "createdAt"]
+    },
+    "Conversation": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Conversation",
+        "type": "object",
+        "description": "A conversation thread related to a campaign application.",
+        "properties": {
+            "campaign_id": { "type": "string" },
+            "application_id": { "type": "string" },
+            "brand_id": { "type": "string" },
+            "creator_id": { "type": "string" },
+            "status": { "type": "string", "enum": ["NEGOTIATION", "ACTIVE", "REVIEW", "COMPLETED", "CANCELLED"] },
+            "agreed_budget": { "type": "number" },
+            "is_funded": { "type": "boolean" },
+            "lastMessage": { "type": "string" },
+            "updatedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["campaign_id", "application_id", "brand_id", "creator_id", "status", "is_funded"]
+    },
+    "Message": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Message",
+        "type": "object",
+        "description": "A single message within a conversation.",
+        "properties": {
+            "conversation_id": { "type": "string" },
+            "sender_id": { "type": "string" },
+            "type": { "type": "string", "enum": ["TEXT", "SYSTEM_OFFER", "SYSTEM_ESCROW", "SYSTEM_DELIVERY"] },
+            "content": { "type": "string" },
+            "metadata": {
+                "type": "object",
+                "properties": {
+                    "offer_amount": { "type": "number" },
+                    "offer_status": { "type": "string", "enum": ["PENDING", "ACCEPTED", "REJECTED"] }
+                }
+            },
+            "timestamp": { "type": "string", "format": "date-time" }
+        },
+        "required": ["conversation_id", "sender_id", "type", "timestamp"]
     }
   },
   "auth": {
@@ -151,6 +189,29 @@
               ]
             }
           }
+        ]
+      },
+      {
+        "path": "/conversations/{conversationId}",
+        "definition": {
+          "entityName": "Conversation",
+          "schema": { "$ref": "#/entities/Conversation" },
+          "description": "A conversation thread related to a campaign application.",
+          "params": [{ "name": "conversationId", "description": "The unique ID for the conversation." }]
+        },
+        "subcollections": [
+            {
+                "path": "/conversations/{conversationId}/messages/{messageId}",
+                "definition": {
+                    "entityName": "Message",
+                    "schema": { "$ref": "#/entities/Message" },
+                    "description": "A single message within a conversation.",
+                    "params": [
+                        { "name": "conversationId", "description": "The unique ID of the parent conversation."},
+                        { "name": "messageId", "description": "The unique ID for the message."}
+                    ]
+                }
+            }
         ]
       }
     ]
