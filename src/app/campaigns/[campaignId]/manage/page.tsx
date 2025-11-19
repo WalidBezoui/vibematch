@@ -248,9 +248,11 @@ export default function ManageApplicationsPage() {
                                             Reject
                                         </Button>
                                     </div>
-                                     <Button variant="ghost" className="w-full">
-                                        <User className="mr-2 h-4 w-4" />
-                                        View Profile
+                                     <Button asChild variant="ghost" className="w-full">
+                                        <Link href={`/creators/${applicant.creatorId}`}>
+                                            <User className="mr-2 h-4 w-4" />
+                                            View Profile
+                                        </Link>
                                     </Button>
                                 </CardFooter>
                             </Card>
@@ -269,5 +271,3 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
-
-    
