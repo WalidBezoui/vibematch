@@ -29,8 +29,10 @@ service cloud.firestore {
 
       // Creator Portfolio Subcollection
       match /portfolio/{projectId} {
+        // Any authenticated user can view a portfolio
+        allow read: if request.auth != null;
         // Only the creator who owns the profile can manage their portfolio
-        allow read, write, delete: if request.auth.uid == userId;
+        allow write, delete: if request.auth.uid == userId;
       }
     }
 
