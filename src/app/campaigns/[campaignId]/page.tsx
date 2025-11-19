@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
@@ -135,7 +136,7 @@ const CreatorWorkspace = ({ campaign, campaignRef }: { campaign: any, campaignRe
     )
 }
 
-const BrandWorkspace = ({ campaign, campaignId, campaignRef }: { campaign: any, campaignId: string, campaignRef: any }) => {
+const BrandWorkspace = ({ campaign, campaignId, campaignRef, hiredCreators }: { campaign: any, campaignId: string, campaignRef: any, hiredCreators: any[] }) => {
     const router = useRouter();
     const { toast } = useToast();
 
@@ -192,7 +193,20 @@ const BrandWorkspace = ({ campaign, campaignId, campaignRef }: { campaign: any, 
                      <p className="text-muted-foreground">This campaign is complete and payment has been released.</p>
                 )}
                  {campaign.status === 'PENDING_CREATOR_ACCEPTANCE' && (
-                     <p className="text-muted-foreground">Waiting for the selected creator to accept the campaign offer.</p>
+                     <div className="space-y-4">
+                        <p className="text-muted-foreground">Waiting for the selected creator(s) to accept the campaign offer.</p>
+                        <div className="flex flex-wrap gap-4">
+                            {hiredCreators.map(creator => (
+                                <div key={creator.uid} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border">
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarImage src={creator.photoURL} alt={creator.name} />
+                                        <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
+                                    </Avatar>
+                                    <span className="text-sm font-medium">{creator.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 )}
             </CardContent>
         </Card>
@@ -207,6 +221,7 @@ export default function CampaignPage() {
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
     const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | null>(null);
+    const [hiredCreators, setHiredCreators] = useState<any[]>([]);
 
     const campaignRef = useMemoFirebase(
         () => firestore ? doc(firestore, 'campaigns', campaignId as string) : null,
@@ -231,6 +246,26 @@ export default function CampaignPage() {
             checkApplication();
         }
     }, [user, firestore, campaignId]);
+    
+    useEffect(() => {
+        if (firestore && campaign?.creatorIds?.length > 0) {
+            const fetchCreators = async () => {
+                const creatorPromises = campaign.creatorIds.map(async (creatorId: string) => {
+                    const creatorRef = doc(firestore, 'users', creatorId);
+                    const creatorSnap = await getDocs(query(collection(firestore, 'users'), where('uid', '==', creatorId)));
+                     if (!creatorSnap.empty) {
+                        return creatorSnap.docs[0].data();
+                    }
+                    return null;
+                });
+
+                const creatorsData = (await Promise.all(creatorPromises)).filter(c => c !== null);
+                setHiredCreators(creatorsData);
+            };
+            fetchCreators();
+        }
+    }, [firestore, campaign]);
+
 
     const isLoading = isUserLoading || isCampaignLoading || isAlreadyApplied === null || isBrandLoading;
 
@@ -342,10 +377,11 @@ export default function CampaignPage() {
                         )}
                     </Card>
 
-                    {isBrandOwner && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} campaignRef={campaignRef} />}
+                    {isBrandOwner && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} campaignRef={campaignRef} hiredCreators={hiredCreators} />}
                     {isSelectedCreator && <CreatorWorkspace campaign={campaign} campaignRef={campaignRef} />}
                 </div>
             </main>
         </>
     );
 }
+
