@@ -77,9 +77,20 @@ const DealStatusHeader = ({ conversation, onOfferSent }: { conversation: any, on
     };
 
     const handleAcceptAndFund = async () => {
-      if (!firestore) return;
+      if (!firestore || !user) return;
+      
       const convRef = doc(firestore, 'conversations', conversationId as string);
       await updateDoc(convRef, { status: 'OFFER_ACCEPTED' });
+
+      const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
+      await addDoc(messagesRef, {
+          conversation_id: conversationId,
+          sender_id: user.uid,
+          type: 'SYSTEM_EVENT',
+          content: `Brand accepted the proposed budget of ${conversation.agreed_budget} MAD. Awaiting funding.`,
+          timestamp: serverTimestamp(),
+      });
+      
       toast({ title: 'Offer Accepted!', description: 'Proceed with funding to start the campaign.'});
     }
 
@@ -212,10 +223,18 @@ const SystemCard = ({ message, onRespondToOffer }: any) => {
         );
     }
     
-    if(message.type === 'SYSTEM_ESCROW') {
+    if(message.type === 'SYSTEM_ESCROW' || message.type === 'SYSTEM_EVENT') {
+        const eventIcons: { [key: string]: React.ElementType } = {
+          'accepted': CheckCircle,
+          'funded': Shield,
+        };
+        
+        const eventType = message.content.includes('accepted') ? 'accepted' : message.content.includes('funded') ? 'funded' : 'info';
+        const Icon = eventIcons[eventType] || Info;
+
         return (
             <div className="py-4 text-center text-sm text-muted-foreground flex justify-center items-center gap-2">
-                 <Shield className="h-4 w-4 text-green-500"/>
+                 <Icon className={cn("h-4 w-4", eventType === 'accepted' ? 'text-green-500' : 'text-blue-500')}/>
                  <p>{message.content}</p>
             </div>
         )
@@ -443,15 +462,23 @@ export default function SingleChatPage() {
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
-        if (!firestore) return;
+        if (!firestore || !user) return;
         
         const convRef = doc(firestore, 'conversations', conversationId as string);
         const msgRef = doc(firestore, 'conversations', conversationId as string, 'messages', message.id);
+        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
         
         const updates = [];
         
         if (response === 'ACCEPTED') {
             updates.push(updateDoc(convRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED' }));
+            updates.push(addDoc(messagesRef, {
+                conversation_id: conversationId,
+                sender_id: user.uid,
+                type: 'SYSTEM_EVENT',
+                content: `Creator accepted the offer of ${message.metadata.offer_amount} MAD. Awaiting funding.`,
+                timestamp: serverTimestamp(),
+            }));
             toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
         } else {
             toast({ title: 'Offer Rejected' });
