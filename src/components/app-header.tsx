@@ -219,25 +219,30 @@ export function AppHeader() {
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     
-    // If not on the homepage, navigate there first, then scroll.
+    const navigateAndScroll = () => {
+      setTimeout(() => {
+        const targetElement = document.getElementById(targetId);
+        const headerElement = document.querySelector('header');
+        
+        if (targetElement && headerElement) {
+            const headerHeight = headerElement.offsetHeight;
+            const offset = 120; // A fixed pixel value for a predictable offset
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - offset;
+    
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth',
+            });
+        }
+      }, 0);
+    };
+
     if (pathname !== '/') {
         router.push(`/#${targetId}`);
-        return;
-    }
-
-    const targetElement = document.getElementById(targetId);
-    const headerElement = document.querySelector('header');
-    
-    if (targetElement && headerElement) {
-        const headerHeight = headerElement.offsetHeight;
-        // Adjust the final position by subtracting a portion of the window height to center it more effectively.
-        const offset = window.innerHeight / 3; 
-        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - offset;
-
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth',
-        });
+        // We need a delay to allow the new page to render before we can find the element
+        setTimeout(navigateAndScroll, 100);
+    } else {
+        navigateAndScroll();
     }
   };
 
