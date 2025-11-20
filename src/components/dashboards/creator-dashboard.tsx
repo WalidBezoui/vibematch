@@ -1,14 +1,14 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
+import { useCollection, useUser, useFirestore, useMemoFirebase, useUserProfile } from '@/firebase';
 import Link from 'next/link';
 import { collection, query, where, getDocs, collectionGroup, documentId, doc, deleteDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock } from 'lucide-react';
+import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock, Eye, Briefcase, UserCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
@@ -21,7 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 const statusStyles: { [key: string]: string } = {
@@ -49,7 +49,7 @@ const CampaignCardSkeleton = () => (
     </Card>
 );
 
-const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground' }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean, color?: string }) => (
+const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground', subtitle }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean, color?: string, subtitle?: string }) => (
     <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
@@ -57,13 +57,77 @@ const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground' }: 
         </CardHeader>
         <CardContent>
             {isLoading ? (
-                <Skeleton className="h-8 w-1/2" />
+                <>
+                    <Skeleton className="h-8 w-1/2" />
+                    {subtitle && <Skeleton className="h-4 w-3/4 mt-2" />}
+                </>
             ) : (
-                <div className={cn("text-2xl font-bold", color)}>{value}</div>
+                <>
+                    <div className={cn("text-2xl font-bold", color)}>{value}</div>
+                    {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
+                </>
             )}
         </CardContent>
     </Card>
 );
+
+
+const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
+    const { userProfile } = useUserProfile();
+
+    const { percentage, nextStepText } = useMemo(() => {
+        if (!userProfile) return { percentage: 0, nextStepText: "Complete your profile" };
+        
+        const fields = [
+            { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture" },
+            { key: 'displayName', present: !!userProfile.displayName, text: "Add your display name" },
+            { key: 'location', present: !!userProfile.location, text: "Add your location" },
+            { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: "Choose at least one tag" },
+            { key: 'bio', present: !!userProfile.bio, text: "Write a bio to tell your story" },
+        ];
+
+        const completedFields = fields.filter(f => f.present).length;
+        const totalFields = fields.length;
+        
+        const percentage = Math.round((completedFields / totalFields) * 100);
+
+        const firstIncompleteStep = fields.find(f => !f.present);
+        const nextStepText = firstIncompleteStep ? firstIncompleteStep.text : "Add portfolio projects to reach the top 10%";
+
+        return { percentage, nextStepText };
+    }, [userProfile]);
+
+    const circumference = 2 * Math.PI * 18;
+    const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+     return (
+        <Card className="shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Profile Impact (Quality)</CardTitle>
+                 <UserCheck className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                {isLoading ? (
+                    <Skeleton className="h-8 w-1/2" />
+                ) : (
+                    <div className="flex items-center gap-4">
+                        <div className="relative w-12 h-12">
+                            <svg className="w-full h-full" viewBox="0 0 40 40">
+                                <circle className="text-muted/20" strokeWidth="4" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" />
+                                <circle className="text-primary" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" transform="rotate(-90 20 20)" />
+                            </svg>
+                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">{percentage}%</span>
+                        </div>
+                        <div className="flex-1">
+                             <div className="font-bold text-lg">Profile Score</div>
+                             <p className="text-xs text-muted-foreground">{nextStepText}</p>
+                        </div>
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+    );
+};
 
 
 const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: any) => (
@@ -82,13 +146,15 @@ const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: an
 );
 
 export default function CreatorDashboard() {
-  const { user } = useUser();
+  const { user, userProfile } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
 
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
+  const [matchingJobsCount, setMatchingJobsCount] = useState(0);
+  const [profileViews, setProfileViews] = useState(0);
   const [isLoadingPending, setIsLoadingPending] = useState(true);
-  const [stats, setStats] = useState({ pipeline: 0, escrow: 0, wallet: 1200 }); // wallet is mocked for now
+  const [stats, setStats] = useState({ escrow: 0, wallet: 1200 });
   const [userApplications, setUserApplications] = useState<Map<string, string>>(new Map());
 
   // Fetch active campaigns (where creator is assigned)
@@ -105,57 +171,61 @@ export default function CreatorDashboard() {
   useEffect(() => {
     if (user && firestore) {
         setIsLoadingPending(true);
-        const fetchPendingApplications = async () => {
+        const fetchPendingAndMatching = async () => {
             try {
-                // 1. Find all application documents by this creator
-                const applicationsQuery = query(collectionGroup(firestore, 'applications'), where('creatorId', '==', user.uid));
-                const appsSnapshot = await getDocs(applicationsQuery);
+                const allOpenCampaignsQuery = query(collection(firestore, 'campaigns'), where('status', '==', 'OPEN_FOR_APPLICATIONS'));
+                const [appsSnapshot, openCampaignsSnapshot] = await Promise.all([
+                    getDocs(query(collectionGroup(firestore, 'applications'), where('creatorId', '==', user.uid))),
+                    getDocs(allOpenCampaignsQuery)
+                ]);
                 
-                const appliedCampaignIds = appsSnapshot.docs.map(doc => doc.data().campaignId);
                 const appMap = new Map<string, string>();
-                appsSnapshot.docs.forEach(doc => {
-                    appMap.set(doc.data().campaignId, doc.id);
-                });
+                appsSnapshot.docs.forEach(doc => appMap.set(doc.data().campaignId, doc.id));
                 setUserApplications(appMap);
 
-                if (appliedCampaignIds.length > 0) {
-                    // 2. Fetch the campaign details for those applications
-                    // We only want to show campaigns that are still open for applications
-                    const campaignsQuery = query(
-                        collection(firestore, 'campaigns'), 
-                        where(documentId(), 'in', appliedCampaignIds),
-                        where('status', '==', 'OPEN_FOR_APPLICATIONS')
+                const openCampaignsData = openCampaignsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                const appliedCampaignIds = Array.from(appMap.keys());
+                const pendingData = openCampaignsData.filter(c => appliedCampaignIds.includes(c.id));
+                setPendingCampaigns(pendingData);
+                
+                // Calculate matching jobs
+                const creatorTags = userProfile?.tags || [];
+                if (creatorTags.length > 0) {
+                    const matching = openCampaignsData.filter(c => 
+                        !appliedCampaignIds.includes(c.id) && c.tags?.some((tag: string) => creatorTags.includes(tag))
                     );
-                    const campaignsSnapshot = await getDocs(campaignsQuery);
-                    const campaignsData = campaignsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    setPendingCampaigns(campaignsData);
+                    setMatchingJobsCount(matching.length);
                 } else {
-                    setPendingCampaigns([]);
+                    setMatchingJobsCount(openCampaignsData.length - appliedCampaignIds.length);
                 }
+
+                // Mock profile views
+                setProfileViews(Math.floor(Math.random() * 20) + 5);
+
             } catch (error) {
-                console.error("Error fetching pending campaigns:", error);
+                console.error("Error fetching creator data:", error);
                 setPendingCampaigns([]);
+                setMatchingJobsCount(0);
             } finally {
                 setIsLoadingPending(false);
             }
         };
 
-        fetchPendingApplications();
+        fetchPendingAndMatching();
     }
-  }, [user, firestore]);
+  }, [user, firestore, userProfile]);
   
   // Calculate stats
   useEffect(() => {
-    if (!isLoadingActive && !isLoadingPending) {
-        
-        const pipeline = pendingCampaigns.reduce((sum, c) => sum + (c.budget || 0), 0);
+    if (!isLoadingActive) {
         const escrow = activeCampaigns?.reduce((sum, c) => 
-            c.status === 'IN_PROGRESS' || c.status === 'DELIVERED' ? sum + c.budget : sum
+            (c.status === 'IN_PROGRESS' || c.status === 'DELIVERED') ? sum + c.budget : sum
         , 0) || 0;
 
-        setStats(prev => ({ ...prev, pipeline, escrow }));
+        setStats(prev => ({ ...prev, escrow }));
     }
-  }, [isLoadingActive, isLoadingPending, activeCampaigns, pendingCampaigns]);
+  }, [isLoadingActive, activeCampaigns]);
 
   const handleWithdrawApplication = async (campaignId: string) => {
     if (!firestore || !userApplications.has(campaignId)) return;
@@ -182,6 +252,7 @@ export default function CreatorDashboard() {
 };
 
   const isLoading = isLoadingActive || isLoadingPending;
+  const hasActiveContracts = activeCampaigns && activeCampaigns.length > 0;
 
   return (
     <div>
@@ -196,9 +267,13 @@ export default function CreatorDashboard() {
       </div>
 
        <div className="grid gap-4 md:grid-cols-3 mb-8">
-            <StatCard isLoading={isLoading} title="En Négociation" value={`${stats.pipeline.toLocaleString()} DH`} icon={<Hourglass className="h-4 w-4 text-muted-foreground" />} color="text-blue-500" />
-            <StatCard isLoading={isLoading} title="Fonds Séquestrés (En cours)" value={`${stats.escrow.toLocaleString()} DH`} icon={<Lock className="h-4 w-4 text-muted-foreground" />} color="text-green-500" />
-            <StatCard isLoading={isLoading} title="Solde Retirable" value={`${stats.wallet.toLocaleString()} DH`} icon={<Wallet className="h-4 w-4 text-muted-foreground" />} />
+            {hasActiveContracts ? (
+                <StatCard isLoading={isLoading} title="Fonds Séquestrés (En cours)" value={`${stats.escrow.toLocaleString()} DH`} icon={<Lock className="h-4 w-4 text-muted-foreground" />} color="text-green-500" />
+            ) : (
+                <ProfileImpactCard isLoading={isLoading} />
+            )}
+            <StatCard isLoading={isLoading} title="Jobs Correspondants" value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={`${matchingJobsCount} campagnes cherchent votre profil.`} />
+            <StatCard isLoading={isLoading} title="Vues du Profil (7j)" value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={`${profileViews} marques ont vu votre carte.`} />
         </div>
 
       <Tabs defaultValue="active">
