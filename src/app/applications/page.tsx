@@ -9,15 +9,15 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, FileText, Inbox, MessageSquare, Send, User, UserCheck, X } from 'lucide-react';
+import { ArrowRight, CheckCircle, ChevronDown, FileText, Inbox, MessageSquare, Send, User, UserCheck, X } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatDistanceToNow } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
 import CreatorProfilePreview from '@/components/creator-profile-preview';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 
 type Applicant = {
@@ -31,47 +31,56 @@ type Applicant = {
   createdAt: any;
 };
 
-const ApplicantCard = ({ application, campaignTitle, onProfileClick }: { application: Applicant; campaignTitle: string; onProfileClick: (creatorId: string) => void; }) => {
+const ApplicantCard = ({ application, campaignTitle }: { application: Applicant; campaignTitle: string; }) => {
     const {t} = useLanguage();
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
-        <Card className="transition-all hover:shadow-md">
-             <CardContent className="p-4 flex items-center gap-4">
-                <Avatar className="h-12 w-12">
-                    <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
-                    <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
-                </Avatar>
-                <div className="flex-1 grid grid-cols-4 items-center gap-4">
-                    <div className="col-span-2">
-                        <p className="font-semibold">
-                            {application.profile?.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
+        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+            <Card className="transition-all hover:shadow-md">
+                <CollapsibleTrigger asChild>
+                    <div className="p-4 flex items-center gap-4 cursor-pointer">
+                        <Avatar className="h-12 w-12">
+                            <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
+                            <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 grid grid-cols-4 items-center gap-4">
+                            <div className="col-span-2">
+                                <p className="font-semibold text-left">
+                                    {application.profile?.name}
+                                </p>
+                                <p className="text-xs text-muted-foreground text-left">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
+                            </div>
+                            <div>
+                                <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
+                                <Inbox className="h-3 w-3 mr-1" />
+                                {t('talentHub.source.applied')}
+                                </Badge>
+                            </div>
+                            <div className="text-right">
+                                <p className="font-bold">{application.bidAmount} {t('currency')}</p>
+                                <p className="text-xs text-muted-foreground">{formatDistanceToNow(application.createdAt.toDate(), { addSuffix: true })}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <Button size="icon" variant="ghost" className="rounded-full">
+                                <MessageSquare className="h-5 w-5" />
+                            </Button>
+                            <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", isOpen && "rotate-180")} />
+                        </div>
                     </div>
-                    <div>
-                         <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
-                           <Inbox className="h-3 w-3 mr-1" />
-                           {t('talentHub.source.applied')}
-                        </Badge>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                    <div className="border-t">
+                        <CreatorProfilePreview creatorId={application.creatorId} />
                     </div>
-                    <div className="text-right">
-                        <p className="font-bold">{application.bidAmount} {t('currency')}</p>
-                        <p className="text-xs text-muted-foreground">{formatDistanceToNow(application.createdAt.toDate(), { addSuffix: true })}</p>
-                    </div>
-                </div>
-                 <div className="flex items-center gap-1">
-                    <Button size="icon" variant="outline" onClick={() => onProfileClick(application.creatorId)}>
-                        <User className="h-5 w-5" />
-                    </Button>
-                    <Button size="icon" variant="ghost">
-                        <MessageSquare className="h-5 w-5" />
-                    </Button>
-                 </div>
-            </CardContent>
-        </Card>
+                </CollapsibleContent>
+            </Card>
+        </Collapsible>
     )
 }
 
-const CampaignApplicationsGroup = ({ campaign, applications, onProfileClick }: { campaign: any, applications: any[], onProfileClick: (creatorId: string) => void }) => {
+const CampaignApplicationsGroup = ({ campaign, applications }: { campaign: any, applications: any[] }) => {
     const { t } = useLanguage();
     if (applications.length === 0) return null;
     return (
@@ -82,7 +91,7 @@ const CampaignApplicationsGroup = ({ campaign, applications, onProfileClick }: {
             </h2>
             <div className="space-y-3">
                 {applications.map(app => (
-                    <ApplicantCard key={app.id} application={app} campaignTitle={campaign.title} onProfileClick={onProfileClick} />
+                    <ApplicantCard key={app.id} application={app} campaignTitle={campaign.title} />
                 ))}
             </div>
         </div>
@@ -96,7 +105,6 @@ export default function TalentHubPage() {
 
     const [allApplications, setAllApplications] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
 
     const campaignsQuery = useMemoFirebase(
         () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
@@ -140,10 +148,6 @@ export default function TalentHubPage() {
         return campaigns.filter(c => allApplications.some(a => a.campaignId === c.id));
     }, [campaigns, allApplications]);
     
-    const handleProfileClick = (creatorId: string) => {
-        setSelectedCreatorId(creatorId);
-    };
-
     return (
         <div className="flex h-auto w-full flex-col">
             <AppHeader />
@@ -160,9 +164,9 @@ export default function TalentHubPage() {
 
                     {isLoading && (
                         <div className="space-y-6">
-                            <Skeleton className="h-16 w-full" />
-                            <Skeleton className="h-16 w-full" />
-                            <Skeleton className="h-16 w-full" />
+                            <Skeleton className="h-20 w-full" />
+                            <Skeleton className="h-20 w-full" />
+                            <Skeleton className="h-20 w-full" />
                         </div>
                     )}
 
@@ -173,7 +177,6 @@ export default function TalentHubPage() {
                                     key={campaign.id} 
                                     campaign={campaign} 
                                     applications={allApplications.filter(a => a.campaignId === campaign.id)} 
-                                    onProfileClick={handleProfileClick}
                                 />
                             ))}
                         </div>
@@ -188,11 +191,6 @@ export default function TalentHubPage() {
                     )}
                  </div>
             </main>
-             <Sheet open={!!selectedCreatorId} onOpenChange={(open) => !open && setSelectedCreatorId(null)}>
-                <SheetContent className="w-full sm:w-3/4 lg:w-1/2 xl:w-2/5 p-0">
-                    <CreatorProfilePreview creatorId={selectedCreatorId} />
-                </SheetContent>
-            </Sheet>
         </div>
     );
 }
