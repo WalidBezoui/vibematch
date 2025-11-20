@@ -1,18 +1,19 @@
 'use client';
 
 import { AppHeader } from '@/components/app-header';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { collection, query, where } from 'firebase/firestore';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, ShieldCheck, Instagram, ArrowRight } from 'lucide-react';
+import { MapPin, ShieldCheck, Instagram, ArrowRight, Briefcase } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
 
 const CreatorCardSkeleton = () => (
     <Card className="overflow-hidden">
@@ -46,7 +47,7 @@ type CreatorProfile = {
     tiktokFollowers: string;
 };
 
-const CreatorCard = ({ creator }: { creator: CreatorProfile }) => (
+const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, activeCampaigns: any[] }) => (
     <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 flex flex-col">
         <div className="aspect-[4/5] bg-muted relative group">
             <Link href={`/creators/${creator.id}`} className="block w-full h-full">
@@ -98,7 +99,13 @@ const CreatorCard = ({ creator }: { creator: CreatorProfile }) => (
                  </div>
              </div>
         </CardContent>
-        <CardFooter className="p-2 border-t bg-muted/50">
+        <CardFooter className="p-2 border-t bg-muted/50 flex flex-col items-stretch gap-2">
+             <InviteToCampaignDialog creator={creator} campaigns={activeCampaigns}>
+                <Button className="w-full">
+                    <Briefcase className="mr-2 h-4 w-4" />
+                    Invite to Campaign
+                </Button>
+            </InviteToCampaignDialog>
             <Button asChild className="w-full" variant="ghost">
                 <Link href={`/creators/${creator.id}`}>
                     View Profile
@@ -111,14 +118,20 @@ const CreatorCard = ({ creator }: { creator: CreatorProfile }) => (
 
 export default function CreatorDiscoveryPage() {
     const firestore = useFirestore();
+    const { user } = useUser();
     const [creators, setCreators] = useState<CreatorProfile[]>([]);
 
     const creatorsQuery = useMemoFirebase(
         () => firestore ? query(collection(firestore, 'users'), where('role', '==', 'creator')) : null,
         [firestore]
     );
-
-    const { data: creatorDocs, isLoading } = useCollection(creatorsQuery);
+    const { data: creatorDocs, isLoading: areCreatorsLoading } = useCollection(creatorsQuery);
+    
+    const campaignsQuery = useMemoFirebase(
+        () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
+        [user, firestore]
+    );
+    const { data: activeCampaigns, isLoading: areCampaignsLoading } = useCollection(campaignsQuery);
     
     useEffect(() => {
         if (creatorDocs) {
@@ -135,6 +148,8 @@ export default function CreatorDiscoveryPage() {
             setCreators(creatorsWithMetrics as CreatorProfile[]);
         }
     }, [creatorDocs]);
+
+    const isLoading = areCreatorsLoading || areCampaignsLoading;
 
     return (
         <div className="flex h-auto w-full flex-col">
@@ -162,7 +177,7 @@ export default function CreatorDiscoveryPage() {
                     {!isLoading && creators && creators.length > 0 && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {creators.map(creator => (
-                                <CreatorCard key={creator.id} creator={creator} />
+                                <CreatorCard key={creator.id} creator={creator} activeCampaigns={activeCampaigns || []} />
                             ))}
                         </div>
                     )}

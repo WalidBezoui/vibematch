@@ -1,17 +1,18 @@
 
 'use client';
 
-import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { doc, collection } from 'firebase/firestore';
+import { useDoc, useFirestore, useMemoFirebase, useUser } from '@/firebase';
+import { doc, collection, query, where } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Award, CalendarDays, Info, ShieldAlert } from 'lucide-react';
 import { useCollection } from '@/firebase/firestore/use-collection';
+import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
 
 const TrustScoreGauge = ({ score }: { score: number }) => {
   const circumference = 2 * Math.PI * 45; // 2 * pi * radius
@@ -90,6 +91,7 @@ const CreatorProfileSkeleton = () => (
 export default function CreatorPublicProfilePage() {
   const { creatorId } = useParams();
   const firestore = useFirestore();
+  const { user } = useUser();
 
   const creatorRef = useMemoFirebase(
     () => firestore ? doc(firestore, 'users', creatorId as string) : null,
@@ -103,7 +105,13 @@ export default function CreatorPublicProfilePage() {
   );
   const { data: portfolio, isLoading: isPortfolioLoading } = useCollection(portfolioRef);
 
-  const isLoading = isCreatorLoading || isPortfolioLoading;
+  const campaignsQuery = useMemoFirebase(
+    () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
+    [user, firestore]
+  );
+  const { data: activeCampaigns, isLoading: areCampaignsLoading } = useCollection(campaignsQuery);
+
+  const isLoading = isCreatorLoading || isPortfolioLoading || areCampaignsLoading;
   
   const trustScore = useMemoFirebase(() => Math.floor(Math.random() * (98 - 75 + 1) + 75), []);
 
@@ -199,10 +207,12 @@ export default function CreatorPublicProfilePage() {
                 <p className="text-foreground/90 whitespace-pre-wrap">{creator.bio || 'No bio provided.'}</p>
               </CardContent>
                <CardFooter>
-                 <Button className="w-full">
-                    <Briefcase className="mr-2 h-4 w-4" />
-                    Invite to a Campaign
-                </Button>
+                 <InviteToCampaignDialog creator={creator} campaigns={activeCampaigns || []}>
+                    <Button className="w-full gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+                        <Briefcase className="mr-2 h-4 w-4" />
+                        Invite to a Campaign
+                    </Button>
+                </InviteToCampaignDialog>
                </CardFooter>
             </Card>
             <Card>
