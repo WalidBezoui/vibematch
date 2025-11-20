@@ -272,7 +272,6 @@ export function AppHeader() {
         if (userProfile.role === 'brand') {
              roleSpecificLinks = [
                  { href: "/creators", label: 'Creators', icon: Users },
-                 { href: "/campaigns/manage", label: 'Applications', icon: FileText },
                  { href: "/chat", label: 'Messages', icon: MessageSquare },
             ];
         }
