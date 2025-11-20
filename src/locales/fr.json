@@ -8,7 +8,43 @@
         "login": "Connexion",
         "logout": "Déconnexion",
         "dashboard": "Tableau de bord",
-        "home": "Accueil"
+        "home": "Accueil",
+        "profile": "Mon Profil",
+        "discover": "Découvrir",
+        "messages": "Messages",
+        "creators": "Créateurs"
+    },
+    "brandDashboard": {
+        "title": "Tableau de Bord Marque",
+        "createButton": "Nouvelle Campagne",
+        "stats": {
+            "active": "Campagnes Actives",
+            "applications": "Candidatures Totales",
+            "budget": "Budget Total"
+        },
+        "createdOn": "Créée le {{date}}",
+        "editAction": "Modifier",
+        "deleteAction": "Supprimer",
+        "deleteDialog": {
+            "title": "Êtes-vous sûr ?",
+            "description": "Cette action supprimera définitivement votre campagne et toutes ses données. Cette action est irréversible.",
+            "cancel": "Annuler",
+            "confirm": "Oui, Supprimer"
+        },
+        "hiringProgress": "Progression du recrutement",
+        "manageButton": "Gérer les candidatures",
+        "viewButton": "Voir la campagne",
+        "emptyState": {
+            "title": "Votre tableau de bord vous attend",
+            "description": "C'est ici que vous gérerez vos campagnes et vous connecterez avec les créateurs. Commencez par créer votre première campagne.",
+            "cta": "Créer la première campagne"
+        },
+        "deleteToast": {
+            "deleting": "Suppression de la campagne...",
+            "successTitle": "Campagne Supprimée",
+            "successDescription": "Votre campagne a été supprimée avec succès.",
+            "errorTitle": "Échec de la suppression"
+        }
     },
     "promoBanner": {
         "general": [

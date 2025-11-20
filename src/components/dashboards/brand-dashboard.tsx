@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -205,13 +206,12 @@ export default function BrandDashboard() {
                 const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED').length;
 
                 if (campaigns.length > 0) {
-                    const applicationPromises = campaigns.map(c => 
-                        getDocs(query(collection(firestore, 'campaigns', c.id, 'applications')))
+                     const applicationCounts = await Promise.all(
+                        campaigns.map(campaign => 
+                            getCountFromServer(collection(firestore, 'campaigns', campaign.id, 'applications'))
+                        )
                     );
-
-                    const allApplicationsSnapshots = await Promise.all(applicationPromises);
-                    allApplicationsSnapshots.forEach(snapshot => totalApplications += snapshot.size);
-
+                    totalApplications = applicationCounts.reduce((sum, current) => sum + current.data().count, 0);
                     totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0), 0);
                 }
 

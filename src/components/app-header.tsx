@@ -282,7 +282,7 @@ export function AppHeader() {
 
     if (user && userProfile) {
         const commonLinks = [
-            { href: "/profile", label: 'My Profile', icon: User },
+            { href: "/profile", label: t('header.profile'), icon: User },
             { href: "/contact", label: t('header.support'), icon: MessageSquare },
         ];
 
@@ -290,15 +290,15 @@ export function AppHeader() {
 
         if (userProfile.role === 'creator') {
             roleSpecificLinks = [
-                 { href: "/discover", label: 'Discover', icon: Compass },
-                 { href: "/chat", label: 'Messages', icon: MessageSquare },
+                 { href: "/discover", label: t('header.discover'), icon: Compass },
+                 { href: "/chat", label: t('header.messages'), icon: MessageSquare },
             ];
         }
         
         if (userProfile.role === 'brand') {
              roleSpecificLinks = [
-                 { href: "/creators", label: 'Creators', icon: Users },
-                 { href: "/chat", label: 'Messages', icon: MessageSquare },
+                 { href: "/creators", label: t('header.creators'), icon: Users },
+                 { href: "/chat", label: t('header.messages'), icon: MessageSquare },
             ];
         }
         

@@ -8,7 +8,43 @@
         "login": "Login",
         "logout": "Logout",
         "dashboard": "Dashboard",
-        "home": "Home"
+        "home": "Home",
+        "profile": "My Profile",
+        "discover": "Discover",
+        "messages": "Messages",
+        "creators": "Creators"
+    },
+    "brandDashboard": {
+        "title": "Brand Dashboard",
+        "createButton": "New Campaign",
+        "stats": {
+            "active": "Active Campaigns",
+            "applications": "Total Applications",
+            "budget": "Total Budget"
+        },
+        "createdOn": "Created on {{date}}",
+        "editAction": "Edit",
+        "deleteAction": "Delete",
+        "deleteDialog": {
+            "title": "Are you sure?",
+            "description": "This will permanently delete your campaign and all its data. This action cannot be undone.",
+            "cancel": "Cancel",
+            "confirm": "Yes, Delete"
+        },
+        "hiringProgress": "Hiring Progress",
+        "manageButton": "Manage Applications",
+        "viewButton": "View Campaign",
+        "emptyState": {
+            "title": "Your Dashboard Awaits",
+            "description": "This is where you'll manage your campaigns and connect with creators. Start by creating your first campaign.",
+            "cta": "Create First Campaign"
+        },
+        "deleteToast": {
+            "deleting": "Deleting campaign...",
+            "successTitle": "Campaign Deleted",
+            "successDescription": "Your campaign has been successfully removed.",
+            "errorTitle": "Deletion Failed"
+        }
     },
     "promoBanner": {
         "general": [
