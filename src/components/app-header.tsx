@@ -1,10 +1,11 @@
+
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, Building, User } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, Building, User, FileText } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { useUser, useUserProfile } from '@/firebase';
@@ -271,7 +272,7 @@ export function AppHeader() {
         if (userProfile.role === 'brand') {
              roleSpecificLinks = [
                  { href: "/creators", label: 'Creators', icon: Users },
-                 { href: "/campaigns/create", label: 'New Campaign', icon: PlusCircle },
+                 { href: "/campaigns/manage", label: 'Applications', icon: FileText },
                  { href: "/chat", label: 'Messages', icon: MessageSquare },
             ];
         }
