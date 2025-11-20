@@ -83,7 +83,7 @@ const CampaignApplicationsGroup = ({ campaign, applications }: { campaign: any, 
     return (
         <div className="space-y-4">
             <h2 className="text-xl font-bold flex items-center gap-2">
-                {campaign.title} 
+                {campaign.title}
                 <Badge variant="outline">{applications.length}</Badge>
             </h2>
             <div className="space-y-3">
@@ -96,12 +96,12 @@ const CampaignApplicationsGroup = ({ campaign, applications }: { campaign: any, 
 }
 
 export default function TalentHubPage() {
-    const { user, userProfile, isUserLoading, isLoading: isProfileLoading } = useUserProfile();
-    const firestore = useFirestore();
-    const {t} = useLanguage();
-
     const [allApplications, setAllApplications] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { user } = useUserProfile();
+    const firestore = useFirestore();
+    const { t } = useLanguage();
+
 
     const campaignsQuery = useMemoFirebase(
         () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
@@ -115,11 +115,11 @@ export default function TalentHubPage() {
         const fetchAllData = async () => {
             setIsLoading(true);
             const enrichedApplications: any[] = [];
-            
+
             for (const campaign of campaigns) {
                 const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
                 const appsSnapshot = await getDocs(appsRef);
-                
+
                 if (!appsSnapshot.empty) {
                     for (const appDoc of appsSnapshot.docs) {
                         const appData = { id: appDoc.id, ...appDoc.data() };
@@ -144,7 +144,7 @@ export default function TalentHubPage() {
         if (!campaigns) return [];
         return campaigns.filter(c => allApplications.some(a => a.campaignId === c.id));
     }, [campaigns, allApplications]);
-    
+
     return (
         <div className="flex h-auto w-full flex-col">
             <AppHeader />
@@ -170,10 +170,10 @@ export default function TalentHubPage() {
                     {!isLoading && allApplications.length > 0 && campaigns ? (
                         <div className="space-y-12">
                             {campaignsWithApps.map(campaign => (
-                                <CampaignApplicationsGroup 
-                                    key={campaign.id} 
-                                    campaign={campaign} 
-                                    applications={allApplications.filter(a => a.campaignId === campaign.id)} 
+                                <CampaignApplicationsGroup
+                                    key={campaign.id}
+                                    campaign={campaign}
+                                    applications={allApplications.filter(a => a.campaignId === campaign.id)}
                                 />
                             ))}
                         </div>
