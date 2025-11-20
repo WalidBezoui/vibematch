@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -109,7 +110,7 @@ export default function ManageApplicationsPage() {
 
     const handleShortlist = (applicant: Applicant) => {
         if (!firestore || !user) return;
-        toast({ title: 'Opening discussion...' });
+        toast({ title: 'Ouverture de la discussion...' });
         
         const batch = writeBatch(firestore);
         const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
@@ -123,8 +124,9 @@ export default function ManageApplicationsPage() {
             creator_id: applicant.creatorId,
             status: 'NEGOTIATION',
             agreed_budget: applicant.bidAmount,
+            last_offer_by: applicant.creatorId, // Creator's bid is the first offer
             is_funded: false,
-            lastMessage: `You opened a discussion with ${applicant.profile?.name || 'this creator'}.`,
+            lastMessage: `Discussion ouverte. L'offre initiale du créateur est de ${applicant.bidAmount} MAD.`,
             updatedAt: serverTimestamp(),
         };
         batch.set(conversationDocRef, conversationData);
@@ -134,14 +136,14 @@ export default function ManageApplicationsPage() {
              conversation_id: conversationDocRef.id,
              sender_id: user.uid, 
              type: 'TEXT',
-             content: `Discussion opened for campaign: "${campaign?.title}".\n\nThe creator's opening bid is ${applicant.bidAmount} MAD and their cover letter is: \n\n"${applicant.coverLetter}"`,
+             content: `Discussion ouverte pour la campagne: "${campaign?.title}".\n\nL'offre d'ouverture du créateur est de ${applicant.bidAmount} MAD et sa lettre de motivation est : \n\n"${applicant.coverLetter}"`,
              timestamp: serverTimestamp(),
         };
         batch.set(messageDocRef, messageData);
         
         batch.commit()
             .then(() => {
-                toast({ title: 'Chat opened!', description: "You can now negotiate the terms with the creator." });
+                toast({ title: 'Chat ouvert !', description: "Vous pouvez maintenant négocier les termes avec le créateur." });
                 router.push(`/chat/${conversationDocRef.id}`);
             })
             .catch(async (serverError) => {
@@ -161,7 +163,7 @@ export default function ManageApplicationsPage() {
     const handleAcceptAndHire = async (applicant: Applicant) => {
         if (!campaignRef || !firestore || !user) return;
 
-        toast({ title: 'Hiring Creator...' });
+        toast({ title: 'Embauche du créateur...' });
         
         try {
             await updateDoc(campaignRef, {
@@ -172,7 +174,7 @@ export default function ManageApplicationsPage() {
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
             await updateDoc(applicationRef, { status: 'OFFER_ACCEPTED' });
 
-            toast({ title: 'Creator Hired!', description: "They've been notified to accept the campaign." });
+            toast({ title: 'Créateur Embauché !', description: "Une notification lui a été envoyée pour accepter la campagne." });
 
         } catch (error: any) {
              const permissionError = new FirestorePermissionError({
@@ -211,8 +213,8 @@ export default function ManageApplicationsPage() {
                 <AppHeader />
                 <main className="max-w-4xl mx-auto p-8 text-center">
                     <Alert variant="destructive">
-                        <AlertTitle>Access Denied</AlertTitle>
-                        <AlertDescription>You do not have permission to manage this campaign.</AlertDescription>
+                        <AlertTitle>Accès Refusé</AlertTitle>
+                        <AlertDescription>Vous n'avez pas la permission de gérer cette campagne.</AlertDescription>
                     </Alert>
                 </main>
             </>
@@ -228,18 +230,18 @@ export default function ManageApplicationsPage() {
             <AppHeader />
             <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                  <div className="mb-8">
-                    <h1 className="text-4xl font-bold tracking-tight">Manage Applications</h1>
+                    <h1 className="text-4xl font-bold tracking-tight">Gérer les Candidatures</h1>
                     <p className="text-muted-foreground mt-2 text-lg">
-                        Review and select the best creator for your campaign: <strong>{campaign.title}</strong>
+                        Examinez et sélectionnez le meilleur créateur pour votre campagne : <strong>{campaign.title}</strong>
                     </p>
                 </div>
 
                 {campaign.status !== 'OPEN_FOR_APPLICATIONS' && (
                     <Alert>
-                        <AlertTitle>This campaign is no longer accepting applications.</AlertTitle>
+                        <AlertTitle>Cette campagne n'accepte plus de candidatures.</AlertTitle>
                         <AlertDescription>
-                            Its current status is: <Badge variant="secondary">{campaign.status.replace(/_/g, ' ')}</Badge>.
-                            <Button asChild variant="link"><Link href={`/campaigns/${campaignId}`}>View Campaign</Link></Button>
+                            Son statut actuel est : <Badge variant="secondary">{campaign.status.replace(/_/g, ' ')}</Badge>.
+                            <Button asChild variant="link"><Link href={`/campaigns/${campaignId}`}>Voir la Campagne</Link></Button>
                         </AlertDescription>
                     </Alert>
                 )}
@@ -248,7 +250,7 @@ export default function ManageApplicationsPage() {
                     <div className="space-y-8">
                         {newApplicants.length > 0 && (
                             <div>
-                                <h2 className="text-2xl font-bold mb-4">New Applicants</h2>
+                                <h2 className="text-2xl font-bold mb-4">Nouveaux Candidats</h2>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     {newApplicants.map(applicant => {
                                         const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
@@ -262,7 +264,7 @@ export default function ManageApplicationsPage() {
                                                 </Avatar>
                                                 <div className="flex-1">
                                                     <div className="flex justify-between items-center">
-                                                        <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Creator'}</CardTitle>
+                                                        <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Créateur'}</CardTitle>
                                                          <Badge variant="secondary" className={cn(
                                                             isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
                                                          )}>
@@ -272,30 +274,30 @@ export default function ManageApplicationsPage() {
                                                     </div>
                                                     <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
                                                         <ShieldCheck className="h-4 w-4 text-green-500" />
-                                                        <span>Trust Score: {applicant.trustScore}</span>
+                                                        <span>Score de Confiance : {applicant.trustScore}</span>
                                                     </div>
                                                 </div>
                                             </CardHeader>
                                             <CardContent className="flex-grow space-y-4">
                                                 <div className="space-y-2">
-                                                    <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Cover Letter</h4>
+                                                    <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Lettre de Motivation</h4>
                                                     <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
                                                 </div>
                                                  <AlertDialog>
                                                     <AlertDialogTrigger asChild>
                                                         <Button variant="link" className="p-0 h-auto text-primary">
-                                                            Read Full Letter
+                                                            Lire la lettre complète
                                                         </Button>
                                                     </AlertDialogTrigger>
                                                     <AlertDialogContent>
                                                         <AlertDialogHeader>
-                                                        <AlertDialogTitle>Cover Letter from {applicant.profile?.name?.split(' ')[0] || 'Creator'}</AlertDialogTitle>
+                                                        <AlertDialogTitle>Lettre de motivation de {applicant.profile?.name?.split(' ')[0] || 'Créateur'}</AlertDialogTitle>
                                                         <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
                                                             {applicant.coverLetter}
                                                         </AlertDialogDescription>
                                                         </AlertDialogHeader>
                                                         <AlertDialogFooter>
-                                                        <AlertDialogAction>Close</AlertDialogAction>
+                                                        <AlertDialogAction>Fermer</AlertDialogAction>
                                                         </AlertDialogFooter>
                                                     </AlertDialogContent>
                                                 </AlertDialog>
@@ -305,23 +307,23 @@ export default function ManageApplicationsPage() {
                                                     {isBidHigher ? (
                                                         <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                                             <MessageSquare className="mr-2 h-4 w-4" />
-                                                            Discuss & Negotiate
+                                                            Discuter & Négocier
                                                         </Button>
                                                     ) : (
                                                         <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                                             <CheckCircle className="mr-2 h-4 w-4" />
-                                                            Accept & Hire
+                                                            Accepter & Embaucher
                                                         </Button>
                                                     )}
                                                     <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                                         <XCircle className="mr-2 h-4 w-4" />
-                                                        Reject
+                                                        Rejeter
                                                     </Button>
                                                 </div>
                                                  <Button asChild variant="ghost" className="w-full">
                                                     <Link href={`/creators/${applicant.creatorId}`}>
                                                         <User className="mr-2 h-4 w-4" />
-                                                        View Profile
+                                                        Voir le Profil
                                                     </Link>
                                                 </Button>
                                             </CardFooter>
@@ -335,10 +337,10 @@ export default function ManageApplicationsPage() {
                     </div>
                 ) : (
                      <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                        <h2 className="text-2xl font-semibold">No Applications Yet</h2>
-                        <p className="text-muted-foreground mt-2">Your campaign is live. Check back soon to see who has applied!</p>
+                        <h2 className="text-2xl font-semibold">Aucune Candidature pour l'Instant</h2>
+                        <p className="text-muted-foreground mt-2">Votre campagne est en ligne. Revenez bientôt pour voir qui a postulé !</p>
                         <Button asChild variant="outline" className="mt-6">
-                            <Link href="/dashboard">Back to Dashboard</Link>
+                            <Link href="/dashboard">Retour au Tableau de Bord</Link>
                         </Button>
                     </div>
                 )}
@@ -346,5 +348,3 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
-
-    

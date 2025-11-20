@@ -20,6 +20,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { Textarea } from '@/components/ui/textarea';
 
 const GuardianBot = {
   isSecure: (text: string): boolean => {
@@ -49,80 +50,40 @@ const DealStatusHeader = ({ conversation, campaign, onOfferSent }: { conversatio
 
     const isBrand = userProfile?.role === 'brand';
     
-    const handleMakeOffer = async () => {
-        if (!firestore || !newOffer || isNaN(parseFloat(newOffer))) {
-            toast({ variant: 'destructive', title: 'Invalid amount' });
-            return;
-        }
-
-        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
-        await addDoc(messagesRef, {
-            conversation_id: conversationId,
-            sender_id: user?.uid,
-            type: 'SYSTEM_OFFER',
-            content: `The Brand proposed a new budget of: ${newOffer} MAD`,
-            metadata: {
-                offer_amount: parseFloat(newOffer),
-                offer_status: 'PENDING',
-            },
-            timestamp: serverTimestamp(),
-        });
-
-        const convRef = doc(firestore, 'conversations', conversationId as string);
-        await updateDoc(convRef, { agreed_budget: parseFloat(newOffer) });
-
-        onOfferSent();
-        setNewOffer('');
-        toast({ title: 'Offer Sent!' });
-    };
-
-    const handleAcceptAndFund = async () => {
-      if (!firestore || !user) return;
-      
-      const convRef = doc(firestore, 'conversations', conversationId as string);
-      await updateDoc(convRef, { status: 'OFFER_ACCEPTED' });
-
-      const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
-      await addDoc(messagesRef, {
-          conversation_id: conversationId,
-          sender_id: user.uid,
-          type: 'SYSTEM_EVENT',
-          content: `Brand accepted the proposed budget of ${conversation.agreed_budget} MAD. Awaiting funding.`,
-          timestamp: serverTimestamp(),
-      });
-      
-      toast({ title: 'Offer Accepted!', description: 'Proceed with funding to start the campaign.'});
-    }
-
     const handleFund = () => {
       router.push(`/campaigns/${conversation.campaign_id}/pay`);
     }
 
     const getStatusInfo = () => {
+        const isMyTurn = conversation.last_offer_by !== user?.uid;
+        
         switch (conversation.status) {
             case 'NEGOTIATION':
-                return { icon: Handshake, text: 'Negotiation in progress', color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-900/20' };
+                if (isMyTurn) {
+                    return { icon: Handshake, text: isBrand ? "Action Requise: Le créateur a fait une contre-offre." : "Action Requise: La marque vous a fait une offre.", color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
+                }
+                return { icon: Hourglass, text: isBrand ? "En attente de la réponse du créateur." : "Négociation en cours. La marque examine votre tarif.", color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-900/20' };
             case 'OFFER_ACCEPTED':
-                 return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
+                 return { icon: Handshake, text: isBrand ? "Accord trouvé. Déposez les fonds pour commencer." : "Accord trouvé. En attente du dépôt des fonds.", color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
             case 'ACTIVE':
                 if (campaign?.status === 'PENDING_PAYMENT') {
-                     return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
+                     return { icon: Hourglass, text: 'Offre acceptée. En attente du paiement.', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
                 }
-                return { icon: Shield, text: 'Project active. Funds secured.', color: 'text-green-600', bgColor: 'bg-green-50 dark:bg-green-900/20' };
+                return { icon: Shield, text: 'Fonds Sécurisés 🔒. Travail en cours.', color: 'text-green-600', bgColor: 'bg-green-50 dark:bg-green-900/20' };
             case 'REVIEW':
-                 return { icon: Info, text: 'Work submitted. Awaiting brand review.', color: 'text-purple-600', bgColor: 'bg-purple-50 dark:bg-purple-900/20' };
+                 return { icon: Info, text: 'Travail soumis. En attente de validation.', color: 'text-purple-600', bgColor: 'bg-purple-50 dark:bg-purple-900/20' };
             case 'COMPLETED':
-                return { icon: PartyPopper, text: 'Campaign completed!', color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-800' };
+                return { icon: PartyPopper, text: 'Campagne terminée !', color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-800' };
             case 'CANCELLED':
-                 return { icon: XCircle, text: 'This deal has been cancelled.', color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
+                 return { icon: XCircle, text: 'Cette négociation a été annulée.', color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
             default:
-                return { icon: Info, text: 'Status: ' + conversation.status, color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-800' };
+                return { icon: Info, text: 'Statut: ' + conversation.status, color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-800' };
         }
     }
 
     const { icon: Icon, text, color, bgColor } = getStatusInfo();
     
-    const budgetLabel = conversation.status === 'NEGOTIATION' ? 'Proposed Budget' : 'Agreed Budget';
+    const budgetLabel = conversation.status === 'NEGOTIATION' ? 'Dernière Offre' : 'Budget Accepté';
 
     return (
         <div className={cn("p-4 border-b", bgColor)}>
@@ -131,32 +92,14 @@ const DealStatusHeader = ({ conversation, campaign, onOfferSent }: { conversatio
                     <Icon className="h-5 w-5 mr-2" />
                     <span>{text}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div className="text-sm font-semibold">
+                 <div className="flex items-center gap-4">
+                    <div className="text-sm font-semibold text-right">
                         {budgetLabel}: <span className="text-primary">{conversation.agreed_budget || 0} MAD</span>
                     </div>
 
-                    {isBrand && conversation.status === 'NEGOTIATION' && (
-                        <>
-                          <Button variant="outline" size="sm" onClick={handleAcceptAndFund}>Accept & Fund</Button>
-                          <Popover>
-                              <PopoverTrigger asChild><Button variant="outline" size="sm">Change Offer</Button></PopoverTrigger>
-                              <PopoverContent>
-                                  <div className="grid gap-4">
-                                      <div className="space-y-2"><h4 className="font-medium leading-none">New Budget</h4><p className="text-sm text-muted-foreground">Propose a new budget for this deal.</p></div>
-                                      <div className="grid gap-2">
-                                           <Label htmlFor="budget">Amount (MAD)</Label>
-                                           <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                           <Button onClick={handleMakeOffer}>Send New Offer</Button>
-                                      </div>
-                                  </div>
-                              </PopoverContent>
-                          </Popover>
-                        </>
-                    )}
-                     {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
+                    {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
                          <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>
-                            <CircleDollarSign className="mr-2 h-4 w-4" /> Fund & Hire ({conversation.agreed_budget} MAD)
+                            <CircleDollarSign className="mr-2 h-4 w-4" /> Payer & Bloquer les Fonds ({conversation.agreed_budget} MAD)
                          </Button>
                     )}
                 </div>
@@ -176,7 +119,7 @@ const MessageBubble = ({ message, isOwnMessage, senderProfile }: { message: any,
                 </Avatar>
             )}
             <div className={`p-3 rounded-lg max-w-lg ${isOwnMessage ? 'bg-primary text-primary-foreground' : 'bg-background'}`}>
-                <p className="text-sm">{message.content}</p>
+                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                  {message.timestamp && (
                     <p className={`text-xs mt-1 ${isOwnMessage ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
                         {formatDistanceToNow(message.timestamp.toDate(), { addSuffix: true })}
@@ -191,13 +134,30 @@ const SystemCard = ({ message, onRespondToOffer }: any) => {
     const { userProfile } = useUserProfile();
 
     if (message.type === 'SYSTEM_OFFER') {
-        const isCreator = userProfile?.role === 'creator';
+        const isMyTurnToRespond = message.metadata.offer_status === 'PENDING' && message.sender_id !== userProfile?.uid;
         const status = message.metadata.offer_status;
+        
+        let title, description;
+        if (message.sender_id === userProfile?.uid) {
+            title = "Votre Offre";
+            description = `Vous avez proposé un budget de`;
+        } else {
+            title = "Offre Reçue";
+            description = `${message.sender_name || 'L\'autre partie'} a proposé un budget de`;
+        }
+
         return (
             <div className="py-4">
-                <Card className="max-w-sm mx-auto bg-muted/50">
+                <Card className={cn(
+                    "max-w-sm mx-auto",
+                     status === 'REJECTED' && 'bg-muted/30 border-dashed',
+                     status === 'ACCEPTED' && 'bg-green-50 dark:bg-green-900/20 border-green-500/30'
+                )}>
                     <CardHeader className="text-center pb-2">
-                        <CardTitle className="text-lg">Budget Proposal</CardTitle>
+                        <CardTitle className={cn(
+                            "text-lg",
+                            status === 'REJECTED' && 'text-muted-foreground'
+                        )}>{title}</CardTitle>
                         {message.timestamp && (
                             <p className="text-xs text-muted-foreground pt-1">
                                 {format(message.timestamp.toDate(), 'MMM d, yyyy HH:mm')}
@@ -205,21 +165,21 @@ const SystemCard = ({ message, onRespondToOffer }: any) => {
                         )}
                     </CardHeader>
                     <CardContent className="text-center">
-                        <p className="text-muted-foreground mb-2">{message.content.includes("The Brand proposed") ? "The brand proposed a new budget of" : "Creator's opening bid"}</p>
-                        <p className="text-2xl font-bold">{message.metadata.offer_amount} MAD</p>
+                        <p className={cn("text-muted-foreground mb-2", status === 'REJECTED' && 'line-through')}>{description}</p>
+                        <p className={cn("text-2xl font-bold", status === 'REJECTED' && 'text-muted-foreground line-through')}>{message.metadata.offer_amount} MAD</p>
 
-                        {status === 'PENDING' && isCreator && (
+                        {isMyTurnToRespond && (
                             <div className="flex gap-2 mt-4">
                                 <Button className="w-full" onClick={() => onRespondToOffer(message, 'ACCEPTED')}>
-                                    <CheckCircle className="mr-2 h-4 w-4" /> Accept
+                                    <CheckCircle className="mr-2 h-4 w-4" /> Accepter
                                 </Button>
                                 <Button variant="destructive" className="w-full" onClick={() => onRespondToOffer(message, 'REJECTED')}>
-                                    <XCircle className="mr-2 h-4 w-4" /> Decline
+                                    <XCircle className="mr-2 h-4 w-4" /> Refuser
                                 </Button>
                             </div>
                         )}
-                        {status === 'ACCEPTED' && <Badge className="mt-4 bg-green-100 text-green-800">Accepted</Badge>}
-                        {status === 'REJECTED' && <Badge variant="destructive" className="mt-4">Rejected</Badge>}
+                        {status === 'ACCEPTED' && <Badge className="mt-4 bg-green-100 text-green-800">Acceptée</Badge>}
+                        {status === 'REJECTED' && <Badge variant="destructive" className="mt-4">Refusée</Badge>}
                     </CardContent>
                 </Card>
             </div>
@@ -228,27 +188,28 @@ const SystemCard = ({ message, onRespondToOffer }: any) => {
     
     if(message.type === 'SYSTEM_ESCROW' || message.type === 'SYSTEM_EVENT') {
         const eventIcons: { [key: string]: React.ElementType } = {
-          'accepted': CheckCircle,
+          'accepté': CheckCircle,
+          'financé': Shield,
           'funded': Shield,
         };
         
-        const eventType = message.content.includes('accepted') ? 'accepted' : message.content.includes('funded') ? 'funded' : 'info';
+        const eventType = message.content.includes('accepté') ? 'accepté' : message.content.includes('financé') || message.content.includes('funded') ? 'funded' : 'info';
         const Icon = eventIcons[eventType] || Info;
 
         return (
             <div className="py-4 text-center text-sm text-muted-foreground flex justify-center items-center gap-2">
-                 <Icon className={cn("h-4 w-4", eventType === 'accepted' ? 'text-green-500' : 'text-blue-500')}/>
+                 <Icon className={cn("h-4 w-4", eventType === 'accepté' ? 'text-green-500' : 'text-blue-500')}/>
                  <p>{message.content}</p>
             </div>
         )
     }
 
     // For the initial context message
-    if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for campaign:')) {
+    if (message.type === 'TEXT' && message.content.startsWith('Discussion ouverte pour la campagne:')) {
         const isCreator = userProfile?.role === 'creator';
         let content = message.content;
         if(isCreator) {
-            content = content.replace("The creator's opening bid", "Your opening bid").replace("their cover letter is", "your cover letter is");
+            content = content.replace("L'offre d'ouverture du créateur est de", "Votre offre d'ouverture est de").replace("sa lettre de motivation est", "votre lettre de motivation est");
         }
         return (
             <div className="py-4">
@@ -306,7 +267,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: any) => {
     return (
         <div className="flex-1 p-6 space-y-4 overflow-y-auto" ref={scrollRef}>
             {messages.map((msg: any) => {
-                 if (msg.type !== 'TEXT' || msg.content.startsWith('Discussion opened for campaign:')) {
+                 if (msg.type !== 'TEXT' || msg.content.startsWith('Discussion ouverte pour la campagne:')) {
                     return <SystemCard key={msg.id} message={msg} onRespondToOffer={onRespondToOffer} />
                  }
                 return <MessageBubble key={msg.id} message={msg} isOwnMessage={msg.sender_id === user?.uid} senderProfile={profiles[msg.sender_id]} />
@@ -315,12 +276,82 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: any) => {
     );
 };
 
-const MessageInput = ({ onSend }: { onSend: (text: string) => void }) => {
+const ActionFooter = ({ conversation, onMakeOffer }: { conversation: any, onMakeOffer: (amount: number, message: string) => void }) => {
+    const { userProfile } = useUserProfile();
+    const { user } = useUser();
+    const [newOffer, setNewOffer] = useState('');
+    const [message, setMessage] = useState('');
+    
+    const isBrand = userProfile?.role === 'brand';
+    const isMyTurn = conversation.last_offer_by !== user?.uid;
+
+    if (!isMyTurn) {
+        return (
+            <div className="p-4 bg-background border-t text-center text-sm text-muted-foreground">
+                En attente de la réponse de l'autre partie...
+            </div>
+        )
+    }
+
+    const handleAcceptInitial = () => {
+        onMakeOffer(conversation.agreed_budget, "J'accepte votre tarif initial.");
+    }
+    
+    const handleSubmitOffer = () => {
+        if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
+            alert("Veuillez entrer un montant valide.");
+            return;
+        }
+        onMakeOffer(parseFloat(newOffer), message || "Voici une nouvelle proposition.");
+        setNewOffer('');
+        setMessage('');
+    }
+
+    // Brand's first move
+    if (isBrand && conversation.last_offer_by === conversation.creator_id) {
+         return (
+            <div className="p-4 bg-background border-t space-y-4">
+                 <div className="flex gap-2">
+                    <Button className="flex-1" onClick={handleAcceptInitial}>Accepter le Tarif ({conversation.agreed_budget} MAD)</Button>
+                    <Popover>
+                        <PopoverTrigger asChild><Button variant="outline" className="flex-1">Proposer un Autre Tarif</Button></PopoverTrigger>
+                        <PopoverContent className="w-80">
+                            <div className="grid gap-4">
+                                <div className="space-y-2"><h4 className="font-medium leading-none">Nouvelle Proposition</h4><p className="text-sm text-muted-foreground">Proposez un nouveau budget et ajoutez un message si vous le souhaitez.</p></div>
+                                <div className="grid gap-2">
+                                     <Label htmlFor="budget">Montant (MAD)</Label>
+                                     <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
+                                     <Label htmlFor="message">Message (optionnel)</Label>
+                                     <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="ex: C'est mon budget maximum pour cette opération..."/>
+                                     <Button onClick={handleSubmitOffer}>Envoyer l'Offre</Button>
+                                </div>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                    <Button variant="destructive" className="flex-1">Refuser</Button>
+                </div>
+            </div>
+        );
+    }
+    
+    // Creator or Brand responding to a counter-offer
+    if (isMyTurn) {
+        return (
+             <div className="p-4 bg-background border-t space-y-4">
+                <p className="text-center text-sm text-muted-foreground">Répondez à l'offre ci-dessus.</p>
+            </div>
+        );
+    }
+
+    return null;
+}
+
+const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string) => void, disabled: boolean, placeholder: string }) => {
     const [input, setInput] = useState('');
     const [isBlocked, setIsBlocked] = useState(false);
 
     const handleSend = () => {
-        if (!input.trim()) return;
+        if (!input.trim() || disabled) return;
         if (!GuardianBot.isSecure(input)) {
             setIsBlocked(true);
             setTimeout(() => setIsBlocked(false), 4000);
@@ -335,19 +366,20 @@ const MessageInput = ({ onSend }: { onSend: (text: string) => void }) => {
             {isBlocked && (
                 <Alert variant="destructive" className="mb-2">
                     <Bot className="h-4 w-4" />
-                    <AlertTitle>Message Blocked by Guardian Bot</AlertTitle>
-                    <AlertDescription>Sharing contact information is not allowed during negotiation. Please keep communication on VibeMatch for your security.</AlertDescription>
+                    <AlertTitle>Message Bloqué par Guardian Bot</AlertTitle>
+                    <AlertDescription>Le partage d'informations de contact est interdit durant la négociation. Veuillez garder la communication sur VibeMatch pour votre sécurité.</AlertDescription>
                 </Alert>
             )}
             <div className="relative">
                 <Input
-                    placeholder="Type your message..."
+                    placeholder={placeholder}
                     className="pr-12"
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSend()}
+                    disabled={disabled}
                 />
-                <Button variant="ghost" size="icon" className="absolute top-1/2 right-2 -translate-y-1/2" onClick={handleSend}>
+                <Button variant="ghost" size="icon" className="absolute top-1/2 right-2 -translate-y-1/2" onClick={handleSend} disabled={disabled}>
                     <Send className="h-5 w-5 text-muted-foreground" />
                 </Button>
             </div>
@@ -360,6 +392,7 @@ export default function SingleChatPage() {
     const router = useRouter();
     const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
+    const { userProfile } = useUserProfile();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
 
@@ -414,7 +447,7 @@ export default function SingleChatPage() {
                      <main className="flex-1 flex items-center justify-center bg-muted/50">
                         <div className="text-center">
                             <Info className="mx-auto h-12 w-12 text-muted-foreground" />
-                            <h2 className="mt-4 text-xl font-semibold text-muted-foreground">Conversation not found</h2>
+                            <h2 className="mt-4 text-xl font-semibold text-muted-foreground">Conversation non trouvée</h2>
                         </div>
                     </main>
                 </div>
@@ -431,27 +464,51 @@ export default function SingleChatPage() {
                     <ChatSidebar />
                      <main className="flex-1 flex items-center justify-center bg-muted/50">
                         <Alert variant="destructive" className="max-w-md">
-                           <AlertTitle>Access Denied</AlertTitle>
-                           <AlertDescription>You are not a participant in this conversation.</AlertDescription>
+                           <AlertTitle>Accès Refusé</AlertTitle>
+                           <AlertDescription>Vous ne participez pas à cette conversation.</AlertDescription>
                         </Alert>
                     </main>
                 </div>
             </div>
          )
      }
+     
+    const handleMakeOffer = async (amount: number, message: string) => {
+        if (!firestore || !user || !userProfile || !conversationRef) return;
+        
+        // 1. Find the current pending offer and mark it as 'SUPERSEDED' or 'REJECTED'
+        const lastOffer = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
+        if(lastOffer) {
+            const lastOfferRef = doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id);
+            await updateDoc(lastOfferRef, { 'metadata.offer_status': 'REJECTED' });
+        }
+
+        // 2. Add the new offer message
+        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
+        await addDoc(messagesRef, {
+            conversation_id: conversationId,
+            sender_id: user.uid,
+            sender_name: userProfile.name,
+            type: 'SYSTEM_OFFER',
+            content: message,
+            metadata: {
+                offer_amount: amount,
+                offer_status: 'PENDING',
+            },
+            timestamp: serverTimestamp(),
+        });
+
+        // 3. Update the conversation document
+        await updateDoc(conversationRef, { 
+            agreed_budget: amount,
+            last_offer_by: user.uid,
+            lastMessage: `Nouvelle offre: ${amount} MAD`,
+            updatedAt: serverTimestamp(),
+         });
+    };
 
     const handleSendMessage = async (text: string) => {
         if (!firestore || !user || isSubmitting) return;
-
-        // Guardian Bot check for negotiation phase
-        if (conversation.status === 'NEGOTIATION' && !GuardianBot.isSecure(text)) {
-            toast({
-                variant: 'destructive',
-                title: 'Message Blocked',
-                description: 'For your security, sharing contact information is not allowed until the deal is funded.',
-            });
-            return;
-        }
         
         setIsSubmitting(true);
         const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
@@ -463,41 +520,48 @@ export default function SingleChatPage() {
                 content: text,
                 timestamp: serverTimestamp(),
             });
+             await updateDoc(conversationRef!, { 
+                lastMessage: text,
+                updatedAt: serverTimestamp(),
+             });
         } catch (error: any) {
-            toast({ variant: 'destructive', title: 'Error sending message', description: error.message });
+            toast({ variant: 'destructive', title: 'Erreur lors de l\'envoi du message', description: error.message });
         } finally {
             setIsSubmitting(false);
         }
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
-        if (!firestore || !user) return;
+        if (!firestore || !user || !conversationRef) return;
         
-        const convRef = doc(firestore, 'conversations', conversationId as string);
         const msgRef = doc(firestore, 'conversations', conversationId as string, 'messages', message.id);
         const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
         
         const updates = [];
         
+        updates.push(updateDoc(msgRef, { 'metadata.offer_status': response }));
+        
         if (response === 'ACCEPTED') {
-            updates.push(updateDoc(convRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED' }));
+            updates.push(updateDoc(conversationRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED' }));
             updates.push(addDoc(messagesRef, {
                 conversation_id: conversationId,
                 sender_id: user.uid,
                 type: 'SYSTEM_EVENT',
-                content: `Creator accepted the offer of ${message.metadata.offer_amount} MAD. Awaiting funding.`,
+                content: `Offre acceptée par le Créateur. En attente du dépôt des fonds par la Marque.`,
                 timestamp: serverTimestamp(),
             }));
-            toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
+            toast({ title: 'Offre Acceptée!', description: 'La marque peut maintenant financer le projet.'});
         } else {
-            toast({ title: 'Offer Rejected' });
+             // If creator rejects, it's their turn to make a counter-offer
+             updates.push(updateDoc(conversationRef, { last_offer_by: user.uid }));
+             toast({ title: 'Offre Refusée' });
         }
-
-        updates.push(updateDoc(msgRef, { 'metadata.offer_status': response }));
         
         await Promise.all(updates);
     };
 
+    const isChatActive = conversation.status === 'ACTIVE' && campaign?.status !== 'PENDING_PAYMENT';
+    const textInputPlaceholder = isChatActive ? "Discutez des détails créatifs..." : "Choisissez une action pour commencer.";
 
     return (
         <div className="h-screen w-full flex flex-col">
@@ -507,11 +571,13 @@ export default function SingleChatPage() {
                 <main className="flex-1 flex flex-col bg-muted/50">
                     <DealStatusHeader conversation={conversation} campaign={campaign} onOfferSent={() => {}} />
                     <MessageStream messages={messages} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
-                    <MessageInput onSend={handleSendMessage} />
+                    {conversation.status === 'NEGOTIATION' ? (
+                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} />
+                    ) : (
+                       <MessageInput onSend={handleSendMessage} disabled={!isChatActive} placeholder={textInputPlaceholder} />
+                    )}
                 </main>
             </div>
         </div>
     );
 }
-
-    
