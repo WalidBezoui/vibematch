@@ -50,8 +50,8 @@ type CreatorProfile = {
 };
 
 const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, activeCampaigns: any[] }) => (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 flex flex-col">
-        <div className="aspect-[4/5] bg-muted relative group">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 flex flex-col group">
+        <div className="aspect-[4/5] bg-muted relative overflow-hidden">
             <Link href={`/creators/${creator.id}`} className="block w-full h-full">
                 <Avatar className="w-full h-full rounded-none">
                     <AvatarImage src={creator.photoURL} alt={creator.displayName || creator.name} className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" />
@@ -59,19 +59,20 @@ const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, ac
                         {creator.displayName?.[0]?.toUpperCase() || creator.name?.[0]?.toUpperCase()}
                     </AvatarFallback>
                 </Avatar>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4">
-                     <h3 className="text-2xl font-bold text-white shadow-sm">{creator.displayName || creator.name}</h3>
-                     {creator.location && (
-                        <div className="flex items-center gap-1.5 text-sm text-white/90 mt-1">
-                            <MapPin className="h-4 w-4" />
-                            <span>{creator.location}</span>
-                        </div>
-                     )}
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
             </Link>
         </div>
         <CardContent className="p-4 space-y-3 flex-grow">
+             <div>
+                <h3 className="text-xl font-bold">{creator.displayName || creator.name}</h3>
+                 {creator.location && (
+                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-1">
+                        <MapPin className="h-4 w-4" />
+                        <span>{creator.location}</span>
+                    </div>
+                 )}
+             </div>
+
              {creator.tags && creator.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                     {creator.tags.slice(0, 3).map(tag => (
@@ -113,17 +114,16 @@ const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, ac
                  </div>
              </div>
         </CardContent>
-        <CardFooter className="p-2 border-t bg-muted/50 flex flex-col sm:flex-row items-stretch gap-2">
+        <CardFooter className="p-3 border-t bg-muted/30 flex flex-col items-stretch gap-2">
              <InviteToCampaignDialog creator={creator} campaigns={activeCampaigns}>
-                <Button className="w-full sm:flex-1">
+                <Button className="w-full">
                     <Send className="mr-2 h-4 w-4" />
-                    Invite
+                    Invite to Campaign
                 </Button>
             </InviteToCampaignDialog>
-            <Button asChild className="w-full sm:flex-1" variant="ghost">
+            <Button asChild className="w-full" variant="ghost">
                 <Link href={`/creators/${creator.id}`}>
                     View Profile
-                    <ArrowRight className="h-4 w-4 ml-2" />
                 </Link>
             </Button>
         </CardFooter>
