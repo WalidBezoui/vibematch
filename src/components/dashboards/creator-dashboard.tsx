@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type } from 'lucide-react';
+import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, ArrowRight } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
@@ -52,13 +52,13 @@ const CampaignCardSkeleton = () => (
     </Card>
 );
 
-const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground', subtitle }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean, color?: string, subtitle?: string }) => (
-    <Card className="shadow-sm">
+const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground', subtitle, cta }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean, color?: string, subtitle?: string, cta?: { text: string; href: string; } }) => (
+    <Card className="shadow-sm flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
             {icon}
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-grow">
             {isLoading ? (
                 <>
                     <Skeleton className="h-8 w-1/2" />
@@ -66,11 +66,21 @@ const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground', su
                 </>
             ) : (
                 <>
-                    <div className={cn("text-2xl font-bold", color)}>{value}</div>
+                    <div className={cn("text-3xl font-bold", color)}>{value}</div>
                     {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
                 </>
             )}
         </CardContent>
+        {cta && !isLoading && (
+            <CardFooter className="pt-0">
+                <Button asChild size="sm" variant="secondary" className="w-full">
+                    <Link href={cta.href}>
+                        {cta.text}
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                    </Link>
+                </Button>
+            </CardFooter>
+        )}
     </Card>
 );
 
@@ -144,8 +154,8 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
                             </div>
                         </div>
                         {percentage < 100 && motivationalTip && (
-                             <div className="flex items-center gap-2 text-xs text-muted-foreground bg-secondary/50 p-2 rounded-lg">
-                                <Lightbulb className="h-4 w-4 text-primary flex-shrink-0" />
+                             <div className="flex items-start gap-2 text-xs text-muted-foreground bg-secondary/50 p-2 rounded-lg">
+                                <Lightbulb className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                                 <span>{motivationalTip}</span>
                             </div>
                         )}
@@ -317,7 +327,7 @@ export default function CreatorDashboard() {
             ) : (
                 <ProfileImpactCard isLoading={isLoading} />
             )}
-            <StatCard isLoading={isLoading} title="Matching Opportunities" value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={`${matchingJobsCount} campaigns are looking for a profile like yours.`} />
+            <StatCard isLoading={isLoading} title="Matching Opportunities" value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={`${matchingJobsCount} campaigns are looking for a profile like yours.`} cta={{ text: 'Discover Campaigns', href: '/discover' }} />
             <StatCard isLoading={isLoading} title="Profile Views (7d)" value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={`${Math.floor(profileViews/3)} brands saw your profile today.`} />
         </div>
 
