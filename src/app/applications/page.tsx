@@ -48,8 +48,8 @@ const ApplicantCard = ({ application, campaign, onSelectCreator }: { application
             <Card className="transition-all hover:shadow-md">
                  <CardHeader className="p-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <CollapsibleTrigger className="flex-1 text-left">
-                            <div className="flex items-start gap-4">
+                        <CollapsibleTrigger asChild>
+                            <div className="flex items-start gap-4 flex-1 cursor-pointer">
                                 <Avatar className="h-12 w-12 border">
                                     <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
                                     <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
@@ -59,7 +59,7 @@ const ApplicantCard = ({ application, campaign, onSelectCreator }: { application
                                         {application.profile?.name}
                                     </p>
                                     <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaign.title}</span></p>
-                                    <div className="flex items-center gap-4 mt-2">
+                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2">
                                         <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
                                             <ShieldCheck className="h-3 w-3 mr-1" />
                                             Trust Score: {application.trustScore}
@@ -78,7 +78,7 @@ const ApplicantCard = ({ application, campaign, onSelectCreator }: { application
                                 </div>
                             </div>
                         </CollapsibleTrigger>
-                         <div className="flex items-center gap-2 self-start sm:self-center">
+                         <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
                             <Button variant="outline" size="sm" onClick={() => onSelectCreator(application.creatorId)}>
                                 View Profile <ArrowRight className="h-4 w-4 ml-2" />
                             </Button>
@@ -98,7 +98,7 @@ const ApplicantCard = ({ application, campaign, onSelectCreator }: { application
                              <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Why you?</h4>
                              <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border">{application.coverLetter}</p>
                         </div>
-                        <CardFooter className="bg-muted/50 p-3 border-t flex items-stretch gap-2">
+                        <CardFooter className="bg-muted/50 p-3 border-t flex flex-col sm:flex-row items-stretch gap-2">
                              <Button className="w-full flex-1">
                                 <MessageSquare className="mr-2 h-4 w-4" />
                                 {actionButtonText}
