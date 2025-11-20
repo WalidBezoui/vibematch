@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, ChevronDown, FileText, Inbox, MessageSquare, Send, User, UserCheck, X } from 'lucide-react';
+import { ArrowRight, CheckCircle, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, Send, User, UserCheck, X } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -44,7 +44,7 @@ const ApplicantCard = ({ application, campaignTitle }: { application: Applicant;
                             <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
                             <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
                         </Avatar>
-                        <div className="flex-1 grid grid-cols-4 items-center gap-4">
+                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-4 items-center gap-4">
                             <div className="col-span-2">
                                 <p className="font-semibold text-left">
                                     {application.profile?.name}
@@ -63,9 +63,6 @@ const ApplicantCard = ({ application, campaignTitle }: { application: Applicant;
                             </div>
                         </div>
                         <div className="flex items-center gap-1">
-                            <Button size="icon" variant="ghost" className="rounded-full">
-                                <MessageSquare className="h-5 w-5" />
-                            </Button>
                             <ChevronDown className={cn("h-5 w-5 text-muted-foreground transition-transform", isOpen && "rotate-180")} />
                         </div>
                     </div>
@@ -183,10 +180,18 @@ export default function TalentHubPage() {
                     ) : null}
 
                      {!isLoading && allApplications.length === 0 && (
-                        <div className="text-center py-24 border-2 border-dashed rounded-lg">
-                            <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
+                        <div className="text-center py-24 border-2 border-dashed rounded-lg bg-muted/30">
+                             <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
+                                <Inbox className="h-8 w-8 text-black" />
+                            </div>
                             <h2 className="text-2xl font-semibold mt-4">{t('talentHub.empty.title')}</h2>
-                            <p className="text-muted-foreground mt-2">{t('talentHub.empty.description')}</p>
+                            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{t('talentHub.empty.description')}</p>
+                            <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+                                <Link href="/campaigns/create">
+                                    <PlusCircle className="mr-2 h-5 w-5" />
+                                    {t('brandDashboard.createButton')}
+                                </Link>
+                            </Button>
                         </div>
                     )}
                  </div>
