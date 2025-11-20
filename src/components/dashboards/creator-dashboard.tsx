@@ -160,6 +160,21 @@ export default function CreatorDashboard() {
   const [isLoadingPending, setIsLoadingPending] = useState(true);
   const [stats, setStats] = useState({ escrow: 0 });
   const [userApplications, setUserApplications] = useState<Map<string, string>>(new Map());
+  const [greeting, setGreeting] = useState('Welcome');
+
+  useEffect(() => {
+    const now = new Date();
+    const hour = now.getHours();
+    const name = userProfile?.displayName?.split(' ')[0] || '';
+
+    if (hour < 12) {
+      setGreeting(`Good morning, ${name}`);
+    } else if (hour < 18) {
+      setGreeting(`Good afternoon, ${name}`);
+    } else {
+      setGreeting(`Good evening, ${name}`);
+    }
+  }, [userProfile]);
 
   // Fetch active campaigns (where creator is assigned)
   const activeCampaignsQuery = useMemoFirebase(
@@ -263,7 +278,7 @@ export default function CreatorDashboard() {
   return (
     <div>
       <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
-        <h1 className="text-4xl font-bold tracking-tight">Creator Command Center</h1>
+        <h1 className="text-4xl font-bold tracking-tight">{greeting}</h1>
         <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
           <Link href="/discover">
             <Compass className="mr-2 h-5 w-5" />
@@ -282,12 +297,12 @@ export default function CreatorDashboard() {
             <StatCard isLoading={isLoading} title="Profile Views (7d)" value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={`${Math.floor(profileViews/3)} brands saw your profile today.`} />
         </div>
 
-      <Tabs defaultValue="active">
+      <Tabs defaultValue="campaigns">
         <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="active">Active Campaigns <Badge variant="secondary" className="ml-2">{activeCampaigns?.length || 0}</Badge></TabsTrigger>
+            <TabsTrigger value="campaigns">Campaigns <Badge variant="secondary" className="ml-2">{activeCampaigns?.length || 0}</Badge></TabsTrigger>
             <TabsTrigger value="pending">Pending Applications <Badge variant="secondary" className="ml-2">{pendingCampaigns?.length || 0}</Badge></TabsTrigger>
         </TabsList>
-        <TabsContent value="active">
+        <TabsContent value="campaigns">
             {isLoadingActive ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
                     <CampaignCardSkeleton />
@@ -402,3 +417,5 @@ export default function CreatorDashboard() {
     </div>
   );
 }
+
+    
