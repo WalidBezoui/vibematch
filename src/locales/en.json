@@ -12,7 +12,8 @@
         "profile": "My Profile",
         "discover": "Discover",
         "messages": "Messages",
-        "creators": "Creators"
+        "creators": "Creators",
+        "applications": "Applications"
     },
     "brandDashboard": {
         "title": "Brand Dashboard",
@@ -32,6 +33,7 @@
             "confirm": "Yes, Delete"
         },
         "hiringProgress": "Hiring Progress",
+        "hiredCount": "{{hired}}/{{total}} Hired",
         "manageButton": "Manage Applications",
         "viewButton": "View Campaign",
         "emptyState": {
@@ -499,5 +501,22 @@
             "description": "For detailed inquiries or feedback, feel free to send us an email.",
             "button": "Send Email"
         }
+    },
+    "currency": "DH",
+    "talentHub": {
+        "title": "Talent Hub",
+        "description": "Manage all incoming applications and outgoing invitations in one place.",
+        "empty": {
+            "title": "No applications yet",
+            "description": "When creators apply to your campaigns, you'll see them here."
+        },
+        "card": {
+            "appliedTo": "Applied to"
+        },
+        "source": {
+            "applied": "Applied"
+        }
     }
 }
+
+    

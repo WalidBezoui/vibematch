@@ -12,7 +12,8 @@
         "profile": "Mon Profil",
         "discover": "Découvrir",
         "messages": "Messages",
-        "creators": "Créateurs"
+        "creators": "Créateurs",
+        "applications": "Candidatures"
     },
     "brandDashboard": {
         "title": "Tableau de Bord Marque",
@@ -32,6 +33,7 @@
             "confirm": "Oui, Supprimer"
         },
         "hiringProgress": "Progression du recrutement",
+        "hiredCount": "{{hired}}/{{total}} Recrutés",
         "manageButton": "Gérer les candidatures",
         "viewButton": "Voir la campagne",
         "emptyState": {
@@ -499,5 +501,22 @@
           "description": "Pour toute demande détaillée ou pour nous faire part de vos suggestions.",
           "button": "Envoyer un E-mail"
         }
+    },
+    "currency": "MAD",
+    "talentHub": {
+        "title": "Pôle de Talents",
+        "description": "Gérez toutes les candidatures entrantes et les invitations envoyées au même endroit.",
+        "empty": {
+            "title": "Aucune candidature pour le moment",
+            "description": "Quand les créateurs postuleront à vos campagnes, vous les verrez ici."
+        },
+        "card": {
+            "appliedTo": "A postulé à"
+        },
+        "source": {
+            "applied": "Reçue"
+        }
     }
 }
+
+    
