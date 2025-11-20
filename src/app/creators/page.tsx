@@ -1,3 +1,4 @@
+
 'use client';
 
 import { AppHeader } from '@/components/app-header';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, ShieldCheck, Instagram, ArrowRight, Briefcase } from 'lucide-react';
+import { MapPin, ShieldCheck, Instagram, ArrowRight, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
@@ -102,7 +103,7 @@ const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, ac
         <CardFooter className="p-2 border-t bg-muted/50 flex flex-col items-stretch gap-2">
              <InviteToCampaignDialog creator={creator} campaigns={activeCampaigns}>
                 <Button className="w-full">
-                    <Briefcase className="mr-2 h-4 w-4" />
+                    <Send className="mr-2 h-4 w-4" />
                     Invite to Campaign
                 </Button>
             </InviteToCampaignDialog>

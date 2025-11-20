@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, Award, CalendarDays, Info, ShieldAlert } from 'lucide-react';
+import { MapPin, Briefcase, Award, CalendarDays, Info, ShieldAlert, Send } from 'lucide-react';
 import { useCollection } from '@/firebase/firestore/use-collection';
 import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
 
@@ -209,7 +209,7 @@ export default function CreatorPublicProfilePage() {
                <CardFooter>
                  <InviteToCampaignDialog creator={creator} campaigns={activeCampaigns || []}>
                     <Button className="w-full gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
-                        <Briefcase className="mr-2 h-4 w-4" />
+                        <Send className="mr-2 h-4 w-4" />
                         Invite to a Campaign
                     </Button>
                 </InviteToCampaignDialog>
