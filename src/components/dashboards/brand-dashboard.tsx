@@ -76,19 +76,23 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
     const firestore = useFirestore();
     const [applicationCount, setApplicationCount] = useState(0);
     const [isLoadingCount, setIsLoadingCount] = useState(true);
+    const hiredCount = campaign.creatorIds?.length || 0;
+    const totalNeeded = campaign.numberOfCreators || 1;
 
     useEffect(() => {
         const fetchCount = async () => {
-            if (firestore && campaign.id) {
+            if (firestore && campaign.id && campaign.status === 'OPEN_FOR_APPLICATIONS') {
                 setIsLoadingCount(true);
                 const applicationsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
                 const snapshot = await getCountFromServer(applicationsRef);
                 setApplicationCount(snapshot.data().count);
                 setIsLoadingCount(false);
+            } else {
+                setIsLoadingCount(false);
             }
         };
         fetchCount();
-    }, [firestore, campaign.id]);
+    }, [firestore, campaign.id, campaign.status]);
 
     return (
         <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
@@ -140,14 +144,14 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                  <CardDescription className="gradient-text font-bold text-base pt-2">{campaign.budget} DH</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
-                {campaign.tags && campaign.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        {campaign.tags.map((tag: string) => (
-                            <Badge key={tag} variant="secondary">{tag}</Badge>
-                        ))}
+                 {hiredCount > 0 ? (
+                    <div className="text-sm font-semibold text-muted-foreground">
+                        <Users className="inline-block h-4 w-4 mr-2" />
+                        {hiredCount} / {totalNeeded} Creators Hired
                     </div>
+                ) : (
+                     <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
                 )}
-                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
             </CardContent>
             <CardFooter className="bg-muted/50 p-4">
                 {campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION' ? (

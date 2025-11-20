@@ -30,6 +30,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
 
 type Applicant = {
     id: string;
@@ -62,6 +63,29 @@ const ApplicantCardSkeleton = () => (
         </CardFooter>
     </Card>
 )
+
+const HiringProgress = ({ campaign }: { campaign: any }) => {
+    if (!campaign) return null;
+    const hiredCount = campaign.creatorIds?.length || 0;
+    const totalNeeded = campaign.numberOfCreators || 1;
+    const progress = totalNeeded > 0 ? Math.round((hiredCount / totalNeeded) * 100) : 0;
+
+    return (
+        <Card className="mb-8">
+            <CardHeader>
+                <CardTitle>Hiring Progress</CardTitle>
+                <CardDescription>You've hired {hiredCount} out of {totalNeeded} creators for this campaign.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Progress value={progress} className="h-3" />
+                <div className="flex justify-between text-sm text-muted-foreground mt-2">
+                    <span>{hiredCount} Hired</span>
+                    <span>{totalNeeded} Goal</span>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
 
 export default function ManageApplicationsPage() {
     const { campaignId } = useParams();
@@ -161,15 +185,24 @@ export default function ManageApplicationsPage() {
     };
 
     const handleAcceptAndHire = async (applicant: Applicant) => {
-        if (!campaignRef || !firestore || !user) return;
+        if (!campaignRef || !firestore || !user || !campaign) return;
 
         toast({ title: 'Embauche du créateur...' });
         
         try {
-            await updateDoc(campaignRef, {
+            const hiredCount = campaign.creatorIds?.length || 0;
+            const totalNeeded = campaign.numberOfCreators || 1;
+            const newHiredCount = hiredCount + 1;
+            
+            const campaignUpdate: any = {
                 creatorIds: arrayUnion(applicant.creatorId),
-                status: 'PENDING_CREATOR_ACCEPTANCE'
-            });
+            };
+
+            if (newHiredCount >= totalNeeded) {
+                campaignUpdate.status = 'PENDING_CREATOR_ACCEPTANCE';
+            }
+
+            await updateDoc(campaignRef, campaignUpdate);
             
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
             await updateDoc(applicationRef, { status: 'OFFER_ACCEPTED' });
@@ -235,8 +268,10 @@ export default function ManageApplicationsPage() {
                         Examinez et sélectionnez le meilleur créateur pour votre campagne : <strong>{campaign.title}</strong>
                     </p>
                 </div>
+                
+                <HiringProgress campaign={campaign} />
 
-                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && (
+                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION' && (
                     <Alert>
                         <AlertTitle>Cette campagne n'accepte plus de candidatures.</AlertTitle>
                         <AlertDescription>

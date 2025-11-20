@@ -8,6 +8,7 @@ import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile }
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from './ui/badge';
 
 const ConversationCard = ({
   href,
@@ -122,7 +123,7 @@ const ConversationList = ({ conversations, conversationId }: { conversations: an
                     name={item.otherUser.name}
                     title={item.campaignTitle}
                     lastMessage={item.lastMessage || 'No messages yet'}
-                    hasAction={item.status === 'NEGOTIATION' && !item.is_funded}
+                    hasAction={item.status === 'NEGOTIATION' && item.last_offer_by !== user?.uid}
                 />
             ))}
         </div>
@@ -143,7 +144,7 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
   const { data: conversations, isLoading } = useCollection(conversationsQuery);
   
   const negotiations = conversations?.filter(c => c.status === 'NEGOTIATION' || c.status === 'OFFER_ACCEPTED') || [];
-  const active = conversations?.filter(c => c.status === 'ACTIVE' || c.status === 'REVIEW' || c.status === 'PENDING_PAYMENT') || [];
+  const active = conversations?.filter(c => ['ACTIVE', 'REVIEW', 'PENDING_PAYMENT'].includes(c.status)) || [];
   const completed = conversations?.filter(c => c.status === 'COMPLETED' || c.status === 'CANCELLED') || [];
 
   return (
@@ -159,10 +160,10 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
             </div>
         ) : (
              <Tabs defaultValue="negotiations" className="flex-1 flex flex-col">
-                <TabsList className="m-2">
-                <TabsTrigger value="negotiations" className="flex-1">Négociations</TabsTrigger>
-                <TabsTrigger value="active" className="flex-1">Actifs</TabsTrigger>
-                <TabsTrigger value="completed" className="flex-1">Terminés</TabsTrigger>
+                <TabsList className="m-2 grid grid-cols-3">
+                    <TabsTrigger value="negotiations" className="flex-1">Négociations <Badge variant="secondary" className="ml-2">{negotiations.length}</Badge></TabsTrigger>
+                    <TabsTrigger value="active" className="flex-1">Actifs <Badge variant="secondary" className="ml-2">{active.length}</Badge></TabsTrigger>
+                    <TabsTrigger value="completed" className="flex-1">Terminés <Badge variant="secondary" className="ml-2">{completed.length}</Badge></TabsTrigger>
                 </TabsList>
                 <div className="flex-1 overflow-y-auto">
                     <TabsContent value="negotiations" className="m-0">

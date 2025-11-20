@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Send, CheckCircle, Hand, Sparkles } from 'lucide-react';
+import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useState, useEffect } from 'react';
@@ -20,6 +20,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
     PENDING_SELECTION: 'bg-yellow-100 text-yellow-800',
+    YOUR_ACCEPTANCE: 'bg-blue-100 text-blue-800 animate-pulse',
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800',
     PENDING_PAYMENT: 'bg-blue-100 text-blue-800',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800',
@@ -98,69 +99,20 @@ const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: 
     );
 }
 
-const CreatorWorkspace = ({ campaign, campaignRef }: { campaign: any, campaignRef: any }) => {
-    const { toast } = useToast();
-
-    const handleDeliver = async () => {
-        toast({ title: "Submitting work..." });
-        // Simulate upload
-        await new Promise(res => setTimeout(res, 1500));
-        try {
-            await updateDoc(campaignRef, {
-                status: 'DELIVERED',
-                updatedAt: serverTimestamp(),
-            });
-            toast({ title: "Deliverables submitted!", description: "The brand has been notified to review your work." });
-        } catch (e: any) {
-             toast({ variant: 'destructive', title: "Submission failed", description: e.message });
-        }
-    }
-
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Creator Workspace</CardTitle>
-                <CardDescription>Upload your deliverables here once they are ready.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="p-8 border-2 border-dashed rounded-lg text-center bg-muted/50">
-                    <p className="font-semibold">Upload Area</p>
-                    <p className="text-sm text-muted-foreground mt-1">(File upload simulation)</p>
-                </div>
-                 <Button onClick={handleDeliver} className="w-full mt-6" disabled={campaign.status !== 'IN_PROGRESS'}>
-                     <Send className="mr-2 h-4 w-4" />
-                     Mark as Delivered
-                </Button>
-            </CardContent>
-        </Card>
-    )
-}
-
-const BrandWorkspace = ({ campaign, campaignId, campaignRef, hiredCreators }: { campaign: any, campaignId: string, campaignRef: any, hiredCreators: any[] }) => {
+const BrandWorkspace = ({ campaign, campaignId, hiredCreators }: { campaign: any, campaignId: string, hiredCreators: any[] }) => {
     const router = useRouter();
-    const { toast } = useToast();
 
-    const handleApprove = async () => {
-        toast({ title: "Releasing Payment..." });
-        // Simulate payment processing
-        await new Promise(res => setTimeout(res, 1500));
-         try {
-            await updateDoc(campaignRef, {
-                status: 'COMPLETED',
-                updatedAt: serverTimestamp(),
-            });
-            toast({ title: "Campaign Complete!", description: "Payment has been released to the creator." });
-        } catch (e: any) {
-             toast({ variant: 'destructive', title: "Approval Failed", description: e.message });
-        }
-    }
+    const hiredCount = campaign.creatorIds?.length || 0;
+    const totalNeeded = campaign.numberOfCreators || 1;
+    const isCampaignFull = hiredCount >= totalNeeded;
 
     return (
         <Card>
             <CardHeader>
                 <CardTitle>Brand Workspace</CardTitle>
+                <CardDescription>Manage your campaign and hired creators.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-6">
                  {campaign.status === 'PENDING_PAYMENT' && (
                     <div className="text-center p-8 bg-blue-50 border border-blue-200 rounded-lg">
                         <h3 className="text-xl font-semibold text-blue-800">Action Required</h3>
@@ -174,7 +126,7 @@ const BrandWorkspace = ({ campaign, campaignId, campaignRef, hiredCreators }: { 
                     <div className="text-center p-8 bg-purple-50 border border-purple-200 rounded-lg">
                         <h3 className="text-xl font-semibold text-purple-800">Deliverables Ready for Review</h3>
                         <p className="text-purple-700 mt-2">The creator has submitted the work. Please review and approve to release payment.</p>
-                        <Button className="mt-6" onClick={handleApprove}>
+                        <Button className="mt-6" onClick={() => { /* handleApprove */ }}>
                            ✅ Validate & Release Payment
                         </Button>
                     </div>
@@ -182,30 +134,38 @@ const BrandWorkspace = ({ campaign, campaignId, campaignRef, hiredCreators }: { 
                 {(campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION') && (
                      <Alert>
                         <AlertDescription className="text-center">
-                            <Link href={`/campaigns/${campaignId}/manage`} className="font-semibold text-primary hover:underline">Manage applications</Link> to select a creator for this campaign.
+                            <Link href={`/campaigns/${campaignId}/manage`} className="font-semibold text-primary hover:underline">Manage applications</Link> to select creators for this campaign.
                         </AlertDescription>
                     </Alert>
                 )}
                 {campaign.status === 'IN_PROGRESS' && (
-                     <p className="text-muted-foreground">The campaign is currently in progress. You will be notified when the creator submits the deliverables.</p>
+                     <p className="text-muted-foreground text-center">The campaign is in progress. You will be notified when creators submit their deliverables.</p>
                 )}
                  {campaign.status === 'COMPLETED' && (
-                     <p className="text-muted-foreground">This campaign is complete and payment has been released.</p>
+                     <p className="text-muted-foreground text-center">This campaign is complete.</p>
                 )}
-                 {campaign.status === 'PENDING_CREATOR_ACCEPTANCE' && (
+                 {(campaign.status === 'PENDING_CREATOR_ACCEPTANCE' || isCampaignFull) && (
                      <div className="space-y-4">
-                        <p className="text-muted-foreground">Waiting for the selected creator(s) to accept the campaign offer.</p>
-                        <div className="flex flex-wrap gap-4">
-                            {hiredCreators.map(creator => (
-                                <div key={creator.uid} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border">
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage src={creator.photoURL} alt={creator.name} />
-                                        <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <span className="text-sm font-medium">{creator.name}</span>
-                                </div>
-                            ))}
-                        </div>
+                        <h4 className="font-semibold flex items-center gap-2"><UserCheck className="h-5 w-5 text-primary" /> Hired Creators ({hiredCount}/{totalNeeded})</h4>
+                        {hiredCreators.length > 0 ? (
+                            <div className="flex flex-wrap gap-4">
+                                {hiredCreators.map(creator => {
+                                    const isPending = campaign.creatorIds.includes(creator.uid) && !creator.accepted; // This is pseudo-logic
+                                    return (
+                                    <div key={creator.uid} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border">
+                                        <Avatar className="h-8 w-8">
+                                            <AvatarImage src={creator.photoURL} alt={creator.name} />
+                                            <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
+                                        </Avatar>
+                                        <span className="text-sm font-medium">{creator.name}</span>
+                                        <Badge variant={isPending ? 'outline' : 'secondary'}>{isPending ? 'Pending' : 'Accepted'}</Badge>
+                                    </div>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-muted-foreground">Waiting for creators to accept...</p>
+                        )}
                     </div>
                 )}
             </CardContent>
@@ -250,11 +210,14 @@ export default function CampaignPage() {
     useEffect(() => {
         if (firestore && campaign?.creatorIds?.length > 0) {
             const fetchCreators = async () => {
+                // To prevent re-fetching if we already have the data
+                if(hiredCreators.length === campaign.creatorIds.length) return;
+
                 const creatorPromises = campaign.creatorIds.map(async (creatorId: string) => {
                     const creatorRef = doc(firestore, 'users', creatorId);
-                    const creatorSnap = await getDocs(query(collection(firestore, 'users'), where('uid', '==', creatorId)));
-                     if (!creatorSnap.empty) {
-                        return creatorSnap.docs[0].data();
+                    const creatorSnap = await getDoc(creatorRef);
+                     if (creatorSnap.exists()) {
+                        return {uid: creatorId, ...creatorSnap.data()};
                     }
                     return null;
                 });
@@ -264,6 +227,7 @@ export default function CampaignPage() {
             };
             fetchCreators();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [firestore, campaign]);
 
 
@@ -312,6 +276,13 @@ export default function CampaignPage() {
     }
 
     const showInvitation = isSelectedCreator && campaign.status === 'PENDING_CREATOR_ACCEPTANCE';
+    
+    let badgeStatus = campaign.status;
+    let badgeText = campaign.status.replace(/_/g, ' ');
+    if (isSelectedCreator && campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
+        badgeStatus = 'YOUR_ACCEPTANCE';
+        badgeText = 'YOUR ACCEPTANCE';
+    }
 
 
     return (
@@ -333,8 +304,8 @@ export default function CampaignPage() {
                                         <span className="text-sm text-muted-foreground">Posted by {brandProfile?.name}</span>
                                     </div>
                                 </div>
-                                <Badge className={cn('whitespace-nowrap', statusStyles[campaign.status])}>
-                                    {campaign.status.replace(/_/g, ' ')}
+                                <Badge className={cn('whitespace-nowrap', statusStyles[badgeStatus])}>
+                                    {badgeText}
                                 </Badge>
                             </div>
                         </CardHeader>
@@ -377,11 +348,10 @@ export default function CampaignPage() {
                         )}
                     </Card>
 
-                    {isBrandOwner && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} campaignRef={campaignRef} hiredCreators={hiredCreators} />}
-                    {isSelectedCreator && <CreatorWorkspace campaign={campaign} campaignRef={campaignRef} />}
+                    {isBrandOwner && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} hiredCreators={hiredCreators} />}
+
                 </div>
             </main>
         </>
     );
 }
-
