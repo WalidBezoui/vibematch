@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, FileText, Inbox, MessageSquare, Send, UserCheck, X } from 'lucide-react';
+import { ArrowRight, CheckCircle, FileText, Inbox, MessageSquare, Send, User, UserCheck, X } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -36,18 +36,13 @@ const ApplicantCard = ({ application, campaignTitle, onProfileClick }: { applica
     return (
         <Card className="transition-all hover:shadow-md">
              <CardContent className="p-4 flex items-center gap-4">
-                 <div onClick={() => onProfileClick(application.creatorId)} className="cursor-pointer">
-                    <Avatar className="h-12 w-12">
-                        <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
-                        <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
-                    </Avatar>
-                 </div>
+                <Avatar className="h-12 w-12">
+                    <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
+                    <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
+                </Avatar>
                 <div className="flex-1 grid grid-cols-4 items-center gap-4">
                     <div className="col-span-2">
-                        <p 
-                            className="font-semibold cursor-pointer hover:underline" 
-                            onClick={() => onProfileClick(application.creatorId)}
-                        >
+                        <p className="font-semibold">
                             {application.profile?.name}
                         </p>
                         <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
@@ -63,9 +58,14 @@ const ApplicantCard = ({ application, campaignTitle, onProfileClick }: { applica
                         <p className="text-xs text-muted-foreground">{formatDistanceToNow(application.createdAt.toDate(), { addSuffix: true })}</p>
                     </div>
                 </div>
-                 <Button size="icon" variant="ghost">
-                    <MessageSquare className="h-5 w-5" />
-                </Button>
+                 <div className="flex items-center gap-1">
+                    <Button size="icon" variant="outline" onClick={() => onProfileClick(application.creatorId)}>
+                        <User className="h-5 w-5" />
+                    </Button>
+                    <Button size="icon" variant="ghost">
+                        <MessageSquare className="h-5 w-5" />
+                    </Button>
+                 </div>
             </CardContent>
         </Card>
     )
