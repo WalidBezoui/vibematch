@@ -181,7 +181,7 @@ export const useUser = (): UserHookResult => {
   return { user, isUserLoading, userError };
 };
 
-export const useUserProfile = (): UserProfileState => {
+export const useUserProfile = (): UserProfileState & { user: User | null } => {
     const { user, isUserLoading } = useUser();
     const firestore = useFirestore();
     const [profileState, setProfileState] = useState<UserProfileState>({
@@ -220,5 +220,5 @@ export const useUserProfile = (): UserProfileState => {
 
     }, [user, isUserLoading, firestore]);
   
-    return profileState;
+    return { ...profileState, user };
   };

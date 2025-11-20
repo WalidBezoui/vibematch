@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock, Eye, Briefcase, UserCheck } from 'lucide-react';
+import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { Progress } from '@/components/ui/progress';
 
 const statusStyles: { [key: string]: string } = {
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
@@ -150,7 +151,7 @@ const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: an
 );
 
 export default function CreatorDashboard() {
-  const { user, userProfile } = useUser();
+  const { user, userProfile } = useUserProfile();
   const firestore = useFirestore();
   const { toast } = useToast();
 
@@ -165,7 +166,7 @@ export default function CreatorDashboard() {
   useEffect(() => {
     const now = new Date();
     const hour = now.getHours();
-    const name = userProfile?.displayName?.split(' ')[0] || '';
+    const name = userProfile?.displayName?.split(' ')[0] || userProfile?.name?.split(' ')[0] || '';
 
     if (hour < 12) {
       setGreeting(`Good morning, ${name}`);
@@ -417,5 +418,3 @@ export default function CreatorDashboard() {
     </div>
   );
 }
-
-    
