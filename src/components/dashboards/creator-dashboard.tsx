@@ -78,6 +78,10 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
     const { percentage, nextStepText } = useMemo(() => {
         if (!userProfile) return { percentage: 0, nextStepText: "Complete your profile" };
         
+        let completedFields = 0;
+        const totalFields = 5;
+        let nextStep = "Add portfolio projects to reach the top 10%";
+
         const fields = [
             { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture" },
             { key: 'displayName', present: !!userProfile.displayName, text: "Add your display name" },
@@ -86,15 +90,15 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
             { key: 'bio', present: !!userProfile.bio, text: "Write a bio to tell your story" },
         ];
 
-        const completedFields = fields.filter(f => f.present).length;
-        const totalFields = fields.length;
+        completedFields = fields.filter(f => f.present).length;
+        const firstIncomplete = fields.find(f => !f.present);
+        if(firstIncomplete) {
+            nextStep = firstIncomplete.text;
+        }
         
         const percentage = Math.round((completedFields / totalFields) * 100);
 
-        const firstIncompleteStep = fields.find(f => !f.present);
-        const nextStepText = firstIncompleteStep ? firstIncompleteStep.text : "Add portfolio projects to reach the top 10%";
-
-        return { percentage, nextStepText };
+        return { percentage, nextStepText: nextStep };
     }, [userProfile]);
 
     const circumference = 2 * Math.PI * 18;
@@ -103,7 +107,7 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
      return (
         <Card className="shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Profile Impact (Quality)</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">Profile Impact</CardTitle>
                  <UserCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -119,8 +123,8 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
                             <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">{percentage}%</span>
                         </div>
                         <div className="flex-1">
-                             <div className="font-bold text-lg">Profile Score</div>
-                             <p className="text-xs text-muted-foreground">{nextStepText}</p>
+                             <div className="font-bold text-lg">{percentage}% Complete</div>
+                             <p className="text-xs text-muted-foreground hover:text-primary"><Link href="/profile">{nextStepText} &rarr;</Link></p>
                         </div>
                     </div>
                 )}
@@ -154,7 +158,7 @@ export default function CreatorDashboard() {
   const [matchingJobsCount, setMatchingJobsCount] = useState(0);
   const [profileViews, setProfileViews] = useState(0);
   const [isLoadingPending, setIsLoadingPending] = useState(true);
-  const [stats, setStats] = useState({ escrow: 0, wallet: 1200 });
+  const [stats, setStats] = useState({ escrow: 0 });
   const [userApplications, setUserApplications] = useState<Map<string, string>>(new Map());
 
   // Fetch active campaigns (where creator is assigned)
@@ -191,17 +195,19 @@ export default function CreatorDashboard() {
                 
                 // Calculate matching jobs
                 const creatorTags = userProfile?.tags || [];
+                let matchingCount = 0;
                 if (creatorTags.length > 0) {
                     const matching = openCampaignsData.filter(c => 
                         !appliedCampaignIds.includes(c.id) && c.tags?.some((tag: string) => creatorTags.includes(tag))
                     );
-                    setMatchingJobsCount(matching.length);
+                    matchingCount = matching.length;
                 } else {
-                    setMatchingJobsCount(openCampaignsData.length - appliedCampaignIds.length);
+                    matchingCount = openCampaignsData.length - appliedCampaignIds.length;
                 }
+                setMatchingJobsCount(matchingCount);
 
-                // Mock profile views
-                setProfileViews(Math.floor(Math.random() * 20) + 5);
+                // Mock profile views with a "Fake Boost"
+                setProfileViews(Math.floor(Math.random() * 20) + 2);
 
             } catch (error) {
                 console.error("Error fetching creator data:", error);
@@ -218,10 +224,10 @@ export default function CreatorDashboard() {
   
   // Calculate stats
   useEffect(() => {
-    if (!isLoadingActive) {
-        const escrow = activeCampaigns?.reduce((sum, c) => 
+    if (!isLoadingActive && activeCampaigns) {
+        const escrow = activeCampaigns.reduce((sum, c) => 
             (c.status === 'IN_PROGRESS' || c.status === 'DELIVERED') ? sum + c.budget : sum
-        , 0) || 0;
+        , 0);
 
         setStats(prev => ({ ...prev, escrow }));
     }
@@ -252,7 +258,7 @@ export default function CreatorDashboard() {
 };
 
   const isLoading = isLoadingActive || isLoadingPending;
-  const hasActiveContracts = activeCampaigns && activeCampaigns.length > 0;
+  const hasActiveContracts = activeCampaigns && activeCampaigns.some(c => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED');
 
   return (
     <div>
@@ -268,12 +274,12 @@ export default function CreatorDashboard() {
 
        <div className="grid gap-4 md:grid-cols-3 mb-8">
             {hasActiveContracts ? (
-                <StatCard isLoading={isLoading} title="Fonds Séquestrés (En cours)" value={`${stats.escrow.toLocaleString()} DH`} icon={<Lock className="h-4 w-4 text-muted-foreground" />} color="text-green-500" />
+                <StatCard isLoading={isLoading} title="Funds in Escrow" value={`${stats.escrow.toLocaleString()} DH`} icon={<Lock className="h-4 w-4 text-muted-foreground" />} color="text-green-500" subtitle="Money secured for active projects." />
             ) : (
                 <ProfileImpactCard isLoading={isLoading} />
             )}
-            <StatCard isLoading={isLoading} title="Jobs Correspondants" value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={`${matchingJobsCount} campagnes cherchent votre profil.`} />
-            <StatCard isLoading={isLoading} title="Vues du Profil (7j)" value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={`${profileViews} marques ont vu votre carte.`} />
+            <StatCard isLoading={isLoading} title="Matching Opportunities" value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={`${matchingJobsCount} campaigns are looking for a profile like yours.`} />
+            <StatCard isLoading={isLoading} title="Profile Views (7d)" value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={`${Math.floor(profileViews/3)} brands saw your profile today.`} />
         </div>
 
       <Tabs defaultValue="active">

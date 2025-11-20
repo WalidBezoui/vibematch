@@ -59,7 +59,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   const [motivationalTip, setMotivationalTip] = useState('');
 
    const { nextStep, percentage } = useMemo(() => {
-    if (!userProfile) return { percentage: 30, nextStep: { text: "Complete your profile", icon: User } };
+    if (!userProfile) return { percentage: 0, nextStep: { text: "Complete your profile", icon: User } };
     
     const fields = [
         { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture", icon: ImageIcon },
@@ -72,7 +72,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
     const completedFields = fields.filter(f => f.present).length;
     const totalFields = fields.length;
     
-    const percentage = 30 + Math.round((completedFields / totalFields) * 70);
+    const percentage = Math.round((completedFields / totalFields) * 100);
 
     const firstIncompleteStep = fields.find(f => !f.present);
     const nextStep = firstIncompleteStep || { text: "Profile is complete!", icon: User };
