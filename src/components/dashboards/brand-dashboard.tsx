@@ -10,6 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
+import { format } from 'date-fns';
+import { Progress } from '@/components/ui/progress';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -78,6 +80,7 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
     const [isLoadingCount, setIsLoadingCount] = useState(true);
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
+    const hiringProgress = totalNeeded > 0 ? (hiredCount / totalNeeded) * 100 : 0;
 
     useEffect(() => {
         const fetchCount = async () => {
@@ -100,9 +103,9 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                 <div className="flex justify-between items-start gap-2">
                      <div className='flex-1'>
                         <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
-                        <Badge className={cn('whitespace-nowrap text-xs mt-2', statusStyles[campaign.status])}>
-                            {campaign.status.replace(/_/g, ' ')}
-                        </Badge>
+                        <CardDescription className="text-xs text-muted-foreground mt-1">
+                            Created on {campaign.createdAt ? format(campaign.createdAt.toDate(), 'MMM d, yyyy') : 'N/A'}
+                        </CardDescription>
                      </div>
                      <AlertDialog>
                         <DropdownMenu>
@@ -141,19 +144,23 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                         </AlertDialogContent>
                     </AlertDialog>
                 </div>
-                 <CardDescription className="gradient-text font-bold text-base pt-2">{campaign.budget} DH</CardDescription>
+                 <div className="flex items-center justify-between pt-4">
+                    <span className="gradient-text font-bold text-lg">{campaign.budget} DH</span>
+                     <Badge className={cn('whitespace-nowrap text-xs', statusStyles[campaign.status])}>
+                        {campaign.status.replace(/_/g, ' ')}
+                    </Badge>
+                 </div>
             </CardHeader>
             <CardContent className="flex-grow">
-                 {hiredCount > 0 ? (
-                    <div className="text-sm font-semibold text-muted-foreground">
-                        <Users className="inline-block h-4 w-4 mr-2" />
-                        {hiredCount} / {totalNeeded} Creators Hired
+                 <div className="space-y-2">
+                    <div className="flex justify-between items-center text-xs font-medium text-muted-foreground">
+                        <span>Hiring Progress</span>
+                        <span>{hiredCount} / {totalNeeded}</span>
                     </div>
-                ) : (
-                     <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
-                )}
+                    <Progress value={hiringProgress} className="h-2" />
+                 </div>
             </CardContent>
-            <CardFooter className="bg-muted/50 p-4">
+            <CardFooter className="bg-muted/50 p-3">
                 {campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION' ? (
                      <Button asChild variant="secondary" className="w-full">
                         <Link href={`/campaigns/${campaign.id}/manage`}>
@@ -282,3 +289,4 @@ export default function BrandDashboard() {
     </div>
   );
 }
+
