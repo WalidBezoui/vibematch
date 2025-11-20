@@ -20,10 +20,10 @@ import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 
 const applicationSchema = z.object({
-  coverLetter: z.string().min(30, { message: "Please write a brief cover letter (at least 30 characters)." }),
+  coverLetter: z.string().min(30, { message: "Please write a brief note (at least 30 characters)." }),
   bidAmount: z.preprocess(
     (val) => (val === '' ? 0 : Number(val)),
-    z.number({ invalid_type_error: 'Bid amount must be a number.' }).positive('Your bid must be a positive number.')
+    z.number({ invalid_type_error: 'Tariff must be a number.' }).positive('Your tariff must be a positive number.')
   ),
 });
 
@@ -175,7 +175,7 @@ export default function ApplyPage() {
                 <Card>
                     <CardHeader className="text-center">
                         <CardTitle className="text-3xl">Apply for: {campaign.title}</CardTitle>
-                        <CardDescription>Briefly explain why you're a great fit and confirm your bid.</CardDescription>
+                        <CardDescription>Briefly explain why you're a great fit and confirm your tariff.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <Form {...form}>

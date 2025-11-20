@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, Send, User, UserCheck, X, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -41,7 +41,7 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <Card className="transition-all hover:shadow-md">
                  <CardHeader className="p-4">
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="flex items-start gap-4">
                             <Avatar className="h-12 w-12 border">
                                 <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
@@ -58,7 +58,7 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
                                         Trust Score: {application.trustScore}
                                     </Badge>
                                     <div className="text-sm">
-                                        <span className="text-muted-foreground">Bid: </span>
+                                        <span className="text-muted-foreground">Tariff: </span>
                                         <span className="font-bold">{application.bidAmount} {t('currency')}</span>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
                 <CollapsibleContent>
                     <div className="border-t">
                         <div className="p-4 space-y-4">
-                             <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Cover Letter</h4>
+                             <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Why you?</h4>
                              <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border">{application.coverLetter}</p>
                         </div>
                         <CardFooter className="bg-muted/50 p-3 border-t flex items-stretch gap-2">
