@@ -46,6 +46,48 @@
             "errorTitle": "فشل الحذف"
         }
     },
+    "manageApplicationsPage": {
+        "title": "إدارة الطلبات",
+        "description": "راجع واختر أفضل المبدعين لحملتك:",
+        "hiredDescription": "لقد وظفت {{hired}} من أصل {{total}} مبدع لهذه الحملة.",
+        "hiredLabel": "تم توظيفهم",
+        "goalLabel": "الهدف",
+        "closed": {
+            "title": "هذه الحملة لم تعد تقبل الطلبات.",
+            "description": "حالتها الحالية هي:",
+            "cta": "عرض الحملة"
+        },
+        "newApplicantsTitle": "المتقدمون الجدد",
+        "creator": "مبدع",
+        "trustScore": "نقاط الثقة",
+        "coverLetter": "خطاب التقديم",
+        "readFullLetter": "اقرأ الخطاب كاملاً",
+        "letterFrom": "خطاب التقديم من {{name}}",
+        "close": "إغلاق",
+        "negotiateButton": "ناقش وتفاوض",
+        "acceptButton": "اقبل ووظف",
+        "rejectButton": "رفض",
+        "viewProfileButton": "عرض الملف الشخصي",
+        "noApplications": {
+            "title": "لا توجد طلبات بعد",
+            "description": "حملتك نشطة. عد قريبًا لترى من تقدم!",
+            "cta": "العودة إلى لوحة التحكم"
+        },
+        "accessDenied": {
+            "title": "الوصول مرفوض",
+            "description": "ليس لديك إذن لإدارة هذه الحملة."
+        },
+        "openingChatToast": "جارٍ فتح المناقشة...",
+        "chatOpenedToast": {
+            "title": "تم فتح المناقشة!",
+            "description": "يمكنك الآن التفاوض على الشروط مع المبدع."
+        },
+        "hiringCreatorToast": "جارٍ توظيف المبدع...",
+        "hiredToast": {
+            "title": "تم توظيف المبدع!",
+            "description": "تم إشعاره لقبول الحملة."
+        }
+    },
     "promoBanner": {
         "general": [
             {
@@ -304,7 +346,7 @@
         "title": {
             "part1": "كن أول من يكتشف قوة"
         },
-        "description": "انضم إلى قائمة الانتظar الحصرية للعلامات التجارية واكتشف طريقة أكثر شفافية وفعالية للتعاون مع المؤثرين.",
+        "description": "انضم إلى قائمة الانتظار الحصرية للعلامات التجارية واكتشف طريقة أكثر شفافية وفعالية للتعاون مع المؤثرين.",
         "form": {
             "name": {
                 "label": "الاسم الكامل",

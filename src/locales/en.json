@@ -46,6 +46,48 @@
             "errorTitle": "Deletion Failed"
         }
     },
+    "manageApplicationsPage": {
+        "title": "Manage Applications",
+        "description": "Review and select the best creators for your campaign:",
+        "hiredDescription": "You've hired {{hired}} out of {{total}} creators for this campaign.",
+        "hiredLabel": "Hired",
+        "goalLabel": "Goal",
+        "closed": {
+            "title": "This campaign is no longer accepting applications.",
+            "description": "Its current status is:",
+            "cta": "View Campaign"
+        },
+        "newApplicantsTitle": "New Applicants",
+        "creator": "Creator",
+        "trustScore": "Trust Score",
+        "coverLetter": "Cover Letter",
+        "readFullLetter": "Read full letter",
+        "letterFrom": "Cover letter from {{name}}",
+        "close": "Close",
+        "negotiateButton": "Discuss & Negotiate",
+        "acceptButton": "Accept & Hire",
+        "rejectButton": "Reject",
+        "viewProfileButton": "View Profile",
+        "noApplications": {
+            "title": "No Applications Yet",
+            "description": "Your campaign is live. Check back soon to see who has applied!",
+            "cta": "Back to Dashboard"
+        },
+        "accessDenied": {
+            "title": "Access Denied",
+            "description": "You do not have permission to manage this campaign."
+        },
+        "openingChatToast": "Opening discussion...",
+        "chatOpenedToast": {
+            "title": "Chat Opened!",
+            "description": "You can now negotiate the terms with the creator."
+        },
+        "hiringCreatorToast": "Hiring creator...",
+        "hiredToast": {
+            "title": "Creator Hired!",
+            "description": "They have been notified to accept the campaign."
+        }
+    },
     "promoBanner": {
         "general": [
             {
@@ -426,7 +468,7 @@
             {"id": "other", "label": "Other", "icon": "more_horiz"}
         ]
     },
-    "creatorProfile": {
+     "creatorProfile": {
         "nextStepTitle": "Next Step:",
         "completionTips": [
             "Creators with complete profiles are 3x more likely to be contacted by brands.",

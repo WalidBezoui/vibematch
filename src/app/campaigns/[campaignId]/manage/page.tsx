@@ -31,6 +31,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { useLanguage } from '@/context/language-context';
+
 
 type Applicant = {
     id: string;
@@ -65,6 +67,7 @@ const ApplicantCardSkeleton = () => (
 )
 
 const HiringProgress = ({ campaign }: { campaign: any }) => {
+    const { t } = useLanguage();
     if (!campaign) return null;
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
@@ -73,14 +76,14 @@ const HiringProgress = ({ campaign }: { campaign: any }) => {
     return (
         <Card className="mb-8">
             <CardHeader>
-                <CardTitle>Hiring Progress</CardTitle>
-                <CardDescription>You've hired {hiredCount} out of {totalNeeded} creators for this campaign.</CardDescription>
+                <CardTitle>{t('brandDashboard.hiringProgress')}</CardTitle>
+                <CardDescription>{t('manageApplicationsPage.hiredDescription', { hired: hiredCount, total: totalNeeded })}</CardDescription>
             </CardHeader>
             <CardContent>
                 <Progress value={progress} className="h-3" />
                 <div className="flex justify-between text-sm text-muted-foreground mt-2">
-                    <span>{hiredCount} Hired</span>
-                    <span>{totalNeeded} Goal</span>
+                    <span>{hiredCount} {t('manageApplicationsPage.hiredLabel')}</span>
+                    <span>{totalNeeded} {t('manageApplicationsPage.goalLabel')}</span>
                 </div>
             </CardContent>
         </Card>
@@ -93,6 +96,7 @@ export default function ManageApplicationsPage() {
     const router = useRouter();
     const { user, isUserLoading } = useUser();
     const { toast } = useToast();
+    const { t } = useLanguage();
 
     const campaignRef = useMemoFirebase(() => firestore ? doc(firestore, 'campaigns', campaignId as string) : null, [firestore, campaignId]);
     const { data: campaign, isLoading: isCampaignLoading } = useDoc(campaignRef);
@@ -134,7 +138,7 @@ export default function ManageApplicationsPage() {
 
     const handleShortlist = (applicant: Applicant) => {
         if (!firestore || !user) return;
-        toast({ title: 'Ouverture de la discussion...' });
+        toast({ title: t('manageApplicationsPage.openingChatToast') });
         
         const batch = writeBatch(firestore);
         const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
@@ -167,7 +171,7 @@ export default function ManageApplicationsPage() {
         
         batch.commit()
             .then(() => {
-                toast({ title: 'Chat ouvert !', description: "Vous pouvez maintenant négocier les termes avec le créateur." });
+                toast({ title: t('manageApplicationsPage.chatOpenedToast.title'), description: t('manageApplicationsPage.chatOpenedToast.description') });
                 router.push(`/chat/${conversationDocRef.id}`);
             })
             .catch(async (serverError) => {
@@ -187,7 +191,7 @@ export default function ManageApplicationsPage() {
     const handleAcceptAndHire = async (applicant: Applicant) => {
         if (!campaignRef || !firestore || !user || !campaign) return;
 
-        toast({ title: 'Embauche du créateur...' });
+        toast({ title: t('manageApplicationsPage.hiringCreatorToast') });
         
         try {
             const hiredCount = campaign.creatorIds?.length || 0;
@@ -207,7 +211,7 @@ export default function ManageApplicationsPage() {
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
             await updateDoc(applicationRef, { status: 'OFFER_ACCEPTED' });
 
-            toast({ title: 'Créateur Embauché !', description: "Une notification lui a été envoyée pour accepter la campagne." });
+            toast({ title: t('manageApplicationsPage.hiredToast.title'), description: t('manageApplicationsPage.hiredToast.description') });
 
         } catch (error: any) {
              const permissionError = new FirestorePermissionError({
@@ -246,8 +250,8 @@ export default function ManageApplicationsPage() {
                 <AppHeader />
                 <main className="max-w-4xl mx-auto p-8 text-center">
                     <Alert variant="destructive">
-                        <AlertTitle>Accès Refusé</AlertTitle>
-                        <AlertDescription>Vous n'avez pas la permission de gérer cette campagne.</AlertDescription>
+                        <AlertTitle>{t('manageApplicationsPage.accessDenied.title')}</AlertTitle>
+                        <AlertDescription>{t('manageApplicationsPage.accessDenied.description')}</AlertDescription>
                     </Alert>
                 </main>
             </>
@@ -263,9 +267,9 @@ export default function ManageApplicationsPage() {
             <AppHeader />
             <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                  <div className="mb-8">
-                    <h1 className="text-4xl font-bold tracking-tight">Gérer les Candidatures</h1>
+                    <h1 className="text-4xl font-bold tracking-tight">{t('manageApplicationsPage.title')}</h1>
                     <p className="text-muted-foreground mt-2 text-lg">
-                        Examinez et sélectionnez le meilleur créateur pour votre campagne : <strong>{campaign.title}</strong>
+                        {t('manageApplicationsPage.description')} <strong>{campaign.title}</strong>
                     </p>
                 </div>
                 
@@ -273,10 +277,10 @@ export default function ManageApplicationsPage() {
 
                 {campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION' && (
                     <Alert>
-                        <AlertTitle>Cette campagne n'accepte plus de candidatures.</AlertTitle>
+                        <AlertTitle>{t('manageApplicationsPage.closed.title')}</AlertTitle>
                         <AlertDescription>
-                            Son statut actuel est : <Badge variant="secondary">{campaign.status.replace(/_/g, ' ')}</Badge>.
-                            <Button asChild variant="link"><Link href={`/campaigns/${campaignId}`}>Voir la Campagne</Link></Button>
+                            {t('manageApplicationsPage.closed.description')} <Badge variant="secondary">{campaign.status.replace(/_/g, ' ')}</Badge>.
+                            <Button asChild variant="link"><Link href={`/campaigns/${campaignId}`}>{t('manageApplicationsPage.closed.cta')}</Link></Button>
                         </AlertDescription>
                     </Alert>
                 )}
@@ -285,10 +289,11 @@ export default function ManageApplicationsPage() {
                     <div className="space-y-8">
                         {newApplicants.length > 0 && (
                             <div>
-                                <h2 className="text-2xl font-bold mb-4">Nouveaux Candidats</h2>
+                                <h2 className="text-2xl font-bold mb-4">{t('manageApplicationsPage.newApplicantsTitle')}</h2>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     {newApplicants.map(applicant => {
                                         const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
+                                        const creatorName = applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
                                         return (
                                         <Card key={applicant.id} className="flex flex-col">
                                             {/* Card content */}
@@ -299,7 +304,7 @@ export default function ManageApplicationsPage() {
                                                 </Avatar>
                                                 <div className="flex-1">
                                                     <div className="flex justify-between items-center">
-                                                        <CardTitle>{applicant.profile?.name?.split(' ')[0] || 'Créateur'}</CardTitle>
+                                                        <CardTitle>{creatorName}</CardTitle>
                                                          <Badge variant="secondary" className={cn(
                                                             isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
                                                          )}>
@@ -309,30 +314,30 @@ export default function ManageApplicationsPage() {
                                                     </div>
                                                     <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
                                                         <ShieldCheck className="h-4 w-4 text-green-500" />
-                                                        <span>Score de Confiance : {applicant.trustScore}</span>
+                                                        <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
                                                     </div>
                                                 </div>
                                             </CardHeader>
                                             <CardContent className="flex-grow space-y-4">
                                                 <div className="space-y-2">
-                                                    <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Lettre de Motivation</h4>
+                                                    <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" />{t('manageApplicationsPage.coverLetter')}</h4>
                                                     <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
                                                 </div>
                                                  <AlertDialog>
                                                     <AlertDialogTrigger asChild>
                                                         <Button variant="link" className="p-0 h-auto text-primary">
-                                                            Lire la lettre complète
+                                                            {t('manageApplicationsPage.readFullLetter')}
                                                         </Button>
                                                     </AlertDialogTrigger>
                                                     <AlertDialogContent>
                                                         <AlertDialogHeader>
-                                                        <AlertDialogTitle>Lettre de motivation de {applicant.profile?.name?.split(' ')[0] || 'Créateur'}</AlertDialogTitle>
+                                                        <AlertDialogTitle>{t('manageApplicationsPage.letterFrom', { name: creatorName })}</AlertDialogTitle>
                                                         <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
                                                             {applicant.coverLetter}
                                                         </AlertDialogDescription>
                                                         </AlertDialogHeader>
                                                         <AlertDialogFooter>
-                                                        <AlertDialogAction>Fermer</AlertDialogAction>
+                                                        <AlertDialogAction>{t('manageApplicationsPage.close')}</AlertDialogAction>
                                                         </AlertDialogFooter>
                                                     </AlertDialogContent>
                                                 </AlertDialog>
@@ -342,23 +347,23 @@ export default function ManageApplicationsPage() {
                                                     {isBidHigher ? (
                                                         <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                                             <MessageSquare className="mr-2 h-4 w-4" />
-                                                            Discuter & Négocier
+                                                            {t('manageApplicationsPage.negotiateButton')}
                                                         </Button>
                                                     ) : (
                                                         <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                                             <CheckCircle className="mr-2 h-4 w-4" />
-                                                            Accepter & Embaucher
+                                                            {t('manageApplicationsPage.acceptButton')}
                                                         </Button>
                                                     )}
                                                     <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
                                                         <XCircle className="mr-2 h-4 w-4" />
-                                                        Rejeter
+                                                        {t('manageApplicationsPage.rejectButton')}
                                                     </Button>
                                                 </div>
                                                  <Button asChild variant="ghost" className="w-full">
                                                     <Link href={`/creators/${applicant.creatorId}`}>
                                                         <User className="mr-2 h-4 w-4" />
-                                                        Voir le Profil
+                                                        {t('manageApplicationsPage.viewProfileButton')}
                                                     </Link>
                                                 </Button>
                                             </CardFooter>
@@ -372,10 +377,10 @@ export default function ManageApplicationsPage() {
                     </div>
                 ) : (
                      <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                        <h2 className="text-2xl font-semibold">Aucune Candidature pour l'Instant</h2>
-                        <p className="text-muted-foreground mt-2">Votre campagne est en ligne. Revenez bientôt pour voir qui a postulé !</p>
+                        <h2 className="text-2xl font-semibold">{t('manageApplicationsPage.noApplications.title')}</h2>
+                        <p className="text-muted-foreground mt-2">{t('manageApplicationsPage.noApplications.description')}</p>
                         <Button asChild variant="outline" className="mt-6">
-                            <Link href="/dashboard">Retour au Tableau de Bord</Link>
+                            <Link href="/dashboard">{t('manageApplicationsPage.noApplications.cta')}</Link>
                         </Button>
                     </div>
                 )}
