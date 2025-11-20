@@ -299,7 +299,6 @@ export function AppHeader() {
 
     if (user && userProfile) {
         const commonLinks = [
-            { href: "/profile", label: t('header.profile'), icon: User },
             { href: "/contact", label: t('header.support'), icon: LifeBuoy },
         ];
 
