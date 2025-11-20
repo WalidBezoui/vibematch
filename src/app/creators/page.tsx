@@ -124,6 +124,7 @@ const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, ac
             <Button asChild className="w-full" variant="ghost">
                 <Link href={`/creators/${creator.id}`}>
                     View Profile
+                    <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
             </Button>
         </CardFooter>
