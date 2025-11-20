@@ -48,35 +48,37 @@ const ApplicantCard = ({ application, campaign, onSelectCreator }: { application
             <Card className="transition-all hover:shadow-md">
                  <CardHeader className="p-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div className="flex items-start gap-4">
-                            <Avatar className="h-12 w-12 border">
-                                <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
-                                <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
-                            </Avatar>
-                            <div className="flex-1">
-                                <p className="font-semibold">
-                                    {application.profile?.name}
-                                </p>
-                                <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaign.title}</span></p>
-                                <div className="flex items-center gap-4 mt-2">
-                                    <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
-                                        <ShieldCheck className="h-3 w-3 mr-1" />
-                                        Trust Score: {application.trustScore}
-                                    </Badge>
-                                    <div className="text-sm flex items-center">
-                                        <span className="text-muted-foreground mr-1.5">{budgetLabel}: </span>
-                                        <span className={cn(
-                                            "font-bold flex items-center",
-                                            isBidDifferent && (isBidHigher ? "text-orange-500" : "text-green-600")
-                                        )}>
-                                            {BudgetIcon && <BudgetIcon className="h-4 w-4 mr-1" />}
-                                            {application.bidAmount} {t('currency')}
-                                        </span>
+                        <CollapsibleTrigger className="flex-1 text-left">
+                            <div className="flex items-start gap-4">
+                                <Avatar className="h-12 w-12 border">
+                                    <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
+                                    <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1">
+                                    <p className="font-semibold">
+                                        {application.profile?.name}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaign.title}</span></p>
+                                    <div className="flex items-center gap-4 mt-2">
+                                        <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
+                                            <ShieldCheck className="h-3 w-3 mr-1" />
+                                            Trust Score: {application.trustScore}
+                                        </Badge>
+                                        <div className="text-sm flex items-center">
+                                            <span className="text-muted-foreground mr-1.5">{budgetLabel}: </span>
+                                            <span className={cn(
+                                                "font-bold flex items-center",
+                                                isBidDifferent && (isBidHigher ? "text-orange-500" : "text-green-600")
+                                            )}>
+                                                {BudgetIcon && <BudgetIcon className="h-4 w-4 mr-1" />}
+                                                {application.bidAmount} {t('currency')}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                         <div className="flex items-center gap-2">
+                        </CollapsibleTrigger>
+                         <div className="flex items-center gap-2 self-start sm:self-center">
                             <Button variant="outline" size="sm" onClick={() => onSelectCreator(application.creatorId)}>
                                 View Profile <ArrowRight className="h-4 w-4 ml-2" />
                             </Button>
