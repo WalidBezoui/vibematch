@@ -3,39 +3,74 @@
 import { AppHeader } from '@/components/app-header';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, query, where } from 'firebase/firestore';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { ShieldCheck } from 'lucide-react';
+import { MapPin, ShieldCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const CreatorCardSkeleton = () => (
-    <Card>
-        <CardHeader className="items-center text-center">
-            <Skeleton className="h-24 w-24 rounded-full" />
-            <div className="w-full space-y-2 pt-4">
-                <Skeleton className="h-6 w-1/2 mx-auto" />
-                <Skeleton className="h-4 w-1/3 mx-auto" />
-            </div>
-        </CardHeader>
-        <CardContent className="text-center">
-            <Skeleton className="h-10 w-2/3 mx-auto" />
+    <Card className="overflow-hidden">
+        <div className="aspect-[4/5] bg-muted relative">
+            <Skeleton className="w-full h-full" />
+        </div>
+        <CardContent className="p-4 space-y-2">
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-4 w-1/2" />
         </CardContent>
-        <CardFooter>
-            <Skeleton className="h-10 w-full" />
-        </CardFooter>
     </Card>
 );
 
 type CreatorProfile = {
     id: string;
+    displayName?: string;
     name: string;
-    email: string;
     photoURL?: string;
+    tags?: string[];
+    location?: string;
     trustScore: number;
 };
+
+const CreatorCard = ({ creator }: { creator: CreatorProfile }) => (
+    <Link href={`/creators/${creator.id}`} className="block group">
+        <Card className="overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/10 group-hover:-translate-y-2">
+            <div className="aspect-[4/5] bg-muted relative">
+                <Avatar className="w-full h-full rounded-none">
+                    <AvatarImage src={creator.photoURL} alt={creator.displayName || creator.name} className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" />
+                    <AvatarFallback className="text-6xl bg-muted rounded-none">
+                        {creator.displayName?.[0]?.toUpperCase() || creator.name?.[0]?.toUpperCase()}
+                    </AvatarFallback>
+                </Avatar>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 right-4">
+                     <h3 className="text-2xl font-bold text-white shadow-sm">{creator.displayName || creator.name}</h3>
+                     {creator.location && (
+                        <div className="flex items-center gap-1.5 text-sm text-white/90 mt-1">
+                            <MapPin className="h-4 w-4" />
+                            <span>{creator.location}</span>
+                        </div>
+                     )}
+                </div>
+            </div>
+            <CardContent className="p-4 space-y-3">
+                 {creator.tags && creator.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                        {creator.tags.slice(0, 3).map(tag => (
+                            <Badge key={tag} variant="secondary">{tag}</Badge>
+                        ))}
+                    </div>
+                 )}
+                 <div className="flex items-center gap-2 text-sm font-semibold text-green-600">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span>Trust Score: {creator.trustScore}</span>
+                 </div>
+            </CardContent>
+        </Card>
+    </Link>
+)
 
 export default function CreatorDiscoveryPage() {
     const firestore = useFirestore();
@@ -52,10 +87,9 @@ export default function CreatorDiscoveryPage() {
         if (creatorDocs) {
             const creatorsWithScores = creatorDocs.map(doc => ({
                 ...doc,
-                // For now, trust score is random. In the future, this would come from the Trust Engine.
                 trustScore: Math.floor(Math.random() * (98 - 75 + 1) + 75) 
             }));
-            setCreators(creatorsWithScores);
+            setCreators(creatorsWithScores as CreatorProfile[]);
         }
     }, [creatorDocs]);
 
@@ -74,7 +108,7 @@ export default function CreatorDiscoveryPage() {
                     </div>
 
                     {isLoading && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                            <CreatorCardSkeleton />
                            <CreatorCardSkeleton />
                            <CreatorCardSkeleton />
@@ -85,24 +119,7 @@ export default function CreatorDiscoveryPage() {
                     {!isLoading && creators && creators.length > 0 && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {creators.map(creator => (
-                                <Card key={creator.id} className="flex flex-col text-center hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1">
-                                    <CardHeader className="items-center">
-                                        <Avatar className="h-24 w-24 border-4 border-background ring-2 ring-primary">
-                                            <AvatarImage src={creator.photoURL} alt={creator.name} />
-                                            <AvatarFallback>{creator.name?.[0].toUpperCase()}</AvatarFallback>
-                                        </Avatar>
-                                         <CardTitle className="pt-4">{creator.name.split(' ')[0]}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="flex-grow flex flex-col justify-center items-center">
-                                        <Badge variant="secondary" className="text-base">
-                                            <ShieldCheck className="h-4 w-4 mr-2 text-green-500" />
-                                            Trust Score: {creator.trustScore}
-                                        </Badge>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <Button className="w-full">View Profile</Button>
-                                    </CardFooter>
-                                </Card>
+                                <CreatorCard key={creator.id} creator={creator} />
                             ))}
                         </div>
                     )}
