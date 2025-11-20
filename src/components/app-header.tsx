@@ -5,13 +5,14 @@ import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, PlusCircle, Users, HelpCircle, MessageSquare, X, Building, User, FileText } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, Users, HelpCircle, MessageSquare, X, Building, User, FileText } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
-import { useUser, useUserProfile } from '@/firebase';
+import { useUser, useUserProfile, useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { getAuth, signOut } from 'firebase/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { query, collection, where } from 'firebase/firestore';
 
 type NavLinkItem = {
   href: string;
@@ -44,7 +45,7 @@ const LanguageSwitcher = ({className}: {className?: string}) => {
     );
 };
 
-const DesktopNav = ({ navLinks, onLinkClick }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void }) => {
+const DesktopNav = ({ navLinks, onLinkClick, unreadCount }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, unreadCount: number }) => {
     const pathname = usePathname();
 
     const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
@@ -72,6 +73,7 @@ const DesktopNav = ({ navLinks, onLinkClick }: { navLinks: NavLinkItem[], onLink
         <nav className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
             {navLinks.map((link) => {
                  const isActive = pathname === link.href && !link.isSection;
+                 const isMessages = link.href === '/chat';
                  return (
                     <Link
                         key={link.href}
@@ -81,12 +83,15 @@ const DesktopNav = ({ navLinks, onLinkClick }: { navLinks: NavLinkItem[], onLink
                             onLinkClick(link.interest);
                         }}
                         className={cn(
-                            "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
+                            "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 relative",
                             isActive ? "bg-background text-primary shadow-sm" : "text-foreground/60 hover:text-foreground/80"
                         )}
                         >
                         <link.icon className={cn("h-4 w-4", isActive ? "text-primary" : "")} />
                         <span>{link.label}</span>
+                        {isMessages && unreadCount > 0 && (
+                            <span className="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-background" />
+                        )}
                     </Link>
                  )
             })}
@@ -94,7 +99,7 @@ const DesktopNav = ({ navLinks, onLinkClick }: { navLinks: NavLinkItem[], onLink
     )
 }
 
-const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading }: { isOpen: boolean, navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, onClose: () => void, onLogout: () => void, isLoading: boolean }) => {
+const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading, unreadCount }: { isOpen: boolean, navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, onClose: () => void, onLogout: () => void, isLoading: boolean, unreadCount: number }) => {
     const { user, isUserLoading } = useUser();
     const { t } = useLanguage();
     const pathname = usePathname();
@@ -134,18 +139,25 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading
                      </>
                  ) : navLinks.map((link) => {
                     const isActive = pathname === link.href && !link.isSection;
+                    const isMessages = link.href === '/chat';
                     return (
                         <Link
                             key={link.href}
                             href={link.href}
                             onClick={(e) => handleLinkClick(e, link)}
                             className={cn(
-                                "flex items-center gap-4 rounded-lg p-4 text-xl font-semibold transition-colors duration-300",
+                                "flex items-center gap-4 rounded-lg p-4 text-xl font-semibold transition-colors duration-300 relative",
                                 isActive ? "bg-muted text-primary" : "text-foreground/80 hover:bg-muted"
                             )}
                         >
                             <link.icon className="h-6 w-6" />
                             <span>{link.label}</span>
+                            {isMessages && unreadCount > 0 && (
+                               <span className="absolute top-3 right-3 flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                               </span>
+                            )}
                         </Link>
                     )
                  })}
@@ -223,6 +235,20 @@ export function AppHeader() {
   const { user, isUserLoading } = useUser();
   const { userProfile, isLoading: isProfileLoading } = useUserProfile();
   const pathname = usePathname();
+  const firestore = useFirestore();
+
+  const conversationsQuery = useMemoFirebase(() => {
+    if (!user || !firestore || !userProfile) return null;
+    const field = userProfile.role === 'brand' ? 'brand_id' : 'creator_id';
+    return query(collection(firestore, 'conversations'), where(field, '==', user.uid));
+  }, [user, firestore, userProfile]);
+
+  const { data: conversations } = useCollection(conversationsQuery);
+  
+  const unreadCount = useMemo(() => {
+      if (!conversations || !user) return 0;
+      return conversations.filter(c => c.status === 'NEGOTIATION' && c.last_offer_by !== user.uid).length;
+  }, [conversations, user]);
 
   const isLoading = isUserLoading || (user && isProfileLoading);
 
@@ -304,7 +330,7 @@ export function AppHeader() {
             VibeMatch
         </Link>
 
-        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} />
+        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} unreadCount={unreadCount} />
 
         <div className="flex items-center gap-2">
             <LanguageSwitcher className="hidden sm:flex" />
@@ -330,6 +356,7 @@ export function AppHeader() {
             onClose={() => setIsMobileMenuOpen(false)}
             onLogout={handleLogout}
             isLoading={isLoading}
+            unreadCount={unreadCount}
         />
     </>
   );

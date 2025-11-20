@@ -29,24 +29,25 @@ const ConversationCard = ({
 }) => {
   return (
     <Link href={href} className={cn(
-        "block p-3 rounded-lg transition-colors",
+        "block p-3 rounded-lg transition-colors relative",
         isActive ? "bg-muted" : "hover:bg-muted/50"
     )}>
-        <div className="flex items-center gap-3">
-            <div className="relative">
-                <Avatar className="h-12 w-12">
-                    <AvatarImage src={avatar} />
-                    <AvatarFallback>{name?.[0]}</AvatarFallback>
-                </Avatar>
-                {hasAction && (
-                     <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-red-500 ring-2 ring-background" />
-                )}
-            </div>
+        <div className="flex items-center gap-4">
+            <Avatar className="h-12 w-12">
+                <AvatarImage src={avatar} />
+                <AvatarFallback>{name?.[0]}</AvatarFallback>
+            </Avatar>
             <div className="flex-1 overflow-hidden">
                 <p className="font-semibold truncate">{title}</p>
                 <p className="text-sm text-muted-foreground truncate">{lastMessage}</p>
             </div>
         </div>
+        {hasAction && (
+             <span className="absolute top-3 right-3 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+            </span>
+        )}
     </Link>
   );
 };
@@ -109,7 +110,7 @@ const ConversationList = ({ conversations, conversationId }: { conversations: an
     }
 
     if (enrichedConversations.length === 0) {
-        return <p className="text-sm text-center text-muted-foreground p-4">No conversations here.</p>
+        return <p className="text-sm text-center text-muted-foreground p-8">No conversations in this category.</p>
     }
 
     return (
@@ -148,7 +149,7 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
   const completed = conversations?.filter(c => c.status === 'COMPLETED' || c.status === 'CANCELLED') || [];
 
   return (
-    <aside className="w-80 border-r flex flex-col h-full">
+    <aside className="w-96 border-r flex flex-col h-full bg-background">
       <div className="p-4 border-b">
         <h2 className="text-2xl font-bold tracking-tight">Deals</h2>
       </div>
@@ -160,10 +161,16 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
             </div>
         ) : (
              <Tabs defaultValue="negotiations" className="flex-1 flex flex-col">
-                <TabsList className="m-2 grid grid-cols-3">
-                    <TabsTrigger value="negotiations" className="flex-1">Négociations <Badge variant="secondary" className="ml-2">{negotiations.length}</Badge></TabsTrigger>
-                    <TabsTrigger value="active" className="flex-1">Actifs <Badge variant="secondary" className="ml-2">{active.length}</Badge></TabsTrigger>
-                    <TabsTrigger value="completed" className="flex-1">Terminés <Badge variant="secondary" className="ml-2">{completed.length}</Badge></TabsTrigger>
+                <TabsList className="m-2 grid grid-cols-3 h-auto p-1">
+                    <TabsTrigger value="negotiations" className="flex-1 py-1.5">
+                        Negotiating <Badge variant="secondary" className="ml-2 h-5">{negotiations.length}</Badge>
+                    </TabsTrigger>
+                    <TabsTrigger value="active" className="flex-1 py-1.5">
+                        Active <Badge variant="secondary" className="ml-2 h-5">{active.length}</Badge>
+                    </TabsTrigger>
+                    <TabsTrigger value="completed" className="flex-1 py-1.5">
+                        Archived <Badge variant="secondary" className="ml-2 h-5">{completed.length}</Badge>
+                    </TabsTrigger>
                 </TabsList>
                 <div className="flex-1 overflow-y-auto">
                     <TabsContent value="negotiations" className="m-0">
