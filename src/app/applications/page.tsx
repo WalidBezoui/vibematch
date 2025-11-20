@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck } from 'lucide-react';
+import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -33,9 +33,15 @@ type Applicant = {
   trustScore: number;
 };
 
-const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { application: Applicant; campaignTitle: string; onSelectCreator: (creatorId: string) => void; }) => {
+const ApplicantCard = ({ application, campaign, onSelectCreator }: { application: Applicant; campaign: any; onSelectCreator: (creatorId: string) => void; }) => {
     const {t} = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
+
+    const isBidDifferent = application.bidAmount !== campaign.budget;
+    const isBidHigher = application.bidAmount > campaign.budget;
+    const budgetLabel = isBidDifferent ? "Proposed" : "Budget";
+    const actionButtonText = isBidDifferent ? "Discuss & Negotiate" : "Accept & Discuss";
+    const BudgetIcon = isBidDifferent ? (isBidHigher ? ArrowUp : ArrowDown) : null;
 
     return (
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -51,15 +57,21 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
                                 <p className="font-semibold">
                                     {application.profile?.name}
                                 </p>
-                                <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
+                                <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaign.title}</span></p>
                                 <div className="flex items-center gap-4 mt-2">
                                     <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
                                         <ShieldCheck className="h-3 w-3 mr-1" />
                                         Trust Score: {application.trustScore}
                                     </Badge>
-                                    <div className="text-sm">
-                                        <span className="text-muted-foreground">Tariff: </span>
-                                        <span className="font-bold">{application.bidAmount} {t('currency')}</span>
+                                    <div className="text-sm flex items-center">
+                                        <span className="text-muted-foreground mr-1.5">{budgetLabel}: </span>
+                                        <span className={cn(
+                                            "font-bold flex items-center",
+                                            isBidDifferent && (isBidHigher ? "text-orange-500" : "text-green-600")
+                                        )}>
+                                            {BudgetIcon && <BudgetIcon className="h-4 w-4 mr-1" />}
+                                            {application.bidAmount} {t('currency')}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +99,7 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
                         <CardFooter className="bg-muted/50 p-3 border-t flex items-stretch gap-2">
                              <Button className="w-full flex-1">
                                 <MessageSquare className="mr-2 h-4 w-4" />
-                                Discuss & Negotiate
+                                {actionButtonText}
                             </Button>
                             <Button variant="destructive" className="w-full flex-1">
                                 <X className="mr-2 h-4 w-4" />
@@ -112,7 +124,7 @@ const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator }: 
             </h2>
             <div className="space-y-4">
                 {applications.map(app => (
-                    <ApplicantCard key={app.id} application={app} campaignTitle={campaign.title} onSelectCreator={onSelectCreator} />
+                    <ApplicantCard key={app.id} application={app} campaign={campaign} onSelectCreator={onSelectCreator} />
                 ))}
             </div>
         </div>
@@ -125,9 +137,9 @@ export default function TalentHubPage() {
     const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     
-    const { t } = useLanguage();
     const { user } = useUser();
     const firestore = useFirestore();
+    const { t } = useLanguage();
 
     const campaignsQuery = useMemoFirebase(
         () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
@@ -143,12 +155,16 @@ export default function TalentHubPage() {
             const enrichedApplications: any[] = [];
 
             for (const campaign of campaigns) {
+                if(campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION') continue;
+
                 const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
                 const appsSnapshot = await getDocs(appsRef);
 
                 if (!appsSnapshot.empty) {
                     for (const appDoc of appsSnapshot.docs) {
                         const appData = { id: appDoc.id, ...appDoc.data() };
+                        if (appData.status !== 'APPLIED') continue;
+
                         const profileRef = doc(firestore, 'users', appData.creatorId);
                         const profileSnap = await getDoc(profileRef);
                         enrichedApplications.push({
