@@ -3,19 +3,21 @@
 
 import { AppHeader } from '@/components/app-header';
 import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
-import { collection, query, where, getDocs, collectionGroup, documentId, doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, FileText, Inbox, MessageSquare, Send, UserCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle, FileText, Inbox, MessageSquare, Send, UserCheck, X } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatDistanceToNow } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import CreatorProfilePreview from '@/components/creator-profile-preview';
 
 
 type Applicant = {
@@ -29,18 +31,18 @@ type Applicant = {
   createdAt: any;
 };
 
-const ApplicantCard = ({ application, campaignTitle }: { application: Applicant; campaignTitle: string }) => {
+const ApplicantCard = ({ application, campaignTitle, onProfileClick }: { application: Applicant; campaignTitle: string; onProfileClick: (creatorId: string) => void; }) => {
     const {t} = useLanguage();
     return (
         <Card className="transition-all hover:shadow-md">
              <CardContent className="p-4 flex items-center gap-4">
-                 <Avatar className="h-12 w-12">
+                 <Avatar className="h-12 w-12 cursor-pointer" onClick={() => onProfileClick(application.creatorId)}>
                     <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
                     <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 grid grid-cols-4 items-center gap-4">
                     <div className="col-span-2">
-                        <p className="font-semibold">{application.profile?.name}</p>
+                        <p className="font-semibold cursor-pointer hover:underline" onClick={() => onProfileClick(application.creatorId)}>{application.profile?.name}</p>
                         <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
                     </div>
                     <div>
@@ -62,7 +64,7 @@ const ApplicantCard = ({ application, campaignTitle }: { application: Applicant;
     )
 }
 
-const CampaignApplicationsGroup = ({ campaign, applications }: { campaign: any, applications: any[]}) => {
+const CampaignApplicationsGroup = ({ campaign, applications, onProfileClick }: { campaign: any, applications: any[], onProfileClick: (creatorId: string) => void }) => {
     const { t } = useLanguage();
     if (applications.length === 0) return null;
     return (
@@ -73,7 +75,7 @@ const CampaignApplicationsGroup = ({ campaign, applications }: { campaign: any, 
             </h2>
             <div className="space-y-3">
                 {applications.map(app => (
-                    <ApplicantCard key={app.id} application={app} campaignTitle={campaign.title} />
+                    <ApplicantCard key={app.id} application={app} campaignTitle={campaign.title} onProfileClick={onProfileClick} />
                 ))}
             </div>
         </div>
@@ -87,6 +89,7 @@ export default function TalentHubPage() {
 
     const [allApplications, setAllApplications] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
 
     const campaignsQuery = useMemoFirebase(
         () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
@@ -129,6 +132,10 @@ export default function TalentHubPage() {
         if (!campaigns) return [];
         return campaigns.filter(c => allApplications.some(a => a.campaignId === c.id));
     }, [campaigns, allApplications]);
+    
+    const handleProfileClick = (creatorId: string) => {
+        setSelectedCreatorId(creatorId);
+    };
 
     return (
         <div className="flex h-auto w-full flex-col">
@@ -159,6 +166,7 @@ export default function TalentHubPage() {
                                     key={campaign.id} 
                                     campaign={campaign} 
                                     applications={allApplications.filter(a => a.campaignId === campaign.id)} 
+                                    onProfileClick={handleProfileClick}
                                 />
                             ))}
                         </div>
@@ -173,8 +181,11 @@ export default function TalentHubPage() {
                     )}
                  </div>
             </main>
+             <Sheet open={!!selectedCreatorId} onOpenChange={(open) => !open && setSelectedCreatorId(null)}>
+                <SheetContent className="w-full sm:w-3/4 lg:w-1/2 xl:w-2/5 p-0">
+                    <CreatorProfilePreview creatorId={selectedCreatorId} />
+                </SheetContent>
+            </Sheet>
         </div>
     );
 }
-
-    

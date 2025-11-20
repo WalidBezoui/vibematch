@@ -13,7 +13,9 @@
         "discover": "Discover",
         "messages": "Messages",
         "creators": "Creators",
-        "applications": "Applications"
+        "applications": "Talent Hub",
+        "myAccount": "My Account",
+        "settings": "Settings"
     },
     "brandDashboard": {
         "title": "Brand Dashboard",
@@ -518,5 +520,3 @@
         }
     }
 }
-
-    

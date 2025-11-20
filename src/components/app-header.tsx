@@ -5,7 +5,7 @@ import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, Users, HelpCircle, MessageSquare, X, Building, User, FileText } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, Users, LifeBuoy, MessageSquare, X, Building, User, FileText, Settings } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { useUser, useUserProfile, useCollection, useFirestore, useMemoFirebase } from '@/firebase';
@@ -13,6 +13,14 @@ import { getAuth, signOut } from 'firebase/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { query, collection, where } from 'firebase/firestore';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 type NavLinkItem = {
   href: string;
@@ -194,27 +202,36 @@ const AuthButtons = ({ onLogout }: { onLogout: () => void }) => {
       return (
         <div className="flex items-center gap-2">
             <Skeleton className="h-9 w-9 rounded-full" />
-            <Skeleton className="h-9 w-9 rounded-full hidden md:block" />
         </div>
       );
     }
 
     if (user) {
       return (
-        <div className="flex items-center gap-2">
-            <Link href="/profile">
-                <Avatar className="h-9 w-9">
-                    <AvatarImage src={userProfile?.photoURL || userProfile?.logoUrl} alt={userProfile?.name} />
-                    <AvatarFallback>
-                        {userProfile?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
-                    </AvatarFallback>
-                </Avatar>
-            </Link>
-            <Button onClick={onLogout} variant="ghost" size="icon" className="hidden md:flex rounded-full">
-                <LogOut className="h-4 w-4" />
-                <span className="sr-only">{t('header.logout')}</span>
-            </Button>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="h-9 w-9 cursor-pointer">
+              <AvatarImage src={userProfile?.photoURL || userProfile?.logoUrl} alt={userProfile?.name} />
+              <AvatarFallback>
+                {userProfile?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>{t('header.myAccount')}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+                <Link href="/profile"><User className="mr-2 h-4 w-4" />{t('header.profile')}</Link>
+            </DropdownMenuItem>
+             <DropdownMenuItem asChild>
+                <Link href="/settings"><Settings className="mr-2 h-4 w-4" />{t('header.settings')}</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={onLogout} className="text-destructive focus:bg-destructive/10 focus:text-destructive">
+                <LogOut className="mr-2 h-4 w-4" />{t('header.logout')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     }
 
@@ -272,7 +289,7 @@ export function AppHeader() {
     const loggedOutLinks: NavLinkItem[] = [
         { href: isHomePage ? "/#brands" : "/#brands", label: t('header.forBrands'), interest: 'brand', icon: Building, isSection: true },
         { href: isHomePage ? "/#creators" : "/#creators", label: t('header.forCreators'), interest: 'creator', icon: Users, isSection: true },
-        { href: "/faq", label: t('header.faq'), icon: HelpCircle },
+        { href: "/faq", label: t('header.faq'), icon: LifeBuoy },
         { href: "/contact", label: t('header.support'), icon: MessageSquare },
     ];
 
@@ -283,7 +300,7 @@ export function AppHeader() {
     if (user && userProfile) {
         const commonLinks = [
             { href: "/profile", label: t('header.profile'), icon: User },
-            { href: "/contact", label: t('header.support'), icon: MessageSquare },
+            { href: "/contact", label: t('header.support'), icon: LifeBuoy },
         ];
 
         let roleSpecificLinks: NavLinkItem[] = [];
@@ -362,5 +379,3 @@ export function AppHeader() {
     </>
   );
 }
-
-    

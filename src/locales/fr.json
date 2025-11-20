@@ -13,7 +13,9 @@
         "discover": "Découvrir",
         "messages": "Messages",
         "creators": "Créateurs",
-        "applications": "Candidatures"
+        "applications": "Candidatures",
+        "myAccount": "Mon Compte",
+        "settings": "Paramètres"
     },
     "brandDashboard": {
         "title": "Tableau de Bord Marque",
@@ -518,5 +520,3 @@
         }
     }
 }
-
-    
