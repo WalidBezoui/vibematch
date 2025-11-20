@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, ArrowRight } from 'lucide-react';
+import { Compass, Hourglass, Activity, ArrowRight, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, Trash2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
@@ -23,12 +23,11 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/context/language-context';
 
 
 const statusStyles: { [key: string]: string } = {
-    PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
+    YOUR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
     PENDING_PAYMENT: 'bg-blue-100 text-blue-800 border-blue-200',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800 border-indigo-200',
     DELIVERED: 'bg-purple-100 text-purple-800 border-purple-200',
@@ -73,7 +72,7 @@ const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground', su
         </CardContent>
         {cta && !isLoading && (
             <CardFooter className="pt-0">
-                <Button asChild size="sm" variant="secondary" className="w-full">
+                 <Button asChild size="sm" className="w-full gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105">
                     <Link href={cta.href}>
                         {cta.text}
                         <ArrowRight className="h-4 w-4 ml-2" />
@@ -233,7 +232,12 @@ export default function CreatorDashboard() {
                 ]);
                 
                 const appMap = new Map<string, string>();
-                appsSnapshot.docs.forEach(doc => appMap.set(doc.data().campaignId, doc.id));
+                appsSnapshot.docs.forEach(doc => {
+                    // Only track applications to campaigns that are still open
+                    if (openCampaignsSnapshot.docs.some(c => c.id === doc.data().campaignId)) {
+                        appMap.set(doc.data().campaignId, doc.id);
+                    }
+                });
                 setUserApplications(appMap);
 
                 const openCampaignsData = openCampaignsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -344,14 +348,23 @@ export default function CreatorDashboard() {
                 </div>
             ) : activeCampaigns && activeCampaigns.length > 0 ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                {activeCampaigns.map((campaign) => (
-                        <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
+                {activeCampaigns.map((campaign) => {
+                        let badgeStatus = campaign.status;
+                        let badgeText = campaign.status.replace(/_/g, ' ');
+                        if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
+                            badgeStatus = 'YOUR_ACCEPTANCE';
+                            badgeText = 'YOUR ACCEPTANCE';
+                        }
+                        const isActionRequired = badgeStatus === 'YOUR_ACCEPTANCE';
+                    
+                    return (
+                        <Card key={campaign.id} className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isActionRequired && "border-blue-500 shadow-blue-500/10")}>
                             <CardHeader>
                                 <div className="flex justify-between items-start gap-2">
                                     <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
                                      {campaign.status && (
-                                        <Badge className={cn('whitespace-nowrap text-xs', statusStyles[campaign.status])}>
-                                            {campaign.status.replace(/_/g, ' ')}
+                                        <Badge className={cn('whitespace-nowrap text-xs', statusStyles[badgeStatus])}>
+                                            {badgeText}
                                         </Badge>
                                      )}
                                 </div>
@@ -361,15 +374,16 @@ export default function CreatorDashboard() {
                                 <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
                             </CardContent>
                             <CardFooter className="bg-muted/50 p-4">
-                                <Button asChild className="w-full">
+                                <Button asChild className="w-full" variant={isActionRequired ? 'default' : 'secondary'}>
                                   <Link href={`/campaigns/${campaign.id}`}>
-                                    View Details
+                                    {isActionRequired ? "View Offer" : "View Details"}
+                                    {isActionRequired && <ArrowRight className="ml-2 h-4 w-4" />}
                                   </Link>
                                 </Button>
                             </CardFooter>
                         </Card>
                     )
-                  )}
+                  })}
                 </div>
             ) : (
                 <EmptyState 
