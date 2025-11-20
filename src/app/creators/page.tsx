@@ -9,12 +9,13 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, ShieldCheck, Instagram, ArrowRight, Send } from 'lucide-react';
+import { MapPin, ShieldCheck, Instagram, ArrowRight, Send, HelpCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const CreatorCardSkeleton = () => (
     <Card className="overflow-hidden">
@@ -78,9 +79,21 @@ const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, ac
                     ))}
                 </div>
              )}
-             <div className="flex items-center gap-2 text-sm font-semibold text-green-600">
-                <ShieldCheck className="h-4 w-4" />
-                <span>Trust Score: {creator.trustScore}</span>
+             <div className="flex items-center justify-between text-sm font-semibold">
+                <div className="flex items-center gap-1 text-green-600">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span>Trust Score: {creator.trustScore}</span>
+                </div>
+                 <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                           <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                           <p>A measure of reliability, authenticity, and professionalism based on platform activity.</p>
+                        </TooltipContent>
+                    </Tooltip>
+                 </TooltipProvider>
              </div>
              <Separator className="my-3" />
              <div className="grid grid-cols-2 gap-4 text-sm">
@@ -100,14 +113,14 @@ const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, ac
                  </div>
              </div>
         </CardContent>
-        <CardFooter className="p-2 border-t bg-muted/50 flex flex-col items-stretch gap-2">
+        <CardFooter className="p-2 border-t bg-muted/50 flex flex-col sm:flex-row items-stretch gap-2">
              <InviteToCampaignDialog creator={creator} campaigns={activeCampaigns}>
-                <Button className="w-full">
+                <Button className="w-full sm:flex-1">
                     <Send className="mr-2 h-4 w-4" />
-                    Invite to Campaign
+                    Invite
                 </Button>
             </InviteToCampaignDialog>
-            <Button asChild className="w-full" variant="ghost">
+            <Button asChild className="w-full sm:flex-1" variant="ghost">
                 <Link href={`/creators/${creator.id}`}>
                     View Profile
                     <ArrowRight className="h-4 w-4 ml-2" />
