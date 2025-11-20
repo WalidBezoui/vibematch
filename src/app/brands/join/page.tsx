@@ -14,6 +14,7 @@ import { useFirestore, useAuth } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { signInAnonymously } from 'firebase/auth';
+import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 const brandApplicationSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -47,13 +48,18 @@ export default function BrandWaitlistPage() {
 
   const onSubmit: SubmitHandler<BrandApplicationForm> = async (data) => {
     if (!firestore || !auth) return;
+    
     try {
-      await signInAnonymously(auth);
+      await signInAnonymously(auth); // Wait for anonymous sign-in
       const collectionRef = collection(firestore, 'brand-applications');
-      await addDoc(collectionRef, {
+      const submissionData = {
         ...data,
         createdAt: serverTimestamp(),
-      });
+      };
+      
+      // Use non-blocking write for better UX
+      addDocumentNonBlocking(collectionRef, submissionData);
+      
       router.push('/brands/join/success');
     } catch (e: any) {
       toast({
@@ -158,7 +164,7 @@ export default function BrandWaitlistPage() {
                             {t('brandJoinPage.form.phone.label')}
                           </FormLabel>
                           <FormControl>
-                            <Input id="phone" type="tel" placeholder="06 XX XX XX XX" {...field} className="h-14 rounded-xl border-[#dbe0e6] bg-white p-[15px] text-base font-normal leading-normal text-[#1D1D1F] placeholder:text-[#617589] focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-[#101922] dark:text-white" />
+                            <Input id="phone" type="tel" placeholder={t('brandJoinPage.form.phone.placeholder')} {...field} className="h-14 rounded-xl border-[#dbe0e6] bg-white p-[15px] text-base font-normal leading-normal text-[#1D1D1F] placeholder:text-[#617589] focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-[#101922] dark:text-white" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -186,7 +192,7 @@ export default function BrandWaitlistPage() {
                       disabled={form.formState.isSubmitting}
                       className="h-12 w-full rounded-xl bg-primary px-5 text-base font-bold leading-normal tracking-[0.015em] text-black hover:bg-primary/90 active:bg-primary/80 disabled:opacity-50"
                     >
-                      {form.formState.isSubmitting ? 'Submitting...' : t('brandJoinPage.form.submitButton')}
+                      {form.formState.isSubmitting ? t('brandJoinPage.form.submittingButton') : t('brandJoinPage.form.submitButton')}
                     </Button>
                   </div>
                 </form>

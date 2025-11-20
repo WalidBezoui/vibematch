@@ -64,6 +64,8 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
         website: data.website,
         industry: data.industry,
         description: data.description,
+        photoURL: data.logoUrl, // Also update the main photoURL for consistency
+        logoUrl: data.logoUrl,
     };
 
     try {
@@ -103,10 +105,6 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
                                 <Building />
                             </AvatarFallback>
                         </Avatar>
-                        <Button variant="outline" size="icon" className="absolute bottom-4 right-4 h-10 w-10 rounded-full bg-background/50 backdrop-blur group-hover:bg-background transition-colors shadow-md opacity-0 group-hover:opacity-100">
-                            <Upload className="h-5 w-5" />
-                            <span className="sr-only">Change logo</span>
-                        </Button>
                     </div>
                      <div className="p-6 w-full">
                         <CardTitle>{profile.companyName || profile.name}</CardTitle>
@@ -172,6 +170,19 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
                   <CardDescription>Set your company's details here.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                   <FormField
+                        control={form.control}
+                        name="logoUrl"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Logo URL</FormLabel>
+                            <FormControl>
+                                <Input placeholder="https://example.com/logo.png" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
                   <div className="grid sm:grid-cols-2 gap-4">
                        <FormField
                           control={form.control}

@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Upload, User, MapPin, Edit, ImageIcon, Tag, Type, Lightbulb } from 'lucide-react';
+import { Upload, User, MapPin, Edit, ImageIcon, Tag, Type, Lightbulb, Briefcase } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
@@ -224,7 +224,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                             <div className="text-center py-10 border-2 border-dashed rounded-lg">
                                 <p className="text-muted-foreground">Your portfolio is empty.</p>
                                 <Button variant="outline" className="mt-4">
-                                    + Add a Project
+                                    <Briefcase className="mr-2 h-4 w-4" /> Add a Project
                                 </Button>
                             </div>
                         </CardContent>

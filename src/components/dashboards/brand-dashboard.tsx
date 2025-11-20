@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast';
 import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { useLanguage } from '@/context/language-context';
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800 border-green-200',
@@ -76,6 +77,7 @@ const StatCard = ({ title, value, icon, isLoading }: { title: string; value: str
 
 const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campaignId: string) => Promise<void> }) => {
     const firestore = useFirestore();
+    const { t } = useLanguage();
     const [applicationCount, setApplicationCount] = useState(0);
     const [isLoadingCount, setIsLoadingCount] = useState(true);
     const hiredCount = campaign.creatorIds?.length || 0;
@@ -104,7 +106,7 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                      <div className='flex-1'>
                         <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
                         <CardDescription className="text-xs text-muted-foreground mt-1">
-                            Created on {campaign.createdAt ? format(campaign.createdAt.toDate(), 'MMM d, yyyy') : 'N/A'}
+                            {t('brandDashboard.createdOn', { date: campaign.createdAt ? format(campaign.createdAt.toDate(), 'MMM d, yyyy') : 'N/A' })}
                         </CardDescription>
                      </div>
                      <AlertDialog>
@@ -118,28 +120,27 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                                 <DropdownMenuItem asChild>
                                     <Link href={`/campaigns/${campaign.id}/edit`}>
                                         <Edit className="mr-2 h-4 w-4" />
-                                        <span>Edit</span>
+                                        <span>{t('brandDashboard.editAction')}</span>
                                     </Link>
                                 </DropdownMenuItem>
                                 <AlertDialogTrigger asChild>
                                     <DropdownMenuItem className="text-destructive focus:bg-destructive/10 focus:text-destructive">
                                         <Trash2 className="mr-2 h-4 w-4" />
-                                        <span>Delete</span>
+                                        <span>{t('brandDashboard.deleteAction')}</span>
                                     </DropdownMenuItem>
                                 </AlertDialogTrigger>
                             </DropdownMenuContent>
                         </DropdownMenu>
                          <AlertDialogContent>
                             <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogTitle>{t('brandDashboard.deleteDialog.title')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                                This action cannot be undone. This will permanently delete your campaign
-                                and all of its applications from our servers.
+                                {t('brandDashboard.deleteDialog.description')}
                             </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => onDelete(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Continue</AlertDialogAction>
+                            <AlertDialogCancel>{t('brandDashboard.deleteDialog.cancel')}</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => onDelete(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{t('brandDashboard.deleteDialog.confirm')}</AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
@@ -154,7 +155,7 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
             <CardContent className="flex-grow">
                  <div className="space-y-2">
                     <div className="flex justify-between items-center text-xs font-medium text-muted-foreground">
-                        <span>Hiring Progress</span>
+                        <span>{t('brandDashboard.hiringProgress')}</span>
                         <span>{hiredCount} / {totalNeeded}</span>
                     </div>
                     <Progress value={hiringProgress} className="h-2" />
@@ -165,13 +166,13 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                      <Button asChild variant="secondary" className="w-full">
                         <Link href={`/campaigns/${campaign.id}/manage`}>
                             <Users className="mr-2 h-4 w-4" />
-                            Manage Applications 
+                            {t('brandDashboard.manageButton')}
                             {isLoadingCount ? <Skeleton className="h-5 w-5 rounded-full ml-2" /> : <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
                         </Link>
                     </Button>
                 ) : (
                     <Button asChild className="w-full">
-                        <Link href={`/campaigns/${campaign.id}`}>View Campaign</Link>
+                        <Link href={`/campaigns/${campaign.id}`}>{t('brandDashboard.viewButton')}</Link>
                     </Button>
                 )}
             </CardFooter>
@@ -184,6 +185,7 @@ export default function BrandDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [stats, setStats] = useState({ activeCampaigns: 0, totalApplications: 0, totalBudget: 0 });
   const [isStatsLoading, setIsStatsLoading] = useState(true);
 
@@ -197,62 +199,74 @@ export default function BrandDashboard() {
     if (campaigns && firestore && user) {
         const calculateStats = async () => {
             setIsStatsLoading(true);
-            let totalApplications = 0;
-            let totalBudget = 0;
-            const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED').length;
+            try {
+                let totalApplications = 0;
+                let totalBudget = 0;
+                const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED').length;
 
-            if (campaigns.length > 0) {
-                const applicationPromises = campaigns.map(c => 
-                    getDocs(query(collection(firestore, 'campaigns', c.id, 'applications')))
-                );
+                if (campaigns.length > 0) {
+                    const applicationPromises = campaigns.map(c => 
+                        getDocs(query(collection(firestore, 'campaigns', c.id, 'applications')))
+                    );
 
-                const allApplicationsSnapshots = await Promise.all(applicationPromises);
-                allApplicationsSnapshots.forEach(snapshot => totalApplications += snapshot.size);
+                    const allApplicationsSnapshots = await Promise.all(applicationPromises);
+                    allApplicationsSnapshots.forEach(snapshot => totalApplications += snapshot.size);
 
-                totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0), 0);
+                    totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0), 0);
+                }
+
+                setStats({ activeCampaigns, totalApplications, totalBudget });
+            } catch (error) {
+                console.error("Failed to calculate stats:", error);
+            } finally {
+                setIsStatsLoading(false);
             }
-
-            setStats({ activeCampaigns, totalApplications, totalBudget });
-            setIsStatsLoading(false);
         };
         calculateStats();
     } else if (!isLoading) {
         setIsStatsLoading(false);
     }
-  }, [campaigns, firestore, user, isLoading]);
+}, [campaigns, firestore, user, isLoading]);
+
 
   const handleDeleteCampaign = async (campaignId: string) => {
     if (!firestore) return;
-    toast({ title: 'Deleting campaign...' });
+    toast({ title: t('brandDashboard.deleteToast.deleting') });
 
     const campaignRef = doc(firestore, 'campaigns', campaignId);
     
-    // Non-blocking delete
-    deleteDocumentNonBlocking(campaignRef);
-
-    toast({
-        title: 'Campaign Deletion Initiated',
-        description: 'The campaign will be removed shortly.',
-    });
+    try {
+        await deleteDoc(campaignRef);
+        toast({
+            title: t('brandDashboard.deleteToast.successTitle'),
+            description: t('brandDashboard.deleteToast.successDescription'),
+        });
+    } catch (error: any) {
+        toast({
+            variant: 'destructive',
+            title: t('brandDashboard.deleteToast.errorTitle'),
+            description: error.message,
+        });
+    }
   };
 
 
   return (
     <div>
       <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
-        <h1 className="text-4xl font-bold tracking-tight">Brand Dashboard</h1>
+        <h1 className="text-4xl font-bold tracking-tight">{t('brandDashboard.title')}</h1>
         <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
           <Link href="/campaigns/create">
             <PlusCircle className="mr-2 h-5 w-5" />
-            Create Campaign
+            {t('brandDashboard.createButton')}
           </Link>
         </Button>
       </div>
       
       <div className="grid gap-4 md:grid-cols-3 mb-8">
-        <StatCard isLoading={isStatsLoading} title="Active Campaigns" value={stats.activeCampaigns} icon={<Activity className="h-4 w-4 text-muted-foreground" />} />
-        <StatCard isLoading={isStatsLoading} title="Total Applications" value={stats.totalApplications} icon={<FileText className="h-4 w-4 text-muted-foreground" />} />
-        <StatCard isLoading={isStatsLoading} title="Total Budget Deployed" value={`${stats.totalBudget.toLocaleString()} DH`} icon={<CircleDollarSign className="h-4 w-4 text-muted-foreground" />} />
+        <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.active')} value={stats.activeCampaigns} icon={<Activity className="h-4 w-4 text-muted-foreground" />} />
+        <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.applications')} value={stats.totalApplications} icon={<FileText className="h-4 w-4 text-muted-foreground" />} />
+        <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.budget')} value={`${stats.totalBudget.toLocaleString()} DH`} icon={<CircleDollarSign className="h-4 w-4 text-muted-foreground" />} />
       </div>
 
 
@@ -277,11 +291,11 @@ export default function BrandDashboard() {
             <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
               <PlusCircle className="h-8 w-8 text-black" />
             </div>
-            <h2 className="text-2xl font-bold">Launch Your First Campaign</h2>
-            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">It's time to connect with amazing creators. Post a campaign to start receiving applications.</p>
+            <h2 className="text-2xl font-bold">{t('brandDashboard.emptyState.title')}</h2>
+            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{t('brandDashboard.emptyState.description')}</p>
             <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
                 <Link href="/campaigns/create">
-                    Create Campaign
+                    {t('brandDashboard.emptyState.cta')}
                 </Link>
             </Button>
         </div>
@@ -289,4 +303,3 @@ export default function BrandDashboard() {
     </div>
   );
 }
-
