@@ -96,7 +96,7 @@ const ApplicantCard = ({ application, campaign, onSelectCreator }: { application
                     <div className="border-t">
                         <div className="p-4 space-y-4">
                              <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Why you?</h4>
-                             <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border">{application.coverLetter}</p>
+                             <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border whitespace-pre-wrap">{application.coverLetter}</p>
                         </div>
                         <CardFooter className="bg-muted/50 p-3 border-t flex flex-col sm:flex-row items-stretch gap-2">
                              <Button className="w-full flex-1">
