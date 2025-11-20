@@ -2,7 +2,7 @@
 'use client';
 
 import { AppHeader } from '@/components/app-header';
-import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
+import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -41,7 +41,7 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <Card className="transition-all hover:shadow-md">
                  <CardHeader className="p-4">
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center justify-between gap-4">
                         <div className="flex items-start gap-4">
                             <Avatar className="h-12 w-12 border">
                                 <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
@@ -65,9 +65,8 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
                             </div>
                         </div>
                          <div className="flex items-center gap-2">
-                            <Button variant="outline" size="icon" className="h-9 w-9 rounded-full" onClick={() => onSelectCreator(application.creatorId)}>
-                                <User className="h-4 w-4" />
-                                <span className="sr-only">View Profile</span>
+                            <Button variant="outline" size="sm" onClick={() => onSelectCreator(application.creatorId)}>
+                                View Profile <ArrowRight className="h-4 w-4 ml-2" />
                             </Button>
                             <CollapsibleTrigger asChild>
                                 <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
