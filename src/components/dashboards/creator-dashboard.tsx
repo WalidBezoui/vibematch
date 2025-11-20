@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2 } from 'lucide-react';
+import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
@@ -49,7 +49,7 @@ const CampaignCardSkeleton = () => (
     </Card>
 );
 
-const StatCard = ({ title, value, icon, isLoading }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean }) => (
+const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground' }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean, color?: string }) => (
     <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
@@ -59,7 +59,7 @@ const StatCard = ({ title, value, icon, isLoading }: { title: string; value: str
             {isLoading ? (
                 <Skeleton className="h-8 w-1/2" />
             ) : (
-                <div className="text-2xl font-bold">{value}</div>
+                <div className={cn("text-2xl font-bold", color)}>{value}</div>
             )}
         </CardContent>
     </Card>
@@ -88,20 +88,14 @@ export default function CreatorDashboard() {
 
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
   const [isLoadingPending, setIsLoadingPending] = useState(true);
-  const [stats, setStats] = useState({ activeCollaborations: 0, pendingApplications: 0, totalEarnings: 0 });
+  const [stats, setStats] = useState({ pipeline: 0, escrow: 0, wallet: 1200 }); // wallet is mocked for now
   const [userApplications, setUserApplications] = useState<Map<string, string>>(new Map());
 
   // Fetch active campaigns (where creator is assigned)
   const activeCampaignsQuery = useMemoFirebase(
     () => user && firestore ? query(
         collection(firestore, 'campaigns'), 
-        where('creatorId', '==', user.uid),
-        where('status', 'in', [
-            'PENDING_CREATOR_ACCEPTANCE',
-            'PENDING_PAYMENT',
-            'IN_PROGRESS',
-            'DELIVERED'
-        ]),
+        where('creatorIds', 'array-contains', user.uid)
     ) : null,
     [user, firestore]
   );
@@ -153,17 +147,13 @@ export default function CreatorDashboard() {
   // Calculate stats
   useEffect(() => {
     if (!isLoadingActive && !isLoadingPending) {
-        const activeCount = activeCampaigns?.length || 0;
-        const pendingCount = pendingCampaigns?.length || 0;
         
-        // This is a placeholder for total earnings. In a real app you'd query completed campaigns.
-        const totalEarnings = activeCampaigns?.reduce((sum, c) => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED' ? sum + c.budget : sum, 0) || 0;
+        const pipeline = pendingCampaigns.reduce((sum, c) => sum + (c.budget || 0), 0);
+        const escrow = activeCampaigns?.reduce((sum, c) => 
+            c.status === 'IN_PROGRESS' || c.status === 'DELIVERED' ? sum + c.budget : sum
+        , 0) || 0;
 
-        setStats({
-            activeCollaborations: activeCount,
-            pendingApplications: pendingCount,
-            totalEarnings: totalEarnings
-        });
+        setStats(prev => ({ ...prev, pipeline, escrow }));
     }
   }, [isLoadingActive, isLoadingPending, activeCampaigns, pendingCampaigns]);
 
@@ -181,7 +171,6 @@ export default function CreatorDashboard() {
             title: 'Application Withdrawn',
             description: 'You can apply again in the future if you change your mind.',
         });
-        // Refetch pending applications
         setPendingCampaigns(prev => prev.filter(c => c.id !== campaignId));
     } catch (error: any) {
         toast({
@@ -197,7 +186,7 @@ export default function CreatorDashboard() {
   return (
     <div>
       <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
-        <h1 className="text-4xl font-bold tracking-tight">Creator Dashboard</h1>
+        <h1 className="text-4xl font-bold tracking-tight">Creator Command Center</h1>
         <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
           <Link href="/discover">
             <Compass className="mr-2 h-5 w-5" />
@@ -207,15 +196,15 @@ export default function CreatorDashboard() {
       </div>
 
        <div className="grid gap-4 md:grid-cols-3 mb-8">
-            <StatCard isLoading={isLoading} title="Active Collaborations" value={stats.activeCollaborations} icon={<Activity className="h-4 w-4 text-muted-foreground" />} />
-            <StatCard isLoading={isLoading} title="Pending Applications" value={stats.pendingApplications} icon={<FileText className="h-4 w-4 text-muted-foreground" />} />
-            <StatCard isLoading={isLoading} title="Potential Earnings" value={`${stats.totalEarnings.toLocaleString()} DH`} icon={<CircleDollarSign className="h-4 w-4 text-muted-foreground" />} />
+            <StatCard isLoading={isLoading} title="En Négociation" value={`${stats.pipeline.toLocaleString()} DH`} icon={<Hourglass className="h-4 w-4 text-muted-foreground" />} color="text-blue-500" />
+            <StatCard isLoading={isLoading} title="Fonds Séquestrés (En cours)" value={`${stats.escrow.toLocaleString()} DH`} icon={<Lock className="h-4 w-4 text-muted-foreground" />} color="text-green-500" />
+            <StatCard isLoading={isLoading} title="Solde Retirable" value={`${stats.wallet.toLocaleString()} DH`} icon={<Wallet className="h-4 w-4 text-muted-foreground" />} />
         </div>
 
       <Tabs defaultValue="active">
         <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="active">Active Campaigns <Badge variant="secondary" className="ml-2">{stats.activeCollaborations}</Badge></TabsTrigger>
-            <TabsTrigger value="pending">Pending Applications <Badge variant="secondary" className="ml-2">{stats.pendingApplications}</Badge></TabsTrigger>
+            <TabsTrigger value="active">Active Campaigns <Badge variant="secondary" className="ml-2">{activeCampaigns?.length || 0}</Badge></TabsTrigger>
+            <TabsTrigger value="pending">Pending Applications <Badge variant="secondary" className="ml-2">{pendingCampaigns?.length || 0}</Badge></TabsTrigger>
         </TabsList>
         <TabsContent value="active">
             {isLoadingActive ? (
