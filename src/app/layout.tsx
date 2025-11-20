@@ -14,7 +14,6 @@ const AppContent = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      {showCompletionBanner && <ProfileCompletionBanner />}
       {children}
     </>
   )

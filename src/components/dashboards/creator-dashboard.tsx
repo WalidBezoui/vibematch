@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb } from 'lucide-react';
+import { Compass, Hourglass, Activity, FileText, CircleDollarSign, Trash2, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
@@ -24,6 +24,8 @@ import {
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
+import { useLanguage } from '@/context/language-context';
+
 
 const statusStyles: { [key: string]: string } = {
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
@@ -75,6 +77,18 @@ const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground', su
 
 const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
     const { userProfile } = useUserProfile();
+    const { t } = useLanguage();
+    const [motivationalTip, setMotivationalTip] = useState('');
+
+     useEffect(() => {
+        const tips = t('creatorProfile.completionTips', { returnObjects: true }) as string[];
+        if (tips && tips.length > 0) {
+            const randomIndex = Math.floor(Math.random() * tips.length);
+            setMotivationalTip(tips[randomIndex]);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [t]);
+
 
     const { percentage, nextStepText } = useMemo(() => {
         if (!userProfile) return { percentage: 0, nextStepText: "Complete your profile" };
@@ -115,18 +129,26 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
                 {isLoading ? (
                     <Skeleton className="h-8 w-1/2" />
                 ) : (
-                    <div className="flex items-center gap-4">
-                        <div className="relative w-12 h-12">
-                            <svg className="w-full h-full" viewBox="0 0 40 40">
-                                <circle className="text-muted/20" strokeWidth="4" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" />
-                                <circle className="text-primary" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" transform="rotate(-90 20 20)" />
-                            </svg>
-                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">{percentage}%</span>
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-4">
+                            <div className="relative w-12 h-12">
+                                <svg className="w-full h-full" viewBox="0 0 40 40">
+                                    <circle className="text-muted/20" strokeWidth="4" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" />
+                                    <circle className="text-primary" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" transform="rotate(-90 20 20)" />
+                                </svg>
+                                <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">{percentage}%</span>
+                            </div>
+                            <div className="flex-1">
+                                <div className="font-bold text-lg">{percentage}% Complete</div>
+                                <p className="text-xs text-muted-foreground hover:text-primary"><Link href="/profile">{nextStepText} &rarr;</Link></p>
+                            </div>
                         </div>
-                        <div className="flex-1">
-                             <div className="font-bold text-lg">{percentage}% Complete</div>
-                             <p className="text-xs text-muted-foreground hover:text-primary"><Link href="/profile">{nextStepText} &rarr;</Link></p>
-                        </div>
+                        {percentage < 100 && motivationalTip && (
+                             <div className="flex items-center gap-2 text-xs text-muted-foreground bg-secondary/50 p-2 rounded-lg">
+                                <Lightbulb className="h-4 w-4 text-primary flex-shrink-0" />
+                                <span>{motivationalTip}</span>
+                            </div>
+                        )}
                     </div>
                 )}
             </CardContent>
@@ -151,7 +173,8 @@ const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: an
 );
 
 export default function CreatorDashboard() {
-  const { user, userProfile } = useUserProfile();
+  const { userProfile } = useUserProfile();
+  const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
 
