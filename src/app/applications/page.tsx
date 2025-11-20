@@ -36,13 +36,20 @@ const ApplicantCard = ({ application, campaignTitle, onProfileClick }: { applica
     return (
         <Card className="transition-all hover:shadow-md">
              <CardContent className="p-4 flex items-center gap-4">
-                 <Avatar className="h-12 w-12 cursor-pointer" onClick={() => onProfileClick(application.creatorId)}>
-                    <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
-                    <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
-                </Avatar>
+                 <div onClick={() => onProfileClick(application.creatorId)} className="cursor-pointer">
+                    <Avatar className="h-12 w-12">
+                        <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
+                        <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
+                    </Avatar>
+                 </div>
                 <div className="flex-1 grid grid-cols-4 items-center gap-4">
                     <div className="col-span-2">
-                        <p className="font-semibold cursor-pointer hover:underline" onClick={() => onProfileClick(application.creatorId)}>{application.profile?.name}</p>
+                        <p 
+                            className="font-semibold cursor-pointer hover:underline" 
+                            onClick={() => onProfileClick(application.creatorId)}
+                        >
+                            {application.profile?.name}
+                        </p>
                         <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
                     </div>
                     <div>
