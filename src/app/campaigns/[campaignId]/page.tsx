@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
@@ -150,7 +151,7 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators }: { campaign: any
                         {hiredCreators.length > 0 ? (
                             <div className="flex flex-wrap gap-4">
                                 {hiredCreators.map(creator => {
-                                    const isPending = campaign.creatorIds.includes(creator.uid) && !creator.accepted; // This is pseudo-logic
+                                    const isPending = campaign.status === 'PENDING_CREATOR_ACCEPTANCE';
                                     return (
                                     <div key={creator.uid} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border">
                                         <Avatar className="h-8 w-8">

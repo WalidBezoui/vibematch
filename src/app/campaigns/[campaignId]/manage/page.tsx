@@ -194,19 +194,11 @@ export default function ManageApplicationsPage() {
         toast({ title: t('manageApplicationsPage.hiringCreatorToast') });
         
         try {
-            const hiredCount = campaign.creatorIds?.length || 0;
-            const totalNeeded = campaign.numberOfCreators || 1;
-            const newHiredCount = hiredCount + 1;
             
-            const campaignUpdate: any = {
+            await updateDoc(campaignRef, {
                 creatorIds: arrayUnion(applicant.creatorId),
-            };
-
-            if (newHiredCount >= totalNeeded) {
-                campaignUpdate.status = 'PENDING_CREATOR_ACCEPTANCE';
-            }
-
-            await updateDoc(campaignRef, campaignUpdate);
+                status: 'PENDING_CREATOR_ACCEPTANCE'
+            });
             
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
             await updateDoc(applicationRef, { status: 'OFFER_ACCEPTED' });
