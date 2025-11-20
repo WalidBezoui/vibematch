@@ -3,7 +3,7 @@
 
 import { AppHeader } from '@/components/app-header';
 import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
-import { collection, query, where, getDocs, collectionGroup, documentId } from 'firebase/firestore';
+import { collection, query, where, getDocs, collectionGroup, documentId, doc, getDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
