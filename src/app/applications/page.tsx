@@ -1,3 +1,4 @@
+
 'use client';
 
 import { AppHeader } from '@/components/app-header';
@@ -21,6 +22,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 type Applicant = {
   id: string; // application id
+  campaignId: string;
   creatorId: string;
   brandId: string;
   coverLetter: string;
@@ -39,39 +41,41 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <Card className="transition-all hover:shadow-md">
                  <CardHeader className="p-4">
-                    <div className="flex items-start gap-4">
-                        <Avatar className="h-12 w-12 border">
-                            <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
-                            <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                             <CollapsibleTrigger asChild>
-                                <div className="cursor-pointer">
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <p className="font-semibold text-left">
-                                                {application.profile?.name}
-                                            </p>
-                                            <p className="text-xs text-muted-foreground text-left">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
-                                        </div>
-                                         <div className="flex items-center gap-1 text-muted-foreground hover:text-primary">
-                                            <span className="text-xs font-medium">Details</span>
-                                            <ChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-4 mt-3">
-                                        <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
-                                            <ShieldCheck className="h-3 w-3 mr-1" />
-                                            Trust Score: {application.trustScore}
-                                        </Badge>
-                                        <div className="text-sm">
-                                            <span className="text-muted-foreground">Bid: </span>
-                                            <span className="font-bold">{application.bidAmount} {t('currency')}</span>
-                                        </div>
+                    <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-start gap-4">
+                            <Avatar className="h-12 w-12 border">
+                                <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
+                                <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                                <p className="font-semibold">
+                                    {application.profile?.name}
+                                </p>
+                                <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
+                                <div className="flex items-center gap-4 mt-2">
+                                    <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
+                                        <ShieldCheck className="h-3 w-3 mr-1" />
+                                        Trust Score: {application.trustScore}
+                                    </Badge>
+                                    <div className="text-sm">
+                                        <span className="text-muted-foreground">Bid: </span>
+                                        <span className="font-bold">{application.bidAmount} {t('currency')}</span>
                                     </div>
                                 </div>
-                             </CollapsibleTrigger>
+                            </div>
                         </div>
+                         <div className="flex items-center gap-2">
+                            <Button variant="outline" size="icon" className="h-9 w-9 rounded-full" onClick={() => onSelectCreator(application.creatorId)}>
+                                <User className="h-4 w-4" />
+                                <span className="sr-only">View Profile</span>
+                            </Button>
+                            <CollapsibleTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+                                    <ChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />
+                                    <span className="sr-only">Expand</span>
+                                </Button>
+                             </CollapsibleTrigger>
+                         </div>
                     </div>
                 </CardHeader>
 
@@ -81,29 +85,23 @@ const ApplicantCard = ({ application, campaignTitle, onSelectCreator }: { applic
                              <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Cover Letter</h4>
                              <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border">{application.coverLetter}</p>
                         </div>
-                        <CardFooter className="bg-muted/50 p-3 border-t flex-col items-stretch gap-2">
-                             <div className="flex gap-2">
-                                <Button className="w-full flex-1">
-                                    <MessageSquare className="mr-2 h-4 w-4" />
-                                    Discuss & Negotiate
-                                </Button>
-                                <Button variant="destructive" className="w-full flex-1">
-                                    <X className="mr-2 h-4 w-4" />
-                                    Decline
-                                </Button>
-                            </div>
+                        <CardFooter className="bg-muted/50 p-3 border-t flex items-stretch gap-2">
+                             <Button className="w-full flex-1">
+                                <MessageSquare className="mr-2 h-4 w-4" />
+                                Discuss & Negotiate
+                            </Button>
+                            <Button variant="destructive" className="w-full flex-1">
+                                <X className="mr-2 h-4 w-4" />
+                                Decline
+                            </Button>
                         </CardFooter>
                     </div>
                 </CollapsibleContent>
-                 <div className="border-t p-2">
-                    <Button variant="ghost" className="w-full justify-center" onClick={() => onSelectCreator(application.creatorId)}>
-                        <User className="mr-2 h-4 w-4" /> View Creator Profile
-                    </Button>
-                </div>
             </Card>
         </Collapsible>
     )
 }
+
 
 const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator }: { campaign: any, applications: any[], onSelectCreator: (creatorId: string) => void }) => {
     if (applications.length === 0) return null;
@@ -113,7 +111,7 @@ const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator }: 
                 {campaign.title}
                 <Badge variant="outline">{applications.length}</Badge>
             </h2>
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-4">
                 {applications.map(app => (
                     <ApplicantCard key={app.id} application={app} campaignTitle={campaign.title} onSelectCreator={onSelectCreator} />
                 ))}
@@ -184,7 +182,7 @@ export default function TalentHubPage() {
         <div className="flex h-auto w-full flex-col">
             <AppHeader />
             <main className="flex-1 px-4 md:px-10 lg:px-20 py-10 md:py-16">
-                 <div className="max-w-7xl mx-auto">
+                 <div className="max-w-4xl mx-auto">
                     <div className="mb-12">
                         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tighter leading-tight">
                            {t('talentHub.title')}
@@ -195,10 +193,10 @@ export default function TalentHubPage() {
                     </div>
 
                     {isLoading && (
-                        <div className="space-y-6">
-                            <Skeleton className="h-20 w-full" />
-                            <Skeleton className="h-20 w-full" />
-                            <Skeleton className="h-20 w-full" />
+                        <div className="space-y-4">
+                            <Skeleton className="h-28 w-full" />
+                            <Skeleton className="h-28 w-full" />
+                            <Skeleton className="h-28 w-full" />
                         </div>
                     )}
 
