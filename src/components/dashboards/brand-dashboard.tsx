@@ -105,7 +105,7 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
         fetchCount();
     }, [firestore, campaign.id, campaign.status]);
 
-    const manageButtonLink = campaign.status === 'OPEN_FOR_APPLICATIONS' ? '/applications' : `/campaigns/${campaign.id}/manage`;
+    const manageButtonLink = `/campaigns/${campaign.id}/manage`;
 
     return (
         <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
