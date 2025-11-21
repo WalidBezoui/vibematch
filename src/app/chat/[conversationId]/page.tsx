@@ -66,7 +66,13 @@ const DealStatusHeader = ({ conversation, campaign, onOfferSent }: { conversatio
 
                     return { icon: Handshake, text, color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
                 }
-                return { icon: Hourglass, text: isBrand ? "Waiting for creator's response." : "Negotiation in progress. Brand is reviewing your rate.", color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-900/20' };
+                
+                let waitingText = isBrand ? "Waiting for creator's response." : "Negotiation in progress. Brand is reviewing your rate.";
+                if (!isBrand && campaign && conversation.agreed_budget === campaign.budget) {
+                    waitingText = "Your offer matches the budget. Waiting for the brand to confirm.";
+                }
+                return { icon: Hourglass, text: waitingText, color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-900/20' };
+
             case 'OFFER_ACCEPTED':
                  return { icon: Handshake, text: isBrand ? "Deal Agreed. Fund the escrow to start." : "Deal Agreed. Awaiting escrow funding.", color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
             case 'ACTIVE':
@@ -141,12 +147,12 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
     if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for campaign:')) {
         const isCreator = userProfile?.role === 'creator';
         
-        const contentRegex = /Discussion opened for campaign: "(.*)".\n\n(Creator's|Your) opening offer is ([\d,.]+) MAD and (their|your) cover letter is:\n\n"(.*)"/s;
+        const contentRegex = /Discussion opened for campaign: "(.*)".\n\nCreator's opening offer is ([\d,.]+) MAD and their cover letter is:\n\n"(.*)"/s;
         const match = message.content.match(contentRegex);
 
         if (!match) return <MessageBubble message={message} isOwnMessage={false} senderProfile={{name: 'System'}}/>;
 
-        const [, campaignTitle, , offerAmount, , coverLetter] = match;
+        const [, campaignTitle, offerAmount, coverLetter] = match;
 
         let content = message.content;
         if(isCreator) {

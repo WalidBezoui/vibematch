@@ -34,7 +34,7 @@ type Applicant = {
   trustScore: number;
 };
 
-const ApplicantCard = ({ application, campaign, onSelectCreator, onStartDiscussion, onDecline }: { application: Applicant; campaign: any; onSelectCreator: (creatorId: string) => void; onStartDiscussion: (app: Applicant) => void; onDecline: (app: Applicant) => void; }) => {
+const ApplicantCard = ({ application, campaign, onSelectCreator, onStartDiscussion, onDecline }: { application: Applicant; campaign: any; onSelectCreator: (creatorId: string) => void; onStartDiscussion: (app: Applicant, startInNegotiation: boolean) => void; onDecline: (app: Applicant) => void; }) => {
     const {t} = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -100,7 +100,7 @@ const ApplicantCard = ({ application, campaign, onSelectCreator, onStartDiscussi
                              <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border whitespace-pre-wrap">{application.coverLetter}</p>
                         </div>
                         <CardFooter className="bg-muted/50 p-3 border-t flex flex-col sm:flex-row items-stretch gap-2">
-                             <Button className="w-full flex-1" onClick={() => onStartDiscussion(application)}>
+                             <Button className="w-full flex-1" onClick={() => onStartDiscussion(application, isBidDifferent)}>
                                 <MessageSquare className="mr-2 h-4 w-4" />
                                 {actionButtonText}
                             </Button>
@@ -117,7 +117,7 @@ const ApplicantCard = ({ application, campaign, onSelectCreator, onStartDiscussi
 }
 
 
-const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator, onStartDiscussion, onDecline }: { campaign: any, applications: any[], onSelectCreator: (creatorId: string) => void; onStartDiscussion: (app: Applicant) => void; onDecline: (app: Applicant) => void; }) => {
+const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator, onStartDiscussion, onDecline }: { campaign: any, applications: any[], onSelectCreator: (creatorId: string) => void; onStartDiscussion: (app: Applicant, startInNegotiation: boolean) => void; onDecline: (app: Applicant) => void; }) => {
     if (applications.length === 0) return null;
     return (
         <div className="space-y-4">
@@ -196,22 +196,26 @@ export default function TalentHubPage() {
         setIsSheetOpen(true);
     }
     
-    const handleStartDiscussion = async (applicant: Applicant) => {
+    const handleStartDiscussion = async (applicant: Applicant, startInNegotiation: boolean) => {
         if (!firestore || !user) return;
         toast({ title: t('manageApplicationsPage.openingChatToast') });
         
         const batch = writeBatch(firestore);
         const applicationRef = doc(firestore, 'campaigns', applicant.campaignId, 'applications', applicant.id);
-        batch.update(applicationRef, { status: 'NEGOTIATING' });
+        
+        // If bid matches, status becomes OFFER_ACCEPTED, otherwise NEGOTIATING
+        const applicationStatus = startInNegotiation ? 'NEGOTIATING' : 'OFFER_ACCEPTED';
+        batch.update(applicationRef, { status: applicationStatus });
         
         const conversationDocRef = doc(collection(firestore, 'conversations'));
         const campaign = campaigns?.find(c => c.id === applicant.campaignId);
+
         const conversationData = {
             campaign_id: applicant.campaignId,
             application_id: applicant.id,
             brand_id: applicant.brandId,
             creator_id: applicant.creatorId,
-            status: 'NEGOTIATION',
+            status: startInNegotiation ? 'NEGOTIATION' : 'OFFER_ACCEPTED',
             agreed_budget: applicant.bidAmount,
             last_offer_by: applicant.creatorId,
             is_funded: false,
@@ -221,11 +225,16 @@ export default function TalentHubPage() {
         batch.set(conversationDocRef, conversationData);
 
         const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
+        let initialMessageContent = `Discussion opened for campaign: "${campaign?.title}".\n\nCreator's opening offer is ${applicant.bidAmount} MAD and their cover letter is:\n\n"${applicant.coverLetter}"`;
+        if (!startInNegotiation) {
+            initialMessageContent += `\n\nOffer accepted by the Brand. Awaiting funds from the Brand.`;
+        }
+
         const messageData = {
              conversation_id: conversationDocRef.id,
              sender_id: user.uid, 
              type: 'TEXT',
-             content: `Discussion opened for campaign: "${campaign?.title}".\n\nCreator's opening offer is ${applicant.bidAmount} MAD and their cover letter is:\n\n"${applicant.coverLetter}"`,
+             content: initialMessageContent,
              timestamp: serverTimestamp(),
         };
         batch.set(messageDocRef, messageData);
@@ -240,7 +249,7 @@ export default function TalentHubPage() {
                 path: `BATCH_WRITE on /campaigns/${applicant.campaignId} and /conversations`,
                 operation: 'write',
                 requestResourceData: {
-                    applicationUpdate: { status: 'NEGOTIATING' },
+                    applicationUpdate: { status: applicationStatus },
                     newConversation: conversationData,
                     newMessage: messageData
                 }
@@ -334,6 +343,3 @@ export default function TalentHubPage() {
         </div>
     );
 }
-
-
-    
