@@ -133,6 +133,7 @@
             "creator_id": { "type": "string" },
             "status": { "type": "string", "enum": ["NEGOTIATION", "OFFER_ACCEPTED", "ACTIVE", "REVIEW", "COMPLETED", "CANCELLED"] },
             "agreed_budget": { "type": "number" },
+            "last_offer_by": { "type": "string", "description": "The UID of the user who made the last offer."},
             "is_funded": { "type": "boolean" },
             "lastMessage": { "type": "string" },
             "updatedAt": { "type": "string", "format": "date-time" }
@@ -147,13 +148,13 @@
         "properties": {
             "conversation_id": { "type": "string" },
             "sender_id": { "type": "string" },
-            "type": { "type": "string", "enum": ["TEXT", "SYSTEM_OFFER", "SYSTEM_ESCROW", "SYSTEM_DELIVERY"] },
+            "type": { "type": "string", "enum": ["TEXT", "SYSTEM_OFFER", "SYSTEM_ESCROW", "SYSTEM_DELIVERY", "SYSTEM_EVENT"] },
             "content": { "type": "string" },
             "metadata": {
                 "type": "object",
                 "properties": {
                     "offer_amount": { "type": "number" },
-                    "offer_status": { "type": "string", "enum": ["PENDING", "ACCEPTED", "REJECTED"] }
+                    "offer_status": { "type": "string", "enum": ["PENDING", "ACCEPTED", "REJECTED", "SUPERSEDED"] }
                 }
             },
             "timestamp": { "type": "string", "format": "date-time" }
