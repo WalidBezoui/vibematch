@@ -154,7 +154,7 @@ export default function ManageApplicationsPage() {
             agreed_budget: applicant.bidAmount,
             last_offer_by: applicant.creatorId, // Creator's bid is the first offer
             is_funded: false,
-            lastMessage: `Discussion ouverte. L'offre initiale du créateur est de ${applicant.bidAmount} MAD.`,
+            lastMessage: `Discussion opened. Creator's opening offer is ${applicant.bidAmount} MAD.`,
             updatedAt: serverTimestamp(),
         };
         batch.set(conversationDocRef, conversationData);
@@ -164,7 +164,7 @@ export default function ManageApplicationsPage() {
              conversation_id: conversationDocRef.id,
              sender_id: user.uid, 
              type: 'TEXT',
-             content: `Discussion ouverte pour la campagne: "${campaign?.title}".\n\nL'offre d'ouverture du créateur est de ${applicant.bidAmount} MAD et sa lettre de motivation est : \n\n"${applicant.coverLetter}"`,
+             content: `Discussion opened for campaign: "${campaign?.title}".\n\nCreator's opening offer is ${applicant.bidAmount} MAD and their cover letter is:\n\n"${applicant.coverLetter}"`,
              timestamp: serverTimestamp(),
         };
         batch.set(messageDocRef, messageData);
@@ -194,10 +194,15 @@ export default function ManageApplicationsPage() {
         toast({ title: t('manageApplicationsPage.hiringCreatorToast') });
         
         try {
-            
+            const currentHiredCount = campaign.creatorIds?.length || 0;
+            const newHiredCount = currentHiredCount + 1;
+            const isHiringComplete = newHiredCount >= campaign.numberOfCreators;
+
+            const newStatus = isHiringComplete ? 'PENDING_CREATOR_ACCEPTANCE' : 'OPEN_FOR_APPLICATIONS';
+
             await updateDoc(campaignRef, {
                 creatorIds: arrayUnion(applicant.creatorId),
-                status: 'PENDING_CREATOR_ACCEPTANCE'
+                status: newStatus
             });
             
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
@@ -253,6 +258,7 @@ export default function ManageApplicationsPage() {
     const newApplicants = applicants.filter(a => a.status === 'APPLIED');
     const negotiatingApplicants = applicants.filter(a => a.status === 'NEGOTIATING');
 
+    const canHireMore = (campaign.creatorIds?.length || 0) < campaign.numberOfCreators;
 
     return (
         <>
@@ -267,7 +273,7 @@ export default function ManageApplicationsPage() {
                 
                 <HiringProgress campaign={campaign} />
 
-                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION' && (
+                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION' && !canHireMore && (
                     <Alert>
                         <AlertTitle>{t('manageApplicationsPage.closed.title')}</AlertTitle>
                         <AlertDescription>
@@ -337,17 +343,17 @@ export default function ManageApplicationsPage() {
                                             <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
                                                 <div className="flex gap-2">
                                                     {isBidHigher ? (
-                                                        <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                                        <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={!canHireMore}>
                                                             <MessageSquare className="mr-2 h-4 w-4" />
                                                             {t('manageApplicationsPage.negotiateButton')}
                                                         </Button>
                                                     ) : (
-                                                        <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                                        <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={!canHireMore}>
                                                             <CheckCircle className="mr-2 h-4 w-4" />
                                                             {t('manageApplicationsPage.acceptButton')}
                                                         </Button>
                                                     )}
-                                                    <Button variant="destructive" className="w-full flex-1" disabled={campaign.status !== 'OPEN_FOR_APPLICATIONS'}>
+                                                    <Button variant="destructive" className="w-full flex-1" disabled={!canHireMore}>
                                                         <XCircle className="mr-2 h-4 w-4" />
                                                         {t('manageApplicationsPage.rejectButton')}
                                                     </Button>

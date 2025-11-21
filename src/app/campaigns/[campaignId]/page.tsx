@@ -3,7 +3,7 @@
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
-import { doc, updateDoc, serverTimestamp, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp, collection, query, where, getDocs, getDoc } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck } from 'lucide-react';
+import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useState, useEffect } from 'react';
@@ -105,8 +105,8 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators }: { campaign: any
 
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
-    const isCampaignFull = hiredCount >= totalNeeded;
-
+    const isHiringOpen = hiredCount < totalNeeded;
+    
     return (
         <Card>
             <CardHeader>
@@ -132,10 +132,11 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators }: { campaign: any
                         </Button>
                     </div>
                 )}
-                {(campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION') && (
+                {(campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION') && isHiringOpen && (
                      <Alert>
+                        <Users className="h-4 w-4"/>
                         <AlertDescription className="text-center">
-                            <Link href={`/campaigns/${campaignId}/manage`} className="font-semibold text-primary hover:underline">Manage applications</Link> to select creators for this campaign.
+                            <Link href={`/applications`} className="font-semibold text-primary hover:underline">Manage incoming applications</Link> in the Talent Hub.
                         </AlertDescription>
                     </Alert>
                 )}
@@ -145,28 +146,24 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators }: { campaign: any
                  {campaign.status === 'COMPLETED' && (
                      <p className="text-muted-foreground text-center">This campaign is complete.</p>
                 )}
-                 {(campaign.status === 'PENDING_CREATOR_ACCEPTANCE' || isCampaignFull) && (
+                 {hiredCreators.length > 0 && (
                      <div className="space-y-4">
                         <h4 className="font-semibold flex items-center gap-2"><UserCheck className="h-5 w-5 text-primary" /> Hired Creators ({hiredCount}/{totalNeeded})</h4>
-                        {hiredCreators.length > 0 ? (
-                            <div className="flex flex-wrap gap-4">
-                                {hiredCreators.map(creator => {
-                                    const isPending = campaign.status === 'PENDING_CREATOR_ACCEPTANCE';
-                                    return (
-                                    <div key={creator.uid} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border">
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarImage src={creator.photoURL} alt={creator.name} />
-                                            <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
-                                        </Avatar>
-                                        <span className="text-sm font-medium">{creator.name}</span>
-                                        <Badge variant={isPending ? 'outline' : 'secondary'}>{isPending ? 'Pending' : 'Accepted'}</Badge>
-                                    </div>
-                                    )
-                                })}
-                            </div>
-                        ) : (
-                            <p className="text-sm text-muted-foreground">Waiting for creators to accept...</p>
-                        )}
+                        <div className="flex flex-wrap gap-4">
+                            {hiredCreators.map(creator => {
+                                const isPending = campaign.status === 'PENDING_CREATOR_ACCEPTANCE' && campaign.creatorIds.includes(creator.uid);
+                                return (
+                                <div key={creator.uid} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border">
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarImage src={creator.photoURL} alt={creator.name} />
+                                        <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
+                                    </Avatar>
+                                    <span className="text-sm font-medium">{creator.name}</span>
+                                    <Badge variant={isPending ? 'outline' : 'secondary'} className={cn(isPending && 'border-blue-200 bg-blue-50 text-blue-800')}>{isPending ? 'Pending' : 'Accepted'}</Badge>
+                                </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 )}
             </CardContent>
