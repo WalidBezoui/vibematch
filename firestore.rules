@@ -1,3 +1,4 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -86,8 +87,8 @@ service cloud.firestore {
       match /messages/{messageId} {
         // Allow creation if sender is part of conversation
         allow create: if request.auth.uid == request.resource.data.sender_id;
-        // Allow creators OR brands to update an offer status
-        allow update: if (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid && 'metadata.offer_status' in request.resource.data) || (get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid && 'metadata.offer_status' in request.resource.data);
+        // Allow participants (brand or creator) to update an offer's status.
+        allow update: if ( (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata.offer_status']) );
         // Only participants can read messages.
         allow get, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid;
       }
