@@ -220,9 +220,15 @@ export default function CreatorDashboard() {
   );
   const { data: activeCampaigns, isLoading: isLoadingActive } = useCollection(activeCampaignsQuery);
   
+   const conversationsQuery = useMemoFirebase(
+    () => (user && firestore) ? query(collection(firestore, 'conversations'), where('creator_id', '==', user.uid)) : null,
+    [user, firestore]
+  );
+  const { data: conversations, isLoading: conversationsLoading } = useCollection(conversationsQuery);
+  
   // Fetch pending applications and their associated campaign data
   useEffect(() => {
-    if (user && firestore) {
+    if (user && firestore && conversations) {
         setIsLoadingPending(true);
         const fetchPendingAndMatching = async () => {
             try {
@@ -234,17 +240,15 @@ export default function CreatorDashboard() {
                 
                 const appMap = new Map<string, string>();
                 appsSnapshot.docs.forEach(doc => {
-                    // Only track applications to campaigns that are still open
-                    if (openCampaignsSnapshot.docs.some(c => c.id === doc.data().campaignId)) {
-                        appMap.set(doc.data().campaignId, doc.id);
-                    }
+                    appMap.set(doc.data().campaignId, doc.id);
                 });
                 setUserApplications(appMap);
 
                 const openCampaignsData = openCampaignsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                const appliedCampaignIds = Array.from(appMap.keys());
-                const pendingData = openCampaignsData.filter(c => appliedCampaignIds.includes(c.id));
+                const conversationCampaignIds = conversations.map(c => c.campaign_id);
+                
+                const pendingData = openCampaignsData.filter(c => appMap.has(c.id) && !conversationCampaignIds.includes(c.id));
                 setPendingCampaigns(pendingData);
                 
                 // Calculate matching jobs
@@ -252,11 +256,11 @@ export default function CreatorDashboard() {
                 let matchingCount = 0;
                 if (creatorTags.length > 0) {
                     const matching = openCampaignsData.filter(c => 
-                        !appliedCampaignIds.includes(c.id) && c.tags?.some((tag: string) => creatorTags.includes(tag))
+                        !appMap.has(c.id) && c.tags?.some((tag: string) => creatorTags.includes(tag))
                     );
                     matchingCount = matching.length;
                 } else {
-                    matchingCount = openCampaignsData.length - appliedCampaignIds.length;
+                    matchingCount = openCampaignsData.length - appMap.size;
                 }
                 setMatchingJobsCount(matchingCount);
 
@@ -274,7 +278,7 @@ export default function CreatorDashboard() {
 
         fetchPendingAndMatching();
     }
-  }, [user, firestore, userProfile]);
+  }, [user, firestore, userProfile, conversations]);
   
   // Calculate stats
   useEffect(() => {
@@ -311,7 +315,7 @@ export default function CreatorDashboard() {
     }
 };
 
-  const isLoading = isLoadingActive || isLoadingPending;
+  const isLoading = isLoadingActive || isLoadingPending || conversationsLoading;
   const hasActiveContracts = activeCampaigns && activeCampaigns.some(c => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED');
 
   return (
@@ -466,6 +470,3 @@ export default function CreatorDashboard() {
     </div>
   );
 }
-
-
-    

@@ -52,14 +52,14 @@ export default function DiscoverPage() {
         () => firestore ? query(collection(firestore, 'campaigns'), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
         [firestore]
     );
-    const { data: campaigns, isLoading: campaignsLoading } = useCollection(campaignsQuery);
+    const { data: campaigns, isLoading: campaignsLoading, mutate: mutateCampaigns } = useCollection(campaignsQuery);
     
     // Fetch all applications for the current user
     const applicationsQuery = useMemoFirebase(
       () => user && firestore ? query(collectionGroup(firestore, 'applications'), where('creatorId', '==', user.uid)) : null,
       [user, firestore]
     );
-    const { data: userApplications, isLoading: applicationsLoading } = useCollection(applicationsQuery);
+    const { data: userApplications, isLoading: applicationsLoading, mutate: mutateApplications } = useCollection(applicationsQuery);
 
     // Fetch all conversations for the current user
     const conversationsQuery = useMemoFirebase(
@@ -82,7 +82,8 @@ export default function DiscoverPage() {
                 title: 'Application Withdrawn',
                 description: 'You can apply again in the future if you change your mind.',
             });
-            // The local state will update automatically thanks to the real-time listener
+            // Optimistically update the UI by removing the application locally
+            mutateApplications(prev => prev ? prev.filter(app => app.id !== application.id) : null);
         } catch (error: any) {
             toast({
                 variant: 'destructive',
@@ -120,8 +121,8 @@ export default function DiscoverPage() {
                     {!isLoading && campaigns && campaigns.length > 0 && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {campaigns.map(campaign => {
-                                const application = userApplications?.find(app => app.campaignId === campaign.id);
                                 const conversation = conversations?.find(convo => convo.campaign_id === campaign.id);
+                                const application = userApplications?.find(app => app.campaignId === campaign.id);
                                 const hiredCount = campaign.creatorIds?.length || 0;
                                 const totalSeats = campaign.numberOfCreators || 1;
                                 const isFull = hiredCount >= totalSeats;
