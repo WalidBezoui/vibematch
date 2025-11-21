@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -65,25 +65,41 @@ const ApplicantCardSkeleton = () => (
     </Card>
 )
 
-const HiringProgress = ({ campaign }: { campaign: any }) => {
+const HiringProgress = ({ campaign, hiredCreators }: { campaign: any, hiredCreators: any[] }) => {
     const { t } = useLanguage();
     if (!campaign) return null;
-    const hiredCount = campaign.creatorIds?.length || 0;
+    const hiredCount = hiredCreators.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
     const progress = totalNeeded > 0 ? Math.round((hiredCount / totalNeeded) * 100) : 0;
 
     return (
         <Card className="mb-8">
             <CardHeader>
-                <CardTitle>{t('brandDashboard.hiringProgress')}</CardTitle>
+                <CardTitle className="flex items-center justify-between">
+                    <span>{t('brandDashboard.hiringProgress')}</span>
+                    <span className="text-lg font-bold">{hiredCount} / {totalNeeded}</span>
+                </CardTitle>
                 <CardDescription>{t('manageApplicationsPage.hiredDescription', { hired: hiredCount, total: totalNeeded })}</CardDescription>
             </CardHeader>
             <CardContent>
                 <Progress value={progress} className="h-3" />
-                <div className="flex justify-between text-sm text-muted-foreground mt-2">
-                    <span>{hiredCount} {t('manageApplicationsPage.hiredLabel')}</span>
-                    <span>{totalNeeded} {t('manageApplicationsPage.goalLabel')}</span>
-                </div>
+                {hiredCreators.length > 0 && (
+                    <div className="mt-4 space-y-4">
+                        <h4 className="font-semibold text-sm text-muted-foreground flex items-center gap-2"><UserCheck className="h-4 w-4" /> Hired Creators</h4>
+                        <div className="flex flex-wrap gap-3">
+                            {hiredCreators.map((creator) => (
+                                <div key={creator.uid} className="flex items-center gap-3 p-2 rounded-lg bg-muted border">
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarImage src={creator.photoURL} alt={creator.name} />
+                                        <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
+                                    </Avatar>
+                                    <span className="font-semibold text-sm">{creator.displayName || creator.name}</span>
+                                    <Badge variant="secondary" className="bg-green-100 text-green-800">Hired</Badge>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </CardContent>
         </Card>
     )
@@ -104,6 +120,7 @@ export default function ManageApplicationsPage() {
     const { data: applications, isLoading: areApplicationsLoading, mutate: mutateApplications } = useCollection(applicationsQuery);
 
     const [applicants, setApplicants] = useState<Applicant[]>([]);
+    const [hiredCreators, setHiredCreators] = useState<any[]>([]);
 
     useEffect(() => {
         if (applications && firestore) {
@@ -134,6 +151,23 @@ export default function ManageApplicationsPage() {
             fetchProfiles();
         }
     }, [applications, firestore]);
+    
+    useEffect(() => {
+        if (campaign?.creatorIds?.length > 0 && firestore) {
+            const fetchHiredProfiles = async () => {
+                const profiles = await Promise.all(
+                    campaign.creatorIds.map(async (id: string) => {
+                        const userDoc = await getDoc(doc(firestore, 'users', id));
+                        return userDoc.exists() ? { uid: id, ...userDoc.data() } : null;
+                    })
+                );
+                setHiredCreators(profiles.filter(p => p !== null));
+            };
+            fetchHiredProfiles();
+        } else {
+            setHiredCreators([]);
+        }
+    }, [campaign, firestore]);
 
     const handleShortlist = async (applicant: Applicant) => {
         if (!firestore || !user || !campaign) return;
@@ -271,7 +305,7 @@ export default function ManageApplicationsPage() {
 
     const newApplicants = applicants.filter(a => a.status === 'APPLIED');
     const negotiatingApplicants = applicants.filter(a => a.status === 'NEGOTIATING');
-    const hiredApplicants = applicants.filter(a => a.status === 'OFFER_ACCEPTED');
+    // Hired creators are now derived from campaign.creatorIds
 
     const canHireMore = (campaign.creatorIds?.length || 0) < campaign.numberOfCreators;
 
@@ -286,7 +320,7 @@ export default function ManageApplicationsPage() {
                     </p>
                 </div>
                 
-                <HiringProgress campaign={campaign} />
+                <HiringProgress campaign={campaign} hiredCreators={hiredCreators}/>
 
                 {campaign.status !== 'OPEN_FOR_APPLICATIONS' && !canHireMore && (
                     <Alert>
