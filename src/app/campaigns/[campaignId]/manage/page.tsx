@@ -183,7 +183,7 @@ export default function ManageApplicationsPage() {
                         newConversation: conversationData,
                         newMessage: messageData
                     }
-                } satisfies SecurityRuleContext);
+                });
                 errorEmitter.emit('permission-error', permissionError);
             });
     };
@@ -198,7 +198,7 @@ export default function ManageApplicationsPage() {
             const newHiredCount = currentHiredCount + 1;
             const isHiringComplete = newHiredCount >= campaign.numberOfCreators;
 
-            const newStatus = isHiringComplete ? 'PENDING_CREATOR_ACCEPTANCE' : 'OPEN_FOR_APPLICATIONS';
+            const newStatus = isHiringComplete ? 'PENDING_CREATOR_ACCEPTANCE' : campaign.status;
 
             await updateDoc(campaignRef, {
                 creatorIds: arrayUnion(applicant.creatorId),

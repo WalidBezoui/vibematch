@@ -3,7 +3,7 @@
 
 import { AppHeader } from '@/components/app-header';
 import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc, writeBatch, serverTimestamp } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatDistanceToNow } from 'date-fns';
@@ -18,7 +19,8 @@ import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 type Applicant = {
   id: string; // application id
@@ -33,7 +35,7 @@ type Applicant = {
   trustScore: number;
 };
 
-const ApplicantCard = ({ application, campaign, onSelectCreator }: { application: Applicant; campaign: any; onSelectCreator: (creatorId: string) => void; }) => {
+const ApplicantCard = ({ application, campaign, onSelectCreator, onStartDiscussion, onDecline }: { application: Applicant; campaign: any; onSelectCreator: (creatorId: string) => void; onStartDiscussion: (app: Applicant) => void; onDecline: (app: Applicant) => void; }) => {
     const {t} = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -99,11 +101,11 @@ const ApplicantCard = ({ application, campaign, onSelectCreator }: { application
                              <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border whitespace-pre-wrap">{application.coverLetter}</p>
                         </div>
                         <CardFooter className="bg-muted/50 p-3 border-t flex flex-col sm:flex-row items-stretch gap-2">
-                             <Button className="w-full flex-1">
+                             <Button className="w-full flex-1" onClick={() => onStartDiscussion(application)}>
                                 <MessageSquare className="mr-2 h-4 w-4" />
                                 {actionButtonText}
                             </Button>
-                            <Button variant="destructive" className="w-full flex-1">
+                            <Button variant="destructive" className="w-full flex-1" onClick={() => onDecline(application)}>
                                 <X className="mr-2 h-4 w-4" />
                                 Decline
                             </Button>
@@ -116,7 +118,7 @@ const ApplicantCard = ({ application, campaign, onSelectCreator }: { application
 }
 
 
-const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator }: { campaign: any, applications: any[], onSelectCreator: (creatorId: string) => void }) => {
+const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator, onStartDiscussion, onDecline }: { campaign: any, applications: any[], onSelectCreator: (creatorId: string) => void; onStartDiscussion: (app: Applicant) => void; onDecline: (app: Applicant) => void; }) => {
     if (applications.length === 0) return null;
     return (
         <div className="space-y-4">
@@ -126,7 +128,7 @@ const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator }: 
             </h2>
             <div className="space-y-4">
                 {applications.map(app => (
-                    <ApplicantCard key={app.id} application={app} campaign={campaign} onSelectCreator={onSelectCreator} />
+                    <ApplicantCard key={app.id} application={app} campaign={campaign} onSelectCreator={onSelectCreator} onStartDiscussion={onStartDiscussion} onDecline={onDecline} />
                 ))}
             </div>
         </div>
@@ -141,6 +143,8 @@ export default function TalentHubPage() {
     
     const { user } = useUser();
     const firestore = useFirestore();
+    const router = useRouter();
+    const { toast } = useToast();
     const { t } = useLanguage();
 
     const campaignsQuery = useMemoFirebase(
@@ -194,6 +198,82 @@ export default function TalentHubPage() {
         setSelectedCreatorId(creatorId);
         setIsSheetOpen(true);
     }
+    
+    const handleStartDiscussion = async (applicant: Applicant) => {
+        if (!firestore || !user) return;
+        toast({ title: t('manageApplicationsPage.openingChatToast') });
+        
+        const batch = writeBatch(firestore);
+        const applicationRef = doc(firestore, 'campaigns', applicant.campaignId, 'applications', applicant.id);
+        batch.update(applicationRef, { status: 'NEGOTIATING' });
+        
+        const conversationDocRef = doc(collection(firestore, 'conversations'));
+        const campaign = campaigns?.find(c => c.id === applicant.campaignId);
+        const conversationData = {
+            campaign_id: applicant.campaignId,
+            application_id: applicant.id,
+            brand_id: applicant.brandId,
+            creator_id: applicant.creatorId,
+            status: 'NEGOTIATION',
+            agreed_budget: applicant.bidAmount,
+            last_offer_by: applicant.creatorId,
+            is_funded: false,
+            lastMessage: `Discussion opened. Creator's opening offer is ${applicant.bidAmount} MAD.`,
+            updatedAt: serverTimestamp(),
+        };
+        batch.set(conversationDocRef, conversationData);
+
+        const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
+        const messageData = {
+             conversation_id: conversationDocRef.id,
+             sender_id: user.uid, 
+             type: 'TEXT',
+             content: `Discussion opened for campaign: "${campaign?.title}".\n\nCreator's opening offer is ${applicant.bidAmount} MAD and their cover letter is:\n\n"${applicant.coverLetter}"`,
+             timestamp: serverTimestamp(),
+        };
+        batch.set(messageDocRef, messageData);
+        
+        try {
+            await batch.commit();
+            toast({ title: t('manageApplicationsPage.chatOpenedToast.title'), description: t('manageApplicationsPage.chatOpenedToast.description') });
+            setApplicants(prev => prev.filter(a => a.id !== applicant.id));
+            router.push(`/chat/${conversationDocRef.id}`);
+        } catch (serverError) {
+             const permissionError = new FirestorePermissionError({
+                path: `BATCH_WRITE on /campaigns/${applicant.campaignId} and /conversations`,
+                operation: 'write',
+                requestResourceData: {
+                    applicationUpdate: { status: 'NEGOTIATING' },
+                    newConversation: conversationData,
+                    newMessage: messageData
+                }
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        }
+    };
+    
+    const handleDecline = async (applicant: Applicant) => {
+        if (!firestore) return;
+        
+        const appRef = doc(firestore, 'campaigns', applicant.campaignId, 'applications', applicant.id);
+        try {
+            await writeBatch(firestore).update(appRef, { status: 'REJECTED' }).commit();
+            toast({
+                variant: 'destructive',
+                title: "Application Declined",
+                description: `${applicant.profile?.name || 'Creator'}'s application has been declined.`,
+            });
+            setApplicants(prev => prev.filter(a => a.id !== applicant.id));
+        } catch (serverError) {
+            const permissionError = new FirestorePermissionError({
+                path: appRef.path,
+                operation: 'update',
+                requestResourceData: { status: 'REJECTED' }
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        }
+    };
+
 
     return (
         <div className="flex h-auto w-full flex-col">
@@ -225,6 +305,8 @@ export default function TalentHubPage() {
                                     campaign={campaign}
                                     applications={applicants.filter(a => a.campaignId === campaign.id)}
                                     onSelectCreator={handleSelectCreator}
+                                    onStartDiscussion={handleStartDiscussion}
+                                    onDecline={handleDecline}
                                 />
                             ))}
                         </div>

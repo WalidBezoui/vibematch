@@ -31,7 +31,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast';
-import { deleteDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { useLanguage } from '@/context/language-context';
 
 const statusStyles: { [key: string]: string } = {
@@ -89,10 +88,16 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
         const fetchCount = async () => {
             if (firestore && campaign.id && (campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION')) {
                 setIsLoadingCount(true);
-                const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
-                const snapshot = await getCountFromServer(q);
-                setApplicationCount(snapshot.data().count);
-                setIsLoadingCount(false);
+                try {
+                    const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
+                    const snapshot = await getCountFromServer(q);
+                    setApplicationCount(snapshot.data().count);
+                } catch (e) {
+                    console.error("Error fetching application count:", e)
+                    setApplicationCount(0)
+                } finally {
+                    setIsLoadingCount(false);
+                }
             } else {
                 setIsLoadingCount(false);
             }
@@ -165,10 +170,10 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
             <CardFooter className="bg-muted/50 p-3">
                 {(campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION') && hiredCount < totalNeeded ? (
                      <Button asChild variant="secondary" className="w-full">
-                        <Link href={`/applications`}>
+                        <Link href="/applications">
                             <Users className="mr-2 h-4 w-4" />
                             {t('brandDashboard.manageButton')}
-                            {isLoadingCount ? <Skeleton className="h-5 w-5 rounded-full ml-2" /> : <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
+                            {isLoadingCount ? <Skeleton className="h-5 w-5 rounded-full ml-2" /> : applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
                         </Link>
                     </Button>
                 ) : (
