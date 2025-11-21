@@ -1,3 +1,4 @@
+
 'use client';
 
 import { AppHeader } from '@/components/app-header';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, Trash2 } from 'lucide-react';
+import { ArrowRight, CheckCircle, Trash2, Users } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -121,6 +122,10 @@ export default function DiscoverPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {campaigns.map(campaign => {
                                 const isApplied = appliedCampaigns.has(campaign.id);
+                                const hiredCount = campaign.creatorIds?.length || 0;
+                                const totalSeats = campaign.numberOfCreators || 1;
+                                const isFull = hiredCount >= totalSeats;
+
                                 return (
                                     <Card key={campaign.id} className="flex flex-col hover:shadow-lg transition-shadow">
                                         <CardHeader>
@@ -137,9 +142,18 @@ export default function DiscoverPage() {
                                             <p className="text-sm text-muted-foreground line-clamp-3 h-[60px]">
                                                 {campaign.campaignBrief}
                                             </p>
-                                            <div>
-                                                <Badge variant="outline">Budget</Badge>
-                                                <p className="font-bold text-lg gradient-text mt-1">{campaign.budget} DH</p>
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <Badge variant="outline">Budget</Badge>
+                                                    <p className="font-bold text-lg gradient-text mt-1">{campaign.budget} DH</p>
+                                                </div>
+                                                 <div>
+                                                    <Badge variant="outline">Slots</Badge>
+                                                    <p className="font-bold text-lg mt-1 flex items-center gap-1">
+                                                        <Users className="h-4 w-4 text-muted-foreground"/> 
+                                                        {hiredCount} / {totalSeats}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </CardContent>
                                         <CardFooter className="flex-col items-stretch gap-2">
@@ -176,6 +190,10 @@ export default function DiscoverPage() {
                                                     </AlertDialog>
 
                                                 </>
+                                            ) : isFull ? (
+                                                <Button disabled className="w-full">
+                                                    Campaign Full
+                                                </Button>
                                             ) : (
                                                 <Button asChild className="w-full">
                                                     <Link href={`/campaigns/${campaign.id}/apply`}>
@@ -202,3 +220,5 @@ export default function DiscoverPage() {
         </div>
     );
 }
+
+    

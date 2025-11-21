@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -75,6 +76,7 @@ export default function InviteToCampaignDialog({
   };
 
   const isSubmitting = form.formState.isSubmitting;
+  const activeCampaignsWithSlots = campaigns.filter(c => (c.creatorIds?.length || 0) < (c.numberOfCreators || 1));
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -97,18 +99,18 @@ export default function InviteToCampaignDialog({
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select an active campaign..." />
+                        <SelectValue placeholder="Select a campaign with open slots..." />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {campaigns.length > 0 ? (
-                        campaigns.map((campaign) => (
+                      {activeCampaignsWithSlots.length > 0 ? (
+                        activeCampaignsWithSlots.map((campaign) => (
                           <SelectItem key={campaign.id} value={campaign.id}>
-                            {campaign.title}
+                            {campaign.title} ({campaign.creatorIds?.length || 0}/{campaign.numberOfCreators || 1} hired)
                           </SelectItem>
                         ))
                       ) : (
-                        <div className="p-4 text-sm text-muted-foreground">No active campaigns found.</div>
+                        <div className="p-4 text-sm text-muted-foreground">No active campaigns with open slots.</div>
                       )}
                     </SelectContent>
                   </Select>
@@ -149,3 +151,5 @@ export default function InviteToCampaignDialog({
     </Dialog>
   );
 }
+
+    

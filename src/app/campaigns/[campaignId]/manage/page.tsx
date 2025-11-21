@@ -193,13 +193,20 @@ export default function ManageApplicationsPage() {
 
         toast({ title: t('manageApplicationsPage.hiringCreatorToast') });
         
+        const currentHiredCount = campaign.creatorIds?.length || 0;
+        const totalSeats = campaign.numberOfCreators || 1;
+
+        if (currentHiredCount >= totalSeats) {
+             toast({ variant: 'destructive', title: 'Campaign Full', description: 'You have already hired the maximum number of creators for this campaign.' });
+            return;
+        }
+
+        const newHiredCount = currentHiredCount + 1;
+        const isHiringComplete = newHiredCount >= totalSeats;
+
+        const newStatus = isHiringComplete ? 'PENDING_CREATOR_ACCEPTANCE' : campaign.status;
+
         try {
-            const currentHiredCount = campaign.creatorIds?.length || 0;
-            const newHiredCount = currentHiredCount + 1;
-            const isHiringComplete = newHiredCount >= campaign.numberOfCreators;
-
-            const newStatus = isHiringComplete ? 'PENDING_CREATOR_ACCEPTANCE' : campaign.status;
-
             await updateDoc(campaignRef, {
                 creatorIds: arrayUnion(applicant.creatorId),
                 status: newStatus
@@ -216,7 +223,7 @@ export default function ManageApplicationsPage() {
                 operation: 'update',
                 requestResourceData: {
                     creatorIds: arrayUnion(applicant.creatorId),
-                    status: 'PENDING_CREATOR_ACCEPTANCE'
+                    status: newStatus
                 }
             });
             errorEmitter.emit('permission-error', permissionError);
@@ -285,7 +292,7 @@ export default function ManageApplicationsPage() {
                 
                 {applicants.length > 0 ? (
                     <div className="space-y-8">
-                        {newApplicants.length > 0 && (
+                        {newApplicants.length > 0 && canHireMore && (
                             <div>
                                 <h2 className="text-2xl font-bold mb-4">{t('manageApplicationsPage.newApplicantsTitle')}</h2>
                                 <div className="grid md:grid-cols-2 gap-6">
@@ -386,3 +393,5 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
+
+    
