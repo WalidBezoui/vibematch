@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -35,12 +33,13 @@ import { useLanguage } from '@/context/language-context';
 
 
 type Applicant = {
-    id: string;
+    id: string; // application id
+    campaignId: string;
     creatorId: string;
     brandId: string;
     coverLetter: string;
     bidAmount: number;
-    status: 'APPLIED' | 'NEGOTIATING' | 'REJECTED';
+    status: 'APPLIED' | 'NEGOTIATING' | 'REJECTED' | 'OFFER_ACCEPTED';
     profile?: any; 
     trustScore: number;
     badge: 'Verified' | null;
@@ -99,10 +98,10 @@ export default function ManageApplicationsPage() {
     const { t } = useLanguage();
 
     const campaignRef = useMemoFirebase(() => firestore ? doc(firestore, 'campaigns', campaignId as string) : null, [firestore, campaignId]);
-    const { data: campaign, isLoading: isCampaignLoading } = useDoc(campaignRef);
+    const { data: campaign, isLoading: isCampaignLoading, mutate: mutateCampaign } = useDoc(campaignRef);
 
     const applicationsQuery = useMemoFirebase(() => firestore ? query(collection(firestore, 'campaigns', campaignId as string, 'applications')) : null, [firestore, campaignId]);
-    const { data: applications, isLoading: areApplicationsLoading } = useCollection(applicationsQuery);
+    const { data: applications, isLoading: areApplicationsLoading, mutate: mutateApplications } = useCollection(applicationsQuery);
 
     const [applicants, setApplicants] = useState<Applicant[]>([]);
 
@@ -136,8 +135,8 @@ export default function ManageApplicationsPage() {
         }
     }, [applications, firestore]);
 
-    const handleShortlist = (applicant: Applicant) => {
-        if (!firestore || !user) return;
+    const handleShortlist = async (applicant: Applicant) => {
+        if (!firestore || !user || !campaign) return;
         toast({ title: t('manageApplicationsPage.openingChatToast') });
         
         const batch = writeBatch(firestore);
@@ -169,23 +168,22 @@ export default function ManageApplicationsPage() {
         };
         batch.set(messageDocRef, messageData);
         
-        batch.commit()
-            .then(() => {
-                toast({ title: t('manageApplicationsPage.chatOpenedToast.title'), description: t('manageApplicationsPage.chatOpenedToast.description') });
-                router.push(`/chat/${conversationDocRef.id}`);
-            })
-            .catch(async (serverError) => {
-                const permissionError = new FirestorePermissionError({
-                    path: `BATCH_WRITE on /campaigns/${campaignId} and /conversations`,
-                    operation: 'write',
-                    requestResourceData: {
-                        applicationUpdate: { status: 'NEGOTIATING' },
-                        newConversation: conversationData,
-                        newMessage: messageData
-                    }
-                });
-                errorEmitter.emit('permission-error', permissionError);
+        try {
+            await batch.commit();
+            toast({ title: t('manageApplicationsPage.chatOpenedToast.title'), description: t('manageApplicationsPage.chatOpenedToast.description') });
+            router.push(`/chat/${conversationDocRef.id}`);
+        } catch(serverError) {
+             const permissionError = new FirestorePermissionError({
+                path: `BATCH_WRITE on /campaigns/${campaignId} and /conversations`,
+                operation: 'write',
+                requestResourceData: {
+                    applicationUpdate: { status: 'NEGOTIATING' },
+                    newConversation: conversationData,
+                    newMessage: messageData
+                }
             });
+            errorEmitter.emit('permission-error', permissionError);
+        }
     };
 
     const handleAcceptAndHire = async (applicant: Applicant) => {
@@ -203,19 +201,28 @@ export default function ManageApplicationsPage() {
 
         const newHiredCount = currentHiredCount + 1;
         const isHiringComplete = newHiredCount >= totalSeats;
-
-        const newStatus = isHiringComplete ? 'PENDING_CREATOR_ACCEPTANCE' : campaign.status;
+        
+        // Only close for applications if this hire fills the last spot.
+        const newStatus = isHiringComplete ? 'PENDING_SELECTION' : campaign.status;
 
         try {
-            await updateDoc(campaignRef, {
+            const batch = writeBatch(firestore);
+
+            batch.update(campaignRef, {
                 creatorIds: arrayUnion(applicant.creatorId),
                 status: newStatus
             });
             
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
-            await updateDoc(applicationRef, { status: 'OFFER_ACCEPTED' });
+            batch.update(applicationRef, { status: 'OFFER_ACCEPTED' });
+
+            await batch.commit();
 
             toast({ title: t('manageApplicationsPage.hiredToast.title'), description: t('manageApplicationsPage.hiredToast.description') });
+            
+            // Manually trigger re-fetch of data to update UI instantly
+            mutateCampaign();
+            mutateApplications();
 
         } catch (error: any) {
              const permissionError = new FirestorePermissionError({
@@ -264,6 +271,7 @@ export default function ManageApplicationsPage() {
 
     const newApplicants = applicants.filter(a => a.status === 'APPLIED');
     const negotiatingApplicants = applicants.filter(a => a.status === 'NEGOTIATING');
+    const hiredApplicants = applicants.filter(a => a.status === 'OFFER_ACCEPTED');
 
     const canHireMore = (campaign.creatorIds?.length || 0) < campaign.numberOfCreators;
 
@@ -280,7 +288,7 @@ export default function ManageApplicationsPage() {
                 
                 <HiringProgress campaign={campaign} />
 
-                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION' && !canHireMore && (
+                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && !canHireMore && (
                     <Alert>
                         <AlertTitle>{t('manageApplicationsPage.closed.title')}</AlertTitle>
                         <AlertDescription>
@@ -393,5 +401,3 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
-
-    

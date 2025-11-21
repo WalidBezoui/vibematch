@@ -148,7 +148,7 @@ export default function TalentHubPage() {
     const { t } = useLanguage();
 
     const campaignsQuery = useMemoFirebase(
-        () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
+        () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
         [user, firestore]
     );
     const { data: campaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
@@ -161,16 +161,14 @@ export default function TalentHubPage() {
             const enrichedApplications: any[] = [];
 
             for (const campaign of campaigns) {
-                if(campaign.status !== 'OPEN_FOR_APPLICATIONS' && campaign.status !== 'PENDING_SELECTION') continue;
-
+                // Fetch only applications with 'APPLIED' status
                 const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
-                const appsSnapshot = await getDocs(appsRef);
+                const q = query(appsRef, where('status', '==', 'APPLIED'));
+                const appsSnapshot = await getDocs(q);
 
                 if (!appsSnapshot.empty) {
                     for (const appDoc of appsSnapshot.docs) {
                         const appData = { id: appDoc.id, ...appDoc.data() };
-                        if (appData.status !== 'APPLIED') continue;
-
                         const profileRef = doc(firestore, 'users', appData.creatorId);
                         const profileSnap = await getDoc(profileRef);
                         enrichedApplications.push({
@@ -257,7 +255,7 @@ export default function TalentHubPage() {
         
         const appRef = doc(firestore, 'campaigns', applicant.campaignId, 'applications', applicant.id);
         try {
-            await writeBatch(firestore).update(appRef, { status: 'REJECTED' }).commit();
+            await updateDoc(appRef, { status: 'REJECTED' });
             toast({
                 variant: 'destructive',
                 title: "Application Declined",

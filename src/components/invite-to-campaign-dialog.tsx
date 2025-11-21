@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -26,6 +26,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Send, Loader2 } from 'lucide-react';
+import { useFirestore } from '@/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const inviteSchema = z.object({
   campaignId: z.string({ required_error: 'Please select a campaign.' }),
@@ -45,6 +47,8 @@ export default function InviteToCampaignDialog({
 }) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
+  const firestore = useFirestore();
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const form = useForm<InviteFormValues>({
     resolver: zodResolver(inviteSchema),
@@ -54,7 +58,49 @@ export default function InviteToCampaignDialog({
     },
   });
 
+  const selectedCampaignId = form.watch('campaignId');
+
+  useEffect(() => {
+    const validateInvitation = async () => {
+      if (!selectedCampaignId || !firestore) {
+        setValidationError(null);
+        return;
+      }
+      
+      const campaign = campaigns.find(c => c.id === selectedCampaignId);
+      if (campaign && campaign.creatorIds?.includes(creator.id)) {
+        setValidationError(`${creator.displayName || creator.name} is already part of this campaign.`);
+        form.setError('campaignId', { message: 'Creator is already hired.' });
+        return;
+      }
+
+      const applicationsRef = collection(firestore, 'campaigns', selectedCampaignId, 'applications');
+      const q = query(applicationsRef, where('creatorId', '==', creator.id));
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        setValidationError(`${creator.displayName || creator.name} has already applied to this campaign.`);
+        form.setError('campaignId', { message: 'Creator has already applied.' });
+        return;
+      }
+
+      setValidationError(null);
+      form.clearErrors('campaignId');
+    };
+
+    validateInvitation();
+  }, [selectedCampaignId, creator.id, creator.displayName, creator.name, campaigns, firestore, form]);
+
+
   const onSubmit = async (data: InviteFormValues) => {
+    if (validationError) {
+        toast({
+            variant: "destructive",
+            title: "Cannot send invitation",
+            description: validationError,
+        });
+        return;
+    }
     // This is where you would normally implement the Firestore logic to send the invitation
     // For example, creating a new document in a 'notifications' collection or a 'campaignApplications' collection with 'INVITED' status.
 
@@ -136,7 +182,7 @@ export default function InviteToCampaignDialog({
               )}
             />
             <DialogFooter>
-              <Button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting || !!validationError}>
                 {isSubmitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
