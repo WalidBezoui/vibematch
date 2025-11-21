@@ -81,8 +81,8 @@ service cloud.firestore {
       allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
       // Only brand or creator involved can read/list the conversation status.
       allow get, list: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
-       // Allow participants to update the status or agreed budget
-      allow update: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
+       // Allow participants to update the status, agreed budget, or who made the last offer
+      allow update: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'agreed_budget', 'last_offer_by']);
 
       match /messages/{messageId} {
         // Allow creation if sender is part of conversation

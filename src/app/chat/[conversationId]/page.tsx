@@ -203,7 +203,7 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
     }
 
     // For the initial context message
-    if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for the campaign:')) {
+    if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for campaign:')) {
         const isCreator = userProfile?.role === 'creator';
         let content = message.content;
         if(isCreator) {
