@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, Trash2, Users } from 'lucide-react';
+import { ArrowRight, CheckCircle, Trash2, Users, Hourglass, MessageSquare } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 const CampaignCardSkeleton = () => (
     <Card className="flex flex-col">
@@ -35,7 +36,7 @@ const CampaignCardSkeleton = () => (
             <Skeleton className="h-4 w-5/6 mt-2" />
         </CardContent>
         <CardFooter>
-            <Skeleton className="h-10 w-1/2" />
+            <Skeleton className="h-10 w-full" />
         </CardFooter>
     </Card>
 );
@@ -45,39 +46,35 @@ export default function DiscoverPage() {
     const firestore = useFirestore();
     const { user } = useUser();
     const { toast } = useToast();
-    const [appliedCampaigns, setAppliedCampaigns] = useState<Map<string, string>>(new Map());
 
     // Fetch all open campaigns
     const campaignsQuery = useMemoFirebase(
         () => firestore ? query(collection(firestore, 'campaigns'), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
         [firestore]
     );
-    const { data: campaigns, isLoading } = useCollection(campaignsQuery);
+    const { data: campaigns, isLoading: campaignsLoading } = useCollection(campaignsQuery);
     
     // Fetch all applications for the current user
     const applicationsQuery = useMemoFirebase(
       () => user && firestore ? query(collectionGroup(firestore, 'applications'), where('creatorId', '==', user.uid)) : null,
       [user, firestore]
     );
-    const { data: userApplications } = useCollection(applicationsQuery);
+    const { data: userApplications, isLoading: applicationsLoading } = useCollection(applicationsQuery);
 
-    useEffect(() => {
-        if (userApplications) {
-            const map = new Map<string, string>();
-            userApplications.forEach(app => {
-                map.set(app.campaignId, app.id);
-            });
-            setAppliedCampaigns(map);
-        }
-    }, [userApplications]);
+    // Fetch all conversations for the current user
+    const conversationsQuery = useMemoFirebase(
+        () => user && firestore ? query(collection(firestore, 'conversations'), where('creator_id', '==', user.uid)) : null,
+        [user, firestore]
+    );
+    const { data: conversations, isLoading: conversationsLoading } = useCollection(conversationsQuery);
 
     const handleWithdrawApplication = async (campaignId: string) => {
-        if (!firestore || !appliedCampaigns.has(campaignId)) return;
+        if (!firestore || !userApplications) return;
         
-        const applicationId = appliedCampaigns.get(campaignId);
-        if (!applicationId) return;
+        const application = userApplications.find(app => app.campaignId === campaignId);
+        if (!application) return;
 
-        const applicationRef = doc(firestore, 'campaigns', campaignId, 'applications', applicationId);
+        const applicationRef = doc(firestore, 'campaigns', campaignId, 'applications', application.id);
         
         try {
             await deleteDoc(applicationRef);
@@ -94,6 +91,8 @@ export default function DiscoverPage() {
             });
         }
     };
+    
+    const isLoading = campaignsLoading || applicationsLoading || conversationsLoading;
 
 
     return (
@@ -121,18 +120,42 @@ export default function DiscoverPage() {
                     {!isLoading && campaigns && campaigns.length > 0 && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {campaigns.map(campaign => {
-                                const isApplied = appliedCampaigns.has(campaign.id);
+                                const application = userApplications?.find(app => app.campaignId === campaign.id);
+                                const conversation = conversations?.find(convo => convo.campaign_id === campaign.id);
                                 const hiredCount = campaign.creatorIds?.length || 0;
                                 const totalSeats = campaign.numberOfCreators || 1;
                                 const isFull = hiredCount >= totalSeats;
 
+                                let status: 'new' | 'applied' | 'in_discussion' = 'new';
+                                if (conversation) {
+                                    status = 'in_discussion';
+                                } else if (application) {
+                                    status = 'applied';
+                                }
+                                
+                                const isHighlighted = status === 'in_discussion';
+
                                 return (
-                                    <Card key={campaign.id} className="flex flex-col hover:shadow-lg transition-shadow">
+                                    <Card key={campaign.id} className={cn("flex flex-col hover:shadow-lg transition-shadow", isHighlighted && "border-primary/50 shadow-primary/10")}>
                                         <CardHeader>
-                                            <CardTitle>{campaign.title}</CardTitle>
+                                            <div className="flex justify-between items-start">
+                                                <CardTitle className="line-clamp-1">{campaign.title}</CardTitle>
+                                                {status === 'in_discussion' && (
+                                                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200 whitespace-nowrap">
+                                                        <MessageSquare className="mr-1.5 h-3 w-3" />
+                                                        In Discussion
+                                                    </Badge>
+                                                )}
+                                                {status === 'applied' && (
+                                                    <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200 whitespace-nowrap">
+                                                        <Hourglass className="mr-1.5 h-3 w-3" />
+                                                        Applied
+                                                    </Badge>
+                                                )}
+                                            </div>
                                             {campaign.tags && campaign.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-2 pt-2">
-                                                    {campaign.tags.map((tag: string) => (
+                                                    {campaign.tags.slice(0, 3).map((tag: string) => (
                                                         <Badge key={tag} variant="secondary">{tag}</Badge>
                                                     ))}
                                                 </div>
@@ -157,14 +180,17 @@ export default function DiscoverPage() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="flex-col items-stretch gap-2">
-                                            {isApplied ? (
+                                            {status === 'in_discussion' ? (
+                                                <Button asChild className="w-full">
+                                                    <Link href={`/chat/${conversation.id}`}>
+                                                        Open Chat <ArrowRight className="ml-2 h-4 w-4" />
+                                                    </Link>
+                                                </Button>
+                                            ) : status === 'applied' ? (
                                                 <>
                                                     <Button disabled className="w-full bg-green-600 hover:bg-green-600">
                                                         <CheckCircle className="mr-2 h-4 w-4" />
                                                         Application Sent
-                                                    </Button>
-                                                     <Button asChild className="w-full" variant="secondary">
-                                                        <Link href={`/campaigns/${campaign.id}`}>View Campaign</Link>
                                                     </Button>
                                                     <AlertDialog>
                                                         <AlertDialogTrigger asChild>
@@ -188,7 +214,6 @@ export default function DiscoverPage() {
                                                             </AlertDialogFooter>
                                                         </AlertDialogContent>
                                                     </AlertDialog>
-
                                                 </>
                                             ) : isFull ? (
                                                 <Button disabled className="w-full">
@@ -220,5 +245,3 @@ export default function DiscoverPage() {
         </div>
     );
 }
-
-    
