@@ -56,7 +56,15 @@ const DealStatusHeader = ({ conversation, campaign, onOfferSent }: { conversatio
         switch (conversation.status) {
             case 'NEGOTIATION':
                 if (isMyTurn) {
-                    return { icon: Handshake, text: isBrand ? "Action Required: The creator has made a counter-offer." : "Action Required: The brand has made you an offer.", color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
+                    let text = isBrand 
+                        ? "Action Required: The creator has made an opening offer." 
+                        : "Action Required: The brand has made you an offer.";
+                    
+                    if (isBrand && campaign && conversation.agreed_budget === campaign.budget) {
+                        text = "Creator's offer matches your budget. Please confirm.";
+                    }
+
+                    return { icon: Handshake, text, color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
                 }
                 return { icon: Hourglass, text: isBrand ? "Waiting for creator's response." : "Negotiation in progress. Brand is reviewing your rate.", color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-900/20' };
             case 'OFFER_ACCEPTED':
@@ -549,7 +557,7 @@ export default function SingleChatPage() {
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
-        if (!firestore || !user || !conversationRef) return;
+        if (!firestore || !user || !conversationRef || !userProfile) return;
         
         const batch = writeBatch(firestore);
         const msgRef = doc(firestore, 'conversations', conversationId as string, 'messages', message.id);
@@ -557,7 +565,7 @@ export default function SingleChatPage() {
         batch.update(msgRef, { 'metadata.offer_status': response });
         
         if (response === 'ACCEPTED') {
-            batch.update(conversationRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED' });
+            batch.update(conversationRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED', last_offer_by: user.uid });
 
             const newEventRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
             batch.set(newEventRef, {
