@@ -5,14 +5,14 @@ import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, Users, LifeBuoy, MessageSquare, X, Building, User, FileText, Settings } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, Users, LifeBuoy, MessageSquare, X, Building, User, FileText, Settings, Inbox } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { useUser, useUserProfile, useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { getAuth, signOut } from 'firebase/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { query, collection, where } from 'firebase/firestore';
+import { query, collection, where, getDocs, collectionGroup, getCountFromServer } from 'firebase/firestore';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,7 +53,7 @@ const LanguageSwitcher = ({className}: {className?: string}) => {
     );
 };
 
-const DesktopNav = ({ navLinks, onLinkClick, unreadCount }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, unreadCount: number }) => {
+const DesktopNav = ({ navLinks, onLinkClick, unreadMessages, newApplications }: { navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, unreadMessages: number, newApplications: number }) => {
     const pathname = usePathname();
 
     const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
@@ -82,6 +82,8 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadCount }: { navLinks: NavLinkI
             {navLinks.map((link) => {
                  const isActive = pathname === link.href && !link.isSection;
                  const isMessages = link.href === '/chat';
+                 const isTalentHub = link.href === '/applications';
+
                  return (
                     <Link
                         key={link.href}
@@ -97,8 +99,16 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadCount }: { navLinks: NavLinkI
                         >
                         <link.icon className={cn("h-4 w-4", isActive ? "text-primary" : "")} />
                         <span>{link.label}</span>
-                        {isMessages && unreadCount > 0 && (
-                            <span className="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-background" />
+                         {isMessages && unreadMessages > 0 && (
+                            <span className="absolute top-1 right-1 flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            </span>
+                        )}
+                         {isTalentHub && newApplications > 0 && (
+                             <span className="ml-1.5 h-6 w-6 flex items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                                {newApplications}
+                             </span>
                         )}
                     </Link>
                  )
@@ -107,7 +117,7 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadCount }: { navLinks: NavLinkI
     )
 }
 
-const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading, unreadCount }: { isOpen: boolean, navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, onClose: () => void, onLogout: () => void, isLoading: boolean, unreadCount: number }) => {
+const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading, unreadMessages, newApplications }: { isOpen: boolean, navLinks: NavLinkItem[], onLinkClick: (interest?: 'brand' | 'creator') => void, onClose: () => void, onLogout: () => void, isLoading: boolean, unreadMessages: number, newApplications: number }) => {
     const { user, isUserLoading } = useUser();
     const { t } = useLanguage();
     const pathname = usePathname();
@@ -148,23 +158,30 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading
                  ) : navLinks.map((link) => {
                     const isActive = pathname === link.href && !link.isSection;
                     const isMessages = link.href === '/chat';
+                    const isTalentHub = link.href === '/applications';
+
                     return (
                         <Link
                             key={link.href}
                             href={link.href}
                             onClick={(e) => handleLinkClick(e, link)}
                             className={cn(
-                                "flex items-center gap-4 rounded-lg p-4 text-xl font-semibold transition-colors duration-300 relative",
+                                "flex items-center justify-between rounded-lg p-4 text-xl font-semibold transition-colors duration-300 relative",
                                 isActive ? "bg-muted text-primary" : "text-foreground/80 hover:bg-muted"
                             )}
                         >
-                            <link.icon className="h-6 w-6" />
-                            <span>{link.label}</span>
-                            {isMessages && unreadCount > 0 && (
-                               <span className="absolute top-3 right-3 flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                               </span>
+                            <div className="flex items-center gap-4">
+                                <link.icon className="h-6 w-6" />
+                                <span>{link.label}</span>
+                            </div>
+                            
+                            {isMessages && unreadMessages > 0 && (
+                               <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                            )}
+                             {isTalentHub && newApplications > 0 && (
+                               <span className="h-8 w-8 flex items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                                    {newApplications}
+                                </span>
                             )}
                         </Link>
                     )
@@ -253,6 +270,7 @@ export function AppHeader() {
   const { userProfile, isLoading: isProfileLoading } = useUserProfile();
   const pathname = usePathname();
   const firestore = useFirestore();
+  const [newApplications, setNewApplications] = useState(0);
 
   const conversationsQuery = useMemoFirebase(() => {
     if (!user || !firestore || !userProfile) return null;
@@ -262,10 +280,40 @@ export function AppHeader() {
 
   const { data: conversations } = useCollection(conversationsQuery);
   
-  const unreadCount = useMemo(() => {
+  const unreadMessages = useMemo(() => {
       if (!conversations || !user) return 0;
       return conversations.filter(c => c.status === 'NEGOTIATION' && c.last_offer_by !== user.uid).length;
   }, [conversations, user]);
+  
+  const brandOpenCampaignsQuery = useMemoFirebase(() => {
+      if (!user || !firestore || userProfile?.role !== 'brand') return null;
+      return query(
+          collection(firestore, 'campaigns'), 
+          where('brandId', '==', user.uid),
+          where('status', '==', 'OPEN_FOR_APPLICATIONS')
+      );
+  }, [user, firestore, userProfile]);
+  const { data: brandOpenCampaigns } = useCollection(brandOpenCampaignsQuery);
+
+  useEffect(() => {
+    if (brandOpenCampaigns && firestore && userProfile?.role === 'brand') {
+      const fetchNewApplicationCount = async () => {
+        if(brandOpenCampaigns.length === 0) {
+            setNewApplications(0);
+            return;
+        }
+        
+        let total = 0;
+        for (const campaign of brandOpenCampaigns) {
+            const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
+            const snapshot = await getCountFromServer(q);
+            total += snapshot.data().count;
+        }
+        setNewApplications(total);
+      };
+      fetchNewApplicationCount();
+    }
+  }, [brandOpenCampaigns, firestore, userProfile?.role]);
 
   const isLoading = isUserLoading || (user && isProfileLoading);
 
@@ -314,7 +362,7 @@ export function AppHeader() {
         if (userProfile.role === 'brand') {
              roleSpecificLinks = [
                  { href: "/creators", label: t('header.creators'), icon: Users },
-                 { href: "/applications", label: t('header.applications'), icon: FileText },
+                 { href: "/applications", label: t('header.talentHub'), icon: Inbox },
                  { href: "/chat", label: t('header.messages'), icon: MessageSquare },
             ];
         }
@@ -347,7 +395,7 @@ export function AppHeader() {
             VibeMatch
         </Link>
 
-        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} unreadCount={unreadCount} />
+        <DesktopNav navLinks={navLinks} onLinkClick={handleNavLinkClick} unreadMessages={unreadMessages} newApplications={newApplications} />
 
         <div className="flex items-center gap-2">
             <LanguageSwitcher className="hidden sm:flex" />
@@ -373,7 +421,8 @@ export function AppHeader() {
             onClose={() => setIsMobileMenuOpen(false)}
             onLogout={handleLogout}
             isLoading={isLoading}
-            unreadCount={unreadCount}
+            unreadMessages={unreadMessages}
+            newApplications={newApplications}
         />
     </>
   );
