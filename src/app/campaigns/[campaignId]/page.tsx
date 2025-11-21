@@ -1,9 +1,10 @@
 
 
+
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
-import { doc, updateDoc, serverTimestamp, collection, query, where, getDocs, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp, collection, query, where, getDocs, getDoc, writeBatch } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -12,11 +13,13 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users } from 'lucide-react';
+import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
@@ -100,12 +103,17 @@ const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: 
     );
 }
 
-const BrandWorkspace = ({ campaign, campaignId, hiredCreators }: { campaign: any, campaignId: string, hiredCreators: any[] }) => {
+const BrandWorkspace = ({ campaign, campaignId, hiredCreators, conversations }: { campaign: any, campaignId: string, hiredCreators: any[], conversations: any[] }) => {
     const router = useRouter();
 
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
     const isHiringOpen = hiredCount < totalNeeded;
+
+    const findConversationId = (creatorId: string) => {
+        const convo = conversations.find(c => c.creator_id === creatorId);
+        return convo ? convo.id : null;
+    }
     
     return (
         <Card>
@@ -132,7 +140,7 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators }: { campaign: any
                         </Button>
                     </div>
                 )}
-                {(campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION') && isHiringOpen && (
+                {(campaign.status === 'OPEN_FOR_APPLICATIONS') && (
                      <Alert>
                         <Users className="h-4 w-4"/>
                         <AlertDescription className="text-center">
@@ -148,18 +156,32 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators }: { campaign: any
                 )}
                  {hiredCreators.length > 0 && (
                      <div className="space-y-4">
-                        <h4 className="font-semibold flex items-center gap-2"><UserCheck className="h-5 w-5 text-primary" /> Hired Creators ({hiredCount}/{totalNeeded})</h4>
-                        <div className="flex flex-wrap gap-4">
+                        <h4 className="font-semibold flex items-center gap-2"><UserCheck className="h-5 w-5 text-primary" /> Hired &amp; Contacted Creators ({hiredCount}/{totalNeeded})</h4>
+                        <div className="flex flex-col gap-3">
                             {hiredCreators.map(creator => {
                                 const isPending = campaign.status === 'PENDING_CREATOR_ACCEPTANCE' && campaign.creatorIds.includes(creator.uid);
+                                const conversationId = findConversationId(creator.uid);
+
                                 return (
-                                <div key={creator.uid} className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border">
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage src={creator.photoURL} alt={creator.name} />
-                                        <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <span className="text-sm font-medium">{creator.name}</span>
-                                    <Badge variant={isPending ? 'outline' : 'secondary'} className={cn(isPending && 'border-blue-200 bg-blue-50 text-blue-800')}>{isPending ? 'Pending' : 'Accepted'}</Badge>
+                                <div key={creator.uid} className="flex items-center justify-between gap-2 p-3 rounded-lg bg-muted/50 border">
+                                    <div className="flex items-center gap-3">
+                                        <Avatar className="h-10 w-10">
+                                            <AvatarImage src={creator.photoURL} alt={creator.name} />
+                                            <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <span className="text-sm font-medium">{creator.name}</span>
+                                            <div><Badge variant={isPending ? 'outline' : 'secondary'} className={cn(isPending && 'border-blue-200 bg-blue-50 text-blue-800')}>{isPending ? 'Pending Acceptance' : 'Accepted'}</Badge></div>
+                                        </div>
+                                    </div>
+                                     {conversationId && (
+                                        <Button asChild size="sm" variant="ghost">
+                                            <Link href={`/chat/${conversationId}`}>
+                                                <MessageSquare className="h-4 w-4 mr-2" />
+                                                Chat
+                                            </Link>
+                                        </Button>
+                                     )}
                                 </div>
                                 )
                             })}
@@ -192,6 +214,10 @@ export default function CampaignPage() {
         [firestore, campaign]
     );
     const { data: brandProfile, isLoading: isBrandLoading } = useDoc(brandRef);
+
+    const conversationsQuery = useMemoFirebase(() => (firestore && campaignId) ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId)) : null, [firestore, campaignId]);
+    const { data: conversations, isLoading: areConversationsLoading } = useCollection(conversationsQuery);
+
 
     useEffect(() => {
         if (user && firestore && campaignId) {
@@ -229,7 +255,7 @@ export default function CampaignPage() {
     }, [firestore, campaign]);
 
 
-    const isLoading = isUserLoading || isCampaignLoading || isAlreadyApplied === null || isBrandLoading;
+    const isLoading = isUserLoading || isCampaignLoading || isAlreadyApplied === null || isBrandLoading || areConversationsLoading;
 
     if (isLoading) {
         return (
@@ -346,10 +372,13 @@ export default function CampaignPage() {
                         )}
                     </Card>
 
-                    {isBrandOwner && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} hiredCreators={hiredCreators} />}
+                    {isBrandOwner && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} hiredCreators={hiredCreators} conversations={conversations || []} />}
 
                 </div>
             </main>
         </>
     );
 }
+
+
+    

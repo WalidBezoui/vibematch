@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -222,49 +223,49 @@ export default function ManageApplicationsPage() {
 
     const handleAcceptAndHire = async (applicant: Applicant) => {
         if (!campaignRef || !firestore || !user || !campaign) return;
-
+    
         toast({ title: t('manageApplicationsPage.hiringCreatorToast') });
         
         const currentHiredCount = campaign.creatorIds?.length || 0;
         const totalSeats = campaign.numberOfCreators || 1;
-
+    
         if (currentHiredCount >= totalSeats) {
              toast({ variant: 'destructive', title: 'Campaign Full', description: 'You have already hired the maximum number of creators for this campaign.' });
             return;
         }
-
-        const newHiredCount = currentHiredCount + 1;
-        const isHiringComplete = newHiredCount >= totalSeats;
-        
-        // Only close for applications if this hire fills the last spot.
-        const newStatus = isHiringComplete ? 'PENDING_SELECTION' : campaign.status;
-
+    
         try {
             const batch = writeBatch(firestore);
-
-            batch.update(campaignRef, {
+    
+            // Update campaign: add creator and potentially change status
+            const updates: any = {
                 creatorIds: arrayUnion(applicant.creatorId),
-                status: newStatus
-            });
+                status: 'PENDING_CREATOR_ACCEPTANCE' // Always move to this state after an offer
+            };
+
+            // Only close for applications if this hire fills the last spot AND they accept.
+            // This is handled on creator acceptance now.
+    
+            batch.update(campaignRef, updates);
             
+            // Update application status
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
             batch.update(applicationRef, { status: 'OFFER_ACCEPTED' });
-
+    
             await batch.commit();
-
+    
             toast({ title: t('manageApplicationsPage.hiredToast.title'), description: t('manageApplicationsPage.hiredToast.description') });
             
-            // Manually trigger re-fetch of data to update UI instantly
-            mutateCampaign();
-            mutateApplications();
-
+            mutateCampaign(); // Re-fetch campaign data
+            mutateApplications(); // Re-fetch applications
+    
         } catch (error: any) {
              const permissionError = new FirestorePermissionError({
                 path: campaignRef.path,
                 operation: 'update',
                 requestResourceData: {
                     creatorIds: arrayUnion(applicant.creatorId),
-                    status: newStatus
+                    status: 'PENDING_CREATOR_ACCEPTANCE'
                 }
             });
             errorEmitter.emit('permission-error', permissionError);
@@ -435,3 +436,6 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
+
+
+    

@@ -105,6 +105,8 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
         fetchCount();
     }, [firestore, campaign.id, campaign.status]);
 
+    const manageButtonLink = campaign.status === 'OPEN_FOR_APPLICATIONS' ? '/applications' : `/campaigns/${campaign.id}/manage`;
+
     return (
         <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
             <CardHeader>
@@ -168,9 +170,9 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                  </div>
             </CardContent>
             <CardFooter className="bg-muted/50 p-3">
-                {(campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION') ? (
+                {(campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION' || campaign.status === 'PENDING_CREATOR_ACCEPTANCE') ? (
                      <Button asChild variant="secondary" className="w-full">
-                        <Link href={`/campaigns/${campaign.id}/manage`}>
+                        <Link href={manageButtonLink}>
                             <Users className="mr-2 h-4 w-4" />
                             {t('brandDashboard.manageButton')}
                             {isLoadingCount ? <Skeleton className="h-5 w-5 rounded-full ml-2" /> : applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
@@ -312,4 +314,5 @@ export default function BrandDashboard() {
   );
 }
 
+    
     
