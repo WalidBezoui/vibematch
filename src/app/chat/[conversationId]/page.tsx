@@ -20,7 +20,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
 
 const GuardianBot = {
@@ -704,3 +704,5 @@ export default function SingleChatPage() {
         </div>
     );
 }
+
+    
