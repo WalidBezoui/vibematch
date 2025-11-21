@@ -20,7 +20,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 const GuardianBot = {
   isSecure: (text: string): boolean => {
@@ -129,6 +129,45 @@ const MessageBubble = ({ message, isOwnMessage, senderProfile }: { message: any,
 const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOffer: (message: any, response: 'ACCEPTED' | 'REJECTED') => void }) => {
     const { userProfile } = useUserProfile();
 
+    // For the initial context message
+    if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for campaign:')) {
+        const isCreator = userProfile?.role === 'creator';
+        
+        const contentRegex = /Discussion opened for campaign: "(.*)".\n\n(Creator's|Your) opening offer is ([\d,.]+) MAD and (their|your) cover letter is:\n\n"(.*)"/s;
+        const match = message.content.match(contentRegex);
+
+        if (!match) return <MessageBubble message={message} isOwnMessage={false} senderProfile={{name: 'System'}}/>;
+
+        const [, campaignTitle, , offerAmount, , coverLetter] = match;
+
+        let content = message.content;
+        if(isCreator) {
+            content = content.replace("Creator's opening offer is", "Your opening offer is").replace("their cover letter is", "your cover letter is");
+        }
+        return (
+            <div className="py-4">
+                <Card className="max-w-md mx-auto bg-muted/30">
+                    <CardHeader>
+                        <CardTitle className="text-lg">Discussion for "{campaignTitle}"</CardTitle>
+                        <CardDescription>
+                            Opened on {message.timestamp ? format(message.timestamp.toDate(), 'MMM d, yyyy') : ''}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div>
+                            <p className="text-sm font-semibold text-muted-foreground">Opening Offer</p>
+                            <p className="text-xl font-bold gradient-text">{offerAmount} MAD</p>
+                        </div>
+                         <div>
+                            <p className="text-sm font-semibold text-muted-foreground">Original Cover Letter</p>
+                            <p className="text-sm text-foreground/80 mt-1 whitespace-pre-wrap border p-3 rounded-md bg-background/50">{coverLetter}</p>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+    
     if (message.type === 'SYSTEM_OFFER') {
         const isMyTurnToRespond = message.metadata.offer_status === 'PENDING' && message.sender_id !== userProfile?.uid;
         const status = message.metadata.offer_status;
@@ -202,27 +241,6 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
         )
     }
 
-    // For the initial context message
-    if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for campaign:')) {
-        const isCreator = userProfile?.role === 'creator';
-        let content = message.content;
-        if(isCreator) {
-            content = content.replace("Creator's opening offer is", "Your opening offer is").replace("their cover letter is", "your cover letter is");
-        }
-        return (
-            <div className="py-4">
-                <div className="text-center text-sm text-muted-foreground p-4 bg-muted/50 rounded-lg max-w-md mx-auto border">
-                    <p className="whitespace-pre-wrap">{content}</p>
-                    {message.timestamp && (
-                        <p className="text-xs mt-2">
-                            {format(message.timestamp.toDate(), 'MMM d, yyyy HH:mm')}
-                        </p>
-                    )}
-                </div>
-            </div>
-        );
-    }
-
     return null;
 }
 
@@ -265,7 +283,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     return (
         <div className="flex-1 p-6 space-y-4 overflow-y-auto" ref={scrollRef}>
             {messages.map((msg: any) => {
-                 if (msg.type !== 'TEXT') {
+                 if (msg.type !== 'TEXT' || msg.content.startsWith('Discussion opened for campaign:')) {
                     return <SystemCard key={msg.id} message={msg} onRespondToOffer={onRespondToOffer} />
                  }
                 return <MessageBubble key={msg.id} message={msg} isOwnMessage={msg.sender_id === user?.uid} senderProfile={profiles[msg.sender_id]} />
