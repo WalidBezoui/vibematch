@@ -3,9 +3,9 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2 } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { collection, query, where, getCountFromServer, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, getCountFromServer, getDocs, doc, deleteDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -105,7 +105,7 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
         fetchCount();
     }, [firestore, campaign.id, campaign.status]);
 
-    const manageButtonLink = `/campaigns/${campaign.id}/manage`;
+    const manageButtonLink = `/applications`;
 
     return (
         <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
@@ -259,18 +259,72 @@ export default function BrandDashboard() {
         });
     }
   };
+  
+    const handleGenerateTestCampaign = async () => {
+        if (!firestore || !user) return;
+
+        const sampleTitles = ["Summer Glow Up", "Urban Explorer Series", "Eco-Friendly Living", "Tech Unboxed 2024", "Gourmet at Home"];
+        const sampleBriefs = [
+            "We're looking for vibrant creators to showcase our new line of summer skincare products. Emphasis on natural light and authentic, glowing skin.",
+            "A campaign focused on exploring hidden gems in Moroccan cities. We want to see your unique perspective on urban life.",
+            "Join us in promoting sustainable living with our new range of eco-friendly home goods. Authenticity and a passion for the environment are key.",
+            "Unbox and review the latest gadgets in our 2024 tech lineup. We need honest, in-depth reviews for a tech-savvy audience.",
+            "Showcase how you can create five-star meals right in your own kitchen with our new line of gourmet food products."
+        ];
+        const sampleTags = ["Fashion", "Beauty", "Food", "Travel", "Lifestyle", "Tech", "Gaming", "UGC"];
+
+        const randomTitle = sampleTitles[Math.floor(Math.random() * sampleTitles.length)];
+        const randomBrief = sampleBriefs[Math.floor(Math.random() * sampleBriefs.length)];
+        const randomTags = sampleTags.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1);
+        const randomBudget = Math.floor(Math.random() * 20 + 5) * 100; // 500 to 2500
+        const randomCreators = Math.floor(Math.random() * 5) + 1;
+
+        const testCampaign = {
+            title: `(Test) ${randomTitle}`,
+            campaignBrief: randomBrief,
+            deliverables: ["1 Instagram Reel", "3 Instagram Stories"],
+            budget: randomBudget,
+            numberOfCreators: randomCreators,
+            tags: randomTags,
+            brandId: user.uid,
+            status: 'OPEN_FOR_APPLICATIONS',
+            creatorIds: [],
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+        };
+
+        try {
+            await addDoc(collection(firestore, 'campaigns'), testCampaign);
+            toast({
+                title: "Test Campaign Created",
+                description: `Successfully generated and saved "${testCampaign.title}".`,
+            });
+        } catch (error: any) {
+            toast({
+                variant: "destructive",
+                title: "Generation Failed",
+                description: error.message,
+            });
+        }
+    };
 
 
   return (
     <div>
       <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
         <h1 className="text-4xl font-bold tracking-tight">{t('brandDashboard.title')}</h1>
-        <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
-          <Link href="/campaigns/create">
-            <PlusCircle className="mr-2 h-5 w-5" />
-            {t('brandDashboard.createButton')}
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+             <Button onClick={handleGenerateTestCampaign} variant="outline" className="rounded-full">
+                <Sparkles className="mr-2 h-4 w-4" />
+                Generate Test Campaign
+            </Button>
+            <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+            <Link href="/campaigns/create">
+                <PlusCircle className="mr-2 h-5 w-5" />
+                {t('brandDashboard.createButton')}
+            </Link>
+            </Button>
+        </div>
       </div>
       
       <div className="grid gap-4 md:grid-cols-3 mb-8">
@@ -315,4 +369,6 @@ export default function BrandDashboard() {
 }
 
     
+    
+
     
