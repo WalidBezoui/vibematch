@@ -378,7 +378,7 @@ export default function ManageApplicationsPage() {
                             </TabsList>
                             <TabsContent value="new" className="mt-6">
                                 {newApplicants.length > 0 ? (
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
                                     {newApplicants.map(applicant => {
                                         const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
                                         const creatorName = applicant.profile?.displayName || applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
@@ -466,7 +466,7 @@ export default function ManageApplicationsPage() {
                             </TabsContent>
                             <TabsContent value="discussion" className="mt-6">
                                 {negotiatingApplicants.length > 0 ? (
-                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
                                         {negotiatingApplicants.map(app => renderApplicantCard(app, 'discussion'))}
                                     </div>
                                 ) : (
@@ -478,7 +478,7 @@ export default function ManageApplicationsPage() {
                             </TabsContent>
                             <TabsContent value="hired" className="mt-6">
                                 {hiredCreators.length > 0 ? (
-                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
                                         {hiredCreators.map(app => renderApplicantCard(app, 'hired'))}
                                     </div>
                                 ) : (
@@ -509,3 +509,5 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
+
+    
