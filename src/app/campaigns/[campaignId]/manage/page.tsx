@@ -360,7 +360,7 @@ export default function ManageApplicationsPage() {
 
                 {applicants.length > 0 ? (
                     <Tabs defaultValue="new" className="w-full">
-                      <TabsList className="grid w-full grid-cols-3">
+                      <TabsList className="flex flex-wrap h-auto justify-start sm:grid sm:w-full sm:grid-cols-3">
                         <TabsTrigger value="new">New<Badge variant="secondary" className="ml-2">{newApplicants.length}</Badge></TabsTrigger>
                         <TabsTrigger value="discussion">In Discussion<Badge variant="secondary" className="ml-2">{negotiatingApplicants.length}</Badge></TabsTrigger>
                         <TabsTrigger value="hired">Hired<Badge variant="secondary" className="ml-2">{hiredCreators.length}</Badge></TabsTrigger>
@@ -419,7 +419,7 @@ export default function ManageApplicationsPage() {
                                             </AlertDialog>
                                         </CardContent>
                                         <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
-                                            <div className="flex gap-2">
+                                            <div className="flex flex-col sm:flex-row gap-2">
                                                 {isBidHigher ? (
                                                     <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={!canHireMore}>
                                                         <MessageSquare className="mr-2 h-4 w-4" />
@@ -494,3 +494,5 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
+
+    
