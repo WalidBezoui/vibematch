@@ -431,24 +431,24 @@ export default function ManageApplicationsPage() {
                                                     </div>
                                                 </CardContent>
                                                 <CardFooter className="flex-col items-stretch gap-2 bg-muted/30 p-3 border-t">
-                                                    <div className="flex flex-col sm:flex-row gap-2">
+                                                    <div className="flex gap-2">
                                                         {isBidHigher ? (
-                                                            <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={!canHireMore}>
+                                                            <Button className="w-full" onClick={() => handleShortlist(applicant)} disabled={!canHireMore}>
                                                                 <MessageSquare className="mr-2 h-4 w-4" />
                                                                 {t('manageApplicationsPage.negotiateButton')}
                                                             </Button>
                                                         ) : (
-                                                            <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={!canHireMore}>
+                                                            <Button className="w-full" onClick={() => handleAcceptAndHire(applicant)} disabled={!canHireMore}>
                                                                 <CheckCircle className="mr-2 h-4 w-4" />
                                                                 {t('manageApplicationsPage.acceptButton')}
                                                             </Button>
                                                         )}
-                                                        <Button variant="destructive" className="w-full flex-1 sm:flex-none">
+                                                        <Button variant="destructive" className="w-full">
                                                             <XCircle className="mr-2 h-4 w-4" />
                                                             {t('manageApplicationsPage.rejectButton')}
                                                         </Button>
                                                     </div>
-                                                    <Button variant="outline" className="w-full mt-2 sm:mt-0" onClick={() => handleViewProfile(applicant.creatorId)}>
+                                                    <Button variant="outline" className="w-full" onClick={() => handleViewProfile(applicant.creatorId)}>
                                                         {t('manageApplicationsPage.viewProfileButton')}
                                                         <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Button>
