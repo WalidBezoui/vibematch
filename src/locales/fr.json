@@ -56,12 +56,29 @@
         "hiredDescription": "Vous avez recruté {{hired}} sur {{total}} créateurs pour cette campagne.",
         "hiredLabel": "Recrutés",
         "goalLabel": "Objectif",
+        "tabs": {
+            "new": "Nouveaux",
+            "discussion": "En Discussion",
+            "hired": "Recrutés"
+        },
         "closed": {
             "title": "Cette campagne n'accepte plus de candidatures.",
             "description": "Son statut actuel est :",
             "cta": "Voir la Campagne"
         },
         "newApplicantsTitle": "Nouveaux Candidats",
+        "noNewApplicants": {
+            "title": "Aucune Nouvelle Candidature",
+            "description": "Consultez les autres onglets pour les candidats en discussion ou déjà recrutés."
+        },
+        "noNegotiatingApplicants": {
+            "title": "Aucun Candidat en Discussion",
+            "description": "Présélectionnez de nouveaux candidats pour commencer à négocier."
+        },
+        "noHiredCreators": {
+            "title": "Aucun Créateur Recruté pour l'Instant",
+            "description": "Acceptez l'offre d'un candidat pour le recruter pour cette campagne."
+        },
         "creator": "Créateur",
         "trustScore": "Score de Confiance",
         "coverLetter": "Lettre de Motivation",

@@ -56,12 +56,29 @@
         "hiredDescription": "You've hired {{hired}} out of {{total}} creators for this campaign.",
         "hiredLabel": "Hired",
         "goalLabel": "Goal",
+        "tabs": {
+            "new": "New",
+            "discussion": "In Discussion",
+            "hired": "Hired"
+        },
         "closed": {
             "title": "This campaign is no longer accepting applications.",
             "description": "Its current status is:",
             "cta": "View Campaign"
         },
         "newApplicantsTitle": "New Applicants",
+        "noNewApplicants": {
+            "title": "No New Applications",
+            "description": "Check the other tabs for applicants who are in discussion or already hired."
+        },
+        "noNegotiatingApplicants": {
+            "title": "No Applicants in Discussion",
+            "description": "Shortlist new applicants to start negotiating."
+        },
+        "noHiredCreators": {
+            "title": "No Creators Hired Yet",
+            "description": "Accept an applicant's offer to hire them for this campaign."
+        },
         "creator": "Creator",
         "trustScore": "Trust Score",
         "coverLetter": "Cover Letter",

@@ -79,11 +79,15 @@ const HiringProgress = ({ campaign, hiredCreators }: { campaign: any, hiredCreat
     return (
         <Card className="mb-8 bg-muted/50">
             <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                    <span>{t('brandDashboard.hiringProgress')}</span>
+                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div>
+                        <CardTitle>
+                            {t('brandDashboard.hiringProgress')}
+                        </CardTitle>
+                        <CardDescription>{t('manageApplicationsPage.hiredDescription', { hired: hiredCount, total: totalNeeded })}</CardDescription>
+                    </div>
                     <span className="text-lg font-bold">{hiredCount} / {totalNeeded}</span>
-                </CardTitle>
-                <CardDescription>{t('manageApplicationsPage.hiredDescription', { hired: hiredCount, total: totalNeeded })}</CardDescription>
+                </div>
             </CardHeader>
             <CardContent>
                 <Progress value={progress} className="h-3" />
@@ -351,146 +355,150 @@ export default function ManageApplicationsPage() {
     return (
         <>
             <AppHeader />
-            <main className="w-full p-4 sm:p-6 lg:p-8">
-                 <div className="max-w-7xl mx-auto">
-                    <div className="mb-8">
+            <main className="w-full">
+                 <div className="p-4 sm:p-6 lg:p-8">
+                    <div className="mb-8 max-w-4xl mx-auto">
                         <h1 className="text-4xl font-bold tracking-tight">{t('manageApplicationsPage.title')}</h1>
                         <p className="text-muted-foreground mt-2 text-lg">
                             {t('manageApplicationsPage.description')} <strong>{campaign.title}</strong>
                         </p>
                     </div>
                     
-                    <HiringProgress campaign={campaign} hiredCreators={hiredCreators}/>
+                    <div className="max-w-4xl mx-auto">
+                        <HiringProgress campaign={campaign} hiredCreators={hiredCreators}/>
+                    </div>
 
-                    {applicants.length > 0 ? (
-                        <Tabs defaultValue="new" className="w-full">
-                        <TabsList className="flex flex-wrap h-auto justify-start sm:grid sm:w-full sm:grid-cols-3">
-                            <TabsTrigger value="new">New<Badge variant="secondary" className="ml-2">{newApplicants.length}</Badge></TabsTrigger>
-                            <TabsTrigger value="discussion">In Discussion<Badge variant="secondary" className="ml-2">{negotiatingApplicants.length}</Badge></TabsTrigger>
-                            <TabsTrigger value="hired">Hired<Badge variant="secondary" className="ml-2">{hiredCreators.length}</Badge></TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="new" className="mt-6">
-                            {newApplicants.length > 0 ? (
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {newApplicants.map(applicant => {
-                                    const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
-                                    const creatorName = applicant.profile?.displayName || applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
-                                    return (
-                                        <Card key={applicant.id} className="flex flex-col overflow-hidden transition-all hover:shadow-lg">
-                                            <CardHeader className="flex-row items-start gap-4 p-4">
-                                                <Avatar className="h-12 w-12 border">
-                                                    <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
-                                                    <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
-                                                </Avatar>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="flex justify-between items-center gap-2">
-                                                        <CardTitle className="text-base truncate break-words">{creatorName}</CardTitle>
-                                                        <Badge variant="secondary" className={cn(
-                                                            'font-semibold text-xs whitespace-nowrap',
-                                                            isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
-                                                        )}>
-                                                            {isBidHigher && <ArrowUpRight className="h-3 w-3 mr-1" />}
-                                                            {applicant.bidAmount} MAD
-                                                        </Badge>
+                    <div className="max-w-4xl mx-auto">
+                        {applicants.length > 0 ? (
+                            <Tabs defaultValue="new" className="w-full">
+                            <TabsList className="flex flex-wrap h-auto justify-start sm:grid sm:w-full sm:grid-cols-3">
+                                <TabsTrigger value="new">{t('manageApplicationsPage.tabs.new')}<Badge variant="secondary" className="ml-2">{newApplicants.length}</Badge></TabsTrigger>
+                                <TabsTrigger value="discussion">{t('manageApplicationsPage.tabs.discussion')}<Badge variant="secondary" className="ml-2">{negotiatingApplicants.length}</Badge></TabsTrigger>
+                                <TabsTrigger value="hired">{t('manageApplicationsPage.tabs.hired')}<Badge variant="secondary" className="ml-2">{hiredCreators.length}</Badge></TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="new" className="mt-6">
+                                {newApplicants.length > 0 ? (
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {newApplicants.map(applicant => {
+                                        const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
+                                        const creatorName = applicant.profile?.displayName || applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
+                                        return (
+                                            <Card key={applicant.id} className="flex flex-col overflow-hidden transition-all hover:shadow-lg">
+                                                <CardHeader className="flex-row items-start gap-4 p-4">
+                                                    <Avatar className="h-12 w-12 border">
+                                                        <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
+                                                        <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
+                                                    </Avatar>
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex justify-between items-center gap-2">
+                                                            <CardTitle className="text-base truncate break-words">{creatorName}</CardTitle>
+                                                            <Badge variant="secondary" className={cn(
+                                                                'font-semibold text-xs whitespace-nowrap',
+                                                                isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
+                                                            )}>
+                                                                {isBidHigher && <ArrowUpRight className="h-3 w-3 mr-1" />}
+                                                                {applicant.bidAmount} MAD
+                                                            </Badge>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                                                            <ShieldCheck className="h-4 w-4 text-green-500" />
+                                                            <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
-                                                        <ShieldCheck className="h-4 w-4 text-green-500" />
-                                                        <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
+                                                </CardHeader>
+                                                <CardContent className="px-4 pb-4 flex-grow">
+                                                    <div className="space-y-2">
+                                                        <h4 className="font-semibold text-xs flex items-center gap-1.5 text-muted-foreground"><FileText className="h-3 w-3" />{t('manageApplicationsPage.coverLetter')}</h4>
+                                                        <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border break-words">{applicant.coverLetter}</p>
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger asChild>
+                                                                <Button variant="link" className="p-0 h-auto text-xs text-primary">
+                                                                    {t('manageApplicationsPage.readFullLetter')}
+                                                                </Button>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                                <AlertDialogHeader>
+                                                                    <AlertDialogTitle>{t('manageApplicationsPage.letterFrom', { name: creatorName })}</AlertDialogTitle>
+                                                                    <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
+                                                                        {applicant.coverLetter}
+                                                                    </AlertDialogDescription>
+                                                                </AlertDialogHeader>
+                                                                <AlertDialogFooter>
+                                                                    <AlertDialogAction>{t('manageApplicationsPage.close')}</AlertDialogAction>
+                                                                </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                        </AlertDialog>
                                                     </div>
-                                                </div>
-                                            </CardHeader>
-                                            <CardContent className="px-4 pb-4 flex-grow">
-                                                <div className="space-y-2">
-                                                    <h4 className="font-semibold text-xs flex items-center gap-1.5 text-muted-foreground"><FileText className="h-3 w-3" />{t('manageApplicationsPage.coverLetter')}</h4>
-                                                    <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border break-words">{applicant.coverLetter}</p>
-                                                    <AlertDialog>
-                                                        <AlertDialogTrigger asChild>
-                                                            <Button variant="link" className="p-0 h-auto text-xs text-primary">
-                                                                {t('manageApplicationsPage.readFullLetter')}
+                                                </CardContent>
+                                                <CardFooter className="flex-col items-stretch gap-2 bg-muted/30 p-3 border-t">
+                                                    <div className="flex flex-col sm:flex-row gap-2">
+                                                        {isBidHigher ? (
+                                                            <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={!canHireMore}>
+                                                                <MessageSquare className="mr-2 h-4 w-4" />
+                                                                {t('manageApplicationsPage.negotiateButton')}
                                                             </Button>
-                                                        </AlertDialogTrigger>
-                                                        <AlertDialogContent>
-                                                            <AlertDialogHeader>
-                                                                <AlertDialogTitle>{t('manageApplicationsPage.letterFrom', { name: creatorName })}</AlertDialogTitle>
-                                                                <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
-                                                                    {applicant.coverLetter}
-                                                                </AlertDialogDescription>
-                                                            </AlertDialogHeader>
-                                                            <AlertDialogFooter>
-                                                                <AlertDialogAction>{t('manageApplicationsPage.close')}</AlertDialogAction>
-                                                            </AlertDialogFooter>
-                                                        </AlertDialogContent>
-                                                    </AlertDialog>
-                                                </div>
-                                            </CardContent>
-                                            <CardFooter className="flex-col items-stretch gap-2 bg-muted/30 p-3 border-t">
-                                                <div className="flex flex-col sm:flex-row gap-2">
-                                                    {isBidHigher ? (
-                                                        <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={!canHireMore}>
-                                                            <MessageSquare className="mr-2 h-4 w-4" />
-                                                            {t('manageApplicationsPage.negotiateButton')}
+                                                        ) : (
+                                                            <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={!canHireMore}>
+                                                                <CheckCircle className="mr-2 h-4 w-4" />
+                                                                {t('manageApplicationsPage.acceptButton')}
+                                                            </Button>
+                                                        )}
+                                                        <Button variant="destructive" className="w-full sm:w-auto">
+                                                            <XCircle className="mr-2 h-4 w-4" />
+                                                            {t('manageApplicationsPage.rejectButton')}
                                                         </Button>
-                                                    ) : (
-                                                        <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={!canHireMore}>
-                                                            <CheckCircle className="mr-2 h-4 w-4" />
-                                                            {t('manageApplicationsPage.acceptButton')}
-                                                        </Button>
-                                                    )}
-                                                    <Button variant="destructive" className="w-full sm:w-auto">
-                                                        <XCircle className="mr-2 h-4 w-4" />
-                                                        {t('manageApplicationsPage.rejectButton')}
+                                                    </div>
+                                                    <Button variant="outline" className="w-full mt-2 sm:mt-0" onClick={() => handleViewProfile(applicant.creatorId)}>
+                                                        {t('manageApplicationsPage.viewProfileButton')}
+                                                        <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Button>
-                                                </div>
-                                                <Button variant="outline" className="w-full mt-2 sm:mt-0" onClick={() => handleViewProfile(applicant.creatorId)}>
-                                                    {t('manageApplicationsPage.viewProfileButton')}
-                                                    <ArrowRight className="ml-2 h-4 w-4" />
-                                                </Button>
-                                            </CardFooter>
-                                        </Card>
-                                    )
-                                })}
+                                                </CardFooter>
+                                            </Card>
+                                        )
+                                    })}
+                                </div>
+                                ) : (
+                                    <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                                        <h2 className="text-2xl font-semibold">{t('manageApplicationsPage.noNewApplicants.title')}</h2>
+                                        <p className="text-muted-foreground mt-2">{t('manageApplicationsPage.noNewApplicants.description')}</p>
+                                    </div>
+                                )}
+                            </TabsContent>
+                            <TabsContent value="discussion" className="mt-6">
+                                {negotiatingApplicants.length > 0 ? (
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {negotiatingApplicants.map(app => renderApplicantCard(app, 'discussion'))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                                        <h2 className="text-2xl font-semibold">{t('manageApplicationsPage.noNegotiatingApplicants.title')}</h2>
+                                        <p className="text-muted-foreground mt-2">{t('manageApplicationsPage.noNegotiatingApplicants.description')}</p>
+                                    </div>
+                                )}
+                            </TabsContent>
+                            <TabsContent value="hired" className="mt-6">
+                                {hiredCreators.length > 0 ? (
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {hiredCreators.map(app => renderApplicantCard(app, 'hired'))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                                        <h2 className="text-2xl font-semibold">{t('manageApplicationsPage.noHiredCreators.title')}</h2>
+                                        <p className="text-muted-foreground mt-2">{t('manageApplicationsPage.noHiredCreators.description')}</p>
+                                    </div>
+                                )}
+                            </TabsContent>
+                            </Tabs>
+                        ) : (
+                            <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                                <h2 className="text-2xl font-semibold">{t('manageApplicationsPage.noApplications.title')}</h2>
+                                <p className="text-muted-foreground mt-2">{t('manageApplicationsPage.noApplications.description')}</p>
+                                <Button asChild variant="outline" className="mt-6">
+                                    <Link href="/dashboard">{t('manageApplicationsPage.noApplications.cta')}</Link>
+                                </Button>
                             </div>
-                            ) : (
-                                <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                                    <h2 className="text-2xl font-semibold">No New Applications</h2>
-                                    <p className="text-muted-foreground mt-2">Check the other tabs for applicants who are in discussion or already hired.</p>
-                                </div>
-                            )}
-                        </TabsContent>
-                        <TabsContent value="discussion" className="mt-6">
-                            {negotiatingApplicants.length > 0 ? (
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {negotiatingApplicants.map(app => renderApplicantCard(app, 'discussion'))}
-                                </div>
-                            ) : (
-                                <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                                    <h2 className="text-2xl font-semibold">No Applicants in Discussion</h2>
-                                    <p className="text-muted-foreground mt-2">Shortlist new applicants to start negotiating.</p>
-                                </div>
-                            )}
-                        </TabsContent>
-                        <TabsContent value="hired" className="mt-6">
-                            {hiredCreators.length > 0 ? (
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {hiredCreators.map(app => renderApplicantCard(app, 'hired'))}
-                                </div>
-                            ) : (
-                                <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                                    <h2 className="text-2xl font-semibold">No Creators Hired Yet</h2>
-                                    <p className="text-muted-foreground mt-2">Accept an applicant's offer to hire them for this campaign.</p>
-                                </div>
-                            )}
-                        </TabsContent>
-                        </Tabs>
-                    ) : (
-                        <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                            <h2 className="text-2xl font-semibold">{t('manageApplicationsPage.noApplications.title')}</h2>
-                            <p className="text-muted-foreground mt-2">{t('manageApplicationsPage.noApplications.description')}</p>
-                            <Button asChild variant="outline" className="mt-6">
-                                <Link href="/dashboard">{t('manageApplicationsPage.noApplications.cta')}</Link>
-                            </Button>
-                        </div>
-                    )}
+                        )}
+                    </div>
                  </div>
             </main>
              <CreatorProfileSheet 
