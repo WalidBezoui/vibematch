@@ -357,7 +357,7 @@ export default function ManageApplicationsPage() {
             <AppHeader />
             <main className="w-full">
                  <div className="p-4 sm:p-6 lg:p-8">
-                    <div className="mb-8 max-w-4xl mx-auto">
+                    <div className="max-w-4xl mx-auto mb-8">
                         <h1 className="text-4xl font-bold tracking-tight">{t('manageApplicationsPage.title')}</h1>
                         <p className="text-muted-foreground mt-2 text-lg">
                             {t('manageApplicationsPage.description')} <strong>{campaign.title}</strong>
@@ -443,7 +443,7 @@ export default function ManageApplicationsPage() {
                                                                 {t('manageApplicationsPage.acceptButton')}
                                                             </Button>
                                                         )}
-                                                        <Button variant="destructive" className="w-full sm:w-auto">
+                                                        <Button variant="destructive" className="w-full flex-1 sm:flex-none">
                                                             <XCircle className="mr-2 h-4 w-4" />
                                                             {t('manageApplicationsPage.rejectButton')}
                                                         </Button>
