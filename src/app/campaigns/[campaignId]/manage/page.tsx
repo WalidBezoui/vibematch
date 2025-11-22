@@ -77,7 +77,7 @@ const HiringProgress = ({ campaign, hiredCreators }: { campaign: any, hiredCreat
     const progress = totalNeeded > 0 ? Math.round((hiredCount / totalNeeded) * 100) : 0;
 
     return (
-        <Card className="mb-8">
+        <Card className="mb-8 bg-muted/50">
             <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                     <span>{t('brandDashboard.hiringProgress')}</span>
@@ -253,7 +253,7 @@ export default function ManageApplicationsPage() {
         return (
             <>
                 <AppHeader />
-                <main className="max-w-4xl mx-auto p-8">
+                <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                     <Skeleton className="h-10 w-1/2 mb-4" />
                     <Skeleton className="h-6 w-3/4 mb-8" />
                     <div className="grid md:grid-cols-2 gap-6">
@@ -269,7 +269,7 @@ export default function ManageApplicationsPage() {
          return (
              <>
                 <AppHeader />
-                <main className="max-w-4xl mx-auto p-8 text-center">
+                <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 text-center">
                     <Alert variant="destructive">
                         <AlertTitle>{t('manageApplicationsPage.accessDenied.title')}</AlertTitle>
                         <AlertDescription>{t('manageApplicationsPage.accessDenied.description')}</AlertDescription>
@@ -306,7 +306,7 @@ export default function ManageApplicationsPage() {
         return (
              <Card key={applicant.id} className="flex flex-col overflow-hidden transition-all hover:shadow-lg">
                 <CardHeader className="flex-row items-start gap-4 p-4">
-                     <Avatar className="h-12 w-12">
+                     <Avatar className="h-12 w-12 border">
                         <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
                         <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
                     </Avatar>
@@ -338,8 +338,8 @@ export default function ManageApplicationsPage() {
                          </Button>
                     )}
                      <Button variant="outline" size="sm" className="w-full" onClick={() => handleViewProfile(applicant.creatorId)}>
-                        {t('manageApplicationsPage.viewProfileButton')} <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
+                        {t('manageApplicationsPage.viewProfileButton')}
+                     </Button>
                 </CardFooter>
             </Card>
         )
@@ -348,7 +348,7 @@ export default function ManageApplicationsPage() {
     return (
         <>
             <AppHeader />
-            <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+            <main className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 w-full">
                  <div className="mb-8">
                     <h1 className="text-4xl font-bold tracking-tight">{t('manageApplicationsPage.title')}</h1>
                     <p className="text-muted-foreground mt-2 text-lg">
@@ -367,14 +367,14 @@ export default function ManageApplicationsPage() {
                       </TabsList>
                       <TabsContent value="new" className="mt-6">
                         {newApplicants.length > 0 ? (
-                           <div className="grid md:grid-cols-2 gap-6">
+                           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {newApplicants.map(applicant => {
                                     const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
                                     const creatorName = applicant.profile?.displayName || applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
                                     return (
                                     <Card key={applicant.id} className="flex flex-col">
                                         <CardHeader className="flex-row items-start gap-4">
-                                                <Avatar className="h-12 w-12">
+                                                <Avatar className="h-12 w-12 border">
                                                 <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
                                                 <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
                                             </Avatar>
@@ -437,7 +437,7 @@ export default function ManageApplicationsPage() {
                                                 </Button>
                                             </div>
                                             <Button variant="outline" className="w-full" onClick={() => handleViewProfile(applicant.creatorId)}>
-                                                {t('manageApplicationsPage.viewProfileButton')} <ArrowRight className="h-4 w-4 ml-2" />
+                                                {t('manageApplicationsPage.viewProfileButton')}
                                             </Button>
                                         </CardFooter>
                                     </Card>
@@ -453,7 +453,7 @@ export default function ManageApplicationsPage() {
                       </TabsContent>
                       <TabsContent value="discussion" className="mt-6">
                          {negotiatingApplicants.length > 0 ? (
-                            <div className="grid md:grid-cols-2 gap-6">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {negotiatingApplicants.map(app => renderApplicantCard(app, 'discussion'))}
                             </div>
                         ) : (
@@ -465,7 +465,7 @@ export default function ManageApplicationsPage() {
                       </TabsContent>
                       <TabsContent value="hired" className="mt-6">
                          {hiredCreators.length > 0 ? (
-                             <div className="grid md:grid-cols-2 gap-6">
+                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {hiredCreators.map(app => renderApplicantCard(app, 'hired'))}
                             </div>
                         ) : (
