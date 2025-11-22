@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -107,7 +108,7 @@ export default function ManageApplicationsPage() {
     const applicationsQuery = useMemoFirebase(() => firestore ? query(collection(firestore, 'campaigns', campaignId as string, 'applications')) : null, [firestore, campaignId]);
     const { data: applications, isLoading: areApplicationsLoading, mutate: mutateApplications } = useCollection(applicationsQuery);
 
-    const conversationsQuery = useMemoFirebase(() => firestore && user ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId), where('brand_id', '==', user.uid)) : null, [firestore, campaignId, user]);
+    const conversationsQuery = useMemoFirebase(() => firestore && user && campaignId ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId), where('brand_id', '==', user.uid)) : null, [firestore, campaignId, user]);
     const { data: conversations, isLoading: areConversationsLoading } = useCollection(conversationsQuery);
 
     const [applicants, setApplicants] = useState<Applicant[]>([]);
@@ -303,40 +304,40 @@ export default function ManageApplicationsPage() {
         const conversationId = findConversationId(applicant.id);
 
         return (
-            <Card key={applicant.id} className="flex flex-col">
-                <CardHeader className="flex-row items-start gap-4">
+             <Card key={applicant.id} className="flex flex-col overflow-hidden transition-all hover:shadow-lg">
+                <CardHeader className="flex-row items-start gap-4 p-4">
                      <Avatar className="h-12 w-12">
                         <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
                         <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
                         <div className="flex justify-between items-center">
-                            <CardTitle>{creatorName}</CardTitle>
-                             <Badge variant="secondary" className={cn(badgeClass, 'font-semibold')}>
+                            <CardTitle className="text-base">{creatorName}</CardTitle>
+                             <Badge variant="secondary" className={cn('font-semibold text-xs', badgeClass)}>
                                 {badgeText}
                             </Badge>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                             <ShieldCheck className="h-4 w-4 text-green-500" />
                             <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
                         </div>
                     </div>
                 </CardHeader>
-                <CardContent className="flex-grow space-y-4">
+                <CardContent className="px-4 pb-4 flex-grow">
                     <div className="space-y-2">
-                        <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" />{t('manageApplicationsPage.coverLetter')}</h4>
+                        <h4 className="font-semibold text-xs flex items-center gap-1.5 text-muted-foreground"><FileText className="h-3 w-3" />{t('manageApplicationsPage.coverLetter')}</h4>
                         <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
                     </div>
                 </CardContent>
-                <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
+                <CardFooter className="flex-col items-stretch gap-2 bg-muted/30 p-3 border-t">
                     {type === 'discussion' && conversationId && (
-                         <Button asChild className="w-full">
+                         <Button asChild className="w-full" size="sm">
                             <Link href={`/chat/${conversationId}`}>
                                 Open Chat <ArrowRight className="h-4 w-4 ml-2" />
                             </Link>
                          </Button>
                     )}
-                     <Button variant="outline" className="w-full" onClick={() => handleViewProfile(applicant.creatorId)}>
+                     <Button variant="outline" size="sm" className="w-full" onClick={() => handleViewProfile(applicant.creatorId)}>
                         {t('manageApplicationsPage.viewProfileButton')} <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                 </CardFooter>
