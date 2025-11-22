@@ -253,10 +253,11 @@ export default function ManageApplicationsPage() {
         return (
             <>
                 <AppHeader />
-                <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+                <main className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 w-full">
                     <Skeleton className="h-10 w-1/2 mb-4" />
                     <Skeleton className="h-6 w-3/4 mb-8" />
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <ApplicantCardSkeleton />
                         <ApplicantCardSkeleton />
                         <ApplicantCardSkeleton />
                     </div>
@@ -382,6 +383,7 @@ export default function ManageApplicationsPage() {
                                                 <div className="flex justify-between items-center">
                                                     <CardTitle>{creatorName}</CardTitle>
                                                         <Badge variant="secondary" className={cn(
+                                                        'font-semibold',
                                                         isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
                                                         )}>
                                                         {isBidHigher && <ArrowUpRight className="h-3 w-3 mr-1" />}
@@ -431,7 +433,7 @@ export default function ManageApplicationsPage() {
                                                         {t('manageApplicationsPage.acceptButton')}
                                                     </Button>
                                                 )}
-                                                <Button variant="destructive" className="w-full flex-1" disabled={!canHireMore}>
+                                                <Button variant="destructive" className="w-full sm:w-auto" disabled={!canHireMore}>
                                                     <XCircle className="mr-2 h-4 w-4" />
                                                     {t('manageApplicationsPage.rejectButton')}
                                                 </Button>
@@ -494,5 +496,3 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
-
-    
