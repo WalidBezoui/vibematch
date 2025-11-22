@@ -2,14 +2,14 @@
 'use client';
 
 import { AppHeader } from '@/components/app-header';
-import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
+import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
 import { collection, query, where, getDocs, doc, getDoc, writeBatch, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck } from 'lucide-react';
+import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck, Bell } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -59,7 +59,7 @@ const ApplicantCard = ({ application, campaign, onSelectCreator, onStartDiscussi
                                     <p className="font-semibold">
                                         {application.profile?.name}
                                     </p>
-                                    <p className="text-xs text-muted-foreground">{t('talentHub.card.appliedTo')} <span className="font-medium text-foreground">{campaign.title}</span></p>
+                                    <p className="text-xs text-muted-foreground">{t('notificationsPage.card.appliedTo')} <span className="font-medium text-foreground">{campaign.title}</span></p>
                                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2">
                                         <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
                                             <ShieldCheck className="h-3 w-3 mr-1" />
@@ -134,57 +134,72 @@ const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator, on
     )
 }
 
-export default function TalentHubPage() {
+export default function NotificationsPage() {
     const [applicants, setApplicants] = useState<Applicant[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     
-    const { user } = useUser();
+    const { user, isUserLoading } = useUser();
+    const { userProfile, isLoading: isProfileLoading } = useUserProfile();
     const firestore = useFirestore();
     const router = useRouter();
     const { toast } = useToast();
     const { t } = useLanguage();
 
+    const isBrand = userProfile?.role === 'brand';
+
     const campaignsQuery = useMemoFirebase(
-        () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
-        [user, firestore]
+        () => (isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
+        [user, firestore, isBrand]
     );
     const { data: campaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
 
     useEffect(() => {
-        if (isLoadingCampaigns || !campaigns || !firestore) return;
+        if (isUserLoading || isProfileLoading) return;
+        if (!user || !userProfile) {
+            router.push('/login');
+            return;
+        }
 
-        const fetchAllData = async () => {
-            setIsLoading(true);
-            const enrichedApplications: any[] = [];
+        if (isBrand) {
+            if (isLoadingCampaigns || !campaigns || !firestore) return;
 
-            for (const campaign of campaigns) {
-                // Fetch only applications with 'APPLIED' status
-                const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
-                const q = query(appsRef, where('status', '==', 'APPLIED'));
-                const appsSnapshot = await getDocs(q);
+            const fetchAllData = async () => {
+                setIsLoading(true);
+                const enrichedApplications: any[] = [];
 
-                if (!appsSnapshot.empty) {
-                    for (const appDoc of appsSnapshot.docs) {
-                        const appData = { id: appDoc.id, ...appDoc.data() };
-                        const profileRef = doc(firestore, 'users', appData.creatorId);
-                        const profileSnap = await getDoc(profileRef);
-                        enrichedApplications.push({
-                            ...appData,
-                            profile: profileSnap.exists() ? profileSnap.data() : null,
-                            trustScore: Math.floor(Math.random() * (98 - 75 + 1) + 75), // Random score
-                        });
+                for (const campaign of campaigns) {
+                    const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
+                    const q = query(appsRef, where('status', '==', 'APPLIED'));
+                    const appsSnapshot = await getDocs(q);
+
+                    if (!appsSnapshot.empty) {
+                        for (const appDoc of appsSnapshot.docs) {
+                            const appData = { id: appDoc.id, ...appDoc.data() };
+                            const profileRef = doc(firestore, 'users', appData.creatorId);
+                            const profileSnap = await getDoc(profileRef);
+                            enrichedApplications.push({
+                                ...appData,
+                                profile: profileSnap.exists() ? profileSnap.data() : null,
+                                trustScore: Math.floor(Math.random() * (98 - 75 + 1) + 75), // Random score
+                            });
+                        }
                     }
                 }
-            }
-            setApplicants(enrichedApplications.sort((a,b) => b.createdAt.seconds - a.createdAt.seconds) as Applicant[]);
+                setApplicants(enrichedApplications.sort((a,b) => b.createdAt.seconds - a.createdAt.seconds) as Applicant[]);
+                setIsLoading(false);
+            };
+
+            fetchAllData();
+        } else {
+            // Creator logic
+            // For now, we just show an empty state for creators.
+            // This can be expanded to show their application statuses.
             setIsLoading(false);
-        };
+        }
 
-        fetchAllData();
-
-    }, [campaigns, isLoadingCampaigns, firestore]);
+    }, [campaigns, isLoadingCampaigns, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, router]);
 
     const campaignsWithApps = useMemo(() => {
         if (!campaigns) return [];
@@ -203,7 +218,6 @@ export default function TalentHubPage() {
         const batch = writeBatch(firestore);
         const applicationRef = doc(firestore, 'campaigns', applicant.campaignId, 'applications', applicant.id);
         
-        // If bid matches, status becomes OFFER_ACCEPTED, otherwise NEGOTIATING
         const applicationStatus = startInNegotiation ? 'NEGOTIATING' : 'OFFER_ACCEPTED';
         batch.update(applicationRef, { status: applicationStatus });
         
@@ -280,6 +294,7 @@ export default function TalentHubPage() {
         }
     };
 
+    const finalIsLoading = isLoading || isUserLoading || isProfileLoading;
 
     return (
         <div className="flex h-auto w-full flex-col">
@@ -288,14 +303,14 @@ export default function TalentHubPage() {
                  <div className="max-w-4xl mx-auto">
                     <div className="mb-12">
                         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tighter leading-tight">
-                           {t('talentHub.title')}
+                           {t('notificationsPage.title')}
                         </h1>
                         <p className="mt-4 text-lg md:text-xl max-w-3xl text-foreground/60">
-                            {t('talentHub.description')}
+                            {t('notificationsPage.description')}
                         </p>
                     </div>
 
-                    {isLoading && (
+                    {finalIsLoading && (
                         <div className="space-y-4">
                             <Skeleton className="h-28 w-full" />
                             <Skeleton className="h-28 w-full" />
@@ -303,7 +318,7 @@ export default function TalentHubPage() {
                         </div>
                     )}
 
-                    {!isLoading && applicants.length > 0 && campaigns ? (
+                    {!finalIsLoading && isBrand && applicants.length > 0 && campaigns ? (
                         <div className="space-y-12">
                             {campaignsWithApps.map(campaign => (
                                 <CampaignApplicationsGroup
@@ -318,19 +333,21 @@ export default function TalentHubPage() {
                         </div>
                     ) : null}
 
-                     {!isLoading && applicants.length === 0 && (
+                     {!finalIsLoading && (!isBrand || applicants.length === 0) && (
                         <div className="text-center py-24 border-2 border-dashed rounded-lg bg-muted/30">
                              <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
-                                <Inbox className="h-8 w-8 text-black" />
+                                <Bell className="h-8 w-8 text-black" />
                             </div>
-                            <h2 className="text-2xl font-semibold mt-4">{t('talentHub.empty.title')}</h2>
-                            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{t('talentHub.empty.description')}</p>
-                            <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
-                                <Link href="/campaigns/create">
-                                    <PlusCircle className="mr-2 h-5 w-5" />
-                                    {t('brandDashboard.createButton')}
-                                </Link>
-                            </Button>
+                            <h2 className="text-2xl font-semibold mt-4">{t('notificationsPage.empty.title')}</h2>
+                            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{t('notificationsPage.empty.description')}</p>
+                             {isBrand && (
+                                <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+                                    <Link href="/campaigns/create">
+                                        <PlusCircle className="mr-2 h-5 w-5" />
+                                        {t('brandDashboard.createButton')}
+                                    </Link>
+                                </Button>
+                             )}
                         </div>
                     )}
                  </div>

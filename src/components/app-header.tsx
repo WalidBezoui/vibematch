@@ -5,14 +5,14 @@ import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, Users, LifeBuoy, MessageSquare, X, Building, User, FileText, Settings, Inbox } from 'lucide-react';
+import { Home, LogIn, Menu, LogOut, LayoutDashboard, Compass, Users, LifeBuoy, MessageSquare, X, Building, User, FileText, Settings, Inbox, Bell } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { useUser, useUserProfile, useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { getAuth, signOut } from 'firebase/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { query, collection, where, getDocs, collectionGroup, getCountFromServer } from 'firebase/firestore';
+import { query, collection, where, getCountFromServer } from 'firebase/firestore';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -82,7 +82,7 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadMessages, newApplications }: 
             {navLinks.map((link) => {
                  const isActive = pathname === link.href && !link.isSection;
                  const isMessages = link.href === '/chat';
-                 const isTalentHub = link.href === '/applications';
+                 const isNotifications = link.href === '/notifications';
 
                  return (
                     <Link
@@ -100,12 +100,12 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadMessages, newApplications }: 
                         <link.icon className={cn("h-4 w-4", isActive ? "text-primary" : "")} />
                         <span>{link.label}</span>
                          {isMessages && unreadMessages > 0 && (
-                            <span className="absolute top-1 right-1 flex h-2.5 w-2.5">
+                            <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
                             </span>
                         )}
-                         {isTalentHub && newApplications > 0 && (
+                         {isNotifications && newApplications > 0 && (
                              <span className="ml-1.5 h-6 w-6 flex items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
                                 {newApplications}
                              </span>
@@ -158,7 +158,7 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading
                  ) : navLinks.map((link) => {
                     const isActive = pathname === link.href && !link.isSection;
                     const isMessages = link.href === '/chat';
-                    const isTalentHub = link.href === '/applications';
+                    const isNotifications = link.href === '/notifications';
 
                     return (
                         <Link
@@ -178,7 +178,7 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading
                             {isMessages && unreadMessages > 0 && (
                                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                             )}
-                             {isTalentHub && newApplications > 0 && (
+                             {isNotifications && newApplications > 0 && (
                                <span className="h-8 w-8 flex items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
                                     {newApplications}
                                 </span>
@@ -355,6 +355,7 @@ export function AppHeader() {
         if (userProfile.role === 'creator') {
             roleSpecificLinks = [
                  { href: "/discover", label: t('header.discover'), icon: Compass },
+                 { href: "/notifications", label: t('header.notifications'), icon: Bell },
                  { href: "/chat", label: t('header.messages'), icon: MessageSquare },
             ];
         }
@@ -362,7 +363,7 @@ export function AppHeader() {
         if (userProfile.role === 'brand') {
              roleSpecificLinks = [
                  { href: "/creators", label: t('header.creators'), icon: Users },
-                 { href: "/applications", label: t('header.talentHub'), icon: Inbox },
+                 { href: "/notifications", label: t('header.notifications'), icon: Bell },
                  { href: "/chat", label: t('header.messages'), icon: MessageSquare },
             ];
         }

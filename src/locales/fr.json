@@ -13,7 +13,7 @@
         "discover": "Découvrir",
         "messages": "Messages",
         "creators": "Créateurs",
-        "talentHub": "Pôle de Talents",
+        "notifications": "Notifications",
         "myAccount": "Mon Compte",
         "settings": "Paramètres"
     },
@@ -505,12 +505,12 @@
         }
     },
     "currency": "MAD",
-    "talentHub": {
-        "title": "Pôle de Talents",
-        "description": "Gérez toutes les candidatures entrantes et les invitations envoyées au même endroit.",
+    "notificationsPage": {
+        "title": "Notifications",
+        "description": "Consultez toutes vos candidatures, invitations et mises à jour de campagnes en un seul endroit.",
         "empty": {
-            "title": "Aucune candidature pour le moment",
-            "description": "Quand les créateurs postuleront à vos campagnes, vous les verrez ici."
+            "title": "Votre boîte de réception est vide",
+            "description": "Lorsque les marques répondront à vos candidatures ou vous inviteront à des campagnes, vous le verrez ici."
         },
         "card": {
             "appliedTo": "A postulé à"
