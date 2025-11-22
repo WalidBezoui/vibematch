@@ -311,9 +311,9 @@ export default function ManageApplicationsPage() {
                         <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
                         <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
                     </Avatar>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-center">
-                            <CardTitle className="text-base">{creatorName}</CardTitle>
+                            <CardTitle className="text-base truncate">{creatorName}</CardTitle>
                              <Badge variant="secondary" className={cn('font-semibold text-xs', badgeClass)}>
                                 {badgeText}
                             </Badge>
@@ -327,7 +327,7 @@ export default function ManageApplicationsPage() {
                 <CardContent className="px-4 pb-4 flex-grow">
                     <div className="space-y-2">
                         <h4 className="font-semibold text-xs flex items-center gap-1.5 text-muted-foreground"><FileText className="h-3 w-3" />{t('manageApplicationsPage.coverLetter')}</h4>
-                        <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
+                        <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border break-words">{applicant.coverLetter}</p>
                     </div>
                 </CardContent>
                 <CardFooter className="flex-col items-stretch gap-2 bg-muted/30 p-3 border-t">
@@ -379,9 +379,9 @@ export default function ManageApplicationsPage() {
                                                 <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
                                                 <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
                                             </Avatar>
-                                            <div className="flex-1">
+                                            <div className="flex-1 min-w-0">
                                                 <div className="flex justify-between items-center">
-                                                    <CardTitle>{creatorName}</CardTitle>
+                                                    <CardTitle className="truncate">{creatorName}</CardTitle>
                                                         <Badge variant="secondary" className={cn(
                                                         'font-semibold',
                                                         isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
@@ -399,7 +399,7 @@ export default function ManageApplicationsPage() {
                                         <CardContent className="flex-grow space-y-4">
                                             <div className="space-y-2">
                                                 <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" />{t('manageApplicationsPage.coverLetter')}</h4>
-                                                <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
+                                                <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border break-words">{applicant.coverLetter}</p>
                                             </div>
                                                 <AlertDialog>
                                                 <AlertDialogTrigger asChild>
