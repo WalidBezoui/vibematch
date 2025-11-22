@@ -143,6 +143,10 @@ export default function NotificationsPage() {
     }, [campaigns, isLoadingCampaigns, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, router]);
 
     const finalIsLoading = isLoading || isUserLoading || isProfileLoading;
+    
+    const emptyStateDescription = isBrand 
+        ? t('notificationsPage.empty.description_brand') 
+        : t('notificationsPage.empty.description');
 
     return (
         <div className="flex h-auto w-full flex-col">
@@ -174,13 +178,13 @@ export default function NotificationsPage() {
                         </div>
                     ) : null}
 
-                     {!finalIsLoading && (!isBrand || notifications.length === 0) && (
+                     {!finalIsLoading && notifications.length === 0 && (
                         <div className="text-center py-24 border-2 border-dashed rounded-lg bg-muted/30">
                              <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
                                 <Bell className="h-8 w-8 text-black" />
                             </div>
                             <h2 className="text-2xl font-semibold mt-4">{t('notificationsPage.empty.title')}</h2>
-                            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{t('notificationsPage.empty.description')}</p>
+                            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{emptyStateDescription}</p>
                              {isBrand && (
                                 <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
                                     <Link href="/campaigns/create">

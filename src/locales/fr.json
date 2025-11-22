@@ -510,7 +510,8 @@
         "description": "Consultez toutes vos candidatures, invitations et mises à jour de campagnes en un seul endroit.",
         "empty": {
             "title": "Votre boîte de réception est vide",
-            "description": "Lorsque les marques répondront à vos candidatures ou vous inviteront à des campagnes, vous le verrez ici."
+            "description": "Lorsque les marques répondront à vos candidatures ou vous inviteront à des campagnes, vous le verrez ici.",
+            "description_brand": "Lorsque les créateurs postulent à vos campagnes, vous verrez les notifications ici."
         },
         "card": {
             "appliedTo": "A postulé à"

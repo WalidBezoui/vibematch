@@ -510,7 +510,8 @@
         "description": "Review all your campaign applications, invitations, and updates in one place.",
         "empty": {
             "title": "Your inbox is empty",
-            "description": "When brands respond to your applications or invite you to campaigns, you'll see it here."
+            "description": "When brands respond to your applications or invite you to campaigns, you'll see it here.",
+            "description_brand": "When creators apply to your campaigns, you'll see the notifications here."
         },
         "card": {
             "appliedTo": "Applied to"
