@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -341,7 +342,7 @@ export default function CreatorDashboard() {
         </div>
 
       <Tabs defaultValue="campaigns">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-2">
             <TabsTrigger value="campaigns">Campaigns <Badge variant="secondary" className="ml-2">{activeCampaigns?.length || 0}</Badge></TabsTrigger>
             <TabsTrigger value="pending">Pending Applications <Badge variant="secondary" className="ml-2">{pendingCampaigns?.length || 0}</Badge></TabsTrigger>
         </TabsList>

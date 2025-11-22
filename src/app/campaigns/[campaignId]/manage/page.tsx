@@ -371,7 +371,7 @@ export default function ManageApplicationsPage() {
                     <div className="max-w-4xl mx-auto">
                         {applicants.length > 0 ? (
                             <Tabs defaultValue="new" className="w-full">
-                            <TabsList className="flex flex-wrap h-auto justify-start sm:grid sm:w-full sm:grid-cols-3">
+                            <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-3">
                                 <TabsTrigger value="new">{t('manageApplicationsPage.tabs.new')}<Badge variant="secondary" className="ml-2">{newApplicants.length}</Badge></TabsTrigger>
                                 <TabsTrigger value="discussion">{t('manageApplicationsPage.tabs.discussion')}<Badge variant="secondary" className="ml-2">{negotiatingApplicants.length}</Badge></TabsTrigger>
                                 <TabsTrigger value="hired">{t('manageApplicationsPage.tabs.hired')}<Badge variant="secondary" className="ml-2">{hiredCreators.length}</Badge></TabsTrigger>
