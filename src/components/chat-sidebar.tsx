@@ -30,8 +30,8 @@ const ConversationCard = ({
 }) => {
   return (
     <Link href={href} className={cn(
-        "block p-3 rounded-lg transition-colors relative",
-        isActive ? "bg-muted" : "hover:bg-muted/50"
+        "block p-3 rounded-lg transition-colors relative border-2",
+        isActive ? "bg-muted border-primary/50" : "border-transparent hover:bg-muted/50"
     )}>
         <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12">
@@ -162,15 +162,15 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
             </div>
         ) : (
              <Tabs defaultValue="negotiations" className="flex-1 flex flex-col">
-                <TabsList className="m-2 grid grid-cols-3 h-auto p-1">
-                    <TabsTrigger value="negotiations" className="flex-1 py-1.5">
-                        Negotiating <Badge variant="secondary" className="ml-2 h-5">{negotiations.length}</Badge>
+                <TabsList className="m-2 grid grid-cols-3 h-auto p-1 bg-muted rounded-full">
+                    <TabsTrigger value="negotiations" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+                        Negotiating <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{negotiations.length}</Badge>
                     </TabsTrigger>
-                    <TabsTrigger value="active" className="flex-1 py-1.5">
-                        Active <Badge variant="secondary" className="ml-2 h-5">{active.length}</Badge>
+                    <TabsTrigger value="active" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+                        Active <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{active.length}</Badge>
                     </TabsTrigger>
-                    <TabsTrigger value="completed" className="flex-1 py-1.5">
-                        Archived <Badge variant="secondary" className="ml-2 h-5">{completed.length}</Badge>
+                    <TabsTrigger value="completed" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+                        Archived <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{completed.length}</Badge>
                     </TabsTrigger>
                 </TabsList>
                 <div className="flex-1 overflow-y-auto">
