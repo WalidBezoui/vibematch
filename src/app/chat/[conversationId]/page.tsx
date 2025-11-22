@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { ChatSidebar } from '@/components/chat-sidebar';
 import { AppHeader } from '@/components/app-header';
 import { Button } from '@/components/ui/button';
