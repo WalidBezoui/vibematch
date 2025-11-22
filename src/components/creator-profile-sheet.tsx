@@ -22,12 +22,16 @@ export default function CreatorProfileSheet({ creatorId, open, onOpenChange }: {
     );
     const { data: creator, isLoading } = useDoc(creatorRef);
     
+    const title = isLoading || !creator 
+      ? "Creator Profile" 
+      : `Creator Profile: ${creator.displayName || creator.name || ''}`;
+
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent className="w-full max-w-none sm:max-w-[60vw] p-0 flex flex-col">
                 <SheetHeader className="p-6 pb-0">
                     <SheetTitle>
-                        {isLoading || !creator ? "Creator Profile" : `Creator Profile: ${creator.displayName}`}
+                        {title}
                     </SheetTitle>
                     {!(creatorId && creator) && !isLoading && (
                          <SheetDescription>
