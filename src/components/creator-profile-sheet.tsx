@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -26,7 +27,7 @@ export default function CreatorProfileSheet({ creatorId, open, onOpenChange }: {
             <SheetContent className="w-full max-w-none sm:max-w-[60vw] p-0 flex flex-col">
                 <SheetHeader className="p-6 pb-0">
                     <SheetTitle>
-                        {isLoading ? "Loading Profile..." : creatorId && creator ? `Creator Profile: ${creator.displayName}` : "Creator Profile"}
+                        {isLoading || !creator ? "Creator Profile" : `Creator Profile: ${creator.displayName}`}
                     </SheetTitle>
                     {!(creatorId && creator) && !isLoading && (
                          <SheetDescription>
