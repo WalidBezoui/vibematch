@@ -80,7 +80,7 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadMessages, newApplications }: 
     return (
         <nav className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
             {navLinks.map((link) => {
-                 const isActive = pathname === link.href && !link.isSection;
+                 const isActive = (pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))) && !link.isSection;
                  const isMessages = link.href === '/chat';
                  const isNotifications = link.href === '/notifications';
 
@@ -156,7 +156,7 @@ const MobileNav = ({ isOpen, navLinks, onLinkClick, onClose, onLogout, isLoading
                         <Skeleton className="h-16 w-full rounded-lg" />
                      </>
                  ) : navLinks.map((link) => {
-                    const isActive = pathname === link.href && !link.isSection;
+                    const isActive = (pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))) && !link.isSection;
                     const isMessages = link.href === '/chat';
                     const isNotifications = link.href === '/notifications';
 
