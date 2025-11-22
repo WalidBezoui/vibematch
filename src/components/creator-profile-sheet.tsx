@@ -19,14 +19,16 @@ export default function CreatorProfileSheet({ creatorId, open, onOpenChange }: {
         () => (firestore && creatorId) ? doc(firestore, 'users', creatorId as string) : null,
         [firestore, creatorId]
     );
-    const { data: creator } = useDoc(creatorRef);
+    const { data: creator, isLoading } = useDoc(creatorRef);
     
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent className="w-full max-w-none sm:max-w-[60vw] p-0 flex flex-col">
                 <SheetHeader className="p-6 pb-0">
-                    <SheetTitle>{creatorId && creator ? `Creator Profile: ${creator.displayName}` : "No Creator Selected"}</SheetTitle>
-                    {!(creatorId && creator) && (
+                    <SheetTitle>
+                        {isLoading ? "Loading Profile..." : creatorId && creator ? `Creator Profile: ${creator.displayName}` : "Creator Profile"}
+                    </SheetTitle>
+                    {!(creatorId && creator) && !isLoading && (
                          <SheetDescription>
                             Please select a creator to view their profile.
                         </SheetDescription>

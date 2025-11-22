@@ -443,6 +443,7 @@ export default function ManageApplicationsPage() {
                                                 </div>
                                                 <Button variant="outline" className="w-full mt-2 sm:mt-0" onClick={() => handleViewProfile(applicant.creatorId)}>
                                                     {t('manageApplicationsPage.viewProfileButton')}
+                                                    <ArrowRight className="ml-2 h-4 w-4" />
                                                 </Button>
                                             </CardFooter>
                                         </Card>
