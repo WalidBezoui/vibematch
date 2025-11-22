@@ -333,9 +333,9 @@ export default function ManageApplicationsPage() {
                 {applicants.length > 0 ? (
                     <Tabs defaultValue="new" className="w-full">
                       <TabsList className="grid w-full grid-cols-3">
-                        <TabsTrigger value="new">New ({newApplicants.length})</TabsTrigger>
-                        <TabsTrigger value="discussion">In Discussion ({negotiatingApplicants.length})</TabsTrigger>
-                        <TabsTrigger value="hired">Hired ({hiredCreators.length})</TabsTrigger>
+                        <TabsTrigger value="new">New<Badge variant="secondary" className="ml-2">{newApplicants.length}</Badge></TabsTrigger>
+                        <TabsTrigger value="discussion">In Discussion<Badge variant="secondary" className="ml-2">{negotiatingApplicants.length}</Badge></TabsTrigger>
+                        <TabsTrigger value="hired">Hired<Badge variant="secondary" className="ml-2">{hiredCreators.length}</Badge></TabsTrigger>
                       </TabsList>
                       <TabsContent value="new" className="mt-6">
                         {newApplicants.length > 0 ? (
@@ -464,3 +464,5 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
+
+    
