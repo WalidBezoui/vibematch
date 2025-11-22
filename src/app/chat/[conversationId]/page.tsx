@@ -58,37 +58,37 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
             case 'NEGOTIATION':
                 if (isMyTurn) {
                     let text = isBrand 
-                        ? "Action Required: The creator has made an opening offer." 
-                        : "Action Required: The brand has made you an offer.";
+                        ? "Action Required: Creator has made an offer." 
+                        : "Action Required: The brand has made an offer.";
                     
                     if (isBrand && campaign && conversation.agreed_budget === campaign.budget) {
-                        text = "Creator's offer matches your budget. Please confirm.";
+                        text = "Offer matches your budget. Please confirm.";
                     }
 
-                    return { icon: Handshake, text, color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
+                    return { icon: Handshake, text, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
                 }
                 
-                let waitingText = isBrand ? "Waiting for creator's response." : "Negotiation in progress. Brand is reviewing your rate.";
+                let waitingText = isBrand ? "Waiting for creator's response." : "Brand is reviewing your rate.";
                 if (!isBrand && campaign && conversation.agreed_budget === campaign.budget) {
-                    waitingText = "Your offer matches the budget. Waiting for the brand to confirm.";
+                    waitingText = "Waiting for brand to confirm.";
                 }
-                return { icon: Hourglass, text: waitingText, color: 'text-amber-600', bgColor: 'bg-amber-50 dark:bg-amber-900/20' };
+                return { icon: Hourglass, text: waitingText, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
 
             case 'OFFER_ACCEPTED':
-                 return { icon: Handshake, text: isBrand ? "Deal Agreed. Fund the escrow to start." : "Deal Agreed. Awaiting escrow funding.", color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
+                 return { icon: Handshake, text: isBrand ? "Deal Agreed. Fund to start." : "Deal Agreed. Awaiting funds.", color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
             case 'ACTIVE':
                 if (campaign?.status === 'PENDING_PAYMENT') {
-                     return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-600', bgColor: 'bg-blue-50 dark:bg-blue-900/20' };
+                     return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
                 }
-                return { icon: Shield, text: 'Funds Secured 🔒. Work in progress.', color: 'text-green-600', bgColor: 'bg-green-50 dark:bg-green-900/20' };
+                return { icon: Shield, text: 'Funds Secured. Work in progress.', color: 'text-green-800 dark:text-green-200', bgColor: 'bg-green-100/50 dark:bg-green-900/20' };
             case 'REVIEW':
-                 return { icon: Info, text: 'Work submitted. Awaiting validation.', color: 'text-purple-600', bgColor: 'bg-purple-50 dark:bg-purple-900/20' };
+                 return { icon: Info, text: 'Work submitted for validation.', color: 'text-purple-800 dark:text-purple-200', bgColor: 'bg-purple-100/50 dark:bg-purple-900/20' };
             case 'COMPLETED':
-                return { icon: PartyPopper, text: 'Campaign complete!', color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-800' };
+                return { icon: PartyPopper, text: 'Campaign complete!', color: 'text-gray-800 dark:text-gray-200', bgColor: 'bg-gray-100/50 dark:bg-gray-800/20' };
             case 'CANCELLED':
-                 return { icon: XCircle, text: 'This negotiation was cancelled.', color: 'text-red-600', bgColor: 'bg-red-50 dark:bg-red-900/20' };
+                 return { icon: XCircle, text: 'Negotiation cancelled.', color: 'text-red-800 dark:text-red-200', bgColor: 'bg-red-100/50 dark:bg-red-900/20' };
             default:
-                return { icon: Info, text: 'Status: ' + conversation.status, color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-800' };
+                return { icon: Info, text: 'Status: ' + conversation.status, color: 'text-gray-800 dark:text-gray-200', bgColor: 'bg-gray-100/50 dark:bg-gray-800/20' };
         }
     }
 
@@ -98,8 +98,8 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
 
     return (
         <div className={cn("p-4 border-b", bgColor)}>
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                 {isBrand && otherUser && (
+            <div className="flex justify-between items-center gap-4">
+                 {isBrand && otherUser ? (
                      <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10 border">
                             <AvatarImage src={otherUser.photoURL} alt={otherUser.name} />
@@ -110,14 +110,17 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
                             <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground" onClick={onOpenProfile}>View Profile</Button>
                         </div>
                     </div>
-                 )}
-                <div className={cn("flex items-center font-semibold text-sm", color)}>
-                    <Icon className="h-5 w-5 mr-2" />
+                 ) : <div />}
+
+                <div className={cn("flex-1 text-center font-semibold text-sm flex items-center justify-center gap-2", color)}>
+                    <Icon className="h-5 w-5" />
                     <span>{text}</span>
                 </div>
+
                  <div className="flex items-center gap-4">
-                    <div className="text-sm font-semibold text-right">
-                        {budgetLabel}: <span className="text-primary">{conversation.agreed_budget || 0} MAD</span>
+                    <div className="text-right">
+                        <p className="text-xs font-semibold text-muted-foreground">{budgetLabel}</p>
+                        <p className="font-bold text-primary">{conversation.agreed_budget || 0} MAD</p>
                     </div>
 
                     {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
@@ -656,3 +659,5 @@ export default function SingleChatPage() {
         </div>
     );
 }
+
+    
