@@ -108,7 +108,7 @@ export default function ManageApplicationsPage() {
     const applicationsQuery = useMemoFirebase(() => firestore ? query(collection(firestore, 'campaigns', campaignId as string, 'applications')) : null, [firestore, campaignId]);
     const { data: applications, isLoading: areApplicationsLoading, mutate: mutateApplications } = useCollection(applicationsQuery);
 
-    const conversationsQuery = useMemoFirebase(() => firestore && user && campaignId ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId), where('brand_id', '==', user.uid)) : null, [firestore, campaignId, user]);
+    const conversationsQuery = useMemoFirebase(() => firestore && user && campaignId ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId as string), where('brand_id', '==', user.uid)) : null, [firestore, campaignId, user]);
     const { data: conversations, isLoading: areConversationsLoading } = useCollection(conversationsQuery);
 
     const [applicants, setApplicants] = useState<Applicant[]>([]);
