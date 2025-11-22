@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -31,6 +31,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/context/language-context';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 
 type Applicant = {
@@ -84,23 +85,6 @@ const HiringProgress = ({ campaign, hiredCreators }: { campaign: any, hiredCreat
             </CardHeader>
             <CardContent>
                 <Progress value={progress} className="h-3" />
-                {hiredCreators.length > 0 && (
-                    <div className="mt-4 space-y-4">
-                        <h4 className="font-semibold text-sm text-muted-foreground flex items-center gap-2"><UserCheck className="h-4 w-4" /> Hired Creators</h4>
-                        <div className="flex flex-wrap gap-3">
-                            {hiredCreators.map((creator) => (
-                                <div key={creator.uid} className="flex items-center gap-3 p-2 rounded-lg bg-muted border">
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage src={creator.photoURL} alt={creator.name} />
-                                        <AvatarFallback>{creator.name?.[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <span className="font-semibold text-sm">{creator.displayName || creator.name}</span>
-                                    <Badge variant="secondary" className="bg-green-100 text-green-800">Hired</Badge>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </CardContent>
         </Card>
     )
@@ -121,7 +105,6 @@ export default function ManageApplicationsPage() {
     const { data: applications, isLoading: areApplicationsLoading, mutate: mutateApplications } = useCollection(applicationsQuery);
 
     const [applicants, setApplicants] = useState<Applicant[]>([]);
-    const [hiredCreators, setHiredCreators] = useState<any[]>([]);
 
     useEffect(() => {
         if (applications && firestore) {
@@ -152,23 +135,6 @@ export default function ManageApplicationsPage() {
             fetchProfiles();
         }
     }, [applications, firestore]);
-    
-    useEffect(() => {
-        if (campaign?.creatorIds?.length > 0 && firestore) {
-            const fetchHiredProfiles = async () => {
-                const profiles = await Promise.all(
-                    campaign.creatorIds.map(async (id: string) => {
-                        const userDoc = await getDoc(doc(firestore, 'users', id));
-                        return userDoc.exists() ? { uid: id, ...userDoc.data() } : null;
-                    })
-                );
-                setHiredCreators(profiles.filter(p => p !== null));
-            };
-            fetchHiredProfiles();
-        } else {
-            setHiredCreators([]);
-        }
-    }, [campaign, firestore]);
 
     const handleShortlist = async (applicant: Applicant) => {
         if (!firestore || !user || !campaign) return;
@@ -243,9 +209,6 @@ export default function ManageApplicationsPage() {
                 status: 'PENDING_CREATOR_ACCEPTANCE' // Always move to this state after an offer
             };
 
-            // Only close for applications if this hire fills the last spot AND they accept.
-            // This is handled on creator acceptance now.
-    
             batch.update(campaignRef, updates);
             
             // Update application status
@@ -304,12 +267,56 @@ export default function ManageApplicationsPage() {
         )
     }
 
+    const hiredCreators = applicants.filter(a => campaign.creatorIds?.includes(a.creatorId));
     const newApplicants = applicants.filter(a => a.status === 'APPLIED');
     const negotiatingApplicants = applicants.filter(a => a.status === 'NEGOTIATING');
-    // Hired creators are now derived from campaign.creatorIds
-
+    
     const canHireMore = (campaign.creatorIds?.length || 0) < campaign.numberOfCreators;
 
+    const renderApplicantCard = (applicant: Applicant) => {
+        const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
+        const creatorName = applicant.profile?.displayName || applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
+        const badgeClass = campaign.creatorIds?.includes(applicant.creatorId) ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800';
+        const badgeText = campaign.creatorIds?.includes(applicant.creatorId) ? 'Hired' : 'In Discussion';
+
+        return (
+            <Card key={applicant.id} className="flex flex-col">
+                <CardHeader className="flex-row items-start gap-4">
+                     <Avatar className="h-12 w-12">
+                        <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
+                        <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                        <div className="flex justify-between items-center">
+                            <CardTitle>{creatorName}</CardTitle>
+                             <Badge variant="secondary" className={cn(badgeClass, 'font-semibold')}>
+                                {badgeText}
+                            </Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                            <ShieldCheck className="h-4 w-4 text-green-500" />
+                            <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardContent className="flex-grow space-y-4">
+                    <div className="space-y-2">
+                        <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" />{t('manageApplicationsPage.coverLetter')}</h4>
+                        <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
+                    </div>
+                </CardContent>
+                <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
+                     <Button asChild variant="outline" className="w-full">
+                        <Link href={`/creators/${applicant.creatorId}`}>
+                            <User className="mr-2 h-4 w-4" />
+                            {t('manageApplicationsPage.viewProfileButton')}
+                        </Link>
+                    </Button>
+                </CardFooter>
+            </Card>
+        )
+    };
+    
     return (
         <>
             <AppHeader />
@@ -323,106 +330,127 @@ export default function ManageApplicationsPage() {
                 
                 <HiringProgress campaign={campaign} hiredCreators={hiredCreators}/>
 
-                {campaign.status !== 'OPEN_FOR_APPLICATIONS' && !canHireMore && (
-                    <Alert>
-                        <AlertTitle>{t('manageApplicationsPage.closed.title')}</AlertTitle>
-                        <AlertDescription>
-                            {t('manageApplicationsPage.closed.description')} <Badge variant="secondary">{campaign.status.replace(/_/g, ' ')}</Badge>.
-                            <Button asChild variant="link"><Link href={`/campaigns/${campaignId}`}>{t('manageApplicationsPage.closed.cta')}</Link></Button>
-                        </AlertDescription>
-                    </Alert>
-                )}
-                
                 {applicants.length > 0 ? (
-                    <div className="space-y-8">
-                        {newApplicants.length > 0 && canHireMore && (
-                            <div>
-                                <h2 className="text-2xl font-bold mb-4">{t('manageApplicationsPage.newApplicantsTitle')}</h2>
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    {newApplicants.map(applicant => {
-                                        const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
-                                        const creatorName = applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
-                                        return (
-                                        <Card key={applicant.id} className="flex flex-col">
-                                            {/* Card content */}
-                                            <CardHeader className="flex-row items-start gap-4">
-                                                 <Avatar className="h-12 w-12">
-                                                    <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
-                                                    <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
-                                                </Avatar>
-                                                <div className="flex-1">
-                                                    <div className="flex justify-between items-center">
-                                                        <CardTitle>{creatorName}</CardTitle>
-                                                         <Badge variant="secondary" className={cn(
-                                                            isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
-                                                         )}>
-                                                            {isBidHigher && <ArrowUpRight className="h-3 w-3 mr-1" />}
-                                                             {applicant.bidAmount} MAD
-                                                        </Badge>
-                                                    </div>
-                                                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                                                        <ShieldCheck className="h-4 w-4 text-green-500" />
-                                                        <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
-                                                    </div>
+                    <Tabs defaultValue="new" className="w-full">
+                      <TabsList className="grid w-full grid-cols-3">
+                        <TabsTrigger value="new">New ({newApplicants.length})</TabsTrigger>
+                        <TabsTrigger value="discussion">In Discussion ({negotiatingApplicants.length})</TabsTrigger>
+                        <TabsTrigger value="hired">Hired ({hiredCreators.length})</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="new" className="mt-6">
+                        {newApplicants.length > 0 ? (
+                           <div className="grid md:grid-cols-2 gap-6">
+                                {newApplicants.map(applicant => {
+                                    const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
+                                    const creatorName = applicant.profile?.displayName || applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
+                                    return (
+                                    <Card key={applicant.id} className="flex flex-col">
+                                        <CardHeader className="flex-row items-start gap-4">
+                                                <Avatar className="h-12 w-12">
+                                                <AvatarImage src={applicant.profile?.photoURL} alt={applicant.profile?.name} />
+                                                <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex-1">
+                                                <div className="flex justify-between items-center">
+                                                    <CardTitle>{creatorName}</CardTitle>
+                                                        <Badge variant="secondary" className={cn(
+                                                        isBidHigher ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'
+                                                        )}>
+                                                        {isBidHigher && <ArrowUpRight className="h-3 w-3 mr-1" />}
+                                                            {applicant.bidAmount} MAD
+                                                    </Badge>
                                                 </div>
-                                            </CardHeader>
-                                            <CardContent className="flex-grow space-y-4">
-                                                <div className="space-y-2">
-                                                    <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" />{t('manageApplicationsPage.coverLetter')}</h4>
-                                                    <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
+                                                <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                                                    <ShieldCheck className="h-4 w-4 text-green-500" />
+                                                    <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
                                                 </div>
-                                                 <AlertDialog>
-                                                    <AlertDialogTrigger asChild>
-                                                        <Button variant="link" className="p-0 h-auto text-primary">
-                                                            {t('manageApplicationsPage.readFullLetter')}
-                                                        </Button>
-                                                    </AlertDialogTrigger>
-                                                    <AlertDialogContent>
-                                                        <AlertDialogHeader>
-                                                        <AlertDialogTitle>{t('manageApplicationsPage.letterFrom', { name: creatorName })}</AlertDialogTitle>
-                                                        <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
-                                                            {applicant.coverLetter}
-                                                        </AlertDialogDescription>
-                                                        </AlertDialogHeader>
-                                                        <AlertDialogFooter>
-                                                        <AlertDialogAction>{t('manageApplicationsPage.close')}</AlertDialogAction>
-                                                        </AlertDialogFooter>
-                                                    </AlertDialogContent>
-                                                </AlertDialog>
-                                            </CardContent>
-                                            <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
-                                                <div className="flex gap-2">
-                                                    {isBidHigher ? (
-                                                        <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={!canHireMore}>
-                                                            <MessageSquare className="mr-2 h-4 w-4" />
-                                                            {t('manageApplicationsPage.negotiateButton')}
-                                                        </Button>
-                                                    ) : (
-                                                        <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={!canHireMore}>
-                                                            <CheckCircle className="mr-2 h-4 w-4" />
-                                                            {t('manageApplicationsPage.acceptButton')}
-                                                        </Button>
-                                                    )}
-                                                    <Button variant="destructive" className="w-full flex-1" disabled={!canHireMore}>
-                                                        <XCircle className="mr-2 h-4 w-4" />
-                                                        {t('manageApplicationsPage.rejectButton')}
+                                            </div>
+                                        </CardHeader>
+                                        <CardContent className="flex-grow space-y-4">
+                                            <div className="space-y-2">
+                                                <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" />{t('manageApplicationsPage.coverLetter')}</h4>
+                                                <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border">{applicant.coverLetter}</p>
+                                            </div>
+                                                <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="link" className="p-0 h-auto text-primary">
+                                                        {t('manageApplicationsPage.readFullLetter')}
                                                     </Button>
-                                                </div>
-                                                 <Button asChild variant="ghost" className="w-full">
-                                                    <Link href={`/creators/${applicant.creatorId}`}>
-                                                        <User className="mr-2 h-4 w-4" />
-                                                        {t('manageApplicationsPage.viewProfileButton')}
-                                                    </Link>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                    <AlertDialogTitle>{t('manageApplicationsPage.letterFrom', { name: creatorName })}</AlertDialogTitle>
+                                                    <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pt-4 whitespace-pre-wrap">
+                                                        {applicant.coverLetter}
+                                                    </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                    <AlertDialogAction>{t('manageApplicationsPage.close')}</AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </CardContent>
+                                        <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
+                                            <div className="flex gap-2">
+                                                {isBidHigher ? (
+                                                    <Button className="w-full flex-1" onClick={() => handleShortlist(applicant)} disabled={!canHireMore}>
+                                                        <MessageSquare className="mr-2 h-4 w-4" />
+                                                        {t('manageApplicationsPage.negotiateButton')}
+                                                    </Button>
+                                                ) : (
+                                                    <Button className="w-full flex-1" onClick={() => handleAcceptAndHire(applicant)} disabled={!canHireMore}>
+                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                        {t('manageApplicationsPage.acceptButton')}
+                                                    </Button>
+                                                )}
+                                                <Button variant="destructive" className="w-full flex-1" disabled={!canHireMore}>
+                                                    <XCircle className="mr-2 h-4 w-4" />
+                                                    {t('manageApplicationsPage.rejectButton')}
                                                 </Button>
-                                            </CardFooter>
-                                        </Card>
-                                        )
-                                    })}
-                                </div>
+                                            </div>
+                                                <Button asChild variant="ghost" className="w-full">
+                                                <Link href={`/creators/${applicant.creatorId}`}>
+                                                    <User className="mr-2 h-4 w-4" />
+                                                    {t('manageApplicationsPage.viewProfileButton')}
+                                                </Link>
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                    )
+                                })}
+                           </div>
+                        ) : (
+                             <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                                <h2 className="text-2xl font-semibold">No New Applications</h2>
+                                <p className="text-muted-foreground mt-2">Check the other tabs for applicants who are in discussion or already hired.</p>
                             </div>
                         )}
-                        {/* Here we can list shortlisted/negotiating applicants later */}
-                    </div>
+                      </TabsContent>
+                      <TabsContent value="discussion" className="mt-6">
+                         {negotiatingApplicants.length > 0 ? (
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {negotiatingApplicants.map(renderApplicantCard)}
+                            </div>
+                        ) : (
+                             <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                                <h2 className="text-2xl font-semibold">No Applicants in Discussion</h2>
+                                <p className="text-muted-foreground mt-2">Shortlist new applicants to start negotiating.</p>
+                            </div>
+                        )}
+                      </TabsContent>
+                      <TabsContent value="hired" className="mt-6">
+                         {hiredCreators.length > 0 ? (
+                             <div className="grid md:grid-cols-2 gap-6">
+                                {hiredCreators.map(renderApplicantCard)}
+                            </div>
+                        ) : (
+                             <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                                <h2 className="text-2xl font-semibold">No Creators Hired Yet</h2>
+                                <p className="text-muted-foreground mt-2">Accept an applicant's offer to hire them for this campaign.</p>
+                            </div>
+                        )}
+                      </TabsContent>
+                    </Tabs>
                 ) : (
                      <div className="text-center py-20 border-2 border-dashed rounded-lg">
                         <h2 className="text-2xl font-semibold">{t('manageApplicationsPage.noApplications.title')}</h2>
@@ -436,6 +464,3 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
-
-
-    
