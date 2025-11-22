@@ -178,7 +178,7 @@ export default function CreatorPublicProfilePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center text-black">
+                        <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-black">
                             <Award className="h-6 w-6" />
                         </div>
                         <div>
@@ -187,7 +187,7 @@ export default function CreatorPublicProfilePage() {
                         </div>
                     </div>
                      <div className="flex items-center gap-3">
-                         <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center text-black">
+                         <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-black">
                             <CalendarDays className="h-6 w-6" />
                         </div>
                         <div>
