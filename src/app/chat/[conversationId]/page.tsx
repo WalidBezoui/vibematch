@@ -62,7 +62,7 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
                         : "Action Required: The brand has made an offer.";
                     
                     if (isBrand && campaign && conversation.agreed_budget === campaign.budget) {
-                        text = "Offer matches your budget. Please confirm.";
+                        text = "Creator's offer matches your budget. Please confirm.";
                     }
 
                     return { icon: Handshake, text, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
@@ -99,18 +99,20 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
     return (
         <div className={cn("p-4 border-b", bgColor)}>
             <div className="flex justify-between items-center gap-4">
-                 {isBrand && otherUser ? (
-                     <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10 border">
-                            <AvatarImage src={otherUser.photoURL} alt={otherUser.name} />
-                            <AvatarFallback>{otherUser.name?.[0]}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <p className="font-semibold">{otherUser.displayName || otherUser.name}</p>
-                            <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground" onClick={onOpenProfile}>View Profile</Button>
-                        </div>
-                    </div>
-                 ) : <div />}
+                 <div className="flex items-center gap-3">
+                    {isBrand && otherUser && (
+                        <>
+                            <Avatar className="h-10 w-10 border">
+                                <AvatarImage src={otherUser.photoURL} alt={otherUser.name} />
+                                <AvatarFallback>{otherUser.name?.[0]}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <p className="font-semibold">{otherUser.displayName || otherUser.name}</p>
+                                <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground" onClick={onOpenProfile}>View Profile</Button>
+                            </div>
+                        </>
+                    )}
+                </div>
 
                 <div className={cn("flex-1 text-center font-semibold text-sm flex items-center justify-center gap-2", color)}>
                     <Icon className="h-5 w-5" />
@@ -170,22 +172,28 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
 
         const [, campaignTitle, offerAmount, coverLetter] = match;
 
-        let content = message.content;
-        if(isCreator) {
-            content = content.replace("Creator's opening offer is", "Your opening offer is").replace("their cover letter is", "your cover letter is");
-        }
+        const cardTitle = isCreator
+          ? `Discussion for "${campaignTitle}"`
+          : `Application for "${campaignTitle}"`;
+        
+        const cardDescription = isCreator
+          ? `The brand has opened a discussion based on your application.`
+          : `Opened on ${message.timestamp ? format(message.timestamp.toDate(), 'MMM d, yyyy') : ''}`;
+
         return (
             <div className="py-4">
                 <Card className="max-w-md mx-auto bg-muted/30">
                     <CardHeader>
-                        <CardTitle className="text-lg">Discussion for "{campaignTitle}"</CardTitle>
+                        <CardTitle className="text-lg">{cardTitle}</CardTitle>
                         <CardDescription>
-                            Opened on {message.timestamp ? format(message.timestamp.toDate(), 'MMM d, yyyy') : ''}
+                            {cardDescription}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div>
-                            <p className="text-sm font-semibold text-muted-foreground">Opening Offer</p>
+                            <p className="text-sm font-semibold text-muted-foreground">
+                                {isCreator ? "Your Opening Offer" : "Creator's Opening Offer"}
+                            </p>
                             <p className="text-xl font-bold gradient-text">{offerAmount} MAD</p>
                         </div>
                          <div>
@@ -659,5 +667,3 @@ export default function SingleChatPage() {
         </div>
     );
 }
-
-    
