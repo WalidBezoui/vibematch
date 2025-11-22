@@ -150,7 +150,7 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
   const completed = conversations?.filter(c => c.status === 'COMPLETED' || c.status === 'CANCELLED') || [];
 
   return (
-    <aside className="w-96 border-r flex flex-col h-full bg-background">
+    <aside className="w-96 border-r flex-col h-full bg-background hidden md:flex">
       <div className="p-4 border-b">
         <h2 className="text-2xl font-bold tracking-tight">Deals</h2>
       </div>

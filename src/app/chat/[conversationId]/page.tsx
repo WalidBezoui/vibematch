@@ -40,7 +40,7 @@ const GuardianBot = {
   },
 };
 
-const DealStatusHeader = ({ conversation, campaign, onOfferSent }: { conversation: any, campaign: any, onOfferSent: () => void }) => {
+const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
     const router = useRouter();
@@ -98,8 +98,20 @@ const DealStatusHeader = ({ conversation, campaign, onOfferSent }: { conversatio
 
     return (
         <div className={cn("p-4 border-b", bgColor)}>
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-                <div className={cn("flex items-center font-semibold", color)}>
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                 {isBrand && otherUser && (
+                     <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10 border">
+                            <AvatarImage src={otherUser.photoURL} alt={otherUser.name} />
+                            <AvatarFallback>{otherUser.name?.[0]}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <p className="font-semibold">{otherUser.displayName || otherUser.name}</p>
+                            <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground" onClick={onOpenProfile}>View Profile</Button>
+                        </div>
+                    </div>
+                 )}
+                <div className={cn("flex items-center font-semibold text-sm", color)}>
                     <Icon className="h-5 w-5 mr-2" />
                     <span>{text}</span>
                 </div>
@@ -110,7 +122,7 @@ const DealStatusHeader = ({ conversation, campaign, onOfferSent }: { conversatio
 
                     {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
                          <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>
-                            <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow ({conversation.agreed_budget} MAD)
+                            <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
                          </Button>
                     )}
                 </div>
@@ -418,75 +430,6 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
     );
 };
 
-const ChatContextPanel = ({ conversation, campaign, onOpenProfile }: { conversation: any, campaign: any, onOpenProfile: () => void }) => {
-    const firestore = useFirestore();
-    const { userProfile } = useUserProfile();
-
-    const otherUserId = userProfile?.role === 'brand' ? conversation.creator_id : conversation.brand_id;
-    
-    const userRef = useMemoFirebase(() => (firestore && otherUserId) ? doc(firestore, 'users', otherUserId) : null, [firestore, otherUserId]);
-    const { data: otherUser, isLoading } = useDoc(userRef);
-
-    if (isLoading || !otherUser) {
-        return (
-            <aside className="hidden lg:block w-80 border-l p-4 space-y-4">
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-32 w-full" />
-            </aside>
-        )
-    }
-
-    return (
-        <aside className="hidden lg:block w-80 border-l p-4 space-y-6">
-            <Card>
-                <CardHeader>
-                    <div className="flex items-center gap-3">
-                        <Avatar className="h-12 w-12 border">
-                            <AvatarImage src={otherUser.photoURL} alt={otherUser.name} />
-                            <AvatarFallback>{otherUser.name?.[0]}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <CardTitle className="text-lg">{otherUser.displayName || otherUser.name}</CardTitle>
-                            <CardDescription className="capitalize">{otherUser.role}</CardDescription>
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                     {otherUser.tags && (
-                        <div className="flex flex-wrap gap-1">
-                            {otherUser.tags.slice(0,3).map((tag:string) => <Badge key={tag} variant="secondary">{tag}</Badge>)}
-                        </div>
-                    )}
-                </CardContent>
-                <CardFooter>
-                    <Button variant="outline" className="w-full" onClick={onOpenProfile}>
-                        <User className="mr-2 h-4 w-4" /> View Full Profile
-                    </Button>
-                </CardFooter>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-lg">About this Deal</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm">
-                    <div className="flex justify-between">
-                        <span className="text-muted-foreground">Campaign:</span>
-                        <span className="font-semibold text-right">{campaign?.title || '...'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-muted-foreground">Agreed Budget:</span>
-                        <span className="font-semibold">{conversation.agreed_budget} MAD</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-muted-foreground">Status:</span>
-                        <Badge variant="secondary">{conversation.status.replace('_', ' ')}</Badge>
-                    </div>
-                </CardContent>
-            </Card>
-        </aside>
-    )
-}
-
 export default function SingleChatPage() {
     const { conversationId } = useParams();
     const router = useRouter();
@@ -509,6 +452,17 @@ export default function SingleChatPage() {
     );
     const { data: conversation, isLoading: isConversationLoading } = useDoc(conversationRef);
     
+    const otherUserId = useMemo(() => {
+        if (!user || !conversation) return null;
+        return user.uid === conversation.brand_id ? conversation.creator_id : conversation.brand_id;
+    }, [user, conversation]);
+
+    const otherUserRef = useMemoFirebase(
+        () => (firestore && otherUserId) ? doc(firestore, 'users', otherUserId) : null,
+        [firestore, otherUserId]
+    );
+    const { data: otherUser, isLoading: isOtherUserLoading } = useDoc(otherUserRef);
+
     const campaignRef = useMemoFirebase(
         () => (firestore && conversation ? doc(firestore, 'campaigns', conversation.campaign_id) : null),
         [firestore, conversation]
@@ -521,7 +475,7 @@ export default function SingleChatPage() {
     );
     const { data: messages, isLoading: areMessagesLoading } = useCollection(messagesQuery);
 
-    const isLoading = isUserLoading || isConversationLoading || areMessagesLoading || isCampaignLoading;
+    const isLoading = isUserLoading || isConversationLoading || areMessagesLoading || isCampaignLoading || isOtherUserLoading;
     
     if (isLoading) {
         return (
@@ -679,22 +633,20 @@ export default function SingleChatPage() {
             <AppHeader />
             <div className="flex flex-1 overflow-hidden">
                 <ChatSidebar conversationId={conversationId as string} />
-                <div className="flex-1 flex flex-col bg-muted/50">
-                    <DealStatusHeader conversation={conversation} campaign={campaign} onOfferSent={() => {}} />
+                <main className="flex-1 flex flex-col bg-muted/50">
+                    <DealStatusHeader 
+                        conversation={conversation} 
+                        campaign={campaign} 
+                        onOpenProfile={() => setIsSheetOpen(true)}
+                        otherUser={otherUser}
+                    />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     {isInNegotiation ? (
                        <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} />
                     ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}
-                </div>
-                {userProfile?.role === 'brand' && (
-                    <ChatContextPanel 
-                        conversation={conversation} 
-                        campaign={campaign} 
-                        onOpenProfile={() => setIsSheetOpen(true)} 
-                    />
-                )}
+                </main>
             </div>
             <CreatorProfileSheet 
                 creatorId={conversation.creator_id}
@@ -704,5 +656,3 @@ export default function SingleChatPage() {
         </div>
     );
 }
-
-    
