@@ -337,8 +337,7 @@ export default function ManageApplicationsPage() {
                          </Button>
                     )}
                      <Button variant="outline" className="w-full" onClick={() => handleViewProfile(applicant.creatorId)}>
-                        <User className="mr-2 h-4 w-4" />
-                        {t('manageApplicationsPage.viewProfileButton')}
+                        {t('manageApplicationsPage.viewProfileButton')} <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                 </CardFooter>
             </Card>
@@ -436,11 +435,8 @@ export default function ManageApplicationsPage() {
                                                     {t('manageApplicationsPage.rejectButton')}
                                                 </Button>
                                             </div>
-                                                <Button asChild variant="ghost" className="w-full">
-                                                <Link href={`/creators/${applicant.creatorId}`}>
-                                                    <User className="mr-2 h-4 w-4" />
-                                                    {t('manageApplicationsPage.viewProfileButton')}
-                                                </Link>
+                                            <Button variant="outline" className="w-full" onClick={() => handleViewProfile(applicant.creatorId)}>
+                                                {t('manageApplicationsPage.viewProfileButton')} <ArrowRight className="h-4 w-4 ml-2" />
                                             </Button>
                                         </CardFooter>
                                     </Card>
@@ -497,5 +493,3 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
-
-    
