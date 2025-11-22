@@ -86,10 +86,11 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
 
     useEffect(() => {
         const fetchCount = async () => {
-            if (firestore && campaign.id && (campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION')) {
+            if (firestore && campaign.id) {
                 setIsLoadingCount(true);
                 try {
-                    const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
+                    // This query gets ALL applications, not just new ones.
+                    const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'));
                     const snapshot = await getCountFromServer(q);
                     setApplicationCount(snapshot.data().count);
                 } catch (e) {
@@ -103,9 +104,9 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
             }
         };
         fetchCount();
-    }, [firestore, campaign.id, campaign.status]);
+    }, [firestore, campaign.id]);
 
-    const manageButtonLink = `/applications`;
+    const manageButtonLink = `/campaigns/${campaign.id}/manage`;
 
     return (
         <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
@@ -170,12 +171,12 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                  </div>
             </CardContent>
             <CardFooter className="bg-muted/50 p-3">
-                {(campaign.status === 'OPEN_FOR_APPLICATIONS' || campaign.status === 'PENDING_SELECTION' || campaign.status === 'PENDING_CREATOR_ACCEPTANCE') ? (
+                {(campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
                      <Button asChild variant="secondary" className="w-full">
                         <Link href={manageButtonLink}>
                             <Users className="mr-2 h-4 w-4" />
                             {t('brandDashboard.manageButton')}
-                            {isLoadingCount ? <Skeleton className="h-5 w-5 rounded-full ml-2" /> : applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
+                            {isLoadingCount ? <Skeleton className="h-5 w-5 rounded-full ml-2" /> : applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">({applicationCount})</Badge>}
                         </Link>
                     </Button>
                 ) : (
@@ -213,15 +214,12 @@ export default function BrandDashboard() {
                 const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED' && c.status !== 'REJECTED_BY_CREATOR').length;
 
                 if (campaigns.length > 0) {
-                     const openCampaigns = campaigns.filter(c => c.status === 'OPEN_FOR_APPLICATIONS' || c.status === 'PENDING_SELECTION');
-                     if (openCampaigns.length > 0) {
-                        const applicationCounts = await Promise.all(
-                            openCampaigns.map(campaign => 
-                                getCountFromServer(query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED')))
-                            )
-                        );
-                        totalApplications = applicationCounts.reduce((sum, current) => sum + current.data().count, 0);
-                     }
+                     const applicationCounts = await Promise.all(
+                        campaigns.map(campaign => 
+                            getCountFromServer(query(collection(firestore, 'campaigns', campaign.id, 'applications')))
+                        )
+                    );
+                    totalApplications = applicationCounts.reduce((sum, current) => sum + current.data().count, 0);
                     totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0) * (c.numberOfCreators || 1), 0);
                 }
 
@@ -367,8 +365,3 @@ export default function BrandDashboard() {
     </div>
   );
 }
-
-    
-    
-
-    

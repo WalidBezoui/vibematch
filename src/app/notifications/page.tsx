@@ -21,136 +21,78 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
 
-type Applicant = {
+// This page is now a pure notification feed for brands, showing actionable events.
+// The primary action for a new application is to go to the dedicated management page.
+
+type NewApplicationNotification = {
   id: string; // application id
   campaignId: string;
   creatorId: string;
-  brandId: string;
-  coverLetter: string;
-  bidAmount: number;
-  status: 'APPLIED' | 'NEGOTIATING' | 'REJECTED';
   profile?: any;
+  campaignTitle: string;
   createdAt: any;
-  trustScore: number;
 };
 
-const ApplicantCard = ({ application, campaign, onSelectCreator, onStartDiscussion, onDecline }: { application: Applicant; campaign: any; onSelectCreator: (creatorId: string) => void; onStartDiscussion: (app: Applicant, startInNegotiation: boolean) => void; onDecline: (app: Applicant) => void; }) => {
-    const {t} = useLanguage();
-    const [isOpen, setIsOpen] = useState(false);
-
-    const isBidDifferent = application.bidAmount !== campaign.budget;
-    const isBidHigher = application.bidAmount > campaign.budget;
-    const budgetLabel = isBidDifferent ? "Proposed" : "Budget";
-    const actionButtonText = isBidDifferent ? "Discuss & Negotiate" : "Accept & Discuss";
-    const BudgetIcon = isBidDifferent ? (isBidHigher ? ArrowUp : ArrowDown) : null;
-
-    return (
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-            <Card className="transition-all hover:shadow-md">
-                 <CardHeader className="p-4">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <CollapsibleTrigger asChild>
-                            <div className="flex items-start gap-4 flex-1 cursor-pointer">
-                                <Avatar className="h-12 w-12 border">
-                                    <AvatarImage src={application.profile?.photoURL} alt={application.profile?.name} />
-                                    <AvatarFallback>{application.profile?.name?.[0]}</AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1">
-                                    <p className="font-semibold">
-                                        {application.profile?.name}
-                                    </p>
-                                    <p className="text-xs text-muted-foreground">{t('notificationsPage.card.appliedTo')} <span className="font-medium text-foreground">{campaign.title}</span></p>
-                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2">
-                                        <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
-                                            <ShieldCheck className="h-3 w-3 mr-1" />
-                                            Trust Score: {application.trustScore}
-                                        </Badge>
-                                        <div className="text-sm flex items-center">
-                                            <span className="text-muted-foreground mr-1.5">{budgetLabel}: </span>
-                                            <span className={cn(
-                                                "font-bold flex items-center",
-                                                isBidDifferent && (isBidHigher ? "text-orange-500" : "text-green-600")
-                                            )}>
-                                                {BudgetIcon && <BudgetIcon className="h-4 w-4 mr-1" />}
-                                                {application.bidAmount} {t('currency')}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </CollapsibleTrigger>
-                         <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
-                            <Button variant="outline" size="sm" onClick={() => onSelectCreator(application.creatorId)}>
-                                View Profile <ArrowRight className="h-4 w-4 ml-2" />
-                            </Button>
-                            <CollapsibleTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
-                                    <ChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />
-                                    <span className="sr-only">Expand</span>
-                                </Button>
-                             </CollapsibleTrigger>
-                         </div>
-                    </div>
-                </CardHeader>
-
-                <CollapsibleContent>
-                    <div className="border-t">
-                        <div className="p-4 space-y-4">
-                             <h4 className="font-semibold text-sm flex items-center gap-2 text-muted-foreground"><FileText className="h-4 w-4" /> Why you?</h4>
-                             <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md border whitespace-pre-wrap">{application.coverLetter}</p>
-                        </div>
-                        <CardFooter className="bg-muted/50 p-3 border-t flex flex-col sm:flex-row items-stretch gap-2">
-                             <Button className="w-full flex-1" onClick={() => onStartDiscussion(application, isBidDifferent)}>
-                                <MessageSquare className="mr-2 h-4 w-4" />
-                                {actionButtonText}
-                            </Button>
-                            <Button variant="destructive" className="w-full flex-1" onClick={() => onDecline(application)}>
-                                <X className="mr-2 h-4 w-4" />
-                                Decline
-                            </Button>
-                        </CardFooter>
-                    </div>
-                </CollapsibleContent>
-            </Card>
-        </Collapsible>
-    )
-}
-
-
-const CampaignApplicationsGroup = ({ campaign, applications, onSelectCreator, onStartDiscussion, onDecline }: { campaign: any, applications: any[], onSelectCreator: (creatorId: string) => void; onStartDiscussion: (app: Applicant, startInNegotiation: boolean) => void; onDecline: (app: Applicant) => void; }) => {
-    if (applications.length === 0) return null;
-    return (
-        <div className="space-y-4">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-                {campaign.title}
-                <Badge variant="outline">{applications.length}</Badge>
-            </h2>
-            <div className="space-y-4">
-                {applications.map(app => (
-                    <ApplicantCard key={app.id} application={app} campaign={campaign} onSelectCreator={onSelectCreator} onStartDiscussion={onStartDiscussion} onDecline={onDecline} />
-                ))}
-            </div>
+const NotificationCardSkeleton = () => (
+    <div className="flex items-center space-x-4 p-4">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
         </div>
+    </div>
+);
+
+
+const NewApplicationCard = ({ notification }: { notification: NewApplicationNotification }) => {
+    const {t} = useLanguage();
+    
+    return (
+        <Card className="transition-all hover:shadow-md">
+             <CardHeader className="p-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-start gap-4 flex-1 cursor-pointer">
+                        <Avatar className="h-12 w-12 border">
+                            <AvatarImage src={notification.profile?.photoURL} alt={notification.profile?.name} />
+                            <AvatarFallback>{notification.profile?.name?.[0]}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                            <p className="font-semibold">
+                                {notification.profile?.name}
+                            </p>
+                            <p className="text-sm text-muted-foreground">{t('notificationsPage.card.appliedTo')} <span className="font-medium text-foreground">{notification.campaignTitle}</span></p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                {notification.createdAt ? new Date(notification.createdAt.seconds * 1000).toLocaleString() : ''}
+                            </p>
+                        </div>
+                    </div>
+                     <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
+                        <Button asChild variant="default" size="sm">
+                            <Link href={`/campaigns/${notification.campaignId}/manage`}>
+                                Manage Applications <ArrowRight className="h-4 w-4 ml-2" />
+                            </Link>
+                        </Button>
+                     </div>
+                </div>
+            </CardHeader>
+        </Card>
     )
 }
 
 export default function NotificationsPage() {
-    const [applicants, setApplicants] = useState<Applicant[]>([]);
+    const [notifications, setNotifications] = useState<NewApplicationNotification[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
-    const [isSheetOpen, setIsSheetOpen] = useState(false);
     
     const { user, isUserLoading } = useUser();
     const { userProfile, isLoading: isProfileLoading } = useUserProfile();
     const firestore = useFirestore();
     const router = useRouter();
-    const { toast } = useToast();
     const { t } = useLanguage();
 
     const isBrand = userProfile?.role === 'brand';
 
     const campaignsQuery = useMemoFirebase(
-        () => (isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
+        () => (isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
         [user, firestore, isBrand]
     );
     const { data: campaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
@@ -167,7 +109,8 @@ export default function NotificationsPage() {
 
             const fetchAllData = async () => {
                 setIsLoading(true);
-                const enrichedApplications: any[] = [];
+                const newApplicationNotifications: any[] = [];
+                const campaignMap = new Map(campaigns.map(c => [c.id, c.title]));
 
                 for (const campaign of campaigns) {
                     const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
@@ -179,120 +122,25 @@ export default function NotificationsPage() {
                             const appData = { id: appDoc.id, ...appDoc.data() };
                             const profileRef = doc(firestore, 'users', appData.creatorId);
                             const profileSnap = await getDoc(profileRef);
-                            enrichedApplications.push({
+                            newApplicationNotifications.push({
                                 ...appData,
                                 profile: profileSnap.exists() ? profileSnap.data() : null,
-                                trustScore: Math.floor(Math.random() * (98 - 75 + 1) + 75), // Random score
+                                campaignTitle: campaignMap.get(appData.campaignId) || 'Unknown Campaign',
                             });
                         }
                     }
                 }
-                setApplicants(enrichedApplications.sort((a,b) => b.createdAt.seconds - a.createdAt.seconds) as Applicant[]);
+                setNotifications(newApplicationNotifications.sort((a,b) => b.createdAt.seconds - a.createdAt.seconds));
                 setIsLoading(false);
             };
 
             fetchAllData();
         } else {
-            // Creator logic
-            // For now, we just show an empty state for creators.
-            // This can be expanded to show their application statuses.
+            // Creator logic can be added here
             setIsLoading(false);
         }
 
     }, [campaigns, isLoadingCampaigns, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, router]);
-
-    const campaignsWithApps = useMemo(() => {
-        if (!campaigns) return [];
-        return campaigns.filter(c => applicants.some(a => a.campaignId === c.id));
-    }, [campaigns, applicants]);
-
-    const handleSelectCreator = (creatorId: string) => {
-        setSelectedCreatorId(creatorId);
-        setIsSheetOpen(true);
-    }
-    
-    const handleStartDiscussion = async (applicant: Applicant, startInNegotiation: boolean) => {
-        if (!firestore || !user) return;
-        toast({ title: t('manageApplicationsPage.openingChatToast') });
-        
-        const batch = writeBatch(firestore);
-        const applicationRef = doc(firestore, 'campaigns', applicant.campaignId, 'applications', applicant.id);
-        
-        const applicationStatus = startInNegotiation ? 'NEGOTIATING' : 'OFFER_ACCEPTED';
-        batch.update(applicationRef, { status: applicationStatus });
-        
-        const conversationDocRef = doc(collection(firestore, 'conversations'));
-        const campaign = campaigns?.find(c => c.id === applicant.campaignId);
-
-        const conversationData = {
-            campaign_id: applicant.campaignId,
-            application_id: applicant.id,
-            brand_id: applicant.brandId,
-            creator_id: applicant.creatorId,
-            status: startInNegotiation ? 'NEGOTIATION' : 'OFFER_ACCEPTED',
-            agreed_budget: applicant.bidAmount,
-            last_offer_by: applicant.creatorId,
-            is_funded: false,
-            lastMessage: `Discussion opened. Creator's opening offer is ${applicant.bidAmount} MAD.`,
-            updatedAt: serverTimestamp(),
-        };
-        batch.set(conversationDocRef, conversationData);
-
-        const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
-        let initialMessageContent = `Discussion opened for campaign: "${campaign?.title}".\n\nCreator's opening offer is ${applicant.bidAmount} MAD and their cover letter is:\n\n"${applicant.coverLetter}"`;
-        if (!startInNegotiation) {
-            initialMessageContent += `\n\nOffer accepted by the Brand. Awaiting funds from the Brand.`;
-        }
-
-        const messageData = {
-             conversation_id: conversationDocRef.id,
-             sender_id: user.uid, 
-             type: 'TEXT',
-             content: initialMessageContent,
-             timestamp: serverTimestamp(),
-        };
-        batch.set(messageDocRef, messageData);
-        
-        try {
-            await batch.commit();
-            toast({ title: t('manageApplicationsPage.chatOpenedToast.title'), description: t('manageApplicationsPage.chatOpenedToast.description') });
-            setApplicants(prev => prev.filter(a => a.id !== applicant.id));
-            router.push(`/chat/${conversationDocRef.id}`);
-        } catch (serverError) {
-             const permissionError = new FirestorePermissionError({
-                path: `BATCH_WRITE on /campaigns/${applicant.campaignId} and /conversations`,
-                operation: 'write',
-                requestResourceData: {
-                    applicationUpdate: { status: applicationStatus },
-                    newConversation: conversationData,
-                    newMessage: messageData
-                }
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        }
-    };
-    
-    const handleDecline = async (applicant: Applicant) => {
-        if (!firestore) return;
-        
-        const appRef = doc(firestore, 'campaigns', applicant.campaignId, 'applications', applicant.id);
-        try {
-            await updateDoc(appRef, { status: 'REJECTED' });
-            toast({
-                variant: 'destructive',
-                title: "Application Declined",
-                description: `${applicant.profile?.name || 'Creator'}'s application has been declined.`,
-            });
-            setApplicants(prev => prev.filter(a => a.id !== applicant.id));
-        } catch (serverError) {
-            const permissionError = new FirestorePermissionError({
-                path: appRef.path,
-                operation: 'update',
-                requestResourceData: { status: 'REJECTED' }
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        }
-    };
 
     const finalIsLoading = isLoading || isUserLoading || isProfileLoading;
 
@@ -312,28 +160,21 @@ export default function NotificationsPage() {
 
                     {finalIsLoading && (
                         <div className="space-y-4">
-                            <Skeleton className="h-28 w-full" />
-                            <Skeleton className="h-28 w-full" />
-                            <Skeleton className="h-28 w-full" />
+                            <NotificationCardSkeleton />
+                            <NotificationCardSkeleton />
+                            <NotificationCardSkeleton />
                         </div>
                     )}
 
-                    {!finalIsLoading && isBrand && applicants.length > 0 && campaigns ? (
-                        <div className="space-y-12">
-                            {campaignsWithApps.map(campaign => (
-                                <CampaignApplicationsGroup
-                                    key={campaign.id}
-                                    campaign={campaign}
-                                    applications={applicants.filter(a => a.campaignId === campaign.id)}
-                                    onSelectCreator={handleSelectCreator}
-                                    onStartDiscussion={handleStartDiscussion}
-                                    onDecline={handleDecline}
-                                />
+                    {!finalIsLoading && isBrand && notifications.length > 0 ? (
+                        <div className="space-y-4">
+                            {notifications.map(notification => (
+                                <NewApplicationCard key={notification.id} notification={notification} />
                             ))}
                         </div>
                     ) : null}
 
-                     {!finalIsLoading && (!isBrand || applicants.length === 0) && (
+                     {!finalIsLoading && (!isBrand || notifications.length === 0) && (
                         <div className="text-center py-24 border-2 border-dashed rounded-lg bg-muted/30">
                              <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
                                 <Bell className="h-8 w-8 text-black" />
@@ -352,11 +193,6 @@ export default function NotificationsPage() {
                     )}
                  </div>
             </main>
-             <CreatorProfileSheet 
-                creatorId={selectedCreatorId} 
-                open={isSheetOpen} 
-                onOpenChange={setIsSheetOpen} 
-            />
         </div>
     );
 }
