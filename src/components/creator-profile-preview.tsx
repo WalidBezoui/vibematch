@@ -52,7 +52,7 @@ const TrustScoreGauge = ({ score }: { score: number }) => {
 
 
 const CreatorProfileSkeleton = () => (
-  <div className="p-8 space-y-8">
+  <div className="p-4 md:p-6 lg:p-8 space-y-8">
     <div className="space-y-6">
       <div className="flex items-center gap-6">
         <Skeleton className="w-24 h-24 rounded-full" />
@@ -107,7 +107,7 @@ export default function CreatorProfilePreview({ creatorId }: { creatorId: string
   }
   
   return (
-    <div className="p-6 lg:p-8 bg-muted/30">
+    <div className="p-4 md:p-6 lg:p-8 bg-muted/30">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             <div className="lg:col-span-1 space-y-6">
                 <Card>
@@ -116,7 +116,7 @@ export default function CreatorProfilePreview({ creatorId }: { creatorId: string
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center text-black">
+                            <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-black">
                                 <Award className="h-6 w-6" />
                             </div>
                             <div>
@@ -125,7 +125,7 @@ export default function CreatorProfilePreview({ creatorId }: { creatorId: string
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center text-black">
+                            <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-black">
                                 <CalendarDays className="h-6 w-6" />
                             </div>
                             <div>
