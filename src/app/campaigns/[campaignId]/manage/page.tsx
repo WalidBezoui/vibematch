@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -32,6 +32,7 @@ import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/context/language-context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CreatorProfileSheet from '@/components/creator-profile-sheet';
 
 
 type Applicant = {
@@ -97,6 +98,8 @@ export default function ManageApplicationsPage() {
     const { user, isUserLoading } = useUser();
     const { toast } = useToast();
     const { t } = useLanguage();
+    const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
 
     const campaignRef = useMemoFirebase(() => firestore ? doc(firestore, 'campaigns', campaignId as string) : null, [firestore, campaignId]);
     const { data: campaign, isLoading: isCampaignLoading, mutate: mutateCampaign } = useDoc(campaignRef);
@@ -104,7 +107,15 @@ export default function ManageApplicationsPage() {
     const applicationsQuery = useMemoFirebase(() => firestore ? query(collection(firestore, 'campaigns', campaignId as string, 'applications')) : null, [firestore, campaignId]);
     const { data: applications, isLoading: areApplicationsLoading, mutate: mutateApplications } = useCollection(applicationsQuery);
 
+    const conversationsQuery = useMemoFirebase(() => firestore ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId)) : null, [firestore, campaignId]);
+    const { data: conversations, isLoading: areConversationsLoading } = useCollection(conversationsQuery);
+
     const [applicants, setApplicants] = useState<Applicant[]>([]);
+    
+    const handleViewProfile = (creatorId: string) => {
+        setSelectedCreatorId(creatorId);
+        setIsSheetOpen(true);
+    };
 
     useEffect(() => {
         if (applications && firestore) {
@@ -235,7 +246,7 @@ export default function ManageApplicationsPage() {
         }
     };
     
-    const isLoading = isUserLoading || isCampaignLoading || areApplicationsLoading || (applications && applicants.length !== applications.length);
+    const isLoading = isUserLoading || isCampaignLoading || areApplicationsLoading || (applications && applicants.length !== applications.length) || areConversationsLoading;
 
     if (isLoading) {
         return (
@@ -273,11 +284,23 @@ export default function ManageApplicationsPage() {
     
     const canHireMore = (campaign.creatorIds?.length || 0) < campaign.numberOfCreators;
 
-    const renderApplicantCard = (applicant: Applicant) => {
-        const isBidHigher = campaign?.budget && applicant.bidAmount > campaign.budget;
+    const findConversationId = (applicantId: string) => {
+        const convo = conversations?.find(c => c.application_id === applicantId);
+        return convo ? convo.id : null;
+    }
+
+    const renderApplicantCard = (applicant: Applicant, type: 'hired' | 'discussion') => {
         const creatorName = applicant.profile?.displayName || applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
-        const badgeClass = campaign.creatorIds?.includes(applicant.creatorId) ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800';
-        const badgeText = campaign.creatorIds?.includes(applicant.creatorId) ? 'Hired' : 'In Discussion';
+        
+        let badgeClass = 'bg-blue-100 text-blue-800';
+        let badgeText = 'In Discussion';
+        
+        if (type === 'hired') {
+            badgeClass = 'bg-green-100 text-green-800';
+            badgeText = 'Hired';
+        }
+
+        const conversationId = findConversationId(applicant.id);
 
         return (
             <Card key={applicant.id} className="flex flex-col">
@@ -306,11 +329,16 @@ export default function ManageApplicationsPage() {
                     </div>
                 </CardContent>
                 <CardFooter className="flex-col items-stretch gap-2 bg-muted/50 p-4 border-t">
-                     <Button asChild variant="outline" className="w-full">
-                        <Link href={`/creators/${applicant.creatorId}`}>
-                            <User className="mr-2 h-4 w-4" />
-                            {t('manageApplicationsPage.viewProfileButton')}
-                        </Link>
+                    {type === 'discussion' && conversationId && (
+                         <Button asChild className="w-full">
+                            <Link href={`/chat/${conversationId}`}>
+                                Open Chat <ArrowRight className="h-4 w-4 ml-2" />
+                            </Link>
+                         </Button>
+                    )}
+                     <Button variant="outline" className="w-full" onClick={() => handleViewProfile(applicant.creatorId)}>
+                        <User className="mr-2 h-4 w-4" />
+                        {t('manageApplicationsPage.viewProfileButton')}
                     </Button>
                 </CardFooter>
             </Card>
@@ -429,7 +457,7 @@ export default function ManageApplicationsPage() {
                       <TabsContent value="discussion" className="mt-6">
                          {negotiatingApplicants.length > 0 ? (
                             <div className="grid md:grid-cols-2 gap-6">
-                                {negotiatingApplicants.map(renderApplicantCard)}
+                                {negotiatingApplicants.map(app => renderApplicantCard(app, 'discussion'))}
                             </div>
                         ) : (
                              <div className="text-center py-20 border-2 border-dashed rounded-lg">
@@ -441,7 +469,7 @@ export default function ManageApplicationsPage() {
                       <TabsContent value="hired" className="mt-6">
                          {hiredCreators.length > 0 ? (
                              <div className="grid md:grid-cols-2 gap-6">
-                                {hiredCreators.map(renderApplicantCard)}
+                                {hiredCreators.map(app => renderApplicantCard(app, 'hired'))}
                             </div>
                         ) : (
                              <div className="text-center py-20 border-2 border-dashed rounded-lg">
@@ -461,8 +489,11 @@ export default function ManageApplicationsPage() {
                     </div>
                 )}
             </main>
+             <CreatorProfileSheet 
+                creatorId={selectedCreatorId}
+                open={isSheetOpen}
+                onOpenChange={setIsSheetOpen}
+            />
         </>
     )
 }
-
-    
