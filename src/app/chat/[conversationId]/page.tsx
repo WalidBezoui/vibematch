@@ -535,14 +535,12 @@ export default function SingleChatPage() {
         
         const batch = writeBatch(firestore);
     
-        // Supersede the last pending offer, if any
         const lastOffer = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
         if (lastOffer) {
             const lastOfferRef = doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id);
             batch.update(lastOfferRef, { 'metadata.offer_status': 'SUPERSEDED' });
         }
     
-        // Create the new offer message
         const newOfferMessageRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
         const newOfferData = {
             conversation_id: conversationId,
@@ -557,7 +555,6 @@ export default function SingleChatPage() {
         };
         batch.set(newOfferMessageRef, newOfferData);
     
-        // Update the parent conversation
         const conversationUpdateData = {
             last_offer_by: user.uid,
             lastMessage: `New offer: ${amount}`,

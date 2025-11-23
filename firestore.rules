@@ -80,7 +80,7 @@ service cloud.firestore {
       // Allow creation if the user is either the creator or the brand in the new document.
       allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
       
-      // Separate get and list rules to prevent conflicts
+      // Allow read access if the user is a participant.
       allow get: if request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id;
       allow list: if request.auth != null && 
                    (request.query.where.find(constraint => constraint[0] == 'brand_id' && constraint[2] == request.auth.uid) != null ||
