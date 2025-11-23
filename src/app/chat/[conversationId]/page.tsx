@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
+import { errorEmitter, FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 
 const GuardianBot = {
   isSecure: (text: string): boolean => {
@@ -534,17 +535,19 @@ export default function SingleChatPage() {
      
     const handleMakeOffer = async (amount: number, message: string) => {
         if (!firestore || !user || !userProfile || !conversationRef) return;
-        
+    
         const batch = writeBatch(firestore);
-
+    
+        // 1. Supersede previous pending offer
         const lastOffer = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
-        if(lastOffer) {
+        if (lastOffer) {
             const lastOfferRef = doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id);
             batch.update(lastOfferRef, { 'metadata.offer_status': 'SUPERSEDED' });
         }
-
+    
+        // 2. Create the new offer message
         const newMessageRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
-        batch.set(newMessageRef, {
+        const newOfferData = {
             conversation_id: conversationId,
             sender_id: user.uid,
             sender_name: userProfile.name,
@@ -555,16 +558,33 @@ export default function SingleChatPage() {
                 offer_status: 'PENDING',
             },
             timestamp: serverTimestamp(),
-        });
-
-        batch.update(conversationRef, { 
+        };
+        batch.set(newMessageRef, newOfferData);
+    
+        // 3. Update the conversation document
+        const conversationUpdateData = {
             agreed_budget: amount,
             last_offer_by: user.uid,
             lastMessage: `New offer: ${amount} MAD`,
             updatedAt: serverTimestamp(),
-        });
+        };
+        batch.update(conversationRef, conversationUpdateData);
         
-        await batch.commit();
+        batch.commit().catch(async (serverError) => {
+            const permissionError = new FirestorePermissionError({
+                path: `BATCH_WRITE`,
+                operation: 'write',
+                requestResourceData: {
+                    description: "Batch write for making a new offer in a conversation.",
+                    operations: [
+                        lastOffer ? { path: doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id).path, data: { 'metadata.offer_status': 'SUPERSEDED' } } : "No previous offer to update.",
+                        { path: newMessageRef.path, data: newOfferData },
+                        { path: conversationRef.path, data: conversationUpdateData }
+                    ]
+                },
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
     };
 
     const handleSendMessage = async (text: string) => {
@@ -622,16 +642,22 @@ export default function SingleChatPage() {
 
     const handleDecline = async () => {
         if (!firestore || !user || !conversationRef) return;
-        try {
-            await updateDoc(conversationRef, {
-                status: 'CANCELLED',
-                lastMessage: 'The negotiation was cancelled.',
-                updatedAt: serverTimestamp(),
+        
+        const updateData = {
+            status: 'CANCELLED',
+            lastMessage: 'The negotiation was cancelled.',
+            updatedAt: serverTimestamp(),
+        };
+
+        updateDoc(conversationRef, updateData).catch(async (serverError) => {
+            const permissionError = new FirestorePermissionError({
+                path: conversationRef.path,
+                operation: 'update',
+                requestResourceData: updateData,
             });
-            toast({ variant: 'destructive', title: 'Negotiation Cancelled' });
-        } catch (error: any) {
-            toast({ variant: 'destructive', title: 'Error', description: 'Could not cancel the negotiation.' });
-        }
+            errorEmitter.emit('permission-error', permissionError);
+        });
+        toast({ variant: 'destructive', title: 'Negotiation Cancelled' });
     };
 
     const isChatActive = conversation.status === 'ACTIVE' && campaign?.status !== 'PENDING_PAYMENT';
