@@ -84,8 +84,16 @@ service cloud.firestore {
                    (request.query.where.find(constraint => constraint[0] == 'brand_id' && constraint[2] == request.auth.uid) != null ||
                     request.query.where.find(constraint => constraint[0] == 'creator_id' && constraint[2] == request.auth.uid) != null);
       
-      // WRITE (Create & Update):
-      allow write: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
+      // CREATE: Allow a user to create a conversation if they are a participant.
+      allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
+      
+      // UPDATE: Allow a participant to update, but not change the core IDs.
+      allow update: if (request.auth.uid == resource.data.creator_id || request.auth.uid == resource.data.brand_id) &&
+                    request.resource.data.brand_id == resource.data.brand_id &&
+                    request.resource.data.creator_id == resource.data.creator_id &&
+                    request.resource.data.campaign_id == resource.data.campaign_id &&
+                    request.resource.data.application_id == resource.data.application_id;
+
 
       match /messages/{messageId} {
         // Allow creation if the sender is part of the parent conversation.
