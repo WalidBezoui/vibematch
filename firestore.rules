@@ -81,16 +81,14 @@ service cloud.firestore {
       allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
       
       // Only brand or creator involved can read the conversation status.
-      allow get: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
+      allow get: if request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id;
 
       // Allow participants to update fields relevant to negotiation and chat status, but NOT core IDs.
-      allow update: if request.auth != null && 
-                     (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) &&
+      allow update: if (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) &&
                      !('campaign_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
                      !('application_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
                      !('brand_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
                      !('creator_id' in request.resource.data.diff(resource.data).affectedKeys());
-
 
       // Secure list operation: A user can only list conversations where they are the brand or the creator.
       allow list: if request.auth != null && 
