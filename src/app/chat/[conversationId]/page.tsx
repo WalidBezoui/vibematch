@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
-import { errorEmitter, FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
+import { errorEmitter, FirestorePermissionError, type SecurityRuleContext } from '@/firebase';
 
 const GuardianBot = {
   isSecure: (text: string): boolean => {
@@ -332,7 +332,6 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
 };
 
 const ActionFooter = ({ conversation, onMakeOffer, onDecline, messages }: { conversation: any, onMakeOffer: (amount: number, message: string) => void, onDecline: () => void, messages: any[] }) => {
-    const { userProfile } = useUserProfile();
     const { user } = useUser();
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
@@ -363,7 +362,6 @@ const ActionFooter = ({ conversation, onMakeOffer, onDecline, messages }: { conv
 
     const lastOfferMessage = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
     const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : conversation.agreed_budget;
-    const isInitialOffer = !lastOfferMessage;
 
     return (
         <div className="p-4 bg-background border-t space-y-4">
@@ -686,7 +684,7 @@ export default function SingleChatPage() {
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     {isInNegotiation ? (
-                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} onDecline={handleDecline} messages={messages || []}/>
+                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} onDecline={handleDecline} messages={messages || []} />
                     ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}
