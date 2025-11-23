@@ -10,7 +10,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, ArrowRight, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, Trash2 } from 'lucide-react';
+import { Compass, Hourglass, Activity, ArrowRight, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, Trash2, MessageSquare } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
@@ -190,6 +190,7 @@ export default function CreatorDashboard() {
   const { toast } = useToast();
 
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
+  const [inDiscussionCampaigns, setInDiscussionCampaigns] = useState<any[]>([]);
   const [matchingJobsCount, setMatchingJobsCount] = useState(0);
   const [profileViews, setProfileViews] = useState(0);
   const [isLoadingPending, setIsLoadingPending] = useState(true);
@@ -234,8 +235,11 @@ export default function CreatorDashboard() {
         const fetchPendingAndMatching = async () => {
             try {
                 const allOpenCampaignsQuery = query(collection(firestore, 'campaigns'), where('status', '==', 'OPEN_FOR_APPLICATIONS'));
+                
+                const appQuery = query(collectionGroup(firestore, 'applications'), where('creatorId', '==', user.uid));
+                
                 const [appsSnapshot, openCampaignsSnapshot] = await Promise.all([
-                    getDocs(query(collectionGroup(firestore, 'applications'), where('creatorId', '==', user.uid))),
+                    getDocs(appQuery),
                     getDocs(allOpenCampaignsQuery)
                 ]);
                 
@@ -247,9 +251,20 @@ export default function CreatorDashboard() {
 
                 const openCampaignsData = openCampaignsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                const conversationCampaignIds = conversations.map(c => c.campaign_id);
+                const negotiationConvos = conversations.filter(c => c.status === 'NEGOTIATION');
+                const negotiationCampaignIds = negotiationConvos.map(c => c.campaign_id);
                 
-                const pendingData = openCampaignsData.filter(c => appMap.has(c.id) && !conversationCampaignIds.includes(c.id));
+                // Get full campaign data for negotiations
+                if (negotiationCampaignIds.length > 0) {
+                     const negotiationCampaignsQuery = query(collection(firestore, 'campaigns'), where(documentId(), 'in', negotiationCampaignIds));
+                     const negotiationCampaignsSnapshot = await getDocs(negotiationCampaignsQuery);
+                     const discussionData = negotiationCampaignsSnapshot.docs.map(d => ({...d.data(), id: d.id, conversationId: negotiationConvos.find(c => c.campaign_id === d.id)?.id }));
+                     setInDiscussionCampaigns(discussionData);
+                } else {
+                    setInDiscussionCampaigns([]);
+                }
+                
+                const pendingData = openCampaignsData.filter(c => appMap.has(c.id) && !negotiationCampaignIds.includes(c.id));
                 setPendingCampaigns(pendingData);
                 
                 // Calculate matching jobs
@@ -271,6 +286,7 @@ export default function CreatorDashboard() {
             } catch (error) {
                 console.error("Error fetching creator data:", error);
                 setPendingCampaigns([]);
+                setInDiscussionCampaigns([]);
                 setMatchingJobsCount(0);
             } finally {
                 setIsLoadingPending(false);
@@ -341,12 +357,13 @@ export default function CreatorDashboard() {
             <StatCard isLoading={isLoading} title="Profile Views (7d)" value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={`${Math.floor(profileViews/3)} brands saw your profile today.`} />
         </div>
 
-      <Tabs defaultValue="campaigns">
-        <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-2">
-            <TabsTrigger value="campaigns">Campaigns <Badge variant="secondary" className="ml-2">{activeCampaigns?.length || 0}</Badge></TabsTrigger>
-            <TabsTrigger value="pending">Pending Applications <Badge variant="secondary" className="ml-2">{pendingCampaigns?.length || 0}</Badge></TabsTrigger>
+      <Tabs defaultValue="active">
+        <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-3">
+            <TabsTrigger value="active">Active <Badge variant="secondary" className="ml-2">{activeCampaigns?.length || 0}</Badge></TabsTrigger>
+            <TabsTrigger value="discussion">In Discussion <Badge variant="secondary" className="ml-2">{inDiscussionCampaigns?.length || 0}</Badge></TabsTrigger>
+            <TabsTrigger value="pending">Pending <Badge variant="secondary" className="ml-2">{pendingCampaigns?.length || 0}</Badge></TabsTrigger>
         </TabsList>
-        <TabsContent value="campaigns">
+        <TabsContent value="active">
             {isLoadingActive ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
                     <CampaignCardSkeleton />
@@ -398,6 +415,50 @@ export default function CreatorDashboard() {
                     buttonText="Find Your First Campaign"
                     buttonLink="/discover"
                     icon={Activity}
+                />
+            )}
+        </TabsContent>
+        <TabsContent value="discussion">
+             {isLoadingPending ? (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+                    <CampaignCardSkeleton />
+                </div>
+            ) : inDiscussionCampaigns && inDiscussionCampaigns.length > 0 ? (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+                {inDiscussionCampaigns.map((campaign) => (
+                        <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card border-primary/30">
+                            <CardHeader>
+                                <div className="flex justify-between items-start gap-2">
+                                    <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
+                                    <Badge variant="secondary" className="border-blue-200 bg-blue-100 text-blue-800">
+                                        <MessageSquare className="mr-1 h-3 w-3" />
+                                        In Discussion
+                                    </Badge>
+                                </div>
+                                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
+                            </CardHeader>
+                            <CardContent className="flex-grow">
+                                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
+                            </CardContent>
+                            <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
+                                <Button asChild className="w-full">
+                                  <Link href={`/chat/${campaign.conversationId}`}>
+                                    Open Chat
+                                    <ArrowRight className="ml-2 h-4 w-4" />
+                                  </Link>
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    )
+                  )}
+                </div>
+            ) : (
+                <EmptyState 
+                    title="No negotiations in progress"
+                    description="When a brand is interested in your application, you can negotiate terms here."
+                    buttonText="Discover More Campaigns"
+                    buttonLink="/discover"
+                    icon={MessageSquare}
                 />
             )}
         </TabsContent>
