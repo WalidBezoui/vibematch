@@ -330,56 +330,6 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-const ActionFooter = ({ onMakeOffer, onDecline, onRespondToOffer }: { onMakeOffer: (amount: number, message: string) => void, onDecline: () => void, onRespondToOffer: (message: any, response: 'ACCEPTED' | 'REJECTED') => void }) => {
-    const [newOffer, setNewOffer] = useState('');
-    const [message, setMessage] = useState('');
-    
-    const handleSubmitOffer = () => {
-        if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
-            alert("Please enter a valid amount.");
-            return;
-        }
-        onMakeOffer(parseFloat(newOffer), message || "Here is my new proposal for this campaign.");
-        setNewOffer('');
-        setMessage('');
-    }
-
-    const handleAcceptRate = async () => {
-        // This button now correctly calls onRespondToOffer
-        // We pass a dummy message object because the main logic will fetch the real last offer
-        onRespondToOffer({}, 'ACCEPTED');
-    };
-
-
-    return (
-        <div className="p-4 bg-background border-t space-y-4">
-            <div className="flex flex-col sm:flex-row gap-2">
-                <Button className="flex-1" onClick={handleAcceptRate}>
-                    <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate
-                </Button>
-                <Popover>
-                    <PopoverTrigger asChild><Button variant="outline" className="flex-1">Propose New Rate</Button></PopoverTrigger>
-                    <PopoverContent className="w-80">
-                        <div className="grid gap-4">
-                            <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
-                            <div className="grid gap-2">
-                                    <Label htmlFor="budget">Amount (MAD)</Label>
-                                    <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                    <Label htmlFor="message">Message (optional)</Label>
-                                    <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
-                                    <Button onClick={handleSubmitOffer}>Send Offer</Button>
-                            </div>
-                        </div>
-                    </PopoverContent>
-                </Popover>
-                <Button variant="destructive" className="flex-1" onClick={onDecline}>
-                    <XCircle className="mr-2 h-4 w-4" /> Decline
-                </Button>
-            </div>
-        </div>
-    );
-}
-
 const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string) => void, disabled: boolean, placeholder: string }) => {
     const [input, setInput] = useState('');
     const [isBlocked, setIsBlocked] = useState(false);
@@ -519,58 +469,6 @@ export default function SingleChatPage() {
          )
      }
      
-    const handleMakeOffer = async (amount: number, message: string) => {
-        if (!firestore || !user || !userProfile || !conversationRef) return;
-        
-        const batch = writeBatch(firestore);
-
-        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
-        const lastOfferQuery = query(messagesRef, where('type', '==', 'SYSTEM_OFFER'), where('metadata.offer_status', '==', 'PENDING'), orderBy('timestamp', 'desc'));
-        
-        const querySnapshot = await getDocs(lastOfferQuery);
-        if (!querySnapshot.empty) {
-            const lastOfferDoc = querySnapshot.docs[0];
-            batch.update(lastOfferDoc.ref, { 'metadata.offer_status': 'SUPERSEDED' });
-        }
-    
-        const newOfferMessageRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
-        const newOfferData = {
-            conversation_id: conversationId,
-            sender_id: user.uid,
-            type: 'SYSTEM_OFFER' as const,
-            content: message,
-            metadata: {
-                offer_amount: amount,
-                offer_status: 'PENDING' as const,
-            },
-            timestamp: serverTimestamp(),
-        };
-        batch.set(newOfferMessageRef, newOfferData);
-    
-        const conversationUpdateData = {
-            last_offer_by: user.uid,
-            lastMessage: `New offer: ${amount}`,
-            updatedAt: serverTimestamp(),
-        };
-        batch.update(conversationRef, conversationUpdateData);
-        
-        batch.commit().catch(async (serverError) => {
-            const permissionError = new FirestorePermissionError({
-                path: `BATCH_WRITE`,
-                operation: 'write',
-                requestResourceData: {
-                    description: "Batch write for making a new offer in a conversation.",
-                    operations: [
-                        querySnapshot.empty ? "No previous offer to update." : { path: querySnapshot.docs[0].ref.path, data: { 'metadata.offer_status': 'SUPERSEDED' } },
-                        { path: newOfferMessageRef.path, data: newOfferData },
-                        { path: conversationRef.path, data: conversationUpdateData }
-                    ]
-                },
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        });
-    };
-
     const handleSendMessage = async (text: string) => {
         if (!firestore || !user || isSubmitting) return;
         
@@ -650,41 +548,16 @@ export default function SingleChatPage() {
         await batch.commit();
     };
 
-    const handleDecline = async () => {
-        if (!firestore || !user || !conversationRef) return;
-        
-        const updateData = {
-            status: 'CANCELLED' as const,
-            lastMessage: 'The negotiation was cancelled.',
-            updatedAt: serverTimestamp(),
-        };
-
-        const batch = writeBatch(firestore);
-        batch.update(conversationRef, updateData);
-
-        batch.commit().catch(async (serverError) => {
-            const permissionError = new FirestorePermissionError({
-                path: conversationRef.path,
-                operation: 'update',
-                requestResourceData: updateData,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        });
-        toast({ variant: 'destructive', title: 'Negotiation Cancelled' });
-    };
-
     const isChatActive = conversation.status === 'ACTIVE' && campaign?.status !== 'PENDING_PAYMENT';
     const isInNegotiation = conversation.status === 'NEGOTIATION';
     const textInputDisabled = !isChatActive && !isInNegotiation;
     
-    let placeholder = "Choose an action below to respond.";
-    if (isChatActive) {
-      placeholder = "Discuss creative details...";
-    } else if (conversation.status !== 'NEGOTIATION') {
-      placeholder = "This conversation is not active.";
+    let placeholder = "Send a message...";
+    if (conversation.status !== 'NEGOTIATION' && conversation.status !== 'ACTIVE') {
+      placeholder = "This conversation is archived.";
+    } else if (isInNegotiation) {
+        placeholder = "Discuss the terms or send a new offer via text..."
     }
-
-    const isMyTurn = conversation.last_offer_by !== user?.uid;
 
 
     return (
@@ -700,11 +573,7 @@ export default function SingleChatPage() {
                         otherUser={otherUser}
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
-                    {isInNegotiation && isMyTurn ? (
-                       <ActionFooter onMakeOffer={handleMakeOffer} onDecline={handleDecline} onRespondToOffer={handleRespondToOffer} />
-                    ) : (
-                       <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
-                    )}
+                    <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                 </main>
             </div>
             <CreatorProfileSheet 
