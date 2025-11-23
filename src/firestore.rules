@@ -85,17 +85,17 @@ service cloud.firestore {
                     request.query.where.find(constraint => constraint[0] == 'creator_id' && constraint[2] == request.auth.uid) != null);
       
       // WRITE (Create & Update):
-      // On create, ensure the creator is the one making it. On update, ensure it's a participant.
-      allow write: if (request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id) &&
-                    // On update, prevent critical IDs from being changed
-                    (request.method == 'create' || 
-                     (request.method == 'update' &&
-                      !('campaign_id' in request.resource.data) &&
-                      !('application_id' in request.resource.data) &&
-                      !('brand_id' in request.resource.data) &&
-                      !('creator_id' in request.resource.data)
-                     )
-                    );
+      allow write: if 
+        // On create, ensure the creator/brand is creating it for themselves
+        (request.method == 'create' && (request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id)) ||
+        // On update, ensure the user is a participant and prevent critical IDs from being changed
+        (request.method == 'update' && 
+          (request.auth.uid == resource.data.creator_id || request.auth.uid == resource.data.brand_id) &&
+          !('campaign_id' in request.resource.data) &&
+          !('application_id' in request.resource.data) &&
+          !('brand_id' in request.resource.data) &&
+          !('creator_id' in request.resource.data)
+        );
 
       match /messages/{messageId} {
         // Allow creation if the sender is part of the parent conversation.

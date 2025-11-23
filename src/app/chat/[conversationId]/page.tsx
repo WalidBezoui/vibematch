@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
-import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch } from 'firebase/firestore';
+import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch, getDocs, where } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format, formatDistanceToNow } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -330,24 +330,12 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-const ActionFooter = ({ conversation, onMakeOffer, onDecline, messages }: { conversation: any, onMakeOffer: (amount: number, message: string) => void, onDecline: () => void, messages: any[] }) => {
+const ActionFooter = ({ onMakeOffer, onDecline }: { onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
+    const { conversationId } = useParams();
+    const firestore = useFirestore();
     const { user } = useUser();
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
-    
-    if (conversation.status !== 'NEGOTIATION') {
-        return null;
-    }
-
-    const isMyTurn = conversation.last_offer_by !== user?.uid;
-
-    if (!isMyTurn) {
-        return (
-            <div className="p-4 bg-background border-t text-center text-sm text-muted-foreground">
-                Waiting for the other party's response...
-            </div>
-        )
-    }
     
     const handleSubmitOffer = () => {
         if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
@@ -359,14 +347,34 @@ const ActionFooter = ({ conversation, onMakeOffer, onDecline, messages }: { conv
         setMessage('');
     }
 
-    const lastOfferMessage = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
-    const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : conversation.agreed_budget;
+    const handleAcceptRate = async () => {
+        if (!firestore || !conversationId) return;
+
+        const conversationRef = doc(firestore, 'conversations', conversationId as string);
+        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
+        const q = query(messagesRef, where('type', '==', 'SYSTEM_OFFER'), where('metadata.offer_status', '==', 'PENDING'), orderBy('timestamp', 'desc'));
+        
+        const querySnapshot = await getDocs(q);
+        const lastOfferMessage = querySnapshot.docs.length > 0 ? querySnapshot.docs[0].data() : null;
+        
+        const conversationSnap = await getDoc(conversationRef);
+        const currentConversation = conversationSnap.data();
+
+        const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : currentConversation?.agreed_budget;
+
+        if (offerToRespondTo) {
+            onMakeOffer(offerToRespondTo, "I accept your rate.");
+        } else {
+            console.error("Could not determine rate to accept.");
+        }
+    };
+
 
     return (
         <div className="p-4 bg-background border-t space-y-4">
             <div className="flex flex-col sm:flex-row gap-2">
-                <Button className="flex-1" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
-                    <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate ({offerToRespondTo} MAD)
+                <Button className="flex-1" onClick={handleAcceptRate}>
+                    <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate
                 </Button>
                 <Popover>
                     <PopoverTrigger asChild><Button variant="outline" className="flex-1">Propose New Rate</Button></PopoverTrigger>
@@ -534,11 +542,14 @@ export default function SingleChatPage() {
         if (!firestore || !user || !userProfile || !conversationRef) return;
         
         const batch = writeBatch(firestore);
-    
-        const lastOffer = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
-        if (lastOffer) {
-            const lastOfferRef = doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id);
-            batch.update(lastOfferRef, { 'metadata.offer_status': 'SUPERSEDED' });
+
+        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
+        const lastOfferQuery = query(messagesRef, where('type', '==', 'SYSTEM_OFFER'), where('metadata.offer_status', '==', 'PENDING'), orderBy('timestamp', 'desc'));
+        
+        const querySnapshot = await getDocs(lastOfferQuery);
+        if (!querySnapshot.empty) {
+            const lastOfferDoc = querySnapshot.docs[0];
+            batch.update(lastOfferDoc.ref, { 'metadata.offer_status': 'SUPERSEDED' });
         }
     
         const newOfferMessageRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
@@ -569,7 +580,7 @@ export default function SingleChatPage() {
                 requestResourceData: {
                     description: "Batch write for making a new offer in a conversation.",
                     operations: [
-                        lastOffer ? { path: doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id).path, data: { 'metadata.offer_status': 'SUPERSEDED' } } : "No previous offer to update.",
+                        querySnapshot.empty ? "No previous offer to update." : { path: querySnapshot.docs[0].ref.path, data: { 'metadata.offer_status': 'SUPERSEDED' } },
                         { path: newOfferMessageRef.path, data: newOfferData },
                         { path: conversationRef.path, data: conversationUpdateData }
                     ]
@@ -682,6 +693,8 @@ export default function SingleChatPage() {
       placeholder = "This conversation is not active.";
     }
 
+    const isMyTurn = conversation.last_offer_by !== user?.uid;
+
 
     return (
         <div className="h-screen w-full flex flex-col">
@@ -696,8 +709,8 @@ export default function SingleChatPage() {
                         otherUser={otherUser}
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
-                    {isInNegotiation && conversation.last_offer_by !== user?.uid ? (
-                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} onDecline={handleDecline} messages={messages || []} />
+                    {isInNegotiation && isMyTurn ? (
+                       <ActionFooter onMakeOffer={handleMakeOffer} onDecline={handleDecline} />
                     ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}
