@@ -330,7 +330,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-const ActionFooter = ({ conversation, onMakeOffer, onDecline }: { conversation: any, onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
+const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
     const { userProfile } = useUserProfile();
     const { user } = useUser();
     const [newOffer, setNewOffer] = useState('');
@@ -660,7 +660,7 @@ export default function SingleChatPage() {
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     {isInNegotiation ? (
-                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} onDecline={handleDecline} />
+                       <ActionFooter conversation={conversation} messages={messages || []} onMakeOffer={handleMakeOffer} onDecline={handleDecline} />
                     ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}
@@ -674,3 +674,4 @@ export default function SingleChatPage() {
         </div>
     );
 }
+
