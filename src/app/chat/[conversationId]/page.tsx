@@ -362,7 +362,6 @@ const ActionFooter = ({ conversation, onMakeOffer, onDecline, messages }: { conv
 
     const lastOfferMessage = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
     const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : conversation.agreed_budget;
-    const isInitialOffer = !lastOfferMessage;
 
     return (
         <div className="p-4 bg-background border-t space-y-4">
@@ -545,20 +544,20 @@ export default function SingleChatPage() {
         }
     
         // 2. Create the new offer message
-        const newMessageRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
+        const newOfferMessageRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
         const newOfferData = {
             conversation_id: conversationId,
             sender_id: user.uid,
             sender_name: userProfile.name,
-            type: 'SYSTEM_OFFER',
+            type: 'SYSTEM_OFFER' as const,
             content: message,
             metadata: {
                 offer_amount: amount,
-                offer_status: 'PENDING',
+                offer_status: 'PENDING' as const,
             },
             timestamp: serverTimestamp(),
         };
-        batch.set(newMessageRef, newOfferData);
+        batch.set(newOfferMessageRef, newOfferData);
     
         // 3. Update the conversation document
         const conversationUpdateData = {
@@ -577,7 +576,7 @@ export default function SingleChatPage() {
                     description: "Batch write for making a new offer in a conversation.",
                     operations: [
                         lastOffer ? { path: doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id).path, data: { 'metadata.offer_status': 'SUPERSEDED' } } : "No previous offer to update.",
-                        { path: newMessageRef.path, data: newOfferData },
+                        { path: newOfferMessageRef.path, data: newOfferData },
                         { path: conversationRef.path, data: conversationUpdateData }
                     ]
                 },
@@ -591,23 +590,42 @@ export default function SingleChatPage() {
         
         setIsSubmitting(true);
         const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
-        try {
-            await addDoc(messagesRef, {
-                conversation_id: conversationId,
-                sender_id: user.uid,
-                type: 'TEXT',
-                content: text,
-                timestamp: serverTimestamp(),
-            });
-             await updateDoc(conversationRef!, { 
-                lastMessage: text,
-                updatedAt: serverTimestamp(),
-             });
-        } catch (error: any) {
-            toast({ variant: 'destructive', title: 'Error sending message', description: error.message });
-        } finally {
-            setIsSubmitting(false);
-        }
+        const messageData = {
+            conversation_id: conversationId,
+            sender_id: user.uid,
+            type: 'TEXT' as const,
+            content: text,
+            timestamp: serverTimestamp(),
+        };
+        // Non-blocking write for the message
+        addDoc(messagesRef, messageData).catch((error) => {
+            errorEmitter.emit(
+                'permission-error',
+                new FirestorePermissionError({
+                    path: messagesRef.path,
+                    operation: 'create',
+                    requestResourceData: messageData
+                })
+            );
+        });
+        
+        const conversationUpdate = { 
+            lastMessage: text,
+            updatedAt: serverTimestamp(),
+        };
+        // Non-blocking update for the conversation
+        updateDoc(conversationRef!, conversationUpdate).catch((error) => {
+            errorEmitter.emit(
+                'permission-error',
+                new FirestorePermissionError({
+                    path: conversationRef!.path,
+                    operation: 'update',
+                    requestResourceData: conversationUpdate
+                })
+            );
+        });
+
+        setIsSubmitting(false);
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {

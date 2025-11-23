@@ -84,7 +84,6 @@ service cloud.firestore {
       allow get: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
 
       // Allow participants to update fields relevant to negotiation and chat status, but NOT core IDs.
-      // This approach is more robust than `hasOnly` for complex updates.
       allow update: if request.auth != null && 
                      (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) &&
                      !('campaign_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
