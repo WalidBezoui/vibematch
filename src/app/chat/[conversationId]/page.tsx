@@ -330,7 +330,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-const ActionFooter = ({ conversation, onMakeOffer, onDecline }: { conversation: any, onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
+const ActionFooter = ({ conversation, onMakeOffer, onDecline, messages }: { conversation: any, onMakeOffer: (amount: number, message: string) => void, onDecline: () => void, messages: any[] }) => {
     const { userProfile } = useUserProfile();
     const { user } = useUser();
     const [newOffer, setNewOffer] = useState('');
@@ -636,7 +636,7 @@ export default function SingleChatPage() {
 
     const isChatActive = conversation.status === 'ACTIVE' && campaign?.status !== 'PENDING_PAYMENT';
     const isInNegotiation = conversation.status === 'NEGOTIATION';
-    const textInputDisabled = !isChatActive || isInNegotiation;
+    const textInputDisabled = !isChatActive && !isInNegotiation;
     
     let placeholder = "Choose an action below to respond.";
     if (isChatActive) {
@@ -660,7 +660,7 @@ export default function SingleChatPage() {
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     {isInNegotiation ? (
-                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} onDecline={handleDecline} />
+                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} onDecline={handleDecline} messages={messages || []}/>
                     ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}
