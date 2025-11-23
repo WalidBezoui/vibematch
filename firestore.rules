@@ -80,34 +80,34 @@ service cloud.firestore {
       // Allow creation if the user is either the creator or the brand in the new document.
       allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
       
-      // Only brand or creator involved can read the conversation status.
+      // Separate get and list rules to prevent conflicts
       allow get: if request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id;
-
-      // Allow participants to update fields relevant to negotiation and chat status, but NOT core IDs.
+      allow list: if request.auth != null && 
+                   (request.query.where.find(constraint => constraint[0] == 'brand_id' && constraint[2] == request.auth.uid) != null ||
+                    request.query.where.find(constraint => constraint[0] == 'creator_id' && constraint[2] == request.auth.uid) != null);
+      
+      // Allow participants to update fields relevant to negotiation, but NOT core IDs.
       allow update: if (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) &&
                      !('campaign_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
                      !('application_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
                      !('brand_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
                      !('creator_id' in request.resource.data.diff(resource.data).affectedKeys());
 
-      // Secure list operation: A user can only list conversations where they are the brand or the creator.
-      allow list: if request.auth != null && 
-                   (request.query.where.find(constraint => constraint[0] == 'brand_id' && constraint[2] == request.auth.uid) != null ||
-                    request.query.where.find(constraint => constraint[0] == 'creator_id' && constraint[2] == request.auth.uid) != null);
-
-
       match /messages/{messageId} {
-        // Allow creation if sender is part of conversation
-        allow create: if request.auth.uid == request.resource.data.sender_id && (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid);
+        // Allow creation if sender is part of the parent conversation.
+        allow create: if request.auth.uid == request.resource.data.sender_id &&
+                       (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid ||
+                        get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid);
         
         // Allow a participant to update the offer status of any message in the conversation.
-        // This is necessary for superseding previous offers.
-        allow update: if (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid) 
-                      && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata.offer_status'])
-                      && request.resource.data.type == 'SYSTEM_OFFER';
+        allow update: if (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid ||
+                        get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid) &&
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata.offer_status']) &&
+                       request.resource.data.type == 'SYSTEM_OFFER';
 
         // Only participants can read messages.
-        allow get, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid;
+        allow get, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid ||
+                          get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid;
       }
     }
   }
