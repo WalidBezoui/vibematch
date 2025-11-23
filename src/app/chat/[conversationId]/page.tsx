@@ -533,10 +533,10 @@ export default function SingleChatPage() {
      
     const handleMakeOffer = async (amount: number, message: string) => {
         if (!firestore || !user || !userProfile || !conversationRef) return;
-    
+        
         const batch = writeBatch(firestore);
     
-        // 1. Supersede previous pending offer
+        // 1. Supersede previous pending offer if it exists
         const lastOffer = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
         if (lastOffer) {
             const lastOfferRef = doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id);
@@ -597,35 +597,32 @@ export default function SingleChatPage() {
             content: text,
             timestamp: serverTimestamp(),
         };
-        // Non-blocking write for the message
-        addDoc(messagesRef, messageData).catch((error) => {
-            errorEmitter.emit(
-                'permission-error',
-                new FirestorePermissionError({
-                    path: messagesRef.path,
-                    operation: 'create',
-                    requestResourceData: messageData
-                })
-            );
-        });
-        
+
         const conversationUpdate = { 
             lastMessage: text,
             updatedAt: serverTimestamp(),
         };
-        // Non-blocking update for the conversation
-        updateDoc(conversationRef!, conversationUpdate).catch((error) => {
-            errorEmitter.emit(
-                'permission-error',
-                new FirestorePermissionError({
-                    path: conversationRef!.path,
-                    operation: 'update',
-                    requestResourceData: conversationUpdate
-                })
-            );
-        });
 
-        setIsSubmitting(false);
+        const batch = writeBatch(firestore);
+        batch.set(doc(messagesRef), messageData);
+        batch.update(conversationRef!, conversationUpdate);
+
+        batch.commit().catch(async (serverError) => {
+             const permissionError = new FirestorePermissionError({
+                path: `BATCH_WRITE`,
+                operation: 'write',
+                requestResourceData: {
+                    description: "Batch write for sending a text message.",
+                    operations: [
+                        { path: 'new message', data: messageData },
+                        { path: conversationRef!.path, data: conversationUpdate }
+                    ]
+                },
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        }).finally(() => {
+            setIsSubmitting(false);
+        });
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
@@ -661,12 +658,15 @@ export default function SingleChatPage() {
         if (!firestore || !user || !conversationRef) return;
         
         const updateData = {
-            status: 'CANCELLED',
+            status: 'CANCELLED' as const,
             lastMessage: 'The negotiation was cancelled.',
             updatedAt: serverTimestamp(),
         };
 
-        updateDoc(conversationRef, updateData).catch(async (serverError) => {
+        const batch = writeBatch(firestore);
+        batch.update(conversationRef, updateData);
+
+        batch.commit().catch(async (serverError) => {
             const permissionError = new FirestorePermissionError({
                 path: conversationRef.path,
                 operation: 'update',
