@@ -90,7 +90,7 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                 setIsLoadingCount(true);
                 try {
                     // This query gets ALL applications, not just new ones.
-                    const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'));
+                    const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
                     const snapshot = await getCountFromServer(q);
                     setApplicationCount(snapshot.data().count);
                 } catch (e) {
@@ -216,7 +216,7 @@ export default function BrandDashboard() {
                 if (campaigns.length > 0) {
                      const applicationCounts = await Promise.all(
                         campaigns.map(campaign => 
-                            getCountFromServer(query(collection(firestore, 'campaigns', campaign.id, 'applications')))
+                            getCountFromServer(query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED')))
                         )
                     );
                     totalApplications = applicationCounts.reduce((sum, current) => sum + current.data().count, 0);
