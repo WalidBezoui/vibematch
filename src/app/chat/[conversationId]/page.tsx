@@ -362,6 +362,7 @@ const ActionFooter = ({ conversation, onMakeOffer, onDecline, messages }: { conv
 
     const lastOfferMessage = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
     const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : conversation.agreed_budget;
+    const isInitialOffer = !lastOfferMessage;
 
     return (
         <div className="p-4 bg-background border-t space-y-4">
@@ -563,7 +564,7 @@ export default function SingleChatPage() {
         const conversationUpdateData = {
             agreed_budget: amount,
             last_offer_by: user.uid,
-            lastMessage: `New offer: ${amount} MAD`,
+            lastMessage: `New offer: ${amount}`,
             updatedAt: serverTimestamp(),
         };
         batch.update(conversationRef, conversationUpdateData);
@@ -683,7 +684,7 @@ export default function SingleChatPage() {
                         otherUser={otherUser}
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
-                    {isInNegotiation ? (
+                    {isInNegotiation && conversation.last_offer_by !== user?.uid ? (
                        <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} onDecline={handleDecline} messages={messages || []} />
                     ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />

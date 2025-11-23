@@ -85,11 +85,12 @@ service cloud.firestore {
 
       // Allow participants to update fields relevant to negotiation and chat status.
       // This is a more robust way to handle updates than hasOnly()
-      allow update: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) &&
-                    !('campaign_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
-                    !('application_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
-                    !('brand_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
-                    !('creator_id' in request.resource.data.diff(resource.data).affectedKeys());
+      allow update: if request.auth != null && 
+                     (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) &&
+                     !('campaign_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
+                     !('application_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
+                     !('brand_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
+                     !('creator_id' in request.resource.data.diff(resource.data).affectedKeys());
 
 
       // Secure list operation: A user can only list conversations where they are the brand or the creator.
