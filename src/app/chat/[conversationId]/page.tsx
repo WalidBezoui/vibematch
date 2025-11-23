@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
@@ -536,14 +535,12 @@ export default function SingleChatPage() {
         
         const batch = writeBatch(firestore);
     
-        // 1. Supersede previous pending offer if it exists
         const lastOffer = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
         if (lastOffer) {
             const lastOfferRef = doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id);
             batch.update(lastOfferRef, { 'metadata.offer_status': 'SUPERSEDED' });
         }
     
-        // 2. Create the new offer message
         const newOfferMessageRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
         const newOfferData = {
             conversation_id: conversationId,
@@ -559,9 +556,7 @@ export default function SingleChatPage() {
         };
         batch.set(newOfferMessageRef, newOfferData);
     
-        // 3. Update the conversation document
         const conversationUpdateData = {
-            agreed_budget: amount,
             last_offer_by: user.uid,
             lastMessage: `New offer: ${amount}`,
             updatedAt: serverTimestamp(),
