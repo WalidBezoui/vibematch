@@ -77,6 +77,8 @@
           "enum": [
             "OPEN_FOR_APPLICATIONS",
             "PENDING_SELECTION",
+            "LAST_ACTIVITY_CHECK",
+            "OFFER_PENDING",
             "PENDING_CREATOR_ACCEPTANCE",
             "PENDING_PAYMENT",
             "IN_PROGRESS",

@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { AppHeader } from '@/components/app-header';
@@ -9,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck, Bell } from 'lucide-react';
+import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck, Bell, Sparkles } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -24,12 +25,10 @@ import { errorEmitter } from '@/firebase/error-emitter';
 // This page is now a pure notification feed for brands, showing actionable events.
 // The primary action for a new application is to go to the dedicated management page.
 
-type NewApplicationNotification = {
-  id: string; // application id
-  campaignId: string;
-  creatorId: string;
-  profile?: any;
-  campaignTitle: string;
+type NotificationItem = {
+  id: string; // application or campaign id
+  type: 'NEW_APPLICATION' | 'OFFER_PENDING';
+  data: any;
   createdAt: any;
 };
 
@@ -43,44 +42,81 @@ const NotificationCardSkeleton = () => (
     </div>
 );
 
-
-const NewApplicationCard = ({ notification }: { notification: NewApplicationNotification }) => {
+const NotificationCard = ({ notification }: { notification: NotificationItem }) => {
     const {t} = useLanguage();
-    
-    return (
-        <Card className="transition-all hover:shadow-md">
-             <CardHeader className="p-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="flex items-start gap-4 flex-1 cursor-pointer">
-                        <Avatar className="h-12 w-12 border">
-                            <AvatarImage src={notification.profile?.photoURL} alt={notification.profile?.name} />
-                            <AvatarFallback>{notification.profile?.name?.[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                            <p className="font-semibold">
-                                {notification.profile?.name}
-                            </p>
-                            <p className="text-sm text-muted-foreground">{t('notificationsPage.card.appliedTo')} <span className="font-medium text-foreground">{notification.campaignTitle}</span></p>
-                            <p className="text-xs text-muted-foreground mt-1">
-                                {notification.createdAt ? new Date(notification.createdAt.seconds * 1000).toLocaleString() : ''}
-                            </p>
+
+    if (notification.type === 'NEW_APPLICATION') {
+        const { profile, campaignTitle, campaignId } = notification.data;
+        return (
+            <Card className="transition-all hover:shadow-md">
+                <CardHeader className="p-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-start gap-4 flex-1 cursor-pointer">
+                            <Avatar className="h-12 w-12 border">
+                                <AvatarImage src={profile?.photoURL} alt={profile?.name} />
+                                <AvatarFallback>{profile?.name?.[0]}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                                <p className="font-semibold">
+                                    {profile?.name}
+                                </p>
+                                <p className="text-sm text-muted-foreground">{t('notificationsPage.card.appliedTo')} <span className="font-medium text-foreground">{campaignTitle}</span></p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    {notification.createdAt ? new Date(notification.createdAt.seconds * 1000).toLocaleString() : ''}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
+                            <Button asChild variant="default" size="sm">
+                                <Link href={`/campaigns/${campaignId}/manage`}>
+                                    Manage Applications <ArrowRight className="h-4 w-4 ml-2" />
+                                </Link>
+                            </Button>
                         </div>
                     </div>
-                     <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
-                        <Button asChild variant="default" size="sm">
-                            <Link href={`/campaigns/${notification.campaignId}/manage`}>
-                                Manage Applications <ArrowRight className="h-4 w-4 ml-2" />
-                            </Link>
-                        </Button>
-                     </div>
-                </div>
-            </CardHeader>
-        </Card>
-    )
+                </CardHeader>
+            </Card>
+        )
+    }
+
+    if (notification.type === 'OFFER_PENDING') {
+         const { brandProfile, title, id: campaignId } = notification.data;
+         return (
+            <Card className="transition-all hover:shadow-md border-blue-500/30 bg-blue-500/5">
+                <CardHeader className="p-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-start gap-4 flex-1 cursor-pointer">
+                           <div className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center text-black shadow-lg shadow-primary/30">
+                                <Sparkles className="h-6 w-6" />
+                            </div>
+                            <div className="flex-1">
+                                <p className="font-semibold">
+                                    Offer from {brandProfile?.name}
+                                </p>
+                                <p className="text-sm text-muted-foreground">You've been selected for the campaign: <span className="font-medium text-foreground">{title}</span></p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    {notification.createdAt ? new Date(notification.createdAt.seconds * 1000).toLocaleString() : ''}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
+                            <Button asChild variant="default" size="sm">
+                                <Link href={`/campaigns/${campaignId}`}>
+                                    Review & Accept <ArrowRight className="h-4 w-4 ml-2" />
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </CardHeader>
+            </Card>
+        )
+    }
+
+    return null;
 }
 
 export default function NotificationsPage() {
-    const [notifications, setNotifications] = useState<NewApplicationNotification[]>([]);
+    const [notifications, setNotifications] = useState<NotificationItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     
     const { user, isUserLoading } = useUser();
@@ -95,7 +131,14 @@ export default function NotificationsPage() {
         () => (isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
         [user, firestore, isBrand]
     );
-    const { data: campaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
+    const { data: brandCampaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
+
+    const creatorCampaignsQuery = useMemoFirebase(
+        () => (!isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('creatorIds', 'array-contains', user.uid), where('status', '==', 'OFFER_PENDING')) : null,
+        [user, firestore, isBrand]
+    );
+    const { data: creatorOfferCampaigns, isLoading: isLoadingCreatorCampaigns } = useCollection(creatorCampaignsQuery);
+
 
     useEffect(() => {
         if (isUserLoading || isProfileLoading) return;
@@ -104,15 +147,16 @@ export default function NotificationsPage() {
             return;
         }
 
-        if (isBrand) {
-            if (isLoadingCampaigns || !campaigns || !firestore) return;
+        const fetchAllData = async () => {
+            setIsLoading(true);
+            const allNotifications: NotificationItem[] = [];
 
-            const fetchAllData = async () => {
-                setIsLoading(true);
-                const newApplicationNotifications: any[] = [];
-                const campaignMap = new Map(campaigns.map(c => [c.id, c.title]));
+            // Logic for Brands
+            if (isBrand) {
+                if (isLoadingCampaigns || !brandCampaigns || !firestore) return;
+                const campaignMap = new Map(brandCampaigns.map(c => [c.id, c.title]));
 
-                for (const campaign of campaigns) {
+                for (const campaign of brandCampaigns) {
                     const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
                     const q = query(appsRef, where('status', '==', 'APPLIED'));
                     const appsSnapshot = await getDocs(q);
@@ -122,25 +166,46 @@ export default function NotificationsPage() {
                             const appData = { id: appDoc.id, ...appDoc.data() };
                             const profileRef = doc(firestore, 'users', appData.creatorId);
                             const profileSnap = await getDoc(profileRef);
-                            newApplicationNotifications.push({
-                                ...appData,
-                                profile: profileSnap.exists() ? profileSnap.data() : null,
-                                campaignTitle: campaignMap.get(appData.campaignId) || 'Unknown Campaign',
+                            allNotifications.push({
+                                type: 'NEW_APPLICATION',
+                                id: appData.id,
+                                createdAt: appData.createdAt,
+                                data: {
+                                    ...appData,
+                                    profile: profileSnap.exists() ? profileSnap.data() : null,
+                                    campaignTitle: campaignMap.get(appData.campaignId) || 'Unknown Campaign',
+                                }
                             });
                         }
                     }
                 }
-                setNotifications(newApplicationNotifications.sort((a,b) => b.createdAt.seconds - a.createdAt.seconds));
-                setIsLoading(false);
-            };
+            }
+            // Logic for Creators
+            else {
+                if(isLoadingCreatorCampaigns || !creatorOfferCampaigns || !firestore) return;
+                
+                for(const campaign of creatorOfferCampaigns) {
+                     const brandProfileRef = doc(firestore, 'users', campaign.brandId);
+                     const brandProfileSnap = await getDoc(brandProfileRef);
+                     allNotifications.push({
+                         type: 'OFFER_PENDING',
+                         id: campaign.id,
+                         createdAt: campaign.updatedAt,
+                         data: {
+                             ...campaign,
+                             brandProfile: brandProfileSnap.exists() ? brandProfileSnap.data() : null
+                         }
+                     })
+                }
+            }
 
-            fetchAllData();
-        } else {
-            // Creator logic can be added here
+            setNotifications(allNotifications.sort((a,b) => b.createdAt.seconds - a.createdAt.seconds));
             setIsLoading(false);
-        }
+        };
 
-    }, [campaigns, isLoadingCampaigns, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, router]);
+        fetchAllData();
+
+    }, [brandCampaigns, creatorOfferCampaigns, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, isLoadingCampaigns, isLoadingCreatorCampaigns, router]);
 
     const finalIsLoading = isLoading || isUserLoading || isProfileLoading;
     
@@ -170,10 +235,10 @@ export default function NotificationsPage() {
                         </div>
                     )}
 
-                    {!finalIsLoading && isBrand && notifications.length > 0 ? (
+                    {!finalIsLoading && notifications.length > 0 ? (
                         <div className="space-y-4">
                             {notifications.map(notification => (
-                                <NewApplicationCard key={notification.id} notification={notification} />
+                                <NotificationCard key={notification.id} notification={notification} />
                             ))}
                         </div>
                     ) : null}

@@ -1,9 +1,10 @@
 
 
+
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { collection, doc, query, updateDoc, serverTimestamp, getDoc, writeBatch, getDocs, where, arrayUnion } from 'firebase/firestore';
+import { collection, doc, query, updateDoc, serverTimestamp, getDoc, writeBatch, getDocs, where, arrayUnion, Timestamp } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -43,7 +44,8 @@ type Applicant = {
     brandId: string;
     coverLetter: string;
     bidAmount: number;
-    status: 'APPLIED' | 'NEGOTIATING' | 'REJECTED' | 'OFFER_ACCEPTED';
+    createdAt: Timestamp;
+    status: 'APPLIED' | 'NEGOTIATING' | 'REJECTED' | 'OFFER_ACCEPTED' | 'ACTIVE_CONTRACT';
     profile?: any; 
     trustScore: number;
     badge: 'Verified' | null;
@@ -215,28 +217,34 @@ export default function ManageApplicationsPage() {
              toast({ variant: 'destructive', title: 'Campaign Full', description: 'You have already hired the maximum number of creators for this campaign.' });
             return;
         }
+
+        const now = Timestamp.now();
+        const applicantLastActivity = applicant.createdAt; // Timestamp of application
+        const timeDiffHours = (now.seconds - applicantLastActivity.seconds) / 3600;
+
+        const isHotLead = timeDiffHours < 24;
     
         try {
             const batch = writeBatch(firestore);
     
-            // Update campaign: add creator and potentially change status
+            // Update campaign: add creator and set status based on "Smart Hire" logic
             const updates: any = {
                 creatorIds: arrayUnion(applicant.creatorId),
-                status: 'PENDING_CREATOR_ACCEPTANCE' // Always move to this state after an offer
+                status: isHotLead ? 'IN_PROGRESS' : 'OFFER_PENDING'
             };
 
             batch.update(campaignRef, updates);
             
             // Update application status
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
-            batch.update(applicationRef, { status: 'OFFER_ACCEPTED' });
+            batch.update(applicationRef, { status: 'ACTIVE_CONTRACT' });
     
             await batch.commit();
     
-            toast({ title: t('manageApplicationsPage.hiredToast.title'), description: t('manageApplicationsPage.hiredToast.description') });
+            toast({ title: t('manageApplicationsPage.hiredToast.title'), description: isHotLead ? "The contract is now active!" : t('manageApplicationsPage.hiredToast.description') });
             
-            mutateCampaign(); // Re-fetch campaign data
-            mutateApplications(); // Re-fetch applications
+            mutateCampaign();
+            mutateApplications();
     
         } catch (error: any) {
              const permissionError = new FirestorePermissionError({
@@ -244,7 +252,7 @@ export default function ManageApplicationsPage() {
                 operation: 'update',
                 requestResourceData: {
                     creatorIds: arrayUnion(applicant.creatorId),
-                    status: 'PENDING_CREATOR_ACCEPTANCE'
+                    status: 'LAST_ACTIVITY_CHECK'
                 }
             });
             errorEmitter.emit('permission-error', permissionError);

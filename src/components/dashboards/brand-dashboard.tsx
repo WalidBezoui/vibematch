@@ -37,6 +37,7 @@ const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800 border-green-200',
     PENDING_SELECTION: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200',
+    OFFER_PENDING: 'bg-blue-100 text-blue-800 border-blue-200',
     PENDING_PAYMENT: 'bg-blue-100 text-blue-800 border-blue-200',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800 border-indigo-200',
     DELIVERED: 'bg-purple-100 text-purple-800 border-purple-200',
@@ -89,7 +90,6 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
             if (firestore && campaign.id) {
                 setIsLoadingCount(true);
                 try {
-                    // This query gets ALL applications, not just new ones.
                     const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
                     const snapshot = await getCountFromServer(q);
                     setApplicationCount(snapshot.data().count);

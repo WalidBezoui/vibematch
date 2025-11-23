@@ -25,6 +25,7 @@ const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
     PENDING_SELECTION: 'bg-yellow-100 text-yellow-800',
     YOUR_ACCEPTANCE: 'bg-blue-100 text-blue-800 animate-pulse',
+    OFFER_PENDING: 'bg-yellow-100 text-yellow-800',
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800',
     PENDING_PAYMENT: 'bg-blue-100 text-blue-800',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800',
@@ -55,10 +56,10 @@ const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: 
     const handleAccept = async () => {
         try {
             await updateDoc(campaignRef, { 
-                status: 'PENDING_PAYMENT', 
+                status: 'IN_PROGRESS', 
                 updatedAt: serverTimestamp() 
             });
-            toast({ title: 'Offer Accepted!', description: 'The brand has been notified to proceed with payment.'});
+            toast({ title: 'Offer Accepted!', description: 'The campaign is now active. Good luck!'});
         } catch (e: any) {
             toast({ variant: 'destructive', title: 'Action Failed', description: e.message });
         }
@@ -82,9 +83,9 @@ const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: 
                 <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-black mb-4 shadow-lg shadow-primary/30">
                     <Sparkles className="h-8 w-8" />
                 </div>
-                <CardTitle className="text-3xl font-bold tracking-tight">You've Been Invited!</CardTitle>
+                <CardTitle className="text-3xl font-bold tracking-tight">You've Been Selected!</CardTitle>
                 <CardDescription className="max-w-md mx-auto text-lg">
-                    <span className="font-semibold">{brandProfile?.name || 'A brand'}</span> has selected you for the campaign "{campaign.title}".
+                    <span className="font-semibold">{brandProfile?.name || 'A brand'}</span> has chosen you for the campaign "{campaign.title}" and funded the escrow. Please confirm to start.
                 </CardDescription>
             </CardHeader>
             <CardContent className="text-center space-y-6">
@@ -94,7 +95,7 @@ const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: 
                 </div>
                 <div className="flex justify-center gap-4">
                     <Button onClick={handleAccept} size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
-                        <Check className="mr-2 h-5 w-5" /> Accept Offer
+                        <Check className="mr-2 h-5 w-5" /> Accept & Start Mission
                     </Button>
                     <Button onClick={handleDecline} size="lg" variant="ghost">Decline</Button>
                 </div>
@@ -131,6 +132,12 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators, conversations }: 
                         </Button>
                     </div>
                 )}
+                {campaign.status === 'OFFER_PENDING' && (
+                    <div className="text-center p-8 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <h3 className="text-xl font-semibold text-yellow-800">Offer Sent</h3>
+                        <p className="text-yellow-700 mt-2">The creator has been notified. We are awaiting their final confirmation to start the contract.</p>
+                    </div>
+                )}
                  {campaign.status === 'DELIVERED' && (
                     <div className="text-center p-8 bg-purple-50 border border-purple-200 rounded-lg">
                         <h3 className="text-xl font-semibold text-purple-800">Deliverables Ready for Review</h3>
@@ -144,7 +151,7 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators, conversations }: 
                      <Alert>
                         <Users className="h-4 w-4"/>
                         <AlertDescription className="text-center">
-                            <Link href={`/applications`} className="font-semibold text-primary hover:underline">Manage incoming applications</Link> in the Talent Hub.
+                            <Link href={`/campaigns/${campaignId}/manage`} className="font-semibold text-primary hover:underline">Manage incoming applications</Link> to find the perfect creator.
                         </AlertDescription>
                     </Alert>
                 )}
@@ -299,11 +306,11 @@ export default function CampaignPage() {
         )
     }
 
-    const showInvitation = isSelectedCreator && campaign.status === 'PENDING_CREATOR_ACCEPTANCE';
+    const showInvitation = isSelectedCreator && campaign.status === 'OFFER_PENDING';
     
     let badgeStatus = campaign.status;
     let badgeText = campaign.status.replace(/_/g, ' ');
-    if (isSelectedCreator && campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
+    if (isSelectedCreator && campaign.status === 'OFFER_PENDING') {
         badgeStatus = 'YOUR_ACCEPTANCE';
         badgeText = 'YOUR ACCEPTANCE';
     }
