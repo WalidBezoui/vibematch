@@ -330,10 +330,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-const ActionFooter = ({ onMakeOffer, onDecline }: { onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
-    const { conversationId } = useParams();
-    const firestore = useFirestore();
-    const { user } = useUser();
+const ActionFooter = ({ onMakeOffer, onDecline, onRespondToOffer }: { onMakeOffer: (amount: number, message: string) => void, onDecline: () => void, onRespondToOffer: (message: any, response: 'ACCEPTED' | 'REJECTED') => void }) => {
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
     
@@ -348,25 +345,9 @@ const ActionFooter = ({ onMakeOffer, onDecline }: { onMakeOffer: (amount: number
     }
 
     const handleAcceptRate = async () => {
-        if (!firestore || !conversationId) return;
-
-        const conversationRef = doc(firestore, 'conversations', conversationId as string);
-        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
-        const q = query(messagesRef, where('type', '==', 'SYSTEM_OFFER'), where('metadata.offer_status', '==', 'PENDING'), orderBy('timestamp', 'desc'));
-        
-        const querySnapshot = await getDocs(q);
-        const lastOfferMessage = querySnapshot.docs.length > 0 ? querySnapshot.docs[0].data() : null;
-        
-        const conversationSnap = await getDoc(conversationRef);
-        const currentConversation = conversationSnap.data();
-
-        const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : currentConversation?.agreed_budget;
-
-        if (offerToRespondTo) {
-            onMakeOffer(offerToRespondTo, "I accept your rate.");
-        } else {
-            console.error("Could not determine rate to accept.");
-        }
+        // This button now correctly calls onRespondToOffer
+        // We pass a dummy message object because the main logic will fetch the real last offer
+        onRespondToOffer({}, 'ACCEPTED');
     };
 
 
@@ -632,14 +613,25 @@ export default function SingleChatPage() {
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
         if (!firestore || !user || !conversationRef || !userProfile) return;
+
+        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
+        const q = query(messagesRef, where("type", "==", "SYSTEM_OFFER"), where("metadata.offer_status", "==", "PENDING"), orderBy("timestamp", "desc"));
+        
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+            toast({ variant: 'destructive', title: 'No pending offer found.' });
+            return;
+        }
+
+        const lastOfferDoc = querySnapshot.docs[0];
         
         const batch = writeBatch(firestore);
-        const msgRef = doc(firestore, 'conversations', conversationId as string, 'messages', message.id);
+        const msgRef = lastOfferDoc.ref;
         
         batch.update(msgRef, { 'metadata.offer_status': response });
         
         if (response === 'ACCEPTED') {
-            batch.update(conversationRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED', last_offer_by: user.uid });
+            batch.update(conversationRef, { agreed_budget: lastOfferDoc.data().metadata.offer_amount, status: 'OFFER_ACCEPTED', last_offer_by: user.uid });
 
             const newEventRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
             batch.set(newEventRef, {
@@ -651,7 +643,6 @@ export default function SingleChatPage() {
             });
             toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
         } else {
-             // If someone rejects, it's their turn to make a counter-offer
              batch.update(conversationRef, { last_offer_by: user.uid });
              toast({ title: 'Offer Rejected' });
         }
@@ -710,7 +701,7 @@ export default function SingleChatPage() {
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     {isInNegotiation && isMyTurn ? (
-                       <ActionFooter onMakeOffer={handleMakeOffer} onDecline={handleDecline} />
+                       <ActionFooter onMakeOffer={handleMakeOffer} onDecline={handleDecline} onRespondToOffer={handleRespondToOffer} />
                     ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}

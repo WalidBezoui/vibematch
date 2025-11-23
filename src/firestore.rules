@@ -86,15 +86,12 @@ service cloud.firestore {
       
       // WRITE (Create & Update):
       allow write: if 
-        // On create, ensure the creator/brand is creating it for themselves
+        // On create, ensure the user is a participant.
         (request.method == 'create' && (request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id)) ||
-        // On update, ensure the user is a participant and prevent critical IDs from being changed
+        // On update, ensure user is a participant and they are only changing allowed fields.
         (request.method == 'update' && 
           (request.auth.uid == resource.data.creator_id || request.auth.uid == resource.data.brand_id) &&
-          !('campaign_id' in request.resource.data) &&
-          !('application_id' in request.resource.data) &&
-          !('brand_id' in request.resource.data) &&
-          !('creator_id' in request.resource.data)
+           request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'agreed_budget', 'last_offer_by', 'lastMessage', 'updatedAt', 'is_funded'])
         );
 
       match /messages/{messageId} {
