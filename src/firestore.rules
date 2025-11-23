@@ -1,0 +1,118 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Allow creators to query for their own applications across all campaigns.
+    match /{path=**}/applications/{applicationId} {
+      allow list, delete: if request.auth != null && (request.query.creatorId == request.auth.uid || resource.data.creatorId == request.auth.uid);
+    }
+
+    match /users/{userId} {
+      // ANY authenticated user can read public profiles
+      allow get: if request.auth != null;
+      // Users can list other users (e.g. for discovery)
+      allow list: if request.auth != null;
+      
+      // A user can create their own profile document
+      allow create: if request.auth.uid == request.resource.data.uid;
+
+      // Update rules:
+      // - Users can update their own profiles.
+      // - Creator profiles: creators cannot update admin-only fields.
+      allow update: if request.auth.uid == userId && 
+                     (get(/databases/$(database)/documents/users/$(userId)).data.role == 'brand' || 
+                      (get(/databases/$(database)/documents/users/$(userId)).data.role == 'creator' &&
+                       !('adminBadge' in request.resource.data) &&
+                       !('initialTrustScore' in request.resource.data)
+                      )
+                     );
+
+      // Creator Portfolio Subcollection
+      match /portfolio/{projectId} {
+        // Any authenticated user can view a portfolio
+        allow read: if request.auth != null;
+        // Only the creator who owns the profile can manage their portfolio
+        allow write, delete: if request.auth.uid == userId;
+      }
+    }
+
+    // Brands can create campaigns.
+    // The assigned brand or creator can update the campaign.
+    // Any authenticated user can list/read campaigns for discovery purposes.
+    match /campaigns/{campaignId} {
+      allow create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'brand' && request.resource.data.brandId == request.auth.uid;
+      allow get, list: if request.auth != null;
+      // Allow brand owner to update, or creator to update if they are being added or are already in the list
+      allow update: if (resource.data.brandId == request.auth.uid) || 
+                     (request.auth.uid in request.resource.data.creatorIds) || 
+                     (request.auth.uid in resource.data.creatorIds);
+      allow delete: if resource.data.brandId == request.auth.uid;
+
+      // Applications subcollection rules
+      match /applications/{applicationId} {
+        // A creator can create an application for a campaign.
+        allow create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'creator' && request.resource.data.creatorId == request.auth.uid;
+        // The brand who owns the campaign can read/update applications.
+        // The creator who made the application can read their own application.
+        // The brand who owns the campaign can list all applications for that campaign.
+        allow get, update: if get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid || resource.data.creatorId == request.auth.uid;
+        allow list: if get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid;
+        // Allow the creator to withdraw their application, or the brand owner to delete it.
+        allow delete: if resource.data.creatorId == request.auth.uid || get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid;
+      }
+    }
+    
+    // Allow anyone who is authenticated (including anonymous) to submit an application.
+    // Deny read/update/delete to protect privacy.
+    match /brand-applications/{applicationId} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if false;
+    }
+
+    match /creator-applications/{applicationId} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if false;
+    }
+
+    // Smart Deal Chat Rules - REBUILT FOR CORRECTNESS
+    match /conversations/{conversationId} {
+      // READ: Allow a user to read a conversation if they are a participant (brand or creator).
+      allow get: if request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id;
+      // LIST: Allow a user to query for conversations where they are a participant.
+      allow list: if request.auth != null && 
+                   (request.query.where.find(constraint => constraint[0] == 'brand_id' && constraint[2] == request.auth.uid) != null ||
+                    request.query.where.find(constraint => constraint[0] == 'creator_id' && constraint[2] == request.auth.uid) != null);
+      
+      // WRITE (Create & Update):
+      // On create, ensure the creator is the one making it. On update, ensure it's a participant.
+      allow write: if (request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id) &&
+                    // On update, prevent critical IDs from being changed
+                    (request.method == 'create' || 
+                     (request.method == 'update' &&
+                      !('campaign_id' in request.resource.data) &&
+                      !('application_id' in request.resource.data) &&
+                      !('brand_id' in request.resource.data) &&
+                      !('creator_id' in request.resource.data)
+                     )
+                    );
+
+      match /messages/{messageId} {
+        // Allow creation if the sender is part of the parent conversation.
+        allow create: if request.auth.uid == request.resource.data.sender_id &&
+                       (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid ||
+                        get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid);
+        
+        // Allow a participant to update the offer status of any message in the conversation.
+        allow update: if (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid ||
+                        get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid) &&
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata.offer_status']) &&
+                       request.resource.data.type == 'SYSTEM_OFFER';
+
+        // Only participants can read messages.
+        allow read, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid ||
+                          get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid;
+      }
+    }
+  }
+}
