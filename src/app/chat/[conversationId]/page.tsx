@@ -330,13 +330,16 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-const ActionFooter = ({ conversation, onMakeOffer }: { conversation: any, onMakeOffer: (amount: number, message: string) => void }) => {
+const ActionFooter = ({ conversation, onMakeOffer, onDecline }: { conversation: any, onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
     const { userProfile } = useUserProfile();
     const { user } = useUser();
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
     
-    const isBrand = userProfile?.role === 'brand';
+    if (conversation.status !== 'NEGOTIATION') {
+        return null;
+    }
+
     const isMyTurn = conversation.last_offer_by !== user?.uid;
 
     if (!isMyTurn) {
@@ -346,58 +349,48 @@ const ActionFooter = ({ conversation, onMakeOffer }: { conversation: any, onMake
             </div>
         )
     }
-
-    const handleAcceptInitial = () => {
-        onMakeOffer(conversation.agreed_budget, "I accept your initial rate.");
-    }
     
     const handleSubmitOffer = () => {
         if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
             alert("Please enter a valid amount.");
             return;
         }
-        onMakeOffer(parseFloat(newOffer), message || "Here is a new proposal.");
+        onMakeOffer(parseFloat(newOffer), message || "Here is my new proposal for this campaign.");
         setNewOffer('');
         setMessage('');
     }
 
-    // Brand's first move
-    if (isBrand && conversation.last_offer_by === conversation.creator_id) {
-         return (
-            <div className="p-4 bg-background border-t space-y-4">
-                 <div className="flex gap-2">
-                    <Button className="flex-1" onClick={handleAcceptInitial}>Accept Rate ({conversation.agreed_budget} MAD)</Button>
-                    <Popover>
-                        <PopoverTrigger asChild><Button variant="outline" className="flex-1">Propose New Rate</Button></PopoverTrigger>
-                        <PopoverContent className="w-80">
-                            <div className="grid gap-4">
-                                <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
-                                <div className="grid gap-2">
-                                     <Label htmlFor="budget">Amount (MAD)</Label>
-                                     <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                     <Label htmlFor="message">Message (optional)</Label>
-                                     <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
-                                     <Button onClick={handleSubmitOffer}>Send Offer</Button>
-                                </div>
-                            </div>
-                        </PopoverContent>
-                    </Popover>
-                    <Button variant="destructive" className="flex-1">Decline</Button>
-                </div>
-            </div>
-        );
-    }
-    
-    // Creator or Brand responding to a counter-offer
-    if (isMyTurn) {
-        return (
-             <div className="p-4 bg-background border-t space-y-4">
-                <p className="text-center text-sm text-muted-foreground">Please respond to the offer above.</p>
-            </div>
-        );
-    }
+    const lastOfferMessage = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
+    const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : conversation.agreed_budget;
+    const isInitialOffer = !lastOfferMessage;
 
-    return null;
+    return (
+        <div className="p-4 bg-background border-t space-y-4">
+            <div className="flex flex-col sm:flex-row gap-2">
+                <Button className="flex-1" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
+                    <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate ({offerToRespondTo} MAD)
+                </Button>
+                <Popover>
+                    <PopoverTrigger asChild><Button variant="outline" className="flex-1">Propose New Rate</Button></PopoverTrigger>
+                    <PopoverContent className="w-80">
+                        <div className="grid gap-4">
+                            <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
+                            <div className="grid gap-2">
+                                    <Label htmlFor="budget">Amount (MAD)</Label>
+                                    <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
+                                    <Label htmlFor="message">Message (optional)</Label>
+                                    <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
+                                    <Button onClick={handleSubmitOffer}>Send Offer</Button>
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+                <Button variant="destructive" className="flex-1" onClick={onDecline}>
+                    <XCircle className="mr-2 h-4 w-4" /> Decline
+                </Button>
+            </div>
+        </div>
+    );
 }
 
 const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string) => void, disabled: boolean, placeholder: string }) => {
@@ -627,6 +620,20 @@ export default function SingleChatPage() {
         await batch.commit();
     };
 
+    const handleDecline = async () => {
+        if (!firestore || !user || !conversationRef) return;
+        try {
+            await updateDoc(conversationRef, {
+                status: 'CANCELLED',
+                lastMessage: 'The negotiation was cancelled.',
+                updatedAt: serverTimestamp(),
+            });
+            toast({ variant: 'destructive', title: 'Negotiation Cancelled' });
+        } catch (error: any) {
+            toast({ variant: 'destructive', title: 'Error', description: 'Could not cancel the negotiation.' });
+        }
+    };
+
     const isChatActive = conversation.status === 'ACTIVE' && campaign?.status !== 'PENDING_PAYMENT';
     const isInNegotiation = conversation.status === 'NEGOTIATION';
     const textInputDisabled = !isChatActive || isInNegotiation;
@@ -653,7 +660,7 @@ export default function SingleChatPage() {
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     {isInNegotiation ? (
-                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} />
+                       <ActionFooter conversation={conversation} onMakeOffer={handleMakeOffer} onDecline={handleDecline} />
                     ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}
