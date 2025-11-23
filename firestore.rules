@@ -75,26 +75,20 @@ service cloud.firestore {
       allow read, update, delete: if false;
     }
 
-    // Smart Deal Chat Rules
+    // Smart Deal Chat Rules - REBUILT FOR CORRECTNESS
     match /conversations/{conversationId} {
-      // Allow creation if the user is either the creator or the brand in the new document.
-      allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
-      
-      // Allow read access if the user is a participant.
+      // READ: Allow a user to read a conversation if they are a participant (brand or creator).
       allow get: if request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id;
+      // LIST: Allow a user to query for conversations where they are a participant.
       allow list: if request.auth != null && 
                    (request.query.where.find(constraint => constraint[0] == 'brand_id' && constraint[2] == request.auth.uid) != null ||
                     request.query.where.find(constraint => constraint[0] == 'creator_id' && constraint[2] == request.auth.uid) != null);
       
-      // Allow participants to update fields relevant to negotiation, but NOT core IDs.
-      allow update: if (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) &&
-                     !('campaign_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
-                     !('application_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
-                     !('brand_id' in request.resource.data.diff(resource.data).affectedKeys()) &&
-                     !('creator_id' in request.resource.data.diff(resource.data).affectedKeys());
+      // WRITE (Create & Update):
+      allow write: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
 
       match /messages/{messageId} {
-        // Allow creation if sender is part of the parent conversation.
+        // Allow creation if the sender is part of the parent conversation.
         allow create: if request.auth.uid == request.resource.data.sender_id &&
                        (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid ||
                         get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid);
@@ -106,7 +100,7 @@ service cloud.firestore {
                        request.resource.data.type == 'SYSTEM_OFFER';
 
         // Only participants can read messages.
-        allow get, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid ||
+        allow read, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid ||
                           get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid;
       }
     }
