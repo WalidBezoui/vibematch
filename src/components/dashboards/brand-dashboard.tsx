@@ -84,6 +84,10 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
 
     const manageButtonLink = `/campaigns/${campaign.id}/manage`;
 
+    const formattedDate = campaign.createdAt && typeof campaign.createdAt.toDate === 'function' 
+        ? format(campaign.createdAt.toDate(), 'MMM d, yyyy') 
+        : 'Just now';
+
     return (
         <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
             <CardHeader>
@@ -91,7 +95,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
                      <div className='flex-1'>
                         <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
                         <CardDescription className="text-xs text-muted-foreground mt-1">
-                            {t('brandDashboard.createdOn', { date: campaign.createdAt ? format(campaign.createdAt.toDate(), 'MMM d, yyyy') : 'N/A' })}
+                            {t('brandDashboard.createdOn', { date: formattedDate })}
                         </CardDescription>
                      </div>
                      <AlertDialog>
