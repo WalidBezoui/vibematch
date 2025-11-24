@@ -90,49 +90,51 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
     }
 
     return (
-        <div className={cn("p-4 border-b", bgColor)}>
+        <div className={cn("p-3 sm:p-4 border-b", bgColor)}>
             <div className="grid grid-cols-2 sm:flex sm:justify-between sm:items-center gap-4">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 col-span-1">
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
                         <ArrowLeft className="h-5 w-5" />
                     </Button>
-                    {isBrand && otherUser ? (
-                        <div className="flex items-center gap-3">
+                     {isBrand && otherUser ? (
+                        <div className="flex items-center gap-3 min-w-0">
                             <Avatar className="h-10 w-10 border">
                                 <AvatarImage src={otherUser.photoURL} alt={otherUser.name} />
                                 <AvatarFallback>{otherUser.name?.[0]}</AvatarFallback>
                             </Avatar>
-                            <div>
+                            <div className="flex-1 min-w-0">
                                 <p className="font-semibold truncate">{otherUser.displayName || otherUser.name}</p>
                                 <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground hover:text-primary" onClick={onOpenProfile}>View Profile</Button>
                             </div>
                         </div>
-                    ) : !isBrand && campaign && (
-                         <div className="flex items-center gap-3">
-                              <div className="h-10 w-10 border rounded-md flex items-center justify-center bg-card">
+                    ) : !isBrand && campaign ? (
+                         <div className="flex items-center gap-3 min-w-0">
+                              <div className="h-10 w-10 border rounded-md flex-shrink-0 items-center justify-center bg-card hidden sm:flex">
                                  <Briefcase className="h-5 w-5 text-muted-foreground"/>
                              </div>
-                            <div>
+                            <div className="flex-1 min-w-0">
                                 <p className="font-semibold truncate">{campaign.title}</p>
                                 <p className="text-xs text-muted-foreground">{otherUser?.name || 'Brand'}</p>
                             </div>
                         </div>
+                    ) : (
+                         <Skeleton className="h-10 w-48" />
                     )}
                  </div>
 
                 <div className="flex flex-col items-end justify-center text-right gap-1 col-span-1">
-                    <div className={cn("font-semibold text-xs sm:text-sm flex items-center justify-end gap-2", color)}>
-                        <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                     <div className={cn("font-semibold text-xs text-right sm:text-sm flex items-center justify-end gap-1.5", color)}>
+                        <Icon className="h-4 w-4 hidden sm:block" />
                         <span>{text}</span>
                     </div>
                      <div>
                         <p className="text-xs font-semibold text-muted-foreground">{budgetLabel}</p>
-                        <p className="font-bold text-primary">{conversation.agreed_budget || 0} MAD</p>
+                        <p className="font-bold text-primary text-sm sm:text-base">{conversation.agreed_budget || 0} MAD</p>
                     </div>
                 </div>
 
                 {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
-                    <div className="col-span-2 sm:col-span-1 sm:w-auto">
+                    <div className="col-span-2 sm:col-auto sm:w-auto">
                         <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full sm:w-auto">
                           <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
                         </Button>
@@ -338,7 +340,6 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
 };
 
 const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
-    const { userProfile } = useUserProfile();
     const { user } = useUser();
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
@@ -369,34 +370,38 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
 
     const lastOfferMessage = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
     const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : conversation.agreed_budget;
-    const isInitialOffer = !lastOfferMessage;
 
     return (
-        <div className="p-4 bg-background border-t space-y-2">
-            <div className="flex items-center gap-2">
-                <Button className="flex-1" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
+        <div className="p-3 bg-background border-t">
+            <div className="max-h-[50vh] overflow-y-auto space-y-3">
+                 <Button className="w-full" size="lg" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
                     <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate ({offerToRespondTo} MAD)
                 </Button>
-                <div className="flex gap-2">
-                     <Popover>
-                        <PopoverTrigger asChild><Button variant="outline">Propose</Button></PopoverTrigger>
-                        <PopoverContent className="w-80">
-                            <div className="grid gap-4">
-                                <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
-                                <div className="grid gap-2">
-                                        <Label htmlFor="budget">Amount (MAD)</Label>
-                                        <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                        <Label htmlFor="message">Message (optional)</Label>
-                                        <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
-                                        <Button onClick={handleSubmitOffer}>Send Offer</Button>
-                                </div>
-                            </div>
-                        </PopoverContent>
-                    </Popover>
-                     <Button variant="destructive" size="icon" onClick={onDecline}>
-                        <XCircle className="h-4 w-4" />
-                    </Button>
+                <div className="relative flex items-center">
+                    <div className="flex-grow border-t border-border"></div>
+                    <span className="flex-shrink mx-2 text-xs text-muted-foreground">OR</span>
+                    <div className="flex-grow border-t border-border"></div>
                 </div>
+                 <Popover>
+                    <PopoverTrigger asChild>
+                        <Button variant="outline" size="lg" className="w-full">Propose New Rate</Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80" align="end">
+                        <div className="grid gap-4">
+                            <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="budget">Amount (MAD)</Label>
+                                <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
+                                <Label htmlFor="message">Message (optional)</Label>
+                                <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
+                                <Button onClick={handleSubmitOffer}>Send Offer</Button>
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+                <Button variant="ghost" size="lg" className="w-full text-destructive hover:text-destructive hover:bg-destructive/10" onClick={onDecline}>
+                    <XCircle className="mr-2 h-4 w-4" /> Decline & End Negotiation
+                </Button>
             </div>
         </div>
     );
