@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
 import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { collection, query, where, getCountFromServer, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -171,15 +171,31 @@ export default function BrandDashboard() {
   const firestore = useFirestore();
   const { toast } = useToast();
   const { t } = useLanguage();
+  const [campaigns, setCampaigns] = useState<any[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState({ activeCampaigns: 0, totalBudget: 0 });
   const [applicationCounts, setApplicationCounts] = useState<Record<string, number>>({});
   const [isStatsLoading, setIsStatsLoading] = useState(true);
 
-  const campaignsQuery = useMemoFirebase(
-    () => user && firestore ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
-    [user, firestore]
-  );
-  const { data: campaigns, isLoading } = useCollection(campaignsQuery);
+  useEffect(() => {
+    if (user && firestore) {
+      const fetchCampaigns = async () => {
+        setIsLoading(true);
+        try {
+          const q = query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid));
+          const querySnapshot = await getDocs(q);
+          const campaignsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          setCampaigns(campaignsData);
+        } catch (error) {
+          console.error("Error fetching campaigns: ", error);
+          setCampaigns([]);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchCampaigns();
+    }
+  }, [user, firestore]);
   
   useEffect(() => {
     if (campaigns && firestore && user) {
@@ -216,6 +232,7 @@ export default function BrandDashboard() {
     
     try {
         await deleteDoc(campaignRef);
+        setCampaigns(prev => prev ? prev.filter(c => c.id !== campaignId) : null);
         toast({
             title: t('brandDashboard.deleteToast.successTitle'),
             description: t('brandDashboard.deleteToast.successDescription'),
@@ -263,7 +280,8 @@ export default function BrandDashboard() {
         };
 
         try {
-            await addDoc(collection(firestore, 'campaigns'), testCampaign);
+            const docRef = await addDoc(collection(firestore, 'campaigns'), testCampaign);
+            setCampaigns(prev => prev ? [{ id: docRef.id, ...testCampaign }, ...prev] : [{ id: docRef.id, ...testCampaign }]);
             toast({
                 title: "Test Campaign Created",
                 description: `Successfully generated and saved "${testCampaign.title}".`,
@@ -341,3 +359,5 @@ export default function BrandDashboard() {
     </div>
   );
 }
+
+    
