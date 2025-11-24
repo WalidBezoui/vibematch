@@ -54,7 +54,7 @@ export default function ChatPage() {
             <div className="w-96 border-r flex-col h-full bg-background flex">
               <ChatSidebar onSelectConversation={handleSelectConversation} />
             </div>
-            <div className="flex-1 flex-col">
+            <div className="flex-1 flex flex-col overflow-hidden">
               {selectedConversation ? (
                 <ChatView conversationId={selectedConversation} onBack={handleBack} />
               ) : (
@@ -69,7 +69,7 @@ export default function ChatPage() {
             </div>
           </>
         ) : (
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full overflow-hidden">
             <AnimatePresence>
               {!selectedConversation ? (
                 <motion.div
