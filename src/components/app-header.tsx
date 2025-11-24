@@ -285,54 +285,45 @@ export function AppHeader() {
       return conversations.filter(c => c.status === 'NEGOTIATION' && c.last_offer_by !== user.uid).length;
   }, [conversations, user]);
   
-  const brandOpenCampaignsQuery = useMemoFirebase(() => {
-      if (!user || !firestore || userProfile?.role !== 'brand') return null;
-      return query(
-          collection(firestore, 'campaigns'), 
-          where('brandId', '==', user.uid),
-          where('status', '==', 'OPEN_FOR_APPLICATIONS')
-      );
-  }, [user, firestore, userProfile]);
-  const { data: brandOpenCampaigns } = useCollection(brandOpenCampaignsQuery);
-
   useEffect(() => {
-    if (!brandOpenCampaigns || !firestore) return;
+    if (user && firestore && userProfile?.role === 'brand') {
+      const fetchApplicationCounts = async () => {
+        try {
+          const campaignsQuery = query(
+            collection(firestore, 'campaigns'),
+            where('brandId', '==', user.uid),
+            where('status', '==', 'OPEN_FOR_APPLICATIONS')
+          );
+          const campaignsSnapshot = await getDocs(campaignsQuery);
+          
+          if (campaignsSnapshot.empty) {
+            setNewApplications(0);
+            return;
+          }
 
-    const unsubscribes: Unsubscribe[] = [];
-    let totalCount = 0;
+          const applicationCountPromises = campaignsSnapshot.docs.map(async (campaignDoc) => {
+            const applicationsQuery = query(
+              collection(firestore, 'campaigns', campaignDoc.id, 'applications'),
+              where('status', '==', 'APPLIED')
+            );
+            const applicationsSnapshot = await getDocs(applicationsQuery);
+            return applicationsSnapshot.size;
+          });
+          
+          const counts = await Promise.all(applicationCountPromises);
+          const totalCount = counts.reduce((sum, count) => sum + count, 0);
+          setNewApplications(totalCount);
 
-    brandOpenCampaigns.forEach(campaign => {
-      const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        // This is not perfectly transactional but good enough for a real-time badge
-        totalCount = 0; // Recalculate everything on any change
-        brandOpenCampaigns.forEach(c => {
-            if (c.id === campaign.id) {
-                totalCount += snapshot.size;
-            } else {
-                // To get the latest count, we'd ideally store counts per campaign
-                // For now, let's just add the size of the latest snapshot
-            }
-        });
-        setNewApplications(prev => prev + snapshot.docs.length - (campaign.applicationCount || 0) );
-        campaign.applicationCount = snapshot.docs.length; // makeshift way to track
-      });
-      unsubscribes.push(unsubscribe);
-    });
-    
-    const initialCounts = brandOpenCampaigns.map(c => {
-        const q = query(collection(firestore, 'campaigns', c.id, 'applications'), where('status', '==', 'APPLIED'));
-        return getDocs(q).then(snap => snap.size);
-    });
-    
-    Promise.all(initialCounts).then(counts => {
-        setNewApplications(counts.reduce((a, b) => a + b, 0));
-    });
+        } catch (error) {
+          // Errors are expected if rules are restrictive, so we can ignore them in the console
+          // and just let the count be 0.
+          setNewApplications(0);
+        }
+      };
 
-
-    return () => unsubscribes.forEach(unsub => unsub());
-
-  }, [brandOpenCampaigns, firestore]);
+      fetchApplicationCounts();
+    }
+  }, [user, firestore, userProfile]);
 
   const isLoading = isUserLoading || (user && isProfileLoading);
 
