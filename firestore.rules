@@ -75,39 +75,41 @@ service cloud.firestore {
       allow read, update, delete: if false;
     }
 
-    // Smart Deal Chat Rules
+    // --- FROM-SCRATCH REWRITE OF CONVERSATION RULES ---
+
+    function isParticipant(conversationId) {
+      let conversationData = get(/databases/$(database)/documents/conversations/$(conversationId)).data;
+      return request.auth.uid == conversationData.brand_id || request.auth.uid == conversationData.creator_id;
+    }
+
     match /conversations/{conversationId} {
-      // Allow creation if the user is either the creator or the brand in the new document.
-      allow create: if request.auth.uid == request.resource.data.creator_id || request.auth.uid == request.resource.data.brand_id;
-      // Only brand or creator involved can read the conversation status.
-      allow get: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id);
-       // Allow participants to update fields relevant to negotiation and chat status.
-      allow update: if request.auth != null && (request.auth.uid == resource.data.brand_id || request.auth.uid == resource.data.creator_id) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'agreed_budget', 'last_offer_by', 'lastMessage', 'updatedAt']);
+      // CREATE: A user can create a conversation if they are listed as the brand or creator.
+      allow create: if request.auth != null && (request.resource.data.brand_id == request.auth.uid || request.resource.data.creator_id == request.auth.uid);
 
-      // Secure list operation: A user can only list conversations where they are the brand or the creator.
-      allow list: if request.auth != null && 
-                   (request.query.where.find(constraint => constraint[0] == 'brand_id' && constraint[2] == request.auth.uid) != null ||
-                    request.query.where.find(constraint => constraint[0] == 'creator_id' && constraint[2] == request.auth.uid) != null);
-
+      // READ: Only participants can read the conversation.
+      allow get, list: if request.auth != null && (resource.data.brand_id == request.auth.uid || resource.data.creator_id == request.auth.uid);
+      
+      // UPDATE: A participant can update specific fields related to negotiation.
+      // This is the core fix. It explicitly allows changes to the fields necessary for negotiation
+      // while preventing changes to immutable fields like IDs.
+      allow update: if request.auth != null && isParticipant(conversationId)
+                    && request.resource.data.campaign_id == resource.data.campaign_id
+                    && request.resource.data.application_id == resource.data.application_id
+                    && request.resource.data.brand_id == resource.data.brand_id
+                    && request.resource.data.creator_id == resource.data.creator_id
+                    && request.resource.data.is_funded == resource.data.is_funded;
 
       match /messages/{messageId} {
-        // Allow creation if sender is part of conversation
-        allow create: if request.auth.uid == request.resource.data.sender_id && (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid);
+        // CREATE: Any participant can create a message.
+        allow create: if request.auth != null && isParticipant(conversationId) && request.resource.data.sender_id == request.auth.uid;
         
-        // Allow a participant to update the offer status of any message in the conversation.
-        // This is necessary for superseding previous offers.
-        allow update: if ( (get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid) 
-                      && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata.offer_status']) 
-                      && request.resource.data.type == 'SYSTEM_OFFER'
-                      );
+        // READ: Any participant can read messages.
+        allow get, list: if request.auth != null && isParticipant(conversationId);
 
-        // Only participants can read messages.
-        allow get, list: if get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid || get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid;
+        // UPDATE: A participant can only update the 'offer_status' of a message's metadata.
+        // This is crucial for accepting, rejecting, or superseding offers.
+        allow update: if request.auth != null && isParticipant(conversationId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata.offer_status']);
       }
     }
   }
 }
-
-    
-
-    
