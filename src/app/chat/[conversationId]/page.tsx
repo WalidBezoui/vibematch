@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
@@ -20,7 +19,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import {
   Sheet,
@@ -734,8 +732,3 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
 }
 
     
-    
-
-    
-
-
