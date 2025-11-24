@@ -6,7 +6,7 @@ import { ChatSidebar } from '@/components/chat-sidebar';
 import { AppHeader } from '@/components/app-header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User } from 'lucide-react';
+import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch } from 'firebase/firestore';
@@ -601,10 +601,8 @@ export default function SingleChatPage() {
             updatedAt: serverTimestamp(),
         });
         
-        try {
-            await batch.commit();
-        } catch(e: any) {
-             const permissionError = new FirestorePermissionError({
+        batch.commit().catch(error => {
+            const permissionError = new FirestorePermissionError({
                 path: 'BATCH_WRITE',
                 operation: 'write',
                 requestResourceData: {
@@ -613,7 +611,7 @@ export default function SingleChatPage() {
                 }
             })
             errorEmitter.emit('permission-error', permissionError)
-        }
+        });
     };
 
     const handleSendMessage = async (text: string) => {
@@ -754,4 +752,3 @@ export default function SingleChatPage() {
         </div>
     );
 }
-
