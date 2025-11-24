@@ -1,13 +1,31 @@
-
+firestore.rules
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // Helper function to check if the user is a brand
+    // This assumes your 'users' collection stores a 'role' field.
+    function isBrand(userId) {
+      return get(/databases/$(database)/documents/users/$(userId)).data.role == 'brand';
+    }
+
+    // Helper function to check if the user is a creator
+    // This assumes your 'users' collection stores a 'role' field.
+    function isCreator(userId) {
+      return get(/databases/$(database)/documents/users/$(userId)).data.role == 'creator';
+    }
+    
+    // Existing `isParticipant` function
+    function isParticipant(conversationId) {
+      let conversationData = get(/databases/$(database)/documents/conversations/$(conversationId)).data;
+      return request.auth.uid == conversationData.brand_id || request.auth.uid == conversationData.creator_id;
+    }
     
     // Allow creators to query for their own applications across all campaigns.
     match /{path=**}/applications/{applicationId} {
       allow list, delete: if request.auth != null && (request.query.creatorId == request.auth.uid || resource.data.creatorId == request.auth.uid);
     }
-
+    
     match /users/{userId} {
       // ANY authenticated user can read public profiles
       allow get: if request.auth != null;
@@ -44,9 +62,13 @@ service cloud.firestore {
       allow create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'brand' && request.resource.data.brandId == request.auth.uid;
       allow get, list: if request.auth != null;
       // Allow brand owner to update, or creator to update if they are being added or are already in the list
-      allow update: if (resource.data.brandId == request.auth.uid) || 
-                     (request.auth.uid in request.resource.data.creatorIds) || 
-                     (request.auth.uid in resource.data.creatorIds);
+      // ADDITION: Allow specific updates for 'applicationUpdate.status' and 'updatedAt' by the brand.
+      allow update: if (resource.data.brandId == request.auth.uid && 
+                         (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['applicationUpdate.status', 'updatedAt']) || // For "discuss & negoce" button
+                          (request.auth.uid in request.resource.data.creatorIds) || 
+                          (request.auth.uid in resource.data.creatorIds)
+                         )
+                       );
       allow delete: if resource.data.brandId == request.auth.uid;
 
       // Applications subcollection rules
@@ -77,14 +99,13 @@ service cloud.firestore {
 
     // --- FROM-SCRATCH REWRITE OF CONVERSATION RULES ---
 
-    function isParticipant(conversationId) {
-      let conversationData = get(/databases/$(database)/documents/conversations/$(conversationId)).data;
-      return request.auth.uid == conversationData.brand_id || request.auth.uid == conversationData.creator_id;
-    }
-
     match /conversations/{conversationId} {
       // CREATE: A user can create a conversation if they are listed as the brand or creator.
-      allow create: if request.auth != null && (request.resource.data.brand_id == request.auth.uid || request.resource.data.creator_id == request.auth.uid);
+      // MODIFICATION: Explicitly allows brands to create if they are the brand_id in the request.
+      allow create: if request.auth != null && 
+                     (request.resource.data.brand_id == request.auth.uid || request.resource.data.creator_id == request.auth.uid) &&
+                     request.resource.data.campaign_id != null &&
+                     request.resource.data.creator_id != null; // Ensure required fields for conversation creation
 
       // READ: Only participants can read the conversation.
       allow get, list: if request.auth != null && (resource.data.brand_id == request.auth.uid || resource.data.creator_id == request.auth.uid);
@@ -97,19 +118,21 @@ service cloud.firestore {
                     && request.resource.data.application_id == resource.data.application_id
                     && request.resource.data.brand_id == resource.data.brand_id
                     && request.resource.data.creator_id == resource.data.creator_id
-                    && request.resource.data.is_funded == resource.data.is_funded;
+                    && request.resource.data.is_funded == resource.data.is_funded
+                    // ADDITION: Allow updates to status, agreed_budget, last_offer_by, lastMessage, and updatedAt
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'agreed_budget', 'last_offer_by', 'lastMessage', 'updatedAt']);
+    }
 
-      match /messages/{messageId} {
-        // CREATE: Any participant can create a message.
-        allow create: if request.auth != null && isParticipant(conversationId) && request.resource.data.sender_id == request.auth.uid;
-        
-        // READ: Any participant can read messages.
-        allow get, list: if request.auth != null && isParticipant(conversationId);
+    match /conversations/{conversationId}/messages/{messageId} {
+      // CREATE: Any participant can create a message.
+      allow create: if request.auth != null && isParticipant(conversationId) && request.resource.data.sender_id == request.auth.uid;
+      
+      // READ: Any participant can read messages.
+      allow get, list: if request.auth != null && isParticipant(conversationId);
 
-        // UPDATE: A participant can only update the 'offer_status' of a message's metadata.
-        // This is crucial for accepting, rejecting, or superseding offers.
-        allow update: if request.auth != null && isParticipant(conversationId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata.offer_status']);
-      }
+      // UPDATE: A participant can only update the 'offer_status' of a message's metadata.
+      // This is crucial for accepting, rejecting, or superseding offers.
+      allow update: if request.auth != null && isParticipant(conversationId) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata.offer_status']);
     }
   }
 }
