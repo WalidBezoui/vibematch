@@ -12,7 +12,7 @@ import { useUser, useUserProfile, useCollection, useFirestore, useMemoFirebase }
 import { getAuth, signOut } from 'firebase/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { query, collection, where, onSnapshot, Unsubscribe } from 'firebase/firestore';
+import { query, collection, where, onSnapshot, Unsubscribe, getDocs } from 'firebase/firestore';
 import {
   DropdownMenu,
   DropdownMenuContent,
