@@ -49,7 +49,7 @@ export default function ChatPage() {
   return (
     <div className="h-screen w-full flex flex-col">
       <AppHeader />
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden h-[calc(100vh-65px)]">
         {!isMobile ? (
           <>
             <div className="w-96 border-r flex-col h-full bg-background flex">

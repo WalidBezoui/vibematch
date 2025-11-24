@@ -539,7 +539,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     
     if (isLoading) {
         return (
-            <div className="flex-1 flex flex-col bg-muted/50">
+            <div className="flex-1 flex flex-col bg-muted/50 h-full">
                 <Skeleton className="h-24 sm:h-20 w-full" />
                 <div className="flex-1 p-6"><Skeleton className="h-full w-full" /></div>
                 <Skeleton className="h-16 w-full" />
@@ -549,7 +549,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     
     if(!conversation) {
         return (
-             <main className="flex-1 flex items-center justify-center bg-muted/50">
+             <main className="flex-1 flex items-center justify-center bg-muted/50 h-full">
                 <div className="text-center">
                     <Info className="mx-auto h-12 w-12 text-muted-foreground" />
                     <h2 className="mt-4 text-xl font-semibold text-muted-foreground">Conversation not found</h2>
@@ -561,7 +561,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
      const isParticipant = user && (user.uid === conversation.brand_id || user.uid === conversation.creator_id);
      if(!isParticipant) {
          return (
-             <main className="flex-1 flex items-center justify-center bg-muted/50">
+             <main className="flex-1 flex items-center justify-center bg-muted/50 h-full">
                 <Alert variant="destructive" className="max-w-md">
                    <AlertTitle>Access Denied</AlertTitle>
                    <AlertDescription>You are not a participant in this conversation.</AlertDescription>
@@ -703,7 +703,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     }
 
     return (
-        <main className="flex-1 flex flex-col bg-muted/50">
+        <main className="flex-1 flex flex-col bg-muted/50 h-full">
             <DealStatusHeader 
                 conversation={conversation} 
                 campaign={campaign} 
