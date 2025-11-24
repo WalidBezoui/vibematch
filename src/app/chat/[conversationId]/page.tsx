@@ -13,14 +13,20 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetDescription,
-  SheetFooter,
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Label } from '@/components/ui/label';
@@ -333,7 +339,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-const NewProposalForm = ({ onMakeOffer }: { onMakeOffer: (amount: number, message: string) => void }) => {
+const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: number, message: string) => void, setOpen?: (open: boolean) => void }) => {
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
   
@@ -345,6 +351,7 @@ const NewProposalForm = ({ onMakeOffer }: { onMakeOffer: (amount: number, messag
       onMakeOffer(parseFloat(newOffer), message || "Here is my new proposal for this campaign.");
       setNewOffer('');
       setMessage('');
+      setOpen?.(false);
     };
   
     return (
@@ -363,6 +370,7 @@ const NewProposalForm = ({ onMakeOffer }: { onMakeOffer: (amount: number, messag
 const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
     const { user } = useUser();
     const isMobile = useIsMobile();
+    const [open, setOpen] = useState(false);
     
     if (conversation.status !== 'NEGOTIATION') {
         return null;
@@ -386,7 +394,7 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
     );
 
     const ProposalContent = (
-        <NewProposalForm onMakeOffer={onMakeOffer} />
+        <NewProposalForm onMakeOffer={onMakeOffer} setOpen={setOpen} />
     );
 
     return (
@@ -402,7 +410,7 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
                 </div>
                  
                  {isMobile ? (
-                    <Sheet>
+                    <Sheet open={open} onOpenChange={setOpen}>
                         <SheetTrigger asChild>{ProposalTrigger}</SheetTrigger>
                         <SheetContent side="bottom" className="rounded-t-lg">
                            <SheetHeader className="text-left">
@@ -413,15 +421,16 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
                         </SheetContent>
                     </Sheet>
                  ) : (
-                    <Popover>
-                        <PopoverTrigger asChild>{ProposalTrigger}</PopoverTrigger>
-                        <PopoverContent className="w-80" align="end">
-                            <div className="grid gap-4">
-                                <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
-                                {ProposalContent}
-                            </div>
-                        </PopoverContent>
-                    </Popover>
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger asChild>{ProposalTrigger}</DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle>New Proposal</DialogTitle>
+                                <DialogDescription>Propose a new budget and add a message if you wish.</DialogDescription>
+                            </DialogHeader>
+                            {ProposalContent}
+                        </DialogContent>
+                    </Dialog>
                  )}
 
                 <Button variant="ghost" size="lg" className="w-full text-destructive hover:text-destructive hover:bg-destructive/10" onClick={onDecline}>
@@ -705,3 +714,5 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
+
+    
