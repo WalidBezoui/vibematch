@@ -1,10 +1,11 @@
 
+
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft } from 'lucide-react';
+import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -361,7 +362,7 @@ const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: numbe
           <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
           <Label htmlFor="message">Message (optional)</Label>
           <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
-          <Button onClick={handleSubmitOffer}>Send Offer</Button>
+          <Button onClick={handleSubmitOffer}>Send Offer <ArrowRight className="ml-2 h-4 w-4" /></Button>
         </div>
       </div>
     );
@@ -736,3 +737,4 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     
 
     
+
