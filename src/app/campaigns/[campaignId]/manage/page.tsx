@@ -1,6 +1,4 @@
 
-
-
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -190,7 +188,7 @@ export default function ManageApplicationsPage() {
         try {
             await batch.commit();
             toast({ title: t('manageApplicationsPage.chatOpenedToast.title'), description: t('manageApplicationsPage.chatOpenedToast.description') });
-            router.push(`/chat/${conversationDocRef.id}`);
+            router.push(`/chat?id=${conversationDocRef.id}`);
         } catch(serverError) {
              const permissionError = new FirestorePermissionError({
                 path: `BATCH_WRITE on /campaigns/${campaignId} and /conversations`,
@@ -347,7 +345,7 @@ export default function ManageApplicationsPage() {
                 <CardFooter className="flex-col items-stretch gap-2 bg-muted/30 p-3 border-t">
                     {type === 'discussion' && conversationId && (
                          <Button asChild className="w-full" size="sm">
-                            <Link href={`/chat/${conversationId}`}>
+                            <Link href={`/chat?id=${conversationId}`}>
                                 Open Chat <ArrowRight className="h-4 w-4 ml-2" />
                             </Link>
                          </Button>
@@ -517,5 +515,3 @@ export default function ManageApplicationsPage() {
         </>
     )
 }
-
-    
