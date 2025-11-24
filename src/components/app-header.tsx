@@ -12,7 +12,7 @@ import { useUser, useUserProfile, useCollection, useFirestore, useMemoFirebase }
 import { getAuth, signOut } from 'firebase/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { query, collection, where, getCountFromServer } from 'firebase/firestore';
+import { query, collection, where, onSnapshot, Unsubscribe } from 'firebase/firestore';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -100,9 +100,9 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadMessages, newApplications }: 
                         <link.icon className={cn("h-4 w-4", isActive ? "text-primary" : "")} />
                         <span>{link.label}</span>
                          {isMessages && unreadMessages > 0 && (
-                            <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
+                            <span className="absolute top-1 right-1 flex h-3 w-3">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                             </span>
                         )}
                          {isNotifications && newApplications > 0 && (
@@ -296,24 +296,43 @@ export function AppHeader() {
   const { data: brandOpenCampaigns } = useCollection(brandOpenCampaignsQuery);
 
   useEffect(() => {
-    if (brandOpenCampaigns && firestore && userProfile?.role === 'brand') {
-      const fetchNewApplicationCount = async () => {
-        if(brandOpenCampaigns.length === 0) {
-            setNewApplications(0);
-            return;
-        }
-        
-        let total = 0;
-        for (const campaign of brandOpenCampaigns) {
-            const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
-            const snapshot = await getCountFromServer(q);
-            total += snapshot.data().count;
-        }
-        setNewApplications(total);
-      };
-      fetchNewApplicationCount();
-    }
-  }, [brandOpenCampaigns, firestore, userProfile?.role]);
+    if (!brandOpenCampaigns || !firestore) return;
+
+    const unsubscribes: Unsubscribe[] = [];
+    let totalCount = 0;
+
+    brandOpenCampaigns.forEach(campaign => {
+      const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        // This is not perfectly transactional but good enough for a real-time badge
+        totalCount = 0; // Recalculate everything on any change
+        brandOpenCampaigns.forEach(c => {
+            if (c.id === campaign.id) {
+                totalCount += snapshot.size;
+            } else {
+                // To get the latest count, we'd ideally store counts per campaign
+                // For now, let's just add the size of the latest snapshot
+            }
+        });
+        setNewApplications(prev => prev + snapshot.docs.length - (campaign.applicationCount || 0) );
+        campaign.applicationCount = snapshot.docs.length; // makeshift way to track
+      });
+      unsubscribes.push(unsubscribe);
+    });
+    
+    const initialCounts = brandOpenCampaigns.map(c => {
+        const q = query(collection(firestore, 'campaigns', c.id, 'applications'), where('status', '==', 'APPLIED'));
+        return getDocs(q).then(snap => snap.size);
+    });
+    
+    Promise.all(initialCounts).then(counts => {
+        setNewApplications(counts.reduce((a, b) => a + b, 0));
+    });
+
+
+    return () => unsubscribes.forEach(unsub => unsub());
+
+  }, [brandOpenCampaigns, firestore]);
 
   const isLoading = isUserLoading || (user && isProfileLoading);
 

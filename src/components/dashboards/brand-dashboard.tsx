@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
 import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { collection, query, where, getCountFromServer, getDocs, doc, deleteDoc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, getCountFromServer, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -76,35 +76,11 @@ const StatCard = ({ title, value, icon, isLoading }: { title: string; value: str
     </Card>
 );
 
-const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campaignId: string) => Promise<void> }) => {
-    const firestore = useFirestore();
+const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any, onDelete: (campaignId: string) => Promise<void>, applicationCount: number }) => {
     const { t } = useLanguage();
-    const [applicationCount, setApplicationCount] = useState(0);
-    const [isLoadingCount, setIsLoadingCount] = useState(true);
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
     const hiringProgress = totalNeeded > 0 ? (hiredCount / totalNeeded) * 100 : 0;
-
-    useEffect(() => {
-        const fetchCount = async () => {
-            if (firestore && campaign.id) {
-                setIsLoadingCount(true);
-                try {
-                    const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
-                    const snapshot = await getCountFromServer(q);
-                    setApplicationCount(snapshot.data().count);
-                } catch (e) {
-                    console.error("Error fetching application count:", e)
-                    setApplicationCount(0)
-                } finally {
-                    setIsLoadingCount(false);
-                }
-            } else {
-                setIsLoadingCount(false);
-            }
-        };
-        fetchCount();
-    }, [firestore, campaign.id]);
 
     const manageButtonLink = `/campaigns/${campaign.id}/manage`;
 
@@ -176,7 +152,7 @@ const CampaignCard = ({ campaign, onDelete }: { campaign: any, onDelete: (campai
                         <Link href={manageButtonLink}>
                             <Users className="mr-2 h-4 w-4" />
                             {t('brandDashboard.manageButton')}
-                            {isLoadingCount ? <Skeleton className="h-5 w-5 rounded-full ml-2" /> : applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
+                            {applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
                         </Link>
                     </Button>
                 ) : (
@@ -195,7 +171,8 @@ export default function BrandDashboard() {
   const firestore = useFirestore();
   const { toast } = useToast();
   const { t } = useLanguage();
-  const [stats, setStats] = useState({ activeCampaigns: 0, totalApplications: 0, totalBudget: 0 });
+  const [stats, setStats] = useState({ activeCampaigns: 0, totalBudget: 0 });
+  const [applicationCounts, setApplicationCounts] = useState<Record<string, number>>({});
   const [isStatsLoading, setIsStatsLoading] = useState(true);
 
   const campaignsQuery = useMemoFirebase(
@@ -206,36 +183,30 @@ export default function BrandDashboard() {
   
   useEffect(() => {
     if (campaigns && firestore && user) {
-        const calculateStats = async () => {
-            setIsStatsLoading(true);
-            try {
-                let totalApplications = 0;
-                let totalBudget = 0;
-                const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED' && c.status !== 'REJECTED_BY_CREATOR').length;
+        setIsStatsLoading(true);
+        let totalBudget = 0;
+        const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED' && c.status !== 'REJECTED_BY_CREATOR').length;
+        if (campaigns.length > 0) {
+            totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0) * (c.numberOfCreators || 1), 0);
+        }
+        setStats({ activeCampaigns, totalBudget });
+        setIsStatsLoading(false);
 
-                if (campaigns.length > 0) {
-                     const applicationCounts = await Promise.all(
-                        campaigns.map(campaign => 
-                            getCountFromServer(query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED')))
-                        )
-                    );
-                    totalApplications = applicationCounts.reduce((sum, current) => sum + current.data().count, 0);
-                    totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0) * (c.numberOfCreators || 1), 0);
-                }
+        const unsubscribes: Unsubscribe[] = campaigns.map(campaign => {
+            const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
+            return onSnapshot(q, (snapshot) => {
+                setApplicationCounts(prev => ({ ...prev, [campaign.id]: snapshot.size }));
+            });
+        });
 
-                setStats({ activeCampaigns, totalApplications, totalBudget });
-            } catch (error) {
-                console.error("Failed to calculate stats:", error);
-            } finally {
-                setIsStatsLoading(false);
-            }
-        };
-        calculateStats();
+        return () => unsubscribes.forEach(unsub => unsub());
+
     } else if (!isLoading) {
         setIsStatsLoading(false);
     }
-}, [campaigns, firestore, user, isLoading]);
+  }, [campaigns, firestore, user, isLoading]);
 
+  const totalApplications = Object.values(applicationCounts).reduce((sum, count) => sum + count, 0);
 
   const handleDeleteCampaign = async (campaignId: string) => {
     if (!firestore) return;
@@ -327,7 +298,7 @@ export default function BrandDashboard() {
       
       <div className="grid gap-4 md:grid-cols-3 mb-8">
         <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.active')} value={stats.activeCampaigns} icon={<Activity className="h-4 w-4 text-muted-foreground" />} />
-        <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.applications')} value={stats.totalApplications} icon={<FileText className="h-4 w-4 text-muted-foreground" />} />
+        <StatCard isLoading={isLoading} title={t('brandDashboard.stats.applications')} value={totalApplications} icon={<FileText className="h-4 w-4 text-muted-foreground" />} />
         <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.budget')} value={`${stats.totalBudget.toLocaleString()} DH`} icon={<CircleDollarSign className="h-4 w-4 text-muted-foreground" />} />
       </div>
 
@@ -343,7 +314,12 @@ export default function BrandDashboard() {
       {!isLoading && campaigns && campaigns.length > 0 ? (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {campaigns.map((campaign) => (
-            <CampaignCard campaign={campaign} key={campaign.id} onDelete={handleDeleteCampaign} />
+            <CampaignCard 
+                campaign={campaign} 
+                key={campaign.id} 
+                onDelete={handleDeleteCampaign}
+                applicationCount={applicationCounts[campaign.id] || 0}
+            />
           ))}
         </div>
       ) : null}
