@@ -84,17 +84,19 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
 
     const { icon: Icon, text, color, bgColor } = getStatusInfo();
     
-    const budgetLabel = conversation.status === 'NEGOTIATION' ? 'Last Offer' : 'Agreed Budget';
-    const isMyTurn = conversation.status === 'NEGOTIATION' && conversation.last_offer_by !== user?.uid;
+    let budgetLabel = conversation.status === 'NEGOTIATION' ? 'Last Offer' : 'Agreed Budget';
+    if(conversation.status === 'NEGOTIATION' && conversation.last_offer_by !== user?.uid) {
+        budgetLabel = "Their Offer";
+    }
 
     return (
         <div className={cn("p-4 border-b", bgColor)}>
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <div className="grid grid-cols-2 sm:flex sm:justify-between sm:items-center gap-4">
                 <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
                         <ArrowLeft className="h-5 w-5" />
                     </Button>
-                    {isBrand && otherUser && (
+                    {isBrand && otherUser ? (
                         <div className="flex items-center gap-3">
                             <Avatar className="h-10 w-10 border">
                                 <AvatarImage src={otherUser.photoURL} alt={otherUser.name} />
@@ -105,8 +107,7 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                                 <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground hover:text-primary" onClick={onOpenProfile}>View Profile</Button>
                             </div>
                         </div>
-                    )}
-                     {!isBrand && campaign && (
+                    ) : !isBrand && campaign && (
                          <div className="flex items-center gap-3">
                               <div className="h-10 w-10 border rounded-md flex items-center justify-center bg-card">
                                  <Briefcase className="h-5 w-5 text-muted-foreground"/>
@@ -116,35 +117,27 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                                 <p className="text-xs text-muted-foreground">{otherUser?.name || 'Brand'}</p>
                             </div>
                         </div>
-                     )}
+                    )}
                  </div>
 
-                <div className={cn("font-semibold text-sm flex items-center justify-start sm:justify-center gap-2", color)}>
-                    <Icon className="h-5 w-5" />
-                    <span>{text}</span>
-                </div>
-
-                <div className="flex justify-between items-center sm:block sm:text-right">
-                  {isMyTurn ? (
-                    <div className="flex items-center gap-2 sm:block">
-                        <div>
-                          <p className="text-xs font-semibold text-muted-foreground sm:text-right">Their Offer</p>
-                          <p className="font-bold text-primary sm:text-right">{conversation.agreed_budget || 0} MAD</p>
-                        </div>
+                <div className="flex flex-col items-end justify-center text-right gap-1 col-span-1">
+                    <div className={cn("font-semibold text-xs sm:text-sm flex items-center justify-end gap-2", color)}>
+                        <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span>{text}</span>
                     </div>
-                  ) : (
-                    <div className="sm:text-right">
+                     <div>
                         <p className="text-xs font-semibold text-muted-foreground">{budgetLabel}</p>
                         <p className="font-bold text-primary">{conversation.agreed_budget || 0} MAD</p>
                     </div>
-                  )}
+                </div>
 
-                  {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
-                        <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>
+                {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
+                    <div className="col-span-2 sm:col-span-1 sm:w-auto">
+                        <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full sm:w-auto">
                           <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
                         </Button>
-                  )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -490,7 +483,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     if (isLoading) {
         return (
             <div className="flex-1 flex flex-col bg-muted/50">
-                <Skeleton className="h-16 w-full" />
+                <Skeleton className="h-24 sm:h-20 w-full" />
                 <div className="flex-1 p-6"><Skeleton className="h-full w-full" /></div>
                 <Skeleton className="h-16 w-full" />
             </div>
