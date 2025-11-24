@@ -372,29 +372,31 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
     const isInitialOffer = !lastOfferMessage;
 
     return (
-        <div className="p-4 bg-background border-t space-y-4">
-            <div className="flex flex-col sm:flex-row gap-2">
+        <div className="p-4 bg-background border-t space-y-2">
+            <div className="flex items-center gap-2">
                 <Button className="flex-1" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
                     <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate ({offerToRespondTo} MAD)
                 </Button>
-                <Popover>
-                    <PopoverTrigger asChild><Button variant="outline" className="flex-1">Propose New Rate</Button></PopoverTrigger>
-                    <PopoverContent className="w-80">
-                        <div className="grid gap-4">
-                            <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
-                            <div className="grid gap-2">
-                                    <Label htmlFor="budget">Amount (MAD)</Label>
-                                    <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                    <Label htmlFor="message">Message (optional)</Label>
-                                    <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
-                                    <Button onClick={handleSubmitOffer}>Send Offer</Button>
+                <div className="flex gap-2">
+                     <Popover>
+                        <PopoverTrigger asChild><Button variant="outline">Propose</Button></PopoverTrigger>
+                        <PopoverContent className="w-80">
+                            <div className="grid gap-4">
+                                <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
+                                <div className="grid gap-2">
+                                        <Label htmlFor="budget">Amount (MAD)</Label>
+                                        <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
+                                        <Label htmlFor="message">Message (optional)</Label>
+                                        <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
+                                        <Button onClick={handleSubmitOffer}>Send Offer</Button>
+                                </div>
                             </div>
-                        </div>
-                    </PopoverContent>
-                </Popover>
-                <Button variant="destructive" className="flex-1" onClick={onDecline}>
-                    <XCircle className="mr-2 h-4 w-4" /> Decline
-                </Button>
+                        </PopoverContent>
+                    </Popover>
+                     <Button variant="destructive" size="icon" onClick={onDecline}>
+                        <XCircle className="h-4 w-4" />
+                    </Button>
+                </div>
             </div>
         </div>
     );
