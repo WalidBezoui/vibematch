@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft } from 'lucide-react';
+import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,7 +13,22 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger
+} from '@/components/ui/dialog';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,23 +36,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
+import { useIsMobile } from '@/hooks/use-mobile';
 
-const GuardianBot = {
-  isSecure: (text: string): boolean => {
-    const forbiddenPatterns = [
-      /\b(06|07)\d{8}\b/g, // Phone numbers
-      /\+212\s?\d{9}/g,
-      /\S+@\S+\.\S+/g, // Emails
-      /whatsapp/i,
-      /instagram/i,
-      /telegram/i,
-      /gmail/i,
-      /virement/i,
-      /cash/i,
-    ];
-    return !forbiddenPatterns.some(pattern => pattern.test(text));
-  },
-};
 
 const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onBack }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onBack: () => void }) => {
     const { user } = useUser();
@@ -207,7 +207,7 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
                         </div>
                          <div>
                             <p className="text-sm font-semibold text-muted-foreground">Original Cover Letter</p>
-                            <p className="text-sm text-foreground/80 mt-1 whitespace-pre-wrap border p-3 rounded-md bg-background/50">{coverLetter}</p>
+                            <p className="text-sm text-foreground/80 mt-1 whitespace-pre-wrap border p-3 rounded-md bg-background/50 break-words">{coverLetter}</p>
                         </div>
                     </CardContent>
                 </Card>
@@ -339,10 +339,38 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
-    const { user } = useUser();
+const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: number, message: string) => void, setOpen?: (open: boolean) => void }) => {
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
+  
+    const handleSubmitOffer = () => {
+      if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+      }
+      onMakeOffer(parseFloat(newOffer), message || "Here is my new proposal for this campaign.");
+      setNewOffer('');
+      setMessage('');
+      setOpen?.(false);
+    };
+  
+    return (
+      <div className="grid gap-4">
+        <div className="grid gap-2">
+          <Label htmlFor="budget">Amount (MAD)</Label>
+          <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
+          <Label htmlFor="message">Message (optional)</Label>
+          <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
+          <Button onClick={handleSubmitOffer}>Send Offer <ArrowRight className="ml-2 h-4 w-4" /></Button>
+        </div>
+      </div>
+    );
+  };
+  
+const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
+    const { user } = useUser();
+    const isMobile = useIsMobile();
+    const [open, setOpen] = useState(false);
     
     if (conversation.status !== 'NEGOTIATION') {
         return null;
@@ -358,50 +386,55 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
         )
     }
     
-    const handleSubmitOffer = () => {
-        if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
-            alert("Please enter a valid amount.");
-            return;
-        }
-        onMakeOffer(parseFloat(newOffer), message || "Here is my new proposal for this campaign.");
-        setNewOffer('');
-        setMessage('');
-    }
-
     const lastOfferMessage = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
     const offerToRespondTo = lastOfferMessage ? lastOfferMessage.metadata.offer_amount : conversation.agreed_budget;
 
+    const ProposalContent = (
+        <NewProposalForm onMakeOffer={onMakeOffer} setOpen={setOpen} />
+    );
+
     return (
         <div className="p-3 bg-background border-t">
-            <div className="max-h-[50vh] overflow-y-auto space-y-3">
-                 <Button className="w-full" size="lg" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                 <Button className="w-full md:w-auto" size="lg" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
                     <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate ({offerToRespondTo} MAD)
                 </Button>
-                <div className="relative flex items-center">
+                
+                <div className="relative flex items-center md:hidden">
                     <div className="flex-grow border-t border-border"></div>
                     <span className="flex-shrink mx-2 text-xs text-muted-foreground">OR</span>
                     <div className="flex-grow border-t border-border"></div>
                 </div>
-                 <Popover>
-                    <PopoverTrigger asChild>
-                        <Button variant="outline" size="lg" className="w-full">Propose New Rate</Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80" align="end">
-                        <div className="grid gap-4">
-                            <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="budget">Amount (MAD)</Label>
-                                <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                <Label htmlFor="message">Message (optional)</Label>
-                                <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
-                                <Button onClick={handleSubmitOffer}>Send Offer</Button>
-                            </div>
-                        </div>
-                    </PopoverContent>
-                </Popover>
-                <Button variant="ghost" size="lg" className="w-full text-destructive hover:text-destructive hover:bg-destructive/10" onClick={onDecline}>
-                    <XCircle className="mr-2 h-4 w-4" /> Decline & End Negotiation
+                 
+                <div className="flex flex-col md:flex-row items-center gap-2">
+                 {isMobile ? (
+                    <Sheet open={open} onOpenChange={setOpen}>
+                        <SheetTrigger asChild><Button variant="outline" size="lg" className="w-full">Propose New Rate</Button></SheetTrigger>
+                        <SheetContent side="bottom" className="rounded-t-lg">
+                           <SheetHeader className="text-left">
+                            <SheetTitle>New Proposal</SheetTitle>
+                            <SheetDescription>Propose a new budget and add a message if you wish.</SheetDescription>
+                           </SheetHeader>
+                           <div className="py-4">{ProposalContent}</div>
+                        </SheetContent>
+                    </Sheet>
+                 ) : (
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger asChild><Button variant="outline" size="lg">Propose New Rate</Button></DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle>New Proposal</DialogTitle>
+                                <DialogDescription>Propose a new budget and add a message if you wish.</DialogDescription>
+                            </DialogHeader>
+                            {ProposalContent}
+                        </DialogContent>
+                    </Dialog>
+                 )}
+
+                <Button variant="ghost" size="lg" className="w-full md:w-auto text-destructive hover:text-destructive hover:bg-destructive/10" onClick={onDecline}>
+                    <XCircle className="mr-2 h-4 w-4 md:hidden" /> Decline
                 </Button>
+                </div>
             </div>
         </div>
     );
@@ -410,6 +443,23 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
 const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string) => void, disabled: boolean, placeholder: string }) => {
     const [input, setInput] = useState('');
     const [isBlocked, setIsBlocked] = useState(false);
+
+    const GuardianBot = {
+        isSecure: (text: string): boolean => {
+            const forbiddenPatterns = [
+            /\b(06|07)\d{8}\b/g, // Phone numbers
+            /\+212\s?\d{9}/g,
+            /\S+@\S+\.\S+/g, // Emails
+            /whatsapp/i,
+            /instagram/i,
+            /telegram/i,
+            /gmail/i,
+            /virement/i,
+            /cash/i,
+            ];
+            return !forbiddenPatterns.some(pattern => pattern.test(text));
+        },
+    };
 
     const handleSend = () => {
         if (!input.trim() || disabled) return;
