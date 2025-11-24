@@ -22,6 +22,8 @@ import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const GuardianBot = {
   isSecure: (text: string): boolean => {
@@ -127,30 +129,9 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                   {isMyTurn ? (
                     <div className="flex items-center gap-2">
                         <div>
-                          <p className="text-xs font-semibold text-muted-foreground text-right">Offer</p>
+                          <p className="text-xs font-semibold text-muted-foreground text-right">Their Offer</p>
                           <p className="font-bold text-primary text-right">{conversation.agreed_budget || 0} MAD</p>
                         </div>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button size="sm">Respond</Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0">
-                            <div className="flex flex-col">
-                               <Button variant="ghost" className="justify-start px-3 py-2 h-auto" onClick={() => onAccept(conversation.agreed_budget)}>
-                                   <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
-                                   Accept Offer
-                                </Button>
-                                <Button variant="ghost" className="justify-start px-3 py-2 h-auto" onClick={onPropose}>
-                                   <Handshake className="mr-2 h-4 w-4 text-blue-500" />
-                                   Propose New Rate
-                                </Button>
-                               <Button variant="ghost" className="justify-start px-3 py-2 h-auto text-destructive hover:text-destructive" onClick={onDecline}>
-                                   <XCircle className="mr-2 h-4 w-4" />
-                                   Decline
-                                </Button>
-                            </div>
-                          </PopoverContent>
-                        </Popover>
                     </div>
                   ) : (
                     <div className="text-right">
@@ -477,8 +458,6 @@ export default function SingleChatPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
     const [isSheetOpen, setIsSheetOpen] = useState(false);
-    const [newOffer, setNewOffer] = useState('');
-    const [newOfferMessage, setNewOfferMessage] = useState('');
 
 
      useEffect(() => {
@@ -632,7 +611,15 @@ export default function SingleChatPage() {
                 updatedAt: serverTimestamp(),
              });
         } catch (error: any) {
-            toast({ variant: 'destructive', title: 'Error sending message', description: error.message });
+             const permissionError = new FirestorePermissionError({
+                path: messagesRef.path,
+                operation: 'create',
+                requestResourceData: {
+                    type: 'TEXT',
+                    content: text,
+                },
+             })
+             errorEmitter.emit('permission-error', permissionError)
         } finally {
             setIsSubmitting(false);
         }
@@ -683,13 +670,14 @@ export default function SingleChatPage() {
 
     const isChatActive = conversation.status === 'ACTIVE' && campaign?.status !== 'PENDING_PAYMENT';
     const isInNegotiation = conversation.status === 'NEGOTIATION';
-    const textInputDisabled = !isChatActive || isInNegotiation;
+    const textInputDisabled = !isChatActive && !isInNegotiation;
     
-    let placeholder = "Choose an action below to respond.";
+    let placeholder = "This conversation is not active for messages.";
+    if(isInNegotiation) {
+        placeholder = "Use the actions below to respond to the offer.";
+    }
     if (isChatActive) {
       placeholder = "Discuss creative details...";
-    } else if (conversation.status !== 'NEGOTIATION') {
-      placeholder = "This conversation is not active.";
     }
 
 
@@ -699,47 +687,28 @@ export default function SingleChatPage() {
             <div className="flex flex-1 overflow-hidden">
                 <ChatSidebar conversationId={conversationId as string} />
                 <main className="flex-1 flex flex-col bg-muted/50">
-                    <Popover>
-                        <DealStatusHeader 
-                            conversation={conversation} 
-                            campaign={campaign} 
-                            onOpenProfile={() => setIsSheetOpen(true)}
-                            otherUser={otherUser}
-                            onAccept={(amount) => handleMakeOffer(amount, "I accept your rate.")}
-                            onPropose={() => {
-                                const popoverTrigger = document.getElementById('popover-trigger-propose');
-                                if (popoverTrigger) popoverTrigger.click();
-                            }}
-                            onDecline={handleDecline}
-                        />
-                         <PopoverTrigger asChild>
-                            <button id="popover-trigger-propose" className="hidden">Propose</button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-80">
-                            <div className="grid gap-4">
-                                <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
-                                <div className="grid gap-2">
-                                        <Label htmlFor="budget">Amount (MAD)</Label>
-                                        <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-                                        <Label htmlFor="message">Message (optional)</Label>
-                                        <Textarea id="message" value={newOfferMessage} onChange={(e) => setNewOfferMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
-                                        <Button onClick={() => {
-                                             if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
-                                                toast({variant: 'destructive', title: 'Invalid amount', description: "Please enter a valid amount."});
-                                                return;
-                                            }
-                                            handleMakeOffer(parseFloat(newOffer), newOfferMessage || "Here is my new proposal.");
-                                            setNewOffer('');
-                                            setNewOfferMessage('');
-                                            const popoverTrigger = document.getElementById('popover-trigger-propose');
-                                            if (popoverTrigger) popoverTrigger.click();
-                                        }}>Send Offer</Button>
-                                </div>
-                            </div>
-                        </PopoverContent>
-                    </Popover>
+                    <DealStatusHeader 
+                        conversation={conversation} 
+                        campaign={campaign} 
+                        onOpenProfile={() => setIsSheetOpen(true)}
+                        otherUser={otherUser}
+                        onAccept={(amount) => handleMakeOffer(amount, "I accept your rate.")}
+                        onPropose={() => {
+                            // This is a placeholder for a more complex UI
+                            const newRate = prompt("Propose a new rate (MAD):");
+                            if(newRate) handleMakeOffer(parseFloat(newRate), "Here is my new proposal.");
+                        }}
+                        onDecline={handleDecline}
+                    />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
-                    {isInNegotiation ? null : (
+                    {isInNegotiation ? (
+                         <ActionFooter 
+                            conversation={conversation}
+                            messages={messages || []}
+                            onMakeOffer={handleMakeOffer}
+                            onDecline={handleDecline}
+                         />
+                    ) : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}
                 </main>
