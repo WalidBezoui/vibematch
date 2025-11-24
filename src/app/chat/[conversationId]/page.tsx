@@ -42,7 +42,7 @@ const GuardianBot = {
   },
 };
 
-const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onAccept, onPropose, onDecline }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onAccept: (amount: number) => void, onPropose: () => void, onDecline: () => void }) => {
+const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
     const router = useRouter();
@@ -692,13 +692,6 @@ export default function SingleChatPage() {
                         campaign={campaign} 
                         onOpenProfile={() => setIsSheetOpen(true)}
                         otherUser={otherUser}
-                        onAccept={(amount) => handleMakeOffer(amount, "I accept your rate.")}
-                        onPropose={() => {
-                            // This is a placeholder for a more complex UI
-                            const newRate = prompt("Propose a new rate (MAD):");
-                            if(newRate) handleMakeOffer(parseFloat(newRate), "Here is my new proposal.");
-                        }}
-                        onDecline={handleDecline}
                     />
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
                     {isInNegotiation ? (
@@ -721,3 +714,5 @@ export default function SingleChatPage() {
         </div>
     );
 }
+
+    
