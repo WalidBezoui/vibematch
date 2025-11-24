@@ -4,33 +4,37 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
 import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from './ui/badge';
+import { useSearchParams } from 'next/navigation';
 
 const ConversationCard = ({
-  href,
+  id,
   avatar,
   name,
   title,
   lastMessage,
   isActive,
   hasAction,
+  onClick,
 }: {
-  href: string;
+  id: string;
   avatar: string;
   name: string;
   title: string;
   lastMessage: string;
   isActive: boolean;
   hasAction?: boolean;
+  onClick: (id: string) => void;
 }) => {
   return (
-    <Link href={href} className={cn(
-        "block p-3 rounded-lg transition-colors relative border-2",
+    <div 
+      onClick={() => onClick(id)}
+      className={cn(
+        "block p-3 rounded-lg transition-colors relative border-2 cursor-pointer",
         isActive ? "bg-muted border-primary/50" : "border-transparent hover:bg-muted/50"
     )}>
         <div className="flex items-center gap-4">
@@ -49,15 +53,17 @@ const ConversationCard = ({
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
             </span>
         )}
-    </Link>
+    </div>
   );
 };
 
-const ConversationList = ({ conversations, conversationId }: { conversations: any[], conversationId?: string }) => {
+const ConversationList = ({ conversations, onSelectConversation }: { conversations: any[], onSelectConversation: (id: string) => void }) => {
     const firestore = useFirestore();
     const { user } = useUser();
     const [enrichedConversations, setEnrichedConversations] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const searchParams = useSearchParams();
+    const conversationId = searchParams.get('id');
 
     useEffect(() => {
         const enrichConversations = async () => {
@@ -119,7 +125,8 @@ const ConversationList = ({ conversations, conversationId }: { conversations: an
             {enrichedConversations.map((item) => (
                 <ConversationCard 
                     key={item.id} 
-                    href={`/chat/${item.id}`} 
+                    id={item.id}
+                    onClick={onSelectConversation}
                     isActive={conversationId === item.id} 
                     avatar={item.otherUser.photoURL}
                     name={item.otherUser.name}
@@ -132,7 +139,7 @@ const ConversationList = ({ conversations, conversationId }: { conversations: an
     );
 };
 
-export function ChatSidebar({ conversationId }: { conversationId?: string }) {
+export function ChatSidebar({ onSelectConversation }: { onSelectConversation: (id: string) => void }) {
   const firestore = useFirestore();
   const { user } = useUser();
   const { userProfile } = useUserProfile();
@@ -150,7 +157,7 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
   const completed = conversations?.filter(c => c.status === 'COMPLETED' || c.status === 'CANCELLED') || [];
 
   return (
-    <aside className="w-96 border-r flex-col h-full bg-background hidden md:flex">
+    <aside className="w-full border-r flex-col h-full bg-background flex">
       <div className="p-4 border-b">
         <h2 className="text-2xl font-bold tracking-tight">Deals</h2>
       </div>
@@ -175,13 +182,13 @@ export function ChatSidebar({ conversationId }: { conversationId?: string }) {
                 </TabsList>
                 <div className="flex-1 overflow-y-auto">
                     <TabsContent value="negotiations" className="m-0">
-                        <ConversationList conversations={negotiations} conversationId={conversationId} />
+                        <ConversationList conversations={negotiations} onSelectConversation={onSelectConversation} />
                     </TabsContent>
                     <TabsContent value="active" className="m-0">
-                         <ConversationList conversations={active} conversationId={conversationId} />
+                         <ConversationList conversations={active} onSelectConversation={onSelectConversation} />
                     </TabsContent>
                     <TabsContent value="completed" className="m-0">
-                         <ConversationList conversations={completed} conversationId={conversationId} />
+                         <ConversationList conversations={completed} onSelectConversation={onSelectConversation} />
                     </TabsContent>
                 </div>
             </Tabs>

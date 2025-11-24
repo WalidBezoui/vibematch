@@ -2,12 +2,9 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ChatSidebar } from '@/components/chat-sidebar';
-import { AppHeader } from '@/components/app-header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
+import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft } from 'lucide-react';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -42,15 +39,14 @@ const GuardianBot = {
   },
 };
 
-const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any }) => {
+const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onBack }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onBack: () => void }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
-    const router = useRouter();
-
+    
     const isBrand = userProfile?.role === 'brand';
     
     const handleFund = () => {
-      router.push(`/campaigns/${conversation.campaign_id}/pay`);
+      // This will be handled by the parent component
     }
     
     const getStatusInfo = () => {
@@ -93,8 +89,11 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
 
     return (
         <div className={cn("p-4 border-b", bgColor)}>
-            <div className="flex justify-between items-center gap-4">
-                 <div className="flex-1 min-w-0">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
+                        <ArrowLeft className="h-5 w-5" />
+                    </Button>
                     {isBrand && otherUser && (
                         <div className="flex items-center gap-3">
                             <Avatar className="h-10 w-10 border">
@@ -120,21 +119,21 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
                      )}
                  </div>
 
-                <div className={cn("flex-1 text-center font-semibold text-sm flex items-center justify-center gap-2", color)}>
+                <div className={cn("font-semibold text-sm flex items-center justify-start sm:justify-center gap-2", color)}>
                     <Icon className="h-5 w-5" />
                     <span>{text}</span>
                 </div>
 
-                <div className="flex-1 min-w-0 flex justify-end">
+                <div className="flex justify-between items-center sm:block sm:text-right">
                   {isMyTurn ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 sm:block">
                         <div>
-                          <p className="text-xs font-semibold text-muted-foreground text-right">Their Offer</p>
-                          <p className="font-bold text-primary text-right">{conversation.agreed_budget || 0} MAD</p>
+                          <p className="text-xs font-semibold text-muted-foreground sm:text-right">Their Offer</p>
+                          <p className="font-bold text-primary sm:text-right">{conversation.agreed_budget || 0} MAD</p>
                         </div>
                     </div>
                   ) : (
-                    <div className="text-right">
+                    <div className="sm:text-right">
                         <p className="text-xs font-semibold text-muted-foreground">{budgetLabel}</p>
                         <p className="font-bold text-primary">{conversation.agreed_budget || 0} MAD</p>
                     </div>
@@ -449,9 +448,7 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
     );
 };
 
-export default function SingleChatPage() {
-    const { conversationId } = useParams();
-    const router = useRouter();
+export default function ChatView({ conversationId, onBack }: { conversationId: string, onBack: () => void }) {
     const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
@@ -459,15 +456,8 @@ export default function SingleChatPage() {
     const { toast } = useToast();
     const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-
-     useEffect(() => {
-      if (!isUserLoading && !user) {
-        router.push('/login');
-      }
-    }, [isUserLoading, user, router]);
-
     const conversationRef = useMemoFirebase(
-        () => (firestore && conversationId ? doc(firestore, 'conversations', conversationId as string) : null),
+        () => (firestore && conversationId ? doc(firestore, 'conversations', conversationId) : null),
         [firestore, conversationId]
     );
     const { data: conversation, isLoading: isConversationLoading } = useDoc(conversationRef);
@@ -490,7 +480,7 @@ export default function SingleChatPage() {
     const { data: campaign, isLoading: isCampaignLoading } = useDoc(campaignRef);
 
     const messagesQuery = useMemoFirebase(
-        () => (firestore && conversationId ? query(collection(firestore, 'conversations', conversationId as string, 'messages'), orderBy('timestamp', 'asc')) : null),
+        () => (firestore && conversationId ? query(collection(firestore, 'conversations', conversationId, 'messages'), orderBy('timestamp', 'asc')) : null),
         [firestore, conversationId]
     );
     const { data: messages, isLoading: areMessagesLoading } = useCollection(messagesQuery);
@@ -499,52 +489,34 @@ export default function SingleChatPage() {
     
     if (isLoading) {
         return (
-            <div className="h-screen w-full flex flex-col">
-                <AppHeader />
-                <div className="flex flex-1 overflow-hidden">
-                    <ChatSidebar conversationId={conversationId as string} />
-                    <main className="flex-1 flex flex-col bg-muted/50">
-                        <Skeleton className="h-16 w-full" />
-                        <div className="flex-1 p-6"><Skeleton className="h-full w-full" /></div>
-                        <Skeleton className="h-16 w-full" />
-                    </main>
-                </div>
+            <div className="flex-1 flex flex-col bg-muted/50">
+                <Skeleton className="h-16 w-full" />
+                <div className="flex-1 p-6"><Skeleton className="h-full w-full" /></div>
+                <Skeleton className="h-16 w-full" />
             </div>
         );
     }
     
     if(!conversation) {
         return (
-             <div className="h-screen w-full flex flex-col">
-                <AppHeader />
-                <div className="flex flex-1 overflow-hidden">
-                    <ChatSidebar />
-                     <main className="flex-1 flex items-center justify-center bg-muted/50">
-                        <div className="text-center">
-                            <Info className="mx-auto h-12 w-12 text-muted-foreground" />
-                            <h2 className="mt-4 text-xl font-semibold text-muted-foreground">Conversation not found</h2>
-                        </div>
-                    </main>
+             <main className="flex-1 flex items-center justify-center bg-muted/50">
+                <div className="text-center">
+                    <Info className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <h2 className="mt-4 text-xl font-semibold text-muted-foreground">Conversation not found</h2>
                 </div>
-            </div>
+            </main>
         )
     }
 
      const isParticipant = user && (user.uid === conversation.brand_id || user.uid === conversation.creator_id);
      if(!isParticipant) {
          return (
-              <div className="h-screen w-full flex flex-col">
-                <AppHeader />
-                <div className="flex flex-1 overflow-hidden">
-                    <ChatSidebar />
-                     <main className="flex-1 flex items-center justify-center bg-muted/50">
-                        <Alert variant="destructive" className="max-w-md">
-                           <AlertTitle>Access Denied</AlertTitle>
-                           <AlertDescription>You are not a participant in this conversation.</AlertDescription>
-                        </Alert>
-                    </main>
-                </div>
-            </div>
+             <main className="flex-1 flex items-center justify-center bg-muted/50">
+                <Alert variant="destructive" className="max-w-md">
+                   <AlertTitle>Access Denied</AlertTitle>
+                   <AlertDescription>You are not a participant in this conversation.</AlertDescription>
+                </Alert>
+            </main>
          )
      }
      
@@ -555,11 +527,11 @@ export default function SingleChatPage() {
 
         const lastOffer = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
         if(lastOffer) {
-            const lastOfferRef = doc(firestore, 'conversations', conversationId as string, 'messages', lastOffer.id);
+            const lastOfferRef = doc(firestore, 'conversations', conversationId, 'messages', lastOffer.id);
             batch.update(lastOfferRef, { 'metadata.offer_status': 'SUPERSEDED' });
         }
 
-        const newMessageRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
+        const newMessageRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
         batch.set(newMessageRef, {
             conversation_id: conversationId,
             sender_id: user.uid,
@@ -597,7 +569,7 @@ export default function SingleChatPage() {
         if (!firestore || !user || isSubmitting) return;
         
         setIsSubmitting(true);
-        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
+        const messagesRef = collection(firestore, 'conversations', conversationId, 'messages');
         try {
             await addDoc(messagesRef, {
                 conversation_id: conversationId,
@@ -629,14 +601,14 @@ export default function SingleChatPage() {
         if (!firestore || !user || !conversationRef || !userProfile) return;
         
         const batch = writeBatch(firestore);
-        const msgRef = doc(firestore, 'conversations', conversationId as string, 'messages', message.id);
+        const msgRef = doc(firestore, 'conversations', conversationId, 'messages', message.id);
         
         batch.update(msgRef, { 'metadata.offer_status': response });
         
         if (response === 'ACCEPTED') {
             batch.update(conversationRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED', last_offer_by: user.uid });
 
-            const newEventRef = doc(collection(firestore, 'conversations', conversationId as string, 'messages'));
+            const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
             batch.set(newEventRef, {
                 conversation_id: conversationId,
                 sender_id: user.uid,
@@ -680,39 +652,31 @@ export default function SingleChatPage() {
       placeholder = "Discuss creative details...";
     }
 
-
     return (
-        <div className="h-screen w-full flex flex-col">
-            <AppHeader />
-            <div className="flex flex-1 overflow-hidden">
-                <ChatSidebar conversationId={conversationId as string} />
-                <main className="flex-1 flex flex-col bg-muted/50">
-                    <DealStatusHeader 
-                        conversation={conversation} 
-                        campaign={campaign} 
-                        onOpenProfile={() => setIsSheetOpen(true)}
-                        otherUser={otherUser}
-                    />
-                    <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
-                    {isInNegotiation ? (
-                         <ActionFooter 
-                            conversation={conversation}
-                            messages={messages || []}
-                            onMakeOffer={handleMakeOffer}
-                            onDecline={handleDecline}
-                         />
-                    ) : (
-                       <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
-                    )}
-                </main>
-            </div>
-            <CreatorProfileSheet 
+        <main className="flex-1 flex flex-col bg-muted/50">
+            <DealStatusHeader 
+                conversation={conversation} 
+                campaign={campaign} 
+                onOpenProfile={() => setIsSheetOpen(true)}
+                otherUser={otherUser}
+                onBack={onBack}
+            />
+            <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
+            {isInNegotiation ? (
+                 <ActionFooter 
+                    conversation={conversation}
+                    messages={messages || []}
+                    onMakeOffer={handleMakeOffer}
+                    onDecline={handleDecline}
+                 />
+            ) : (
+               <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
+            )}
+             <CreatorProfileSheet 
                 creatorId={conversation.creator_id}
                 open={isSheetOpen}
                 onOpenChange={setIsSheetOpen}
             />
-        </div>
+        </main>
     );
 }
-
-    
