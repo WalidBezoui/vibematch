@@ -445,6 +445,23 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
     const [input, setInput] = useState('');
     const [isBlocked, setIsBlocked] = useState(false);
 
+    const GuardianBot = {
+        isSecure: (text: string): boolean => {
+            const forbiddenPatterns = [
+            /\b(06|07)\d{8}\b/g, // Phone numbers
+            /\+212\s?\d{9}/g,
+            /\S+@\S+\.\S+/g, // Emails
+            /whatsapp/i,
+            /instagram/i,
+            /telegram/i,
+            /gmail/i,
+            /virement/i,
+            /cash/i,
+            ];
+            return !forbiddenPatterns.some(pattern => pattern.test(text));
+        },
+    };
+
     const handleSend = () => {
         if (!input.trim() || disabled) return;
         if (!GuardianBot.isSecure(input)) {
