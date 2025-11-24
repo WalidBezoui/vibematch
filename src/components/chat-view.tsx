@@ -37,16 +37,18 @@ import CreatorProfileSheet from '@/components/creator-profile-sheet';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useRouter } from 'next/navigation';
 
 
 const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onBack }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onBack: () => void }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
+    const router = useRouter();
     
     const isBrand = userProfile?.role === 'brand';
     
     const handleFund = () => {
-      // This will be handled by the parent component
+        router.push(`/campaigns/${conversation.campaign_id}/pay`)
     }
     
     const getStatusInfo = () => {
@@ -66,8 +68,9 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
 
             case 'OFFER_ACCEPTED':
                  return { icon: Handshake, text: isBrand ? "Deal Agreed. Fund to start." : "Deal Agreed. Awaiting funds.", color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
+            
             case 'ACTIVE':
-                if (campaign?.status === 'PENDING_PAYMENT') {
+                 if (campaign?.status === 'PENDING_PAYMENT') {
                      return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
                 }
                 return { icon: Shield, text: 'Funds Secured. Work in progress.', color: 'text-green-800 dark:text-green-200', bgColor: 'bg-green-100/50 dark:bg-green-900/20' };
@@ -730,5 +733,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
+
+    
 
     

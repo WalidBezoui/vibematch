@@ -37,16 +37,18 @@ import CreatorProfileSheet from '@/components/creator-profile-sheet';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useRouter } from 'next/navigation';
 
 
 const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onBack }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onBack: () => void }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
+    const router = useRouter();
     
     const isBrand = userProfile?.role === 'brand';
     
     const handleFund = () => {
-      // This will be handled by the parent component
+        router.push(`/campaigns/${conversation.campaign_id}/pay`)
     }
     
     const getStatusInfo = () => {
@@ -66,8 +68,9 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
 
             case 'OFFER_ACCEPTED':
                  return { icon: Handshake, text: isBrand ? "Deal Agreed. Fund to start." : "Deal Agreed. Awaiting funds.", color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
+            
             case 'ACTIVE':
-                if (campaign?.status === 'PENDING_PAYMENT') {
+                 if (campaign?.status === 'PENDING_PAYMENT') {
                      return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
                 }
                 return { icon: Shield, text: 'Funds Secured. Work in progress.', color: 'text-green-800 dark:text-green-200', bgColor: 'bg-green-100/50 dark:bg-green-900/20' };
@@ -498,7 +501,7 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
     );
 };
 
-export default function ChatView({ conversationId, onBack }: { conversationId: string, onBack: () => void }) {
+export default function ChatView({ params, onBack }: { params: { conversationId: string }, onBack: () => void }) {
     const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
@@ -507,8 +510,8 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     const [isSheetOpen, setIsSheetOpen] = useState(false);
 
     const conversationRef = useMemoFirebase(
-        () => (firestore && conversationId ? doc(firestore, 'conversations', conversationId) : null),
-        [firestore, conversationId]
+        () => (firestore && params.conversationId ? doc(firestore, 'conversations', params.conversationId) : null),
+        [firestore, params.conversationId]
     );
     const { data: conversation, isLoading: isConversationLoading } = useDoc(conversationRef);
     
@@ -530,8 +533,8 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     const { data: campaign, isLoading: isCampaignLoading } = useDoc(campaignRef);
 
     const messagesQuery = useMemoFirebase(
-        () => (firestore && conversationId ? query(collection(firestore, 'conversations', conversationId, 'messages'), orderBy('timestamp', 'asc')) : null),
-        [firestore, conversationId]
+        () => (firestore && params.conversationId ? query(collection(firestore, 'conversations', params.conversationId, 'messages'), orderBy('timestamp', 'asc')) : null),
+        [firestore, params.conversationId]
     );
     const { data: messages, isLoading: areMessagesLoading } = useCollection(messagesQuery);
 
@@ -577,13 +580,13 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
 
         const lastOffer = messages?.filter((m: any) => m.type === 'SYSTEM_OFFER' && m.metadata.offer_status === 'PENDING').pop();
         if(lastOffer) {
-            const lastOfferRef = doc(firestore, 'conversations', conversationId, 'messages', lastOffer.id);
+            const lastOfferRef = doc(firestore, 'conversations', params.conversationId, 'messages', lastOffer.id);
             batch.update(lastOfferRef, { 'metadata.offer_status': 'SUPERSEDED' });
         }
 
-        const newMessageRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
+        const newMessageRef = doc(collection(firestore, 'conversations', params.conversationId, 'messages'));
         batch.set(newMessageRef, {
-            conversation_id: conversationId,
+            conversation_id: params.conversationId,
             sender_id: user.uid,
             sender_name: userProfile.name,
             type: 'SYSTEM_OFFER',
@@ -619,10 +622,10 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         if (!firestore || !user || isSubmitting) return;
         
         setIsSubmitting(true);
-        const messagesRef = collection(firestore, 'conversations', conversationId, 'messages');
+        const messagesRef = collection(firestore, 'conversations', params.conversationId, 'messages');
         try {
             await addDoc(messagesRef, {
-                conversation_id: conversationId,
+                conversation_id: params.conversationId,
                 sender_id: user.uid,
                 type: 'TEXT',
                 content: text,
@@ -651,16 +654,16 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         if (!firestore || !user || !conversationRef || !userProfile) return;
         
         const batch = writeBatch(firestore);
-        const msgRef = doc(firestore, 'conversations', conversationId, 'messages', message.id);
+        const msgRef = doc(firestore, 'conversations', params.conversationId, 'messages', message.id);
         
         batch.update(msgRef, { 'metadata.offer_status': response });
         
         if (response === 'ACCEPTED') {
             batch.update(conversationRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED', last_offer_by: user.uid });
 
-            const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
+            const newEventRef = doc(collection(firestore, 'conversations', params.conversationId, 'messages'));
             batch.set(newEventRef, {
-                conversation_id: conversationId,
+                conversation_id: params.conversationId,
                 sender_id: user.uid,
                 type: 'SYSTEM_EVENT',
                 content: `Offer accepted by ${userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}. Awaiting funds from the Brand.`,
@@ -730,5 +733,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
+
+    
 
     
