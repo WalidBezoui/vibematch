@@ -40,7 +40,7 @@ const GuardianBot = {
   },
 };
 
-const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any }) => {
+const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onAccept, onPropose, onDecline }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onAccept: (amount: number) => void, onPropose: () => void, onDecline: () => void }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
     const router = useRouter();
@@ -50,29 +50,21 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
     const handleFund = () => {
       router.push(`/campaigns/${conversation.campaign_id}/pay`);
     }
-
+    
     const getStatusInfo = () => {
         const isMyTurn = conversation.last_offer_by !== user?.uid;
         
         switch (conversation.status) {
             case 'NEGOTIATION':
-                if (isMyTurn) {
-                    let text = isBrand 
-                        ? "Action Required: Creator has made an offer." 
-                        : "Action Required: The brand has made an offer.";
-                    
-                    if (isBrand && campaign && conversation.agreed_budget === campaign.budget) {
-                        text = "Creator's offer matches your budget. Please confirm.";
-                    }
-
-                    return { icon: Handshake, text, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
-                }
+                let text = isBrand 
+                    ? "Awaiting your response"
+                    : "Awaiting your response";
                 
-                let waitingText = isBrand ? "Waiting for creator's response." : "Brand is reviewing your rate.";
-                if (!isBrand && campaign && conversation.agreed_budget === campaign.budget) {
-                    waitingText = "Waiting for brand to confirm.";
+                if (!isMyTurn) {
+                    text = isBrand ? "Waiting for creator's response" : "Brand is reviewing your offer";
                 }
-                return { icon: Hourglass, text: waitingText, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
+
+                return { icon: Handshake, text, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
 
             case 'OFFER_ACCEPTED':
                  return { icon: Handshake, text: isBrand ? "Deal Agreed. Fund to start." : "Deal Agreed. Awaiting funds.", color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
@@ -95,41 +87,83 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser }: 
     const { icon: Icon, text, color, bgColor } = getStatusInfo();
     
     const budgetLabel = conversation.status === 'NEGOTIATION' ? 'Last Offer' : 'Agreed Budget';
+    const isMyTurn = conversation.status === 'NEGOTIATION' && conversation.last_offer_by !== user?.uid;
 
     return (
         <div className={cn("p-4 border-b", bgColor)}>
             <div className="flex justify-between items-center gap-4">
-                 <div className="flex items-center gap-3">
+                 <div className="flex-1 min-w-0">
                     {isBrand && otherUser && (
-                        <>
+                        <div className="flex items-center gap-3">
                             <Avatar className="h-10 w-10 border">
                                 <AvatarImage src={otherUser.photoURL} alt={otherUser.name} />
                                 <AvatarFallback>{otherUser.name?.[0]}</AvatarFallback>
                             </Avatar>
                             <div>
-                                <p className="font-semibold">{otherUser.displayName || otherUser.name}</p>
-                                <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground" onClick={onOpenProfile}>View Profile</Button>
+                                <p className="font-semibold truncate">{otherUser.displayName || otherUser.name}</p>
+                                <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground hover:text-primary" onClick={onOpenProfile}>View Profile</Button>
                             </div>
-                        </>
+                        </div>
                     )}
-                </div>
+                     {!isBrand && campaign && (
+                         <div className="flex items-center gap-3">
+                              <div className="h-10 w-10 border rounded-md flex items-center justify-center bg-card">
+                                 <Briefcase className="h-5 w-5 text-muted-foreground"/>
+                             </div>
+                            <div>
+                                <p className="font-semibold truncate">{campaign.title}</p>
+                                <p className="text-xs text-muted-foreground">{otherUser?.name || 'Brand'}</p>
+                            </div>
+                        </div>
+                     )}
+                 </div>
 
                 <div className={cn("flex-1 text-center font-semibold text-sm flex items-center justify-center gap-2", color)}>
                     <Icon className="h-5 w-5" />
                     <span>{text}</span>
                 </div>
 
-                 <div className="flex items-center gap-4">
+                <div className="flex-1 min-w-0 flex justify-end">
+                  {isMyTurn ? (
+                    <div className="flex items-center gap-2">
+                        <div>
+                          <p className="text-xs font-semibold text-muted-foreground text-right">Offer</p>
+                          <p className="font-bold text-primary text-right">{conversation.agreed_budget || 0} MAD</p>
+                        </div>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button size="sm">Respond</Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <div className="flex flex-col">
+                               <Button variant="ghost" className="justify-start px-3 py-2 h-auto" onClick={() => onAccept(conversation.agreed_budget)}>
+                                   <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
+                                   Accept Offer
+                                </Button>
+                                <Button variant="ghost" className="justify-start px-3 py-2 h-auto" onClick={onPropose}>
+                                   <Handshake className="mr-2 h-4 w-4 text-blue-500" />
+                                   Propose New Rate
+                                </Button>
+                               <Button variant="ghost" className="justify-start px-3 py-2 h-auto text-destructive hover:text-destructive" onClick={onDecline}>
+                                   <XCircle className="mr-2 h-4 w-4" />
+                                   Decline
+                                </Button>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                    </div>
+                  ) : (
                     <div className="text-right">
                         <p className="text-xs font-semibold text-muted-foreground">{budgetLabel}</p>
                         <p className="font-bold text-primary">{conversation.agreed_budget || 0} MAD</p>
                     </div>
+                  )}
 
-                    {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
-                         <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>
-                            <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
-                         </Button>
-                    )}
+                  {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
+                        <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0}>
+                          <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
+                        </Button>
+                  )}
                 </div>
             </div>
         </div>
@@ -443,6 +477,9 @@ export default function SingleChatPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+    const [newOffer, setNewOffer] = useState('');
+    const [newOfferMessage, setNewOfferMessage] = useState('');
+
 
      useEffect(() => {
       if (!isUserLoading && !user) {
@@ -564,7 +601,19 @@ export default function SingleChatPage() {
             updatedAt: serverTimestamp(),
         });
         
-        await batch.commit();
+        try {
+            await batch.commit();
+        } catch(e: any) {
+             const permissionError = new FirestorePermissionError({
+                path: 'BATCH_WRITE',
+                operation: 'write',
+                requestResourceData: {
+                    conversationUpdate: { agreed_budget: amount, last_offer_by: user.uid, lastMessage: `New offer: ${amount} MAD`},
+                    newOfferMessage: { type: 'SYSTEM_OFFER', content: message }
+                }
+            })
+            errorEmitter.emit('permission-error', permissionError)
+        }
     };
 
     const handleSendMessage = async (text: string) => {
@@ -652,16 +701,47 @@ export default function SingleChatPage() {
             <div className="flex flex-1 overflow-hidden">
                 <ChatSidebar conversationId={conversationId as string} />
                 <main className="flex-1 flex flex-col bg-muted/50">
-                    <DealStatusHeader 
-                        conversation={conversation} 
-                        campaign={campaign} 
-                        onOpenProfile={() => setIsSheetOpen(true)}
-                        otherUser={otherUser}
-                    />
+                    <Popover>
+                        <DealStatusHeader 
+                            conversation={conversation} 
+                            campaign={campaign} 
+                            onOpenProfile={() => setIsSheetOpen(true)}
+                            otherUser={otherUser}
+                            onAccept={(amount) => handleMakeOffer(amount, "I accept your rate.")}
+                            onPropose={() => {
+                                const popoverTrigger = document.getElementById('popover-trigger-propose');
+                                if (popoverTrigger) popoverTrigger.click();
+                            }}
+                            onDecline={handleDecline}
+                        />
+                         <PopoverTrigger asChild>
+                            <button id="popover-trigger-propose" className="hidden">Propose</button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-80">
+                            <div className="grid gap-4">
+                                <div className="space-y-2"><h4 className="font-medium leading-none">New Proposal</h4><p className="text-sm text-muted-foreground">Propose a new budget and add a message if you wish.</p></div>
+                                <div className="grid gap-2">
+                                        <Label htmlFor="budget">Amount (MAD)</Label>
+                                        <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
+                                        <Label htmlFor="message">Message (optional)</Label>
+                                        <Textarea id="message" value={newOfferMessage} onChange={(e) => setNewOfferMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
+                                        <Button onClick={() => {
+                                             if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
+                                                toast({variant: 'destructive', title: 'Invalid amount', description: "Please enter a valid amount."});
+                                                return;
+                                            }
+                                            handleMakeOffer(parseFloat(newOffer), newOfferMessage || "Here is my new proposal.");
+                                            setNewOffer('');
+                                            setNewOfferMessage('');
+                                            const popoverTrigger = document.getElementById('popover-trigger-propose');
+                                            if (popoverTrigger) popoverTrigger.click();
+                                        }}>Send Offer</Button>
+                                </div>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                     <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
-                    {isInNegotiation ? (
-                       <ActionFooter conversation={conversation} messages={messages || []} onMakeOffer={handleMakeOffer} onDecline={handleDecline} />
-                    ) : (
+                    {isInNegotiation ? null : (
                        <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
                     )}
                 </main>
