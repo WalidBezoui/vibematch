@@ -125,10 +125,10 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                     )}
                  </div>
 
-                <div className="flex flex-col items-end justify-center text-right gap-1 col-span-1">
-                     <div className={cn("font-semibold text-xs text-right sm:text-sm flex items-center justify-end gap-1.5", color)}>
-                        <Icon className="h-4 w-4 hidden sm:block" />
-                        <span>{text}</span>
+                <div className="flex items-center justify-end text-right gap-4 col-span-1">
+                     <div className="hidden sm:block">
+                        <p className="text-xs font-semibold text-muted-foreground">Original Budget</p>
+                        <p className="font-bold text-muted-foreground text-sm sm:text-base">{campaign?.budget || 0} MAD</p>
                     </div>
                      <div>
                         <p className="text-xs font-semibold text-muted-foreground">{budgetLabel}</p>
@@ -735,9 +735,3 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
-
-    
-
-    
-
-    
