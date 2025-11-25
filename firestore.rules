@@ -148,7 +148,7 @@ service cloud.firestore {
                     request.resource.data.brand_id == resource.data.brand_id &&
                     request.resource.data.creator_id == resource.data.creator_id &&
                     // This is the critical change: Allowing any subset of the negotiation fields to be updated.
-                    request.resource.data.diff(resource.data).affectedKeys().hasAll(
+                    request.resource.data.diff(resource.data).affectedKeys().hasAny(
                         ['status', 'agreed_budget', 'last_offer_by', 'lastMessage', 'updatedAt', 'is_funded']
                     );
     }
