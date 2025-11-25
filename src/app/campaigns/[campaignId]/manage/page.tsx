@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -10,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight, CircleDollarSign, Calendar, Tag } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -49,6 +50,19 @@ type Applicant = {
     badge: 'Verified' | null;
 };
 
+const statusStyles: { [key: string]: string } = {
+    OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800 border-green-200',
+    PENDING_SELECTION: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+    PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200',
+    OFFER_PENDING: 'bg-blue-100 text-blue-800 border-blue-200',
+    PENDING_PAYMENT: 'bg-blue-100 text-blue-800 border-blue-200',
+    IN_PROGRESS: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+    DELIVERED: 'bg-purple-100 text-purple-800 border-purple-200',
+    COMPLETED: 'bg-gray-200 text-gray-800 border-gray-300',
+    REJECTED_BY_CREATOR: 'bg-red-100 text-red-800 border-red-200',
+};
+
+
 const ApplicantCardSkeleton = () => (
     <Card>
         <CardHeader className="flex-row items-center gap-4">
@@ -69,28 +83,35 @@ const ApplicantCardSkeleton = () => (
     </Card>
 )
 
-const HiringProgress = ({ campaign, hiredCreators }: { campaign: any, hiredCreators: any[] }) => {
-    const { t } = useLanguage();
-    if (!campaign) return null;
-    const hiredCount = hiredCreators.length || 0;
+const CampaignInfoCard = ({ campaign }: { campaign: any }) => {
+    const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
-    const progress = totalNeeded > 0 ? Math.round((hiredCount / totalNeeded) * 100) : 0;
-
+    const hiringProgress = totalNeeded > 0 ? Math.round((hiredCount / totalNeeded) * 100) : 0;
+    
     return (
-        <Card className="mb-8 bg-muted/50">
-            <CardHeader>
-                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <div>
-                        <CardTitle>
-                            {t('brandDashboard.hiringProgress')}
-                        </CardTitle>
-                        <CardDescription>{t('manageApplicationsPage.hiredDescription', { hired: hiredCount, total: totalNeeded })}</CardDescription>
+        <Card className="mb-8 shadow-sm">
+            <CardHeader className="pb-4">
+                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                    <div className="flex-1">
+                        <Badge className={cn("whitespace-nowrap text-xs mb-2", statusStyles[campaign.status])}>
+                            {campaign.status.replace(/_/g, ' ')}
+                        </Badge>
+                        <CardTitle className="text-2xl">{campaign.title}</CardTitle>
                     </div>
-                    <span className="text-lg font-bold">{hiredCount} / {totalNeeded}</span>
+                     <div className="flex items-center gap-6 text-sm">
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                            <CircleDollarSign className="h-4 w-4" />
+                            <span className="font-semibold text-foreground">{campaign.budget} DH</span>
+                        </div>
+                         <div className="flex items-center gap-2 text-muted-foreground">
+                            <Users className="h-4 w-4" />
+                            <span className="font-semibold text-foreground">{hiredCount} / {totalNeeded} Hired</span>
+                        </div>
+                    </div>
                 </div>
             </CardHeader>
             <CardContent>
-                <Progress value={progress} className="h-3" />
+                 <Progress value={hiringProgress} className="h-2" />
             </CardContent>
         </Card>
     )
@@ -265,12 +286,14 @@ export default function ManageApplicationsPage() {
                 <AppHeader />
                 <main className="w-full">
                     <div className="p-4 sm:p-6 lg:p-8">
-                        <Skeleton className="h-10 w-1/2 mb-4" />
-                        <Skeleton className="h-6 w-3/4 mb-8" />
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <ApplicantCardSkeleton />
-                            <ApplicantCardSkeleton />
-                            <ApplicantCardSkeleton />
+                        <div className="max-w-4xl mx-auto">
+                            <Skeleton className="h-10 w-1/2 mb-4" />
+                            <Skeleton className="h-6 w-3/4 mb-8" />
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <ApplicantCardSkeleton />
+                                <ApplicantCardSkeleton />
+                                <ApplicantCardSkeleton />
+                            </div>
                         </div>
                     </div>
                 </main>
@@ -366,12 +389,12 @@ export default function ManageApplicationsPage() {
                     <div className="max-w-4xl mx-auto mb-8">
                         <h1 className="text-4xl font-bold tracking-tight">{t('manageApplicationsPage.title')}</h1>
                         <p className="text-muted-foreground mt-2 text-lg">
-                            {t('manageApplicationsPage.description')} <strong>{campaign.title}</strong>
+                            {t('manageApplicationsPage.description')}
                         </p>
                     </div>
                     
                     <div className="max-w-4xl mx-auto">
-                        <HiringProgress campaign={campaign} hiredCreators={hiredCreators}/>
+                        <CampaignInfoCard campaign={campaign} />
                     </div>
 
                     <div className="max-w-4xl mx-auto">
