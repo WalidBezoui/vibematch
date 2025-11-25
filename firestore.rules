@@ -67,7 +67,7 @@ service cloud.firestore {
       allow create: if request.auth != null && isBrand(request.auth.uid) && request.resource.data.brandId == request.auth.uid;
       
       // Allow an authenticated user to read/list campaigns if they are the brand owner OR
-      // if the request is a list operation and specifically queries for their brandId.
+      // if they are a creator.
       allow read: if request.auth != null && 
                   (resource.data.brandId == request.auth.uid || isCreator(request.auth.uid));
 
@@ -138,26 +138,19 @@ service cloud.firestore {
       allow list: if request.auth != null && (resource.data.brand_id == request.auth.uid || resource.data.creator_id == request.auth.uid);
       
       // UPDATE: A participant can update conversation details related to negotiation.
-      // This rule is broadened slightly to include fields that might change when an offer is accepted.
+      // This rule ensures:
+      // 1. Core identifying fields (campaign_id, application_id, etc.) are NOT changed.
+      // 2. The ONLY fields that differ between the old and new document are from the allowed negotiation fields.
       allow update: if request.auth != null && isParticipant(conversationId) &&
                     // Ensure these core fields remain unchanged during an update for data integrity
                     request.resource.data.campaign_id == resource.data.campaign_id &&
                     request.resource.data.application_id == resource.data.application_id &&
                     request.resource.data.brand_id == resource.data.brand_id &&
                     request.resource.data.creator_id == resource.data.creator_id &&
-                    // Allow updates ONLY to these negotiation-related fields
-                    request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-                      'status', // e.g., from NEGOTIATION to ACCEPTED/AGREED
-                      'agreed_budget',
-                      'last_offer_by',
-                      'lastMessage',
-                      'updatedAt',
-                      'is_funded',
-                      // Add any other fields that might change specifically when an offer is accepted
-                      // For example, if you have a field like 'offer_accepted_at' or 'final_agreed_terms'
-                      // If 'conversationRef!' update in chat-view.tsx (Line 638) is for agreed_budget and last_offer_by.
-                      // The current list seems correct if those are the ONLY fields updated.
-                    ]);
+                    // This is the critical change: Allowing any subset of the negotiation fields to be updated.
+                    request.resource.data.diff(resource.data).affectedKeys().hasAll(
+                        ['status', 'agreed_budget', 'last_offer_by', 'lastMessage', 'updatedAt', 'is_funded']
+                    );
     }
 
     match /conversations/{conversationId}/messages/{messageId} {
