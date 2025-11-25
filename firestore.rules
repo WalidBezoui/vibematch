@@ -82,9 +82,9 @@ service cloud.firestore {
                         ) ||
                         // Condition for any participant (brand or creator) to update status to PENDING_PAYMENT
                         (
-                          (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
-                          request.resource.data.status == 'PENDING_PAYMENT' &&
-                          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+                           (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
+                           request.resource.data.status == 'IN_PROGRESS' &&
+                           resource.data.status == 'OFFER_PENDING'
                         ) ||
                          // General campaign edits by brand owner
                          (
@@ -133,8 +133,7 @@ service cloud.firestore {
                      request.resource.data.campaign_id != null &&
                      request.resource.data.creator_id != null &&
                      request.resource.data.brand_id != null &&
-                     request.resource.data.application_id != null &&
-                     request.resource.data.status == "NEGOTIATION";
+                     request.resource.data.application_id != null;
 
       // GET: Only participants can read a specific conversation document.
       allow get: if request.auth != null && isParticipant(conversationId);

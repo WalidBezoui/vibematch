@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
@@ -670,11 +671,6 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
             };
 
             batch.update(conversationRef, conversationUpdateData);
-            
-            // Also update the parent campaign status
-            batch.update(campaignRef, {
-                status: 'PENDING_PAYMENT'
-            });
 
             const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
             const eventMessageData = {
@@ -699,7 +695,6 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
                 requestResourceData: {
                     messageUpdate: { 'metadata.offer_status': response },
                     conversationUpdate: conversationUpdateData,
-                    ...(response === 'ACCEPTED' && { campaignUpdate: { status: 'PENDING_PAYMENT' } })
                 },
             });
             errorEmitter.emit('permission-error', permissionError);

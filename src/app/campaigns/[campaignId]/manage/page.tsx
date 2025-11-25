@@ -246,18 +246,47 @@ export default function ManageApplicationsPage() {
     
         try {
             const batch = writeBatch(firestore);
-    
-            // Update campaign: add creator and set status based on "Smart Hire" logic
-            const updates: any = {
-                creatorIds: arrayUnion(applicant.creatorId),
-                status: isHotLead ? 'PENDING_PAYMENT' : 'OFFER_PENDING'
-            };
-
-            batch.update(campaignRef, updates);
             
-            // Update application status
+            // 1. Update campaign with the new creator
+            batch.update(campaignRef, {
+                creatorIds: arrayUnion(applicant.creatorId),
+            });
+            
+            // 2. Update application status
             const applicationRef = doc(firestore, 'campaigns', campaignId as string, 'applications', applicant.id);
             batch.update(applicationRef, { status: 'ACTIVE_CONTRACT' });
+
+            // 3. Create or update conversation to reflect the deal
+            const conversationDocRef = doc(collection(firestore, 'conversations'));
+            const finalBudget = applicant.bidAmount; // Use the bid amount for direct hires
+            const conversationData = {
+                campaign_id: campaignId as string,
+                application_id: applicant.id,
+                brand_id: applicant.brandId,
+                creator_id: applicant.creatorId,
+                status: 'OFFER_ACCEPTED',
+                agreed_budget: finalBudget,
+                last_offer_by: user.uid, // Brand made the final action
+                is_funded: false,
+                lastMessage: `Offer accepted by brand at ${finalBudget} DH.`,
+                updatedAt: serverTimestamp(),
+            };
+            batch.set(conversationDocRef, conversationData);
+
+            // 4. Add a system message to the new conversation
+            const messageDocRef = doc(collection(firestore, 'conversations', conversationDocRef.id, 'messages'));
+            const messageContent = isHotLead 
+                ? `Congratulations! This is a hot lead. The brand has accepted your application for "${campaign.title}" at ${finalBudget} DH. The contract is now active and awaiting funding.`
+                : `Congratulations! The brand has accepted your application for "${campaign.title}" at ${finalBudget} DH. Please confirm to start the contract.`;
+            
+            const messageData = {
+                conversation_id: conversationDocRef.id,
+                sender_id: user.uid, 
+                type: 'SYSTEM_EVENT',
+                content: messageContent,
+                timestamp: serverTimestamp(),
+            };
+            batch.set(messageDocRef, messageData);
     
             await batch.commit();
     
@@ -272,7 +301,7 @@ export default function ManageApplicationsPage() {
                 operation: 'update',
                 requestResourceData: {
                     creatorIds: arrayUnion(applicant.creatorId),
-                    status: 'OFFER_PENDING'
+                    status: 'IN_PROGRESS'
                 }
             });
             errorEmitter.emit('permission-error', permissionError);
