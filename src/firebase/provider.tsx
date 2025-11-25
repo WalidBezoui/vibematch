@@ -5,6 +5,8 @@ import { FirebaseApp } from 'firebase/app';
 import { Firestore, doc, onSnapshot, Unsubscribe } from 'firebase/firestore';
 import { Auth, User, onAuthStateChanged } from 'firebase/auth';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
+import { FirestorePermissionError } from './errors';
+import { errorEmitter } from './error-emitter';
 
 interface FirebaseProviderProps {
   children: ReactNode;
@@ -211,8 +213,13 @@ export const useUserProfile = (): UserProfileState & { user: User | null } => {
             setProfileState({ userProfile: null, isLoading: false, error: new Error('User profile not found.') });
           }
         },
-        (error: any) => {
-          setProfileState({ userProfile: null, isLoading: false, error });
+        async (error) => {
+           const contextualError = new FirestorePermissionError({
+            operation: 'get',
+            path: userDocRef.path,
+          });
+          setProfileState({ userProfile: null, isLoading: false, error: contextualError });
+          errorEmitter.emit('permission-error', contextualError);
         }
       );
   
