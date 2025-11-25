@@ -373,7 +373,7 @@ const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: numbe
     );
   };
   
-const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
+const ActionFooter = ({ conversation, messages, onMakeOffer, onAcceptOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onAcceptOffer: (amount: number) => void, onDecline: () => void }) => {
     const { user } = useUser();
     const isMobile = useIsMobile();
     const [open, setOpen] = useState(false);
@@ -402,7 +402,7 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
     return (
         <div className="p-3 bg-background border-t">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
-                 <Button className="w-full md:w-auto" size="lg" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
+                 <Button className="w-full md:w-auto" size="lg" onClick={() => onAcceptOffer(offerToRespondTo)}>
                     <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate ({offerToRespondTo} MAD)
                 </Button>
                 
@@ -620,6 +620,47 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
             errorEmitter.emit('permission-error', permissionError)
         });
     };
+    
+    const handleAcceptOffer = async (amount: number) => {
+        if (!firestore || !user || !conversationRef || !userProfile) return;
+        
+        const batch = writeBatch(firestore);
+        
+        const conversationUpdateData = {
+          agreed_budget: amount,
+          status: 'OFFER_ACCEPTED',
+          last_offer_by: user.uid,
+          lastMessage: 'Deal agreed!',
+          updatedAt: serverTimestamp(),
+        };
+        batch.update(conversationRef, conversationUpdateData);
+    
+        const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
+        batch.set(newEventRef, {
+            conversation_id: conversationId,
+            sender_id: user.uid,
+            type: 'SYSTEM_EVENT',
+            content: `Deal agreed at ${amount} MAD by ${userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}.`,
+            timestamp: serverTimestamp(),
+        });
+        
+        if (campaignRef) {
+          batch.update(campaignRef, {
+            status: 'PENDING_PAYMENT'
+          })
+        }
+    
+        toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
+    
+        await batch.commit().catch((serverError) => {
+          const permissionError = new FirestorePermissionError({
+              path: `BATCH_WRITE on /conversations/${conversationId} and /campaigns/${conversation.campaign_id}`,
+              operation: 'write',
+              requestResourceData: { conversationUpdate: conversationUpdateData },
+          });
+          errorEmitter.emit('permission-error', permissionError);
+        });
+      };
 
     const handleSendMessage = async (text: string) => {
         if (!firestore || !user || isSubmitting) return;
@@ -671,6 +712,9 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
             };
 
             batch.update(conversationRef, conversationUpdateData);
+            
+            // Also update the campaign status
+            batch.update(campaignRef, { status: 'PENDING_PAYMENT' });
 
             const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
             const eventMessageData = {
@@ -742,6 +786,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
                     conversation={conversation}
                     messages={messages || []}
                     onMakeOffer={handleMakeOffer}
+                    onAcceptOffer={handleAcceptOffer}
                     onDecline={handleDecline}
                  />
             ) : (
@@ -755,3 +800,4 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
+

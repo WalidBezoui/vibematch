@@ -80,11 +80,17 @@ service cloud.firestore {
                           resource.data.brandId == request.auth.uid &&
                           request.resource.data.diff(resource.data).affectedKeys().hasAny(['creatorIds', 'status'])
                         ) ||
-                        // Condition for any participant (brand or creator) to update status to PENDING_PAYMENT
+                        // Condition for a participant (brand/creator) to update status for payment flow
+                        (
+                          (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
+                          request.resource.data.status == 'PENDING_PAYMENT' &&
+                          resource.data.status == 'OFFER_ACCEPTED'
+                        ) ||
+                         // Condition for any participant (brand or creator) to update status to IN_PROGRESS
                         (
                            (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
                            request.resource.data.status == 'IN_PROGRESS' &&
-                           resource.data.status == 'OFFER_PENDING'
+                           resource.data.status == 'PENDING_PAYMENT'
                         ) ||
                          // General campaign edits by brand owner
                          (
