@@ -138,16 +138,13 @@ service cloud.firestore {
       allow list: if request.auth != null && (resource.data.brand_id == request.auth.uid || resource.data.creator_id == request.auth.uid);
       
       // UPDATE: A participant can update conversation details related to negotiation.
-      // This rule ensures:
-      // 1. Core identifying fields (campaign_id, application_id, etc.) are NOT changed.
-      // 2. The ONLY fields that differ between the old and new document are from the allowed negotiation fields.
       allow update: if request.auth != null && isParticipant(conversationId) &&
                     // Ensure these core fields remain unchanged during an update for data integrity
                     request.resource.data.campaign_id == resource.data.campaign_id &&
                     request.resource.data.application_id == resource.data.application_id &&
                     request.resource.data.brand_id == resource.data.brand_id &&
                     request.resource.data.creator_id == resource.data.creator_id &&
-                    // This is the critical change: Allowing any subset of the negotiation fields to be updated.
+                    // Allow specific fields to be updated during negotiation.
                     request.resource.data.diff(resource.data).affectedKeys().hasAny(
                         ['status', 'agreed_budget', 'last_offer_by', 'lastMessage', 'updatedAt', 'is_funded']
                     );
