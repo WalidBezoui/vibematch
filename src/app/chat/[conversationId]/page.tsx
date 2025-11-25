@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
@@ -208,7 +209,7 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
                             </p>
                             <p className="text-xl font-bold gradient-text">{offerAmount} MAD</p>
                         </div>
-                         {coverLetter && coverLetter.trim() !== '' && (
+                         {coverLetter && coverLetter.trim().length > 0 && (
                             <div>
                                 <p className="text-sm font-semibold text-muted-foreground">Original Cover Letter</p>
                                 <p className="text-sm text-foreground/80 mt-1 whitespace-pre-wrap border p-3 rounded-md bg-background/50 break-words">{coverLetter}</p>
@@ -743,3 +744,4 @@ export default function ChatView({ onBack }: { onBack?: () => void }) {
     
 
     
+
