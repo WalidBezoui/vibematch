@@ -383,15 +383,15 @@ export default function CreatorDashboard() {
                     return (
                         <Card key={campaign.id} className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isActionRequired && "border-blue-500 shadow-blue-500/10")}>
                             <CardHeader>
-                                <div className="flex justify-between items-start gap-2">
-                                    <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
-                                     {campaign.status && (
+                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
+                                <div className="flex items-center justify-between pt-2">
+                                    <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
+                                    {campaign.status && (
                                         <Badge className={cn('whitespace-nowrap text-xs', statusStyles[badgeStatus])}>
                                             {badgeText}
                                         </Badge>
                                      )}
                                 </div>
-                                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                             </CardHeader>
                             <CardContent className="flex-grow">
                                 <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
@@ -428,14 +428,14 @@ export default function CreatorDashboard() {
                 {inDiscussionCampaigns.map((campaign) => (
                         <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card border-primary/30">
                             <CardHeader>
-                                <div className="flex justify-between items-start gap-2">
-                                    <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
-                                    <Badge variant="secondary" className="border-blue-200 bg-blue-100 text-blue-800">
-                                        <MessageSquare className="mr-1 h-3 w-3" />
-                                        In Discussion
-                                    </Badge>
+                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
+                                <div className="flex items-center justify-between pt-2">
+                                  <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
+                                  <Badge variant="secondary" className="border-blue-200 bg-blue-100 text-blue-800">
+                                      <MessageSquare className="mr-1 h-3 w-3" />
+                                      In Discussion
+                                  </Badge>
                                 </div>
-                                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                             </CardHeader>
                             <CardContent className="flex-grow">
                                 <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
@@ -472,15 +472,15 @@ export default function CreatorDashboard() {
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
                 {pendingCampaigns.map((campaign) => (
                         <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
-                            <CardHeader>
-                                <div className="flex justify-between items-start gap-2">
-                                    <CardTitle className="text-lg font-bold line-clamp-1">{campaign.title}</CardTitle>
+                           <CardHeader>
+                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
+                                <div className="flex items-center justify-between pt-2">
+                                    <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                                     <Badge variant="secondary" className="border-yellow-200 bg-yellow-100 text-yellow-800">
                                         <Hourglass className="mr-1 h-3 w-3" />
                                         Application Sent
                                     </Badge>
                                 </div>
-                                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                             </CardHeader>
                             <CardContent className="flex-grow">
                                 <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
@@ -532,4 +532,5 @@ export default function CreatorDashboard() {
     </div>
   );
 }
+
 
