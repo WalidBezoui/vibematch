@@ -692,7 +692,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
              toast({ title: 'Offer Rejected' });
         }
         
-        batch.commit().catch((serverError) => {
+        await batch.commit().catch((serverError) => {
             const permissionError = new FirestorePermissionError({
                 path: `BATCH_WRITE on /conversations/${conversationId} and subcollections`,
                 operation: 'write',
