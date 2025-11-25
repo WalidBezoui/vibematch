@@ -56,14 +56,10 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
         
         switch (conversation.status) {
             case 'NEGOTIATION':
-                let text = isBrand 
-                    ? "Awaiting your response"
-                    : "Awaiting your response";
+                let text = isMyTurn
+                    ? (isBrand ? "Awaiting your response" : "Awaiting your response")
+                    : (isBrand ? "Waiting for creator's response" : "Brand is reviewing your offer");
                 
-                if (!isMyTurn) {
-                    text = isBrand ? "Waiting for creator's response" : "Brand is reviewing your offer";
-                }
-
                 return { icon: Handshake, text, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
 
             case 'OFFER_ACCEPTED':
@@ -93,9 +89,9 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
     }
 
     return (
-        <div className={cn("p-3 sm:p-4 border-b", bgColor)}>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                 <div className="flex items-center gap-2">
+        <div className="border-b bg-background">
+            <div className="p-3 sm:p-4 flex justify-between items-center gap-4">
+                 <div className="flex items-center gap-2 min-w-0">
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
                         <ArrowLeft className="h-5 w-5" />
                     </Button>
@@ -125,25 +121,26 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                     )}
                  </div>
 
-                <div className="flex items-center justify-end text-right gap-4 flex-wrap">
-                     <div className="text-right">
+                <div className="flex items-center justify-end text-right gap-4">
+                     <div className="hidden sm:block">
                         <p className="text-xs font-semibold text-muted-foreground">Original Budget</p>
                         <p className="font-bold text-muted-foreground text-sm sm:text-base">{campaign?.budget || 0} MAD</p>
                     </div>
-                     <div className="text-right">
+                     <div>
                         <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
                         <p className="font-bold text-primary text-sm sm:text-base">{conversation.agreed_budget || 0} MAD</p>
                     </div>
                 </div>
             </div>
-
-            <div className={cn("flex items-center justify-center gap-2 text-sm font-semibold pt-3 mt-3 border-t border-black/10 sm:hidden", color)}>
+            
+            <div className={cn("flex items-center justify-center gap-2 text-sm font-semibold p-2", color, bgColor)}>
                 <Icon className="h-5 w-5" />
                 <span>{text}</span>
             </div>
-             {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
-                <div className="mt-3 pt-3 border-t border-black/10">
-                    <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full sm:w-auto">
+
+            {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
+                <div className="p-3 border-t">
+                    <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full">
                       <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
                     </Button>
                 </div>
@@ -740,5 +737,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     );
 }
 
+
+    
 
     
