@@ -347,20 +347,22 @@ export default function ManageApplicationsPage() {
                         <AvatarFallback>{applicant.profile?.name?.[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-center">
-                            <CardTitle className="text-base truncate">{creatorName}</CardTitle>
-                             <Badge variant="secondary" className={cn('font-semibold text-xs', badgeClass)}>
+                        <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                                <CardTitle className="text-base truncate">{creatorName}</CardTitle>
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                                    <ShieldCheck className="h-4 w-4 text-green-500" />
+                                    <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
+                                </div>
+                            </div>
+                             <Badge variant="secondary" className={cn('font-semibold text-xs whitespace-nowrap', badgeClass)}>
                                 {badgeText}
                             </Badge>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
-                            <ShieldCheck className="h-4 w-4 text-green-500" />
-                            <span>{t('manageApplicationsPage.trustScore')}: {applicant.trustScore}</span>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent className="px-4 pb-4 flex-grow">
-                    <div className="space-y-4">
+                    <div className="space-y-2">
                         <div className="flex items-center justify-between text-sm p-3 bg-muted/50 rounded-lg border">
                             <div className="flex items-center gap-2 text-muted-foreground">
                                 <CircleDollarSign className="h-4 w-4" />
