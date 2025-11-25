@@ -121,16 +121,17 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                          <Skeleton className="h-10 w-48" />
                     )}
                  </div>
-
-                 <div className="flex items-center justify-end text-right gap-4 col-span-2 sm:col-auto">
+                 
+                <div className="flex items-center justify-end text-right gap-4 col-span-2 sm:col-auto">
                     <div className="text-right">
                         <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
-                        <div className="flex items-baseline gap-2 justify-end">
+                        <div className="flex items-baseline gap-x-2 justify-end">
                             <span className="font-bold text-primary text-lg">{conversation.agreed_budget || 0} MAD</span>
                             <span className="text-xs text-muted-foreground">/ {campaign?.budget || 0} MAD</span>
                         </div>
                     </div>
                 </div>
+
             </div>
             
             <div className={cn("flex items-center justify-center gap-2 text-sm font-semibold p-2", color, bgColor)}>
