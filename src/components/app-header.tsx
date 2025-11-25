@@ -69,7 +69,7 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadMessages, newApplications }: 
     
     if (!navLinks) {
         return (
-            <nav className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
+            <nav className="hidden lg:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
                 <Skeleton className="h-9 w-24 rounded-full" />
                 <Skeleton className="h-9 w-24 rounded-full" />
                 <Skeleton className="h-9 w-24 rounded-full" />
@@ -78,7 +78,7 @@ const DesktopNav = ({ navLinks, onLinkClick, unreadMessages, newApplications }: 
     }
 
     return (
-        <nav className="hidden md:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
+        <nav className="hidden lg:flex gap-1 items-center bg-muted/50 border rounded-full p-1">
             {navLinks.map((link) => {
                  const isActive = (pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))) && !link.isSection;
                  const isMessages = link.href === '/chat';
@@ -253,7 +253,7 @@ const AuthButtons = ({ onLogout }: { onLogout: () => void }) => {
     }
 
     return (
-      <Button variant="outline" className="hidden md:flex rounded-full" asChild>
+      <Button variant="outline" className="hidden lg:flex rounded-full" asChild>
         <Link href='/login'>
             <LogIn className="mr-2 h-4 w-4" />
             {t('header.login')}
@@ -407,7 +407,7 @@ export function AppHeader() {
           </Link>
         </div>
 
-        <div className="hidden md:flex flex-1 justify-center">
+        <div className="hidden lg:flex flex-1 justify-center">
           <DesktopNav 
             navLinks={navLinks} 
             onLinkClick={handleNavLinkClick} 
@@ -419,7 +419,7 @@ export function AppHeader() {
         <div className="flex-1 flex justify-end items-center gap-2">
           <LanguageSwitcher className="hidden sm:flex" />
           <AuthButtons onLogout={handleLogout} />
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             <Button 
               variant="ghost" 
               size="icon" 
@@ -452,4 +452,5 @@ export function AppHeader() {
     </>
   );
 }
+
 
