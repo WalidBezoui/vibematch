@@ -91,7 +91,7 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
 
     return (
         <div className="border-b bg-background">
-            <div className="p-3 sm:p-4 grid grid-cols-2 md:flex md:justify-between md:items-center gap-4">
+            <div className="p-3 sm:p-4 grid grid-cols-2 sm:flex sm:justify-between sm:items-center gap-4">
                  <div className="flex items-center gap-2 min-w-0 col-span-1">
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
                         <ArrowLeft className="h-5 w-5" />
@@ -122,16 +122,12 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                     )}
                  </div>
 
-                 <div className="flex items-center justify-end text-right gap-4 col-span-1">
-                    <div className="p-3 rounded-lg bg-muted/50 border">
-                         <div className="text-center">
-                            <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
-                            <p className="font-bold text-primary text-base sm:text-lg">{conversation.agreed_budget || 0} MAD</p>
-                        </div>
-                         <Separator className="my-2" />
-                         <div className="text-center">
-                            <p className="text-xs font-medium text-muted-foreground">Original Budget</p>
-                            <p className="font-semibold text-muted-foreground text-sm">{campaign?.budget || 0} MAD</p>
+                 <div className="flex items-center justify-end text-right gap-4 col-span-2 sm:col-auto">
+                    <div className="text-right">
+                        <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
+                        <div className="flex items-baseline gap-2 justify-end">
+                            <span className="font-bold text-primary text-lg">{conversation.agreed_budget || 0} MAD</span>
+                            <span className="text-xs text-muted-foreground">/ {campaign?.budget || 0} MAD</span>
                         </div>
                     </div>
                 </div>
