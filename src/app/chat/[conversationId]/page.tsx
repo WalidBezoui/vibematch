@@ -208,10 +208,12 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
                             </p>
                             <p className="text-xl font-bold gradient-text">{offerAmount} MAD</p>
                         </div>
-                         <div>
-                            <p className="text-sm font-semibold text-muted-foreground">Original Cover Letter</p>
-                            <p className="text-sm text-foreground/80 mt-1 whitespace-pre-wrap border p-3 rounded-md bg-background/50 break-words">{coverLetter}</p>
-                        </div>
+                         {coverLetter && coverLetter.trim() !== '' && (
+                            <div>
+                                <p className="text-sm font-semibold text-muted-foreground">Original Cover Letter</p>
+                                <p className="text-sm text-foreground/80 mt-1 whitespace-pre-wrap border p-3 rounded-md bg-background/50 break-words">{coverLetter}</p>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>
