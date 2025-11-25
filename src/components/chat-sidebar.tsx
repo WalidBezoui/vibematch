@@ -19,6 +19,7 @@ const ConversationCard = ({
   lastMessage,
   isActive,
   hasAction,
+  awaitingFunding,
   onClick,
 }: {
   id: string;
@@ -28,6 +29,7 @@ const ConversationCard = ({
   lastMessage: string;
   isActive: boolean;
   hasAction?: boolean;
+  awaitingFunding?: boolean;
   onClick: (id: string) => void;
 }) => {
   return (
@@ -51,6 +53,12 @@ const ConversationCard = ({
              <span className="absolute top-3 right-3 flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+            </span>
+        )}
+        {awaitingFunding && (
+             <span className="absolute top-3 right-3 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
             </span>
         )}
     </div>
@@ -133,6 +141,7 @@ const ConversationList = ({ conversations, onSelectConversation }: { conversatio
                     title={item.campaignTitle}
                     lastMessage={item.lastMessage || 'No messages yet'}
                     hasAction={item.status === 'NEGOTIATION' && item.last_offer_by !== user?.uid}
+                    awaitingFunding={item.status === 'OFFER_ACCEPTED'}
                 />
             ))}
         </div>

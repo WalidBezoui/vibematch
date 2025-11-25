@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
@@ -38,7 +38,7 @@ const statusStyles: { [key: string]: string } = {
     PENDING_SELECTION: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200',
     OFFER_PENDING: 'bg-blue-100 text-blue-800 border-blue-200',
-    PENDING_PAYMENT: 'bg-blue-100 text-blue-800 border-blue-200',
+    PENDING_PAYMENT: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800 border-indigo-200',
     DELIVERED: 'bg-purple-100 text-purple-800 border-purple-200',
     COMPLETED: 'bg-gray-200 text-gray-800 border-gray-300',
@@ -81,6 +81,8 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
     const hiringProgress = totalNeeded > 0 ? (hiredCount / totalNeeded) * 100 : 0;
+    const isAwaitingPayment = campaign.status === 'PENDING_PAYMENT';
+
 
     const manageButtonLink = `/campaigns/${campaign.id}/manage`;
 
@@ -89,7 +91,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
         : 'Just now';
 
     return (
-        <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
+        <Card className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isAwaitingPayment && "border-blue-500 shadow-blue-500/10")}>
             <CardHeader>
                 <div className="flex justify-between items-start gap-2">
                      <div className='flex-1'>
@@ -137,7 +139,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
                  <div className="flex items-center justify-between pt-4">
                     <span className="gradient-text font-bold text-lg">{campaign.budget} DH</span>
                      <Badge className={cn('whitespace-nowrap text-xs', statusStyles[campaign.status])}>
-                        {campaign.status.replace(/_/g, ' ')}
+                        {isAwaitingPayment ? 'Awaiting Your Payment' : campaign.status.replace(/_/g, ' ')}
                     </Badge>
                  </div>
             </CardHeader>
@@ -151,7 +153,14 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
                  </div>
             </CardContent>
             <CardFooter className="bg-muted/50 p-3">
-                {(campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
+                {isAwaitingPayment ? (
+                    <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white animate-pulse">
+                        <Link href={`/campaigns/${campaign.id}/pay`}>
+                            <Wallet className="mr-2 h-4 w-4" />
+                            FUND NOW
+                        </Link>
+                    </Button>
+                ) : (campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
                      <Button asChild variant="secondary" className="w-full">
                         <Link href={manageButtonLink}>
                             <Users className="mr-2 h-4 w-4" />
@@ -363,5 +372,3 @@ export default function BrandDashboard() {
     </div>
   );
 }
-
-    
