@@ -122,13 +122,11 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                     )}
                  </div>
                  
-                <div className="flex items-center justify-end text-right gap-4 col-span-2 sm:col-auto">
-                    <div className="text-right">
-                        <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
-                        <div className="flex items-baseline gap-x-2 justify-end">
-                            <span className="font-bold text-primary text-lg">{conversation.agreed_budget || 0} MAD</span>
-                            <span className="text-xs text-muted-foreground">/ {campaign?.budget || 0} MAD</span>
-                        </div>
+                <div className="text-right">
+                    <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
+                    <div className="flex items-baseline gap-x-2 justify-end">
+                        <span className="font-bold text-primary text-lg">{conversation.agreed_budget || 0} MAD</span>
+                        <span className="text-xs text-muted-foreground">/ {campaign?.budget || 0} MAD</span>
                     </div>
                 </div>
 
@@ -662,17 +660,24 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         
         batch.update(msgRef, { 'metadata.offer_status': response });
         
+        const conversationUpdateData = {
+          agreed_budget: message.metadata.offer_amount,
+          status: 'OFFER_ACCEPTED',
+          last_offer_by: user.uid
+        }
+        
         if (response === 'ACCEPTED') {
-            batch.update(conversationRef, { agreed_budget: message.metadata.offer_amount, status: 'OFFER_ACCEPTED', last_offer_by: user.uid });
+            batch.update(conversationRef, conversationUpdateData);
 
             const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
-            batch.set(newEventRef, {
+            const eventMessageData = {
                 conversation_id: conversationId,
                 sender_id: user.uid,
                 type: 'SYSTEM_EVENT',
                 content: `Offer accepted by ${userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}. Awaiting funds from the Brand.`,
                 timestamp: serverTimestamp(),
-            });
+            }
+            batch.set(newEventRef, eventMessageData);
             toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
         } else {
              // If someone rejects, it's their turn to make a counter-offer
@@ -680,7 +685,17 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
              toast({ title: 'Offer Rejected' });
         }
         
-        await batch.commit();
+        batch.commit().catch((serverError) => {
+            const permissionError = new FirestorePermissionError({
+                path: `BATCH_WRITE on /conversations/${conversationId} and subcollections`,
+                operation: 'write',
+                requestResourceData: {
+                    messageUpdate: { 'metadata.offer_status': response },
+                    conversationUpdate: response === 'ACCEPTED' ? conversationUpdateData : { last_offer_by: user.uid },
+                },
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
     };
 
     const handleDecline = async () => {
