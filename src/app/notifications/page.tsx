@@ -1,33 +1,23 @@
 
-
 'use client';
 
 import { AppHeader } from '@/components/app-header';
 import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
-import { collection, query, where, getDocs, doc, getDoc, writeBatch, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import { Card, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck, Bell, Sparkles, CheckCircle } from 'lucide-react';
+import { ArrowRight, Bell, MessageSquare, PlusCircle, Sparkles, CheckCircle, Handshake } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
-import CreatorProfileSheet from '@/components/creator-profile-sheet';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { FirestorePermissionError } from '@/firebase/errors';
-import { errorEmitter } from '@/firebase/error-emitter';
-
-// This page is now a pure notification feed for brands, showing actionable events.
-// The primary action for a new application is to go to the dedicated management page.
 
 type NotificationItem = {
-  id: string; // application or campaign id
-  type: 'NEW_APPLICATION' | 'CAMPAIGN_UPDATE';
+  id: string; 
+  type: 'NEW_APPLICATION' | 'CAMPAIGN_UPDATE' | 'DISCUSSION_OPENED';
   data: any;
   createdAt: any;
 };
@@ -52,10 +42,12 @@ const NotificationCard = ({ notification }: { notification: NotificationItem }) 
                 <CardHeader className="p-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="flex items-start gap-4 flex-1 cursor-pointer">
-                            <Avatar className="h-12 w-12 border">
-                                <AvatarImage src={profile?.photoURL} alt={profile?.name} />
-                                <AvatarFallback>{profile?.name?.[0]}</AvatarFallback>
-                            </Avatar>
+                            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-muted/60">
+                               <Avatar className="h-10 w-10 border">
+                                  <AvatarImage src={profile?.photoURL} alt={profile?.name} />
+                                  <AvatarFallback>{profile?.name?.[0]}</AvatarFallback>
+                              </Avatar>
+                            </div>
                             <div className="flex-1">
                                 <p className="font-semibold">
                                     {profile?.name}
@@ -79,6 +71,38 @@ const NotificationCard = ({ notification }: { notification: NotificationItem }) 
         )
     }
 
+    if (notification.type === 'DISCUSSION_OPENED') {
+        const { brandProfile, title, conversationId } = notification.data;
+        return (
+             <Card className="transition-all hover:shadow-md border-blue-500/30 bg-blue-500/5">
+                <CardHeader className="p-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-start gap-4 flex-1 cursor-pointer">
+                           <div className={cn("w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-blue-100 text-blue-800")}>
+                                <Handshake className="h-6 w-6" />
+                            </div>
+                            <div className="flex-1">
+                                <p className="font-medium">
+                                    <span className="font-semibold">{brandProfile?.name}</span> opened a discussion for the campaign <span className="font-semibold">"{title}"</span>.
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    {notification.createdAt ? new Date(notification.createdAt.seconds * 1000).toLocaleString() : ''}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
+                            <Button asChild variant="default" size="sm">
+                                <Link href={`/chat?id=${conversationId}`}>
+                                    Open Chat <ArrowRight className="h-4 w-4 ml-2" />
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </CardHeader>
+            </Card>
+        )
+    }
+
     if (notification.type === 'CAMPAIGN_UPDATE') {
          const { brandProfile, title, id: campaignId, status } = notification.data;
          const isOffer = status === 'OFFER_PENDING';
@@ -90,15 +114,14 @@ const NotificationCard = ({ notification }: { notification: NotificationItem }) 
             Icon = Sparkles;
             iconBg = 'gradient-bg text-black';
             text = <>Offer from <span className="font-semibold">{brandProfile?.name}</span> for "{title}"</>;
-        } else {
+        } else { // Assuming IN_PROGRESS or other active statuses
             Icon = CheckCircle;
             iconBg = 'bg-green-100 text-green-800';
             text = <>Campaign <span className="font-semibold">"{title}"</span> is now active!</>;
         }
 
-
          return (
-            <Card className="transition-all hover:shadow-md border-blue-500/30 bg-blue-500/5">
+            <Card className="transition-all hover:shadow-md border-primary/20 bg-primary/5">
                 <CardHeader className="p-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="flex items-start gap-4 flex-1 cursor-pointer">
@@ -132,7 +155,6 @@ const NotificationCard = ({ notification }: { notification: NotificationItem }) 
 
 export default function NotificationsPage() {
     const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
     
     const { user, isUserLoading } = useUser();
     const { userProfile, isLoading: isProfileLoading } = useUserProfile();
@@ -148,30 +170,28 @@ export default function NotificationsPage() {
     );
     const { data: brandCampaigns, isLoading: isLoadingCampaigns } = useCollection(brandCampaignsQuery);
 
-    const creatorCampaignsQuery = useMemoFirebase(
+    const creatorInvolvedCampaignsQuery = useMemoFirebase(
         () => (!isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('creatorIds', 'array-contains', user.uid)) : null,
         [user, firestore, isBrand]
     );
-    const { data: creatorInvolvedCampaigns, isLoading: isLoadingCreatorCampaigns } = useCollection(creatorCampaignsQuery);
+    const { data: creatorInvolvedCampaigns, isLoading: isLoadingCreatorCampaigns } = useCollection(creatorInvolvedCampaignsQuery);
+
+    const creatorConversationsQuery = useMemoFirebase(
+        () => (!isBrand && user && firestore) ? query(collection(firestore, 'conversations'), where('creator_id', '==', user.uid), where('status', '==', 'NEGOTIATION')) : null,
+        [user, firestore, isBrand]
+    );
+    const { data: creatorConversations, isLoading: isLoadingCreatorConversations } = useCollection(creatorConversationsQuery);
 
 
     useEffect(() => {
-        if (isUserLoading || isProfileLoading) return;
-        if (!user || !userProfile) {
-            router.push('/login');
-            return;
-        }
+        const processNotifications = async () => {
+             if (isUserLoading || isProfileLoading || !firestore || !user || !userProfile) return;
 
-        const fetchAllData = async () => {
-            setIsLoading(true);
-            const allNotifications: NotificationItem[] = [];
+             const allNotifications: NotificationItem[] = [];
 
-            // Logic for Brands
-            if (isBrand) {
-                if (isLoadingCampaigns || !brandCampaigns || !firestore) return;
-                const campaignMap = new Map(brandCampaigns.map(c => [c.id, c.title]));
-
-                for (const campaign of brandCampaigns) {
+             if (isBrand) {
+                if (isLoadingCampaigns || !brandCampaigns) return;
+                 for (const campaign of brandCampaigns) {
                     const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
                     const q = query(appsRef, where('status', '==', 'APPLIED'));
                     const appsSnapshot = await getDocs(q);
@@ -188,18 +208,17 @@ export default function NotificationsPage() {
                                 data: {
                                     ...appData,
                                     profile: profileSnap.exists() ? profileSnap.data() : null,
-                                    campaignTitle: campaignMap.get(appData.campaignId) || 'Unknown Campaign',
+                                    campaignTitle: campaign.title || 'Unknown Campaign',
                                 }
                             });
                         }
                     }
                 }
-            }
-            // Logic for Creators
-            else {
-                if(isLoadingCreatorCampaigns || !creatorInvolvedCampaigns || !firestore) return;
-                
-                for(const campaign of creatorInvolvedCampaigns) {
+             } else { // Logic for Creators
+                 if (isLoadingCreatorCampaigns || isLoadingCreatorConversations || !creatorInvolvedCampaigns || !creatorConversations) return;
+                 
+                 // Notifications for campaign status updates (offers, started, etc.)
+                 for(const campaign of creatorInvolvedCampaigns) {
                     if (['OFFER_PENDING', 'IN_PROGRESS'].includes(campaign.status)) {
                          const brandProfileRef = doc(firestore, 'users', campaign.brandId);
                          const brandProfileSnap = await getDoc(brandProfileRef);
@@ -214,17 +233,40 @@ export default function NotificationsPage() {
                          })
                     }
                 }
-            }
 
-            setNotifications(allNotifications.sort((a,b) => b.createdAt.seconds - a.createdAt.seconds));
-            setIsLoading(false);
-        };
+                // Notifications for new discussions
+                for (const convo of creatorConversations) {
+                    const campaignRef = doc(firestore, 'campaigns', convo.campaign_id);
+                    const brandRef = doc(firestore, 'users', convo.brand_id);
+                    const [campaignSnap, brandSnap] = await Promise.all([getDoc(campaignRef), getDoc(brandRef)]);
+                    
+                    allNotifications.push({
+                        type: 'DISCUSSION_OPENED',
+                        id: convo.id,
+                        createdAt: convo.updatedAt,
+                        data: {
+                            ...convo,
+                            title: campaignSnap.exists() ? campaignSnap.data().title : "a campaign",
+                            brandProfile: brandSnap.exists() ? brandSnap.data() : null,
+                            conversationId: convo.id,
+                        }
+                    });
+                }
+             }
 
-        fetchAllData();
+             setNotifications(allNotifications.sort((a,b) => b.createdAt.seconds - a.createdAt.seconds));
+        }
+        processNotifications();
 
-    }, [brandCampaigns, creatorInvolvedCampaigns, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, isLoadingCampaigns, isLoadingCreatorCampaigns, router]);
+    }, [brandCampaigns, creatorInvolvedCampaigns, creatorConversations, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, isLoadingCampaigns, isLoadingCreatorCampaigns, isLoadingCreatorConversations]);
 
-    const finalIsLoading = isLoading || isUserLoading || isProfileLoading;
+    const isLoading = isUserLoading || isProfileLoading || (isBrand && isLoadingCampaigns) || (!isBrand && (isLoadingCreatorCampaigns || isLoadingCreatorConversations));
+
+    useEffect(() => {
+        if (!isUserLoading && !user) {
+            router.push('/login');
+        }
+    }, [isUserLoading, user, router]);
     
     const emptyStateDescription = isBrand 
         ? t('notificationsPage.empty.description_brand') 
@@ -244,7 +286,7 @@ export default function NotificationsPage() {
                         </p>
                     </div>
 
-                    {finalIsLoading && (
+                    {isLoading && (
                         <div className="space-y-4">
                             <NotificationCardSkeleton />
                             <NotificationCardSkeleton />
@@ -252,15 +294,15 @@ export default function NotificationsPage() {
                         </div>
                     )}
 
-                    {!finalIsLoading && notifications.length > 0 ? (
+                    {!isLoading && notifications.length > 0 ? (
                         <div className="space-y-4">
                             {notifications.map(notification => (
-                                <NotificationCard key={notification.id} notification={notification} />
+                                <NotificationCard key={`${notification.type}-${notification.id}`} notification={notification} />
                             ))}
                         </div>
                     ) : null}
 
-                     {!finalIsLoading && notifications.length === 0 && (
+                     {!isLoading && notifications.length === 0 && (
                         <div className="text-center py-24 border-2 border-dashed rounded-lg bg-muted/30">
                              <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
                                 <Bell className="h-8 w-8 text-black" />
