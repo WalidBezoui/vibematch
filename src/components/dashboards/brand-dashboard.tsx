@@ -38,7 +38,7 @@ const statusStyles: { [key: string]: string } = {
     PENDING_SELECTION: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200',
     OFFER_PENDING: 'bg-blue-100 text-blue-800 border-blue-200',
-    PENDING_PAYMENT: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
+    PENDING_PAYMENT: 'bg-blue-100 text-blue-800 border-blue-200',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800 border-indigo-200',
     DELIVERED: 'bg-purple-100 text-purple-800 border-purple-200',
     COMPLETED: 'bg-gray-200 text-gray-800 border-gray-300',
@@ -91,7 +91,10 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
         : 'Just now';
 
     return (
-        <Card className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isAwaitingPayment && "border-blue-500 shadow-blue-500/10 ring-2 ring-blue-500/20")}>
+        <Card className={cn(
+          "hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card",
+          isAwaitingPayment && "animate-pulse-border-blue"
+        )}>
             <CardHeader>
                 <div className="flex justify-between items-start gap-2">
                      <div className='flex-1'>
@@ -154,7 +157,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
             </CardContent>
             <CardFooter className="bg-muted/50 p-3">
                 {isAwaitingPayment ? (
-                    <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white animate-pulse">
+                    <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white animate-pulse-button">
                         <Link href={`/campaigns/${campaign.id}/pay`}>
                             <Wallet className="mr-2 h-4 w-4" />
                             FUND NOW
@@ -372,3 +375,5 @@ export default function BrandDashboard() {
     </div>
   );
 }
+
+    
