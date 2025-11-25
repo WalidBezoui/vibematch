@@ -94,8 +94,8 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
 
     return (
         <div className={cn("p-3 sm:p-4 border-b", bgColor)}>
-            <div className="grid grid-cols-[1fr_auto_1fr] md:grid-cols-3 items-center gap-4">
-                <div className="flex items-center gap-2 justify-start">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                 <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
                         <ArrowLeft className="h-5 w-5" />
                     </Button>
@@ -123,32 +123,31 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                     ) : (
                          <Skeleton className="h-10 w-48" />
                     )}
-                </div>
+                 </div>
 
-                <div className={cn("hidden md:flex items-center justify-center gap-2 text-sm font-semibold", color)}>
-                    <Icon className="h-5 w-5" />
-                    <span>{text}</span>
-                </div>
-
-                <div className="flex items-center justify-end text-right gap-4">
-                     <div className="hidden sm:block">
+                <div className="flex items-center justify-end text-right gap-4 flex-wrap">
+                     <div className="text-right">
                         <p className="text-xs font-semibold text-muted-foreground">Original Budget</p>
                         <p className="font-bold text-muted-foreground text-sm sm:text-base">{campaign?.budget || 0} MAD</p>
                     </div>
-                     <div>
-                        <p className="text-xs font-semibold text-muted-foreground">{budgetLabel}</p>
+                     <div className="text-right">
+                        <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
                         <p className="font-bold text-primary text-sm sm:text-base">{conversation.agreed_budget || 0} MAD</p>
                     </div>
                 </div>
-
-                 {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
-                    <div className="col-span-3">
-                        <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full sm:w-auto">
-                          <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
-                        </Button>
-                    </div>
-                )}
             </div>
+
+            <div className={cn("flex items-center justify-center gap-2 text-sm font-semibold pt-3 mt-3 border-t border-black/10 sm:hidden", color)}>
+                <Icon className="h-5 w-5" />
+                <span>{text}</span>
+            </div>
+             {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
+                <div className="mt-3 pt-3 border-t border-black/10">
+                    <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full sm:w-auto">
+                      <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };
@@ -740,3 +739,6 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
+
+
+    
