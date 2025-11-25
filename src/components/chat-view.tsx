@@ -138,7 +138,7 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                 <span>{text}</span>
             </div>
 
-            {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
+            {isBrand && (conversation.status === 'OFFER_ACCEPTED') && (
                 <div className="p-3 border-t">
                     <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full">
                       <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
@@ -644,17 +644,11 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
             timestamp: serverTimestamp(),
         });
         
-        if (campaignRef) {
-          batch.update(campaignRef, {
-            status: 'PENDING_PAYMENT'
-          })
-        }
-    
         toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
     
         await batch.commit().catch((serverError) => {
           const permissionError = new FirestorePermissionError({
-              path: `BATCH_WRITE on /conversations/${conversationId} and /campaigns/${conversation.campaign_id}`,
+              path: `BATCH_WRITE on /conversations/${conversationId}`,
               operation: 'write',
               requestResourceData: { conversationUpdate: conversationUpdateData },
           });
@@ -695,7 +689,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
-        if (!firestore || !user || !conversationRef || !userProfile || !campaignRef) return;
+        if (!firestore || !user || !conversationRef || !userProfile) return;
         
         const batch = writeBatch(firestore);
         const msgRef = doc(firestore, 'conversations', conversationId, 'messages', message.id);
@@ -713,9 +707,6 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
 
             batch.update(conversationRef, conversationUpdateData);
             
-            // Also update the campaign status
-            batch.update(campaignRef, { status: 'PENDING_PAYMENT' });
-
             const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
             const eventMessageData = {
                 conversation_id: conversationId,
@@ -800,4 +791,5 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
+
 

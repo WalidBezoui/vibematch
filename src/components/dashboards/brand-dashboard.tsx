@@ -76,12 +76,11 @@ const StatCard = ({ title, value, icon, isLoading }: { title: string; value: str
     </Card>
 );
 
-const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any, onDelete: (campaignId: string) => Promise<void>, applicationCount: number }) => {
+const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment }: { campaign: any, onDelete: (campaignId: string) => Promise<void>, applicationCount: number, isAwaitingPayment: boolean }) => {
     const { t } = useLanguage();
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
     const hiringProgress = totalNeeded > 0 ? (hiredCount / totalNeeded) * 100 : 0;
-    const isAwaitingPayment = campaign.status === 'PENDING_PAYMENT';
 
 
     const manageButtonLink = `/campaigns/${campaign.id}/manage`;
@@ -193,6 +192,13 @@ export default function BrandDashboard() {
     [user, firestore]
   );
   const { data: campaigns, isLoading } = useCollection(campaignsQuery);
+
+  const conversationsQuery = useMemoFirebase(
+    () => (user && firestore) ? query(collection(firestore, 'conversations'), where('brand_id', '==', user.uid)) : null,
+    [user, firestore]
+  );
+  const { data: conversations } = useCollection(conversationsQuery);
+
 
   const [stats, setStats] = useState({ activeCampaigns: 0, totalBudget: 0 });
   const [applicationCounts, setApplicationCounts] = useState<Record<string, number>>({});
@@ -328,16 +334,21 @@ export default function BrandDashboard() {
         </div>
       )}
 
-      {!isLoading && campaigns && campaigns.length > 0 ? (
+      {!isLoading && campaigns && conversations ? (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {campaigns.map((campaign) => (
-            <CampaignCard 
-                campaign={campaign} 
-                key={campaign.id} 
-                onDelete={handleDeleteCampaign}
-                applicationCount={applicationCounts[campaign.id] || 0}
-            />
-          ))}
+          {campaigns.map((campaign) => {
+            const campaignConversations = conversations.filter(c => c.campaign_id === campaign.id);
+            const isAwaitingPayment = campaignConversations.some(c => c.status === 'OFFER_ACCEPTED');
+            return (
+              <CampaignCard 
+                  campaign={campaign} 
+                  key={campaign.id} 
+                  onDelete={handleDeleteCampaign}
+                  applicationCount={applicationCounts[campaign.id] || 0}
+                  isAwaitingPayment={isAwaitingPayment}
+              />
+            )
+          })}
         </div>
       ) : null}
 

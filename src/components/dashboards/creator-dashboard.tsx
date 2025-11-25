@@ -191,6 +191,7 @@ export default function CreatorDashboard() {
 
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
   const [inDiscussionCampaigns, setInDiscussionCampaigns] = useState<any[]>([]);
+  const [awaitingPaymentCampaigns, setAwaitingPaymentCampaigns] = useState<any[]>([]);
   const [matchingJobsCount, setMatchingJobsCount] = useState(0);
   const [profileViews, setProfileViews] = useState(0);
   const [isLoadingPending, setIsLoadingPending] = useState(true);
@@ -252,7 +253,10 @@ export default function CreatorDashboard() {
                 const openCampaignsData = openCampaignsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
                 const negotiationConvos = conversations.filter(c => c.status === 'NEGOTIATION');
+                const paymentConvos = conversations.filter(c => c.status === 'OFFER_ACCEPTED');
+
                 const negotiationCampaignIds = negotiationConvos.map(c => c.campaign_id);
+                const paymentCampaignIds = paymentConvos.map(c => c.campaign_id);
                 
                 // Get full campaign data for negotiations
                 if (negotiationCampaignIds.length > 0) {
@@ -262,6 +266,16 @@ export default function CreatorDashboard() {
                      setInDiscussionCampaigns(discussionData);
                 } else {
                     setInDiscussionCampaigns([]);
+                }
+                
+                 // Get full campaign data for payments
+                if (paymentCampaignIds.length > 0) {
+                     const paymentCampaignsQuery = query(collection(firestore, 'campaigns'), where(documentId(), 'in', paymentCampaignIds));
+                     const paymentCampaignsSnapshot = await getDocs(paymentCampaignsQuery);
+                     const paymentData = paymentCampaignsSnapshot.docs.map(d => ({...d.data(), id: d.id, conversationId: paymentConvos.find(c => c.campaign_id === d.id)?.id }));
+                     setAwaitingPaymentCampaigns(paymentData);
+                } else {
+                    setAwaitingPaymentCampaigns([]);
                 }
                 
                 const pendingData = openCampaignsData.filter(c => appMap.has(c.id) && !negotiationCampaignIds.includes(c.id));
@@ -287,6 +301,7 @@ export default function CreatorDashboard() {
                 console.error("Error fetching creator data:", error);
                 setPendingCampaigns([]);
                 setInDiscussionCampaigns([]);
+                setAwaitingPaymentCampaigns([]);
                 setMatchingJobsCount(0);
             } finally {
                 setIsLoadingPending(false);
@@ -335,7 +350,7 @@ export default function CreatorDashboard() {
   const isLoading = isLoadingActive || isLoadingPending || conversationsLoading;
   const hasActiveContracts = activeCampaigns && activeCampaigns.some(c => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED');
   
-  const awaitingPaymentCampaigns = useMemo(() => activeCampaigns?.filter(c => c.status === 'PENDING_PAYMENT') || [], [activeCampaigns]);
+  const inProgressCampaigns = useMemo(() => activeCampaigns?.filter(c => ['IN_PROGRESS', 'DELIVERED', 'PENDING_CREATOR_ACCEPTANCE'].includes(c.status)) || [], [activeCampaigns]);
 
   return (
     <div>
@@ -361,10 +376,10 @@ export default function CreatorDashboard() {
 
       <Tabs defaultValue="active">
         <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-4">
-            <TabsTrigger value="active">Active <Badge variant="secondary" className="ml-2">{activeCampaigns?.length || 0}</Badge></TabsTrigger>
+            <TabsTrigger value="active">Active <Badge variant="secondary" className="ml-2">{inProgressCampaigns.length}</Badge></TabsTrigger>
             <TabsTrigger value="payment">Awaiting Payment <Badge variant="secondary" className="ml-2">{awaitingPaymentCampaigns.length}</Badge></TabsTrigger>
-            <TabsTrigger value="discussion">In Discussion <Badge variant="secondary" className="ml-2">{inDiscussionCampaigns?.length || 0}</Badge></TabsTrigger>
-            <TabsTrigger value="pending">Pending <Badge variant="secondary" className="ml-2">{pendingCampaigns?.length || 0}</Badge></TabsTrigger>
+            <TabsTrigger value="discussion">In Discussion <Badge variant="secondary" className="ml-2">{inDiscussionCampaigns.length}</Badge></TabsTrigger>
+            <TabsTrigger value="pending">Pending <Badge variant="secondary" className="ml-2">{pendingCampaigns.length}</Badge></TabsTrigger>
         </TabsList>
         <TabsContent value="active">
             {isLoadingActive ? (
@@ -372,9 +387,9 @@ export default function CreatorDashboard() {
                     <CampaignCardSkeleton />
                     <CampaignCardSkeleton />
                 </div>
-            ) : activeCampaigns && activeCampaigns.length > 0 ? (
+            ) : inProgressCampaigns && inProgressCampaigns.length > 0 ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                {activeCampaigns.map((campaign) => {
+                {inProgressCampaigns.map((campaign) => {
                         let badgeStatus = campaign.status;
                         let badgeText = campaign.status.replace(/_/g, ' ');
                         if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
@@ -422,7 +437,7 @@ export default function CreatorDashboard() {
             )}
         </TabsContent>
         <TabsContent value="payment">
-            {isLoadingActive ? (
+            {isLoadingPending ? (
                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
                     <CampaignCardSkeleton />
                 </div>
