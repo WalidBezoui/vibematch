@@ -8,6 +8,7 @@ import {
   FirestoreError,
   QuerySnapshot,
   CollectionReference,
+  getDocs,
 } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
@@ -23,6 +24,7 @@ export interface UseCollectionResult<T> {
   data: WithId<T>[] | null; // Document data with ID, or null.
   isLoading: boolean;       // True if loading.
   error: FirestoreError | Error | null; // Error object, or null.
+  mutate: () => Promise<void>;
 }
 
 /* Internal implementation of Query:
@@ -60,6 +62,21 @@ export function useCollection<T = any>(
   const [data, setData] = useState<StateDataType>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<FirestoreError | Error | null>(null);
+  const [key, setKey] = useState(0);
+
+  const mutate = async () => {
+    if (!memoizedTargetRefOrQuery) return;
+    try {
+      const snapshot = await getDocs(memoizedTargetRefOrQuery);
+      const results: ResultItemType[] = [];
+      for (const doc of snapshot.docs) {
+        results.push({ ...(doc.data() as T), id: doc.id });
+      }
+      setData(results);
+    } catch (e: any) {
+       console.error("Mutation failed:", e)
+    }
+  };
 
   useEffect(() => {
     if (!memoizedTargetRefOrQuery) {
@@ -84,7 +101,7 @@ export function useCollection<T = any>(
         setError(null);
         setIsLoading(false);
       },
-      (error: FirestoreError) => {
+      async (error: FirestoreError) => {
         // This logic extracts the path from either a ref or a query
         const path: string =
           memoizedTargetRefOrQuery.type === 'collection'
@@ -107,7 +124,7 @@ export function useCollection<T = any>(
     );
 
     return () => unsubscribe();
-  }, [memoizedTargetRefOrQuery]); // Re-run if the target query/reference changes.
+  }, [memoizedTargetRefOrQuery, key]); // Re-run if the target query/reference changes.
   
-  return { data, isLoading, error };
+  return { data, isLoading, error, mutate };
 }
