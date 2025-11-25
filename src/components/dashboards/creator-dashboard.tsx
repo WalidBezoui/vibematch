@@ -442,7 +442,7 @@ export default function CreatorDashboard() {
                             </CardContent>
                             <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
                                 <Button asChild className="w-full">
-                                  <Link href={`/chat/${campaign.conversationId}`}>
+                                  <Link href={`/chat?id=${campaign.conversationId}`}>
                                     Open Chat
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                   </Link>
@@ -532,3 +532,4 @@ export default function CreatorDashboard() {
     </div>
   );
 }
+
