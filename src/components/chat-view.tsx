@@ -653,21 +653,28 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
-        if (!firestore || !user || !conversationRef || !userProfile) return;
+        if (!firestore || !user || !conversationRef || !userProfile || !campaignRef) return;
         
         const batch = writeBatch(firestore);
         const msgRef = doc(firestore, 'conversations', conversationId, 'messages', message.id);
         
         batch.update(msgRef, { 'metadata.offer_status': response });
         
-        const conversationUpdateData = {
-          agreed_budget: message.metadata.offer_amount,
-          status: 'OFFER_ACCEPTED',
-          last_offer_by: user.uid
-        }
+        let conversationUpdateData: any = {};
         
         if (response === 'ACCEPTED') {
+            conversationUpdateData = {
+              agreed_budget: message.metadata.offer_amount,
+              status: 'OFFER_ACCEPTED',
+              last_offer_by: user.uid,
+            };
+
             batch.update(conversationRef, conversationUpdateData);
+            
+            // Also update the parent campaign status
+            batch.update(campaignRef, {
+                status: 'PENDING_PAYMENT'
+            });
 
             const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
             const eventMessageData = {
@@ -676,12 +683,12 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
                 type: 'SYSTEM_EVENT',
                 content: `Offer accepted by ${userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}. Awaiting funds from the Brand.`,
                 timestamp: serverTimestamp(),
-            }
+            };
             batch.set(newEventRef, eventMessageData);
             toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
         } else {
-             // If someone rejects, it's their turn to make a counter-offer
-             batch.update(conversationRef, { last_offer_by: user.uid });
+             conversationUpdateData = { last_offer_by: user.uid };
+             batch.update(conversationRef, conversationUpdateData);
              toast({ title: 'Offer Rejected' });
         }
         
@@ -691,7 +698,8 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
                 operation: 'write',
                 requestResourceData: {
                     messageUpdate: { 'metadata.offer_status': response },
-                    conversationUpdate: response === 'ACCEPTED' ? conversationUpdateData : { last_offer_by: user.uid },
+                    conversationUpdate: conversationUpdateData,
+                    ...(response === 'ACCEPTED' && { campaignUpdate: { status: 'PENDING_PAYMENT' } })
                 },
             });
             errorEmitter.emit('permission-error', permissionError);
