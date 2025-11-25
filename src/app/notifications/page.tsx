@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck, Bell, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowDown, ArrowUp, ChevronDown, FileText, Inbox, MessageSquare, PlusCircle, X, ShieldCheck, Bell, Sparkles, CheckCircle } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -27,7 +27,7 @@ import { errorEmitter } from '@/firebase/error-emitter';
 
 type NotificationItem = {
   id: string; // application or campaign id
-  type: 'NEW_APPLICATION' | 'OFFER_PENDING';
+  type: 'NEW_APPLICATION' | 'CAMPAIGN_UPDATE';
   data: any;
   createdAt: any;
 };
@@ -79,21 +79,36 @@ const NotificationCard = ({ notification }: { notification: NotificationItem }) 
         )
     }
 
-    if (notification.type === 'OFFER_PENDING') {
-         const { brandProfile, title, id: campaignId } = notification.data;
+    if (notification.type === 'CAMPAIGN_UPDATE') {
+         const { brandProfile, title, id: campaignId, status } = notification.data;
+         const isOffer = status === 'OFFER_PENDING';
+         const isStarted = status === 'IN_PROGRESS';
+
+         let Icon, iconBg, text;
+
+        if (isOffer) {
+            Icon = Sparkles;
+            iconBg = 'gradient-bg text-black';
+            text = <>Offer from <span className="font-semibold">{brandProfile?.name}</span> for "{title}"</>;
+        } else {
+            Icon = CheckCircle;
+            iconBg = 'bg-green-100 text-green-800';
+            text = <>Campaign <span className="font-semibold">"{title}"</span> is now active!</>;
+        }
+
+
          return (
             <Card className="transition-all hover:shadow-md border-blue-500/30 bg-blue-500/5">
                 <CardHeader className="p-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="flex items-start gap-4 flex-1 cursor-pointer">
-                           <div className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center text-black shadow-lg shadow-primary/30">
-                                <Sparkles className="h-6 w-6" />
+                           <div className={cn("w-12 h-12 rounded-full flex items-center justify-center shadow-lg shadow-primary/30", iconBg)}>
+                                <Icon className="h-6 w-6" />
                             </div>
                             <div className="flex-1">
-                                <p className="font-semibold">
-                                    Offer from {brandProfile?.name}
+                                <p className="font-medium">
+                                    {text}
                                 </p>
-                                <p className="text-sm text-muted-foreground">You've been selected for the campaign: <span className="font-medium text-foreground">{title}</span></p>
                                 <p className="text-xs text-muted-foreground mt-1">
                                     {notification.createdAt ? new Date(notification.createdAt.seconds * 1000).toLocaleString() : ''}
                                 </p>
@@ -102,7 +117,7 @@ const NotificationCard = ({ notification }: { notification: NotificationItem }) 
                         <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
                             <Button asChild variant="default" size="sm">
                                 <Link href={`/campaigns/${campaignId}`}>
-                                    Review & Accept <ArrowRight className="h-4 w-4 ml-2" />
+                                    {isOffer ? "Review & Accept" : "View Campaign"} <ArrowRight className="h-4 w-4 ml-2" />
                                 </Link>
                             </Button>
                         </div>
@@ -127,17 +142,17 @@ export default function NotificationsPage() {
 
     const isBrand = userProfile?.role === 'brand';
 
-    const campaignsQuery = useMemoFirebase(
+    const brandCampaignsQuery = useMemoFirebase(
         () => (isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
         [user, firestore, isBrand]
     );
-    const { data: brandCampaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
+    const { data: brandCampaigns, isLoading: isLoadingCampaigns } = useCollection(brandCampaignsQuery);
 
     const creatorCampaignsQuery = useMemoFirebase(
-        () => (!isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('creatorIds', 'array-contains', user.uid), where('status', '==', 'OFFER_PENDING')) : null,
+        () => (!isBrand && user && firestore) ? query(collection(firestore, 'campaigns'), where('creatorIds', 'array-contains', user.uid)) : null,
         [user, firestore, isBrand]
     );
-    const { data: creatorOfferCampaigns, isLoading: isLoadingCreatorCampaigns } = useCollection(creatorCampaignsQuery);
+    const { data: creatorInvolvedCampaigns, isLoading: isLoadingCreatorCampaigns } = useCollection(creatorCampaignsQuery);
 
 
     useEffect(() => {
@@ -182,20 +197,22 @@ export default function NotificationsPage() {
             }
             // Logic for Creators
             else {
-                if(isLoadingCreatorCampaigns || !creatorOfferCampaigns || !firestore) return;
+                if(isLoadingCreatorCampaigns || !creatorInvolvedCampaigns || !firestore) return;
                 
-                for(const campaign of creatorOfferCampaigns) {
-                     const brandProfileRef = doc(firestore, 'users', campaign.brandId);
-                     const brandProfileSnap = await getDoc(brandProfileRef);
-                     allNotifications.push({
-                         type: 'OFFER_PENDING',
-                         id: campaign.id,
-                         createdAt: campaign.updatedAt,
-                         data: {
-                             ...campaign,
-                             brandProfile: brandProfileSnap.exists() ? brandProfileSnap.data() : null
-                         }
-                     })
+                for(const campaign of creatorInvolvedCampaigns) {
+                    if (['OFFER_PENDING', 'IN_PROGRESS'].includes(campaign.status)) {
+                         const brandProfileRef = doc(firestore, 'users', campaign.brandId);
+                         const brandProfileSnap = await getDoc(brandProfileRef);
+                         allNotifications.push({
+                             type: 'CAMPAIGN_UPDATE',
+                             id: campaign.id,
+                             createdAt: campaign.updatedAt,
+                             data: {
+                                 ...campaign,
+                                 brandProfile: brandProfileSnap.exists() ? brandProfileSnap.data() : null
+                             }
+                         })
+                    }
                 }
             }
 
@@ -205,7 +222,7 @@ export default function NotificationsPage() {
 
         fetchAllData();
 
-    }, [brandCampaigns, creatorOfferCampaigns, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, isLoadingCampaigns, isLoadingCreatorCampaigns, router]);
+    }, [brandCampaigns, creatorInvolvedCampaigns, firestore, user, userProfile, isUserLoading, isProfileLoading, isBrand, isLoadingCampaigns, isLoadingCreatorCampaigns, router]);
 
     const finalIsLoading = isLoading || isUserLoading || isProfileLoading;
     

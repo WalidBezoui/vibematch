@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 
 const applicationSchema = z.object({
-  coverLetter: z.string().min(30, { message: "Please write a brief note (at least 30 characters)." }),
+  coverLetter: z.string().optional(),
   bidAmount: z.preprocess(
     (val) => (val === '' ? 0 : Number(val)),
     z.number({ invalid_type_error: 'Tariff must be a number.' }).positive('Your tariff must be a positive number.')
@@ -101,7 +101,7 @@ export default function ApplyPage() {
                 campaignId: campaignId,
                 creatorId: user.uid,
                 brandId: campaign.brandId,
-                coverLetter: data.coverLetter,
+                coverLetter: data.coverLetter || '',
                 bidAmount: data.bidAmount,
                 campaignBudgetSnapshot: campaign.budget,
                 status: 'APPLIED',
@@ -206,7 +206,7 @@ export default function ApplyPage() {
                                     name="coverLetter"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Why you?</FormLabel>
+                                            <FormLabel>Why you? (Optional)</FormLabel>
                                             <FormControl>
                                                 <Textarea
                                                     placeholder="Introduce yourself and explain why you'd be perfect for this collaboration..."
