@@ -14,7 +14,7 @@ service cloud.firestore {
       return exists(/databases/$(database)/documents/users/$(userId)) &&
              get(/databases/$(database)/documents/users/$(userId)).data.role == 'creator';
     }
-
+    
     // Helper function to check if the user is a participant in a conversation
     function isParticipant(conversationId) {
       return exists(/databases/$(database)/documents/conversations/$(conversationId)) &&
@@ -72,25 +72,26 @@ service cloud.firestore {
                   (resource.data.brandId == request.auth.uid || isCreator(request.auth.uid));
 
       // Allow the brand owner to update their own campaign.
-      // This rule needs to be expanded to cover the "Hire" action.
-      allow update: if request.auth != null &&
-                       resource.data.brandId == request.auth.uid && // Must be the owner of the campaign
-                       (
-                         // Condition 1: For "discuss & negoce" (updating application status)
+      // Allow a participant in a conversation to update the campaign status when an offer is accepted.
+      allow update: if request.auth != null && 
+                      (
+                        // Condition for Brand Owner to manage campaign (e.g. Smart Hire)
+                        (
+                          resource.data.brandId == request.auth.uid &&
+                          request.resource.data.diff(resource.data).affectedKeys().hasAny(['creatorIds', 'status'])
+                        ) ||
+                        // Condition for any participant (brand or creator) to update status to PENDING_PAYMENT
+                        (
+                          (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
+                          request.resource.data.status == 'PENDING_PAYMENT' &&
+                          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+                        ) ||
+                         // General campaign edits by brand owner
                          (
-                           request.resource.data.diff(resource.data).affectedKeys().hasOnly(['applicationUpdate', 'updatedAt']) &&
-                           request.resource.data.applicationUpdate.diff(resource.data.applicationUpdate).affectedKeys().hasOnly(['status'])
-                         ) ||
-                         // Condition 2: For "Hire" (adding creatorIds and updating top-level status)
-                         (
-                           request.resource.data.diff(resource.data).affectedKeys().hasOnly(['creatorIds', 'status']) &&
-                           request.resource.data.creatorIds is list && // Ensure creatorIds is being updated as an array
-                           request.resource.data.status is string     // Ensure status is being updated as a string
-                         ) ||
-                         // Condition 3: For other general updates if the user is an associated creator (less likely for brand actions)
-                         (request.auth.uid in request.resource.data.creatorIds) ||
-                         (request.auth.uid in resource.data.creatorIds)
-                       );
+                            resource.data.brandId == request.auth.uid &&
+                            !request.resource.data.diff(resource.data).affectedKeys().hasAny(['brandId', 'createdAt'])
+                         )
+                      );
                        
       // Only the brand owner can delete their campaign.
       allow delete: if request.auth != null && resource.data.brandId == request.auth.uid;
@@ -110,7 +111,7 @@ service cloud.firestore {
         allow delete: if request.auth != null && (resource.data.creatorId == request.auth.uid || get(/databases/$(database)/documents/campaigns/$(campaignId)).data.brandId == request.auth.uid);
       }
     }
-
+    
     // Allow anyone who is authenticated (including anonymous) to submit an application.
     // Deny read/update/delete to protect privacy.
     match /brand-applications/{applicationId} {
@@ -147,7 +148,7 @@ service cloud.firestore {
                     request.resource.data.application_id == resource.data.application_id &&
                     request.resource.data.brand_id == resource.data.brand_id &&
                     request.resource.data.creator_id == resource.data.creator_id &&
-                    request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                    request.resource.data.diff(resource.data).affectedKeys().hasAny([
                       'status', 'agreed_budget', 'last_offer_by', 'lastMessage', 'updatedAt', 'is_funded'
                     ]);
     }

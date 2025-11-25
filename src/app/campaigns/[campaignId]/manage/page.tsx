@@ -250,7 +250,7 @@ export default function ManageApplicationsPage() {
             // Update campaign: add creator and set status based on "Smart Hire" logic
             const updates: any = {
                 creatorIds: arrayUnion(applicant.creatorId),
-                status: isHotLead ? 'IN_PROGRESS' : 'OFFER_PENDING'
+                status: isHotLead ? 'PENDING_PAYMENT' : 'OFFER_PENDING'
             };
 
             batch.update(campaignRef, updates);
@@ -261,7 +261,7 @@ export default function ManageApplicationsPage() {
     
             await batch.commit();
     
-            toast({ title: t('manageApplicationsPage.hiredToast.title'), description: isHotLead ? "The contract is now active!" : t('manageApplicationsPage.hiredToast.description') });
+            toast({ title: t('manageApplicationsPage.hiredToast.title'), description: isHotLead ? "This is a hot lead! The contract is ready for funding." : t('manageApplicationsPage.hiredToast.description') });
             
             mutateCampaign();
             mutateApplications();
@@ -272,7 +272,7 @@ export default function ManageApplicationsPage() {
                 operation: 'update',
                 requestResourceData: {
                     creatorIds: arrayUnion(applicant.creatorId),
-                    status: 'LAST_ACTIVITY_CHECK'
+                    status: 'OFFER_PENDING'
                 }
             });
             errorEmitter.emit('permission-error', permissionError);
