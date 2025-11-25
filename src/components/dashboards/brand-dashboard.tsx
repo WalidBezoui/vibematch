@@ -91,7 +91,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount }: { campaign: any,
         : 'Just now';
 
     return (
-        <Card className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isAwaitingPayment && "border-blue-500 shadow-blue-500/10")}>
+        <Card className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isAwaitingPayment && "border-blue-500 shadow-blue-500/10 ring-2 ring-blue-500/20")}>
             <CardHeader>
                 <div className="flex justify-between items-start gap-2">
                      <div className='flex-1'>

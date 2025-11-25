@@ -8,7 +8,7 @@ import { Card, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, Bell, MessageSquare, PlusCircle, Sparkles, CheckCircle, Handshake } from 'lucide-react';
+import { ArrowRight, Bell, MessageSquare, PlusCircle, Sparkles, CheckCircle, Handshake, Wallet } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,7 +17,7 @@ import { useLanguage } from '@/context/language-context';
 
 type NotificationItem = {
   id: string; 
-  type: 'NEW_APPLICATION' | 'CAMPAIGN_UPDATE' | 'DISCUSSION_OPENED';
+  type: 'NEW_APPLICATION' | 'CAMPAIGN_UPDATE' | 'DISCUSSION_OPENED' | 'AWAITING_PAYMENT';
   data: any;
   createdAt: any;
 };
@@ -62,6 +62,38 @@ const NotificationCard = ({ notification }: { notification: NotificationItem }) 
                             <Button asChild variant="default" size="sm">
                                 <Link href={`/campaigns/${campaignId}/manage`}>
                                     Manage Applications <ArrowRight className="h-4 w-4 ml-2" />
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </CardHeader>
+            </Card>
+        )
+    }
+
+    if (notification.type === 'AWAITING_PAYMENT') {
+        const { creatorProfile, campaignTitle, campaignId } = notification.data;
+        return (
+            <Card className="transition-all hover:shadow-md border-blue-500/30 bg-blue-500/5">
+                <CardHeader className="p-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-start gap-4 flex-1 cursor-pointer">
+                           <div className={cn("w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-blue-100 text-blue-800")}>
+                                <Wallet className="h-6 w-6" />
+                            </div>
+                            <div className="flex-1">
+                                <p className="font-medium">
+                                    <span className="font-semibold">{creatorProfile?.name}</span> has accepted your offer for <span className="font-semibold">"{campaignTitle}"</span>.
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    {notification.createdAt ? new Date(notification.createdAt.seconds * 1000).toLocaleString() : ''}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 self-start sm:self-center ml-auto sm:ml-0 pl-16 sm:pl-0">
+                            <Button asChild variant="default" size="sm" className="bg-blue-600 hover:bg-blue-700">
+                                <Link href={`/campaigns/${campaignId}/pay`}>
+                                    Fund Now <ArrowRight className="h-4 w-4 ml-2" />
                                 </Link>
                             </Button>
                         </div>
@@ -192,26 +224,45 @@ export default function NotificationsPage() {
              if (isBrand) {
                 if (isLoadingCampaigns || !brandCampaigns) return;
                  for (const campaign of brandCampaigns) {
-                    const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
-                    const q = query(appsRef, where('status', '==', 'APPLIED'));
-                    const appsSnapshot = await getDocs(q);
+                    // New Applications
+                    if (campaign.status === 'OPEN_FOR_APPLICATIONS') {
+                        const appsRef = collection(firestore, 'campaigns', campaign.id, 'applications');
+                        const q = query(appsRef, where('status', '==', 'APPLIED'));
+                        const appsSnapshot = await getDocs(q);
 
-                    if (!appsSnapshot.empty) {
-                        for (const appDoc of appsSnapshot.docs) {
-                            const appData = { id: appDoc.id, ...appDoc.data() };
-                            const profileRef = doc(firestore, 'users', appData.creatorId);
-                            const profileSnap = await getDoc(profileRef);
-                            allNotifications.push({
-                                type: 'NEW_APPLICATION',
-                                id: appData.id,
-                                createdAt: appData.createdAt,
-                                data: {
-                                    ...appData,
-                                    profile: profileSnap.exists() ? profileSnap.data() : null,
-                                    campaignTitle: campaign.title || 'Unknown Campaign',
-                                }
-                            });
+                        if (!appsSnapshot.empty) {
+                            for (const appDoc of appsSnapshot.docs) {
+                                const appData = { id: appDoc.id, ...appDoc.data() };
+                                const profileRef = doc(firestore, 'users', appData.creatorId);
+                                const profileSnap = await getDoc(profileRef);
+                                allNotifications.push({
+                                    type: 'NEW_APPLICATION',
+                                    id: appData.id,
+                                    createdAt: appData.createdAt,
+                                    data: {
+                                        ...appData,
+                                        profile: profileSnap.exists() ? profileSnap.data() : null,
+                                        campaignTitle: campaign.title || 'Unknown Campaign',
+                                    }
+                                });
+                            }
                         }
+                    }
+                    // Awaiting Payment
+                    if (campaign.status === 'PENDING_PAYMENT' && campaign.creatorIds?.length > 0) {
+                        const creatorId = campaign.creatorIds[campaign.creatorIds.length - 1]; // Assume last added creator is the one
+                        const creatorProfileRef = doc(firestore, 'users', creatorId);
+                        const creatorProfileSnap = await getDoc(creatorProfileRef);
+                        allNotifications.push({
+                            type: 'AWAITING_PAYMENT',
+                            id: `${campaign.id}-${creatorId}`,
+                            createdAt: campaign.updatedAt,
+                            data: {
+                                campaignId: campaign.id,
+                                campaignTitle: campaign.title,
+                                creatorProfile: creatorProfileSnap.exists() ? creatorProfileSnap.data() : null
+                            }
+                        })
                     }
                 }
              } else { // Logic for Creators
