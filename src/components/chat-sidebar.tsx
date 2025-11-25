@@ -45,8 +45,9 @@ const ConversationCard = ({
                 <AvatarFallback>{name?.[0]}</AvatarFallback>
             </Avatar>
             <div className="flex-1 overflow-hidden">
-                <p className="font-semibold truncate">{title}</p>
-                <p className="text-sm text-muted-foreground truncate">{lastMessage}</p>
+                <p className="font-semibold truncate">{name}</p>
+                <p className="text-xs text-muted-foreground truncate">{title}</p>
+                <p className="text-sm text-muted-foreground truncate mt-1">{lastMessage}</p>
             </div>
         </div>
         {hasAction && (
@@ -67,7 +68,7 @@ const ConversationCard = ({
 
 const ConversationList = ({ conversations, onSelectConversation }: { conversations: any[], onSelectConversation: (id: string) => void }) => {
     const firestore = useFirestore();
-    const { user } = useUser();
+    const { user, userProfile } = useUser();
     const [enrichedConversations, setEnrichedConversations] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const searchParams = useSearchParams();
@@ -83,7 +84,8 @@ const ConversationList = ({ conversations, onSelectConversation }: { conversatio
             setIsLoading(true);
             
             const enriched = await Promise.all(conversations.map(async (convo) => {
-                const otherUserId = user?.uid === convo.brand_id ? convo.creator_id : convo.brand_id;
+                const isUserBrand = userProfile?.role === 'brand';
+                const otherUserId = isUserBrand ? convo.creator_id : convo.brand_id;
                 
                 try {
                     const campaignDocRef = doc(firestore, 'campaigns', convo.campaign_id);
@@ -113,13 +115,13 @@ const ConversationList = ({ conversations, onSelectConversation }: { conversatio
         };
 
         enrichConversations();
-    }, [conversations, firestore, user]);
+    }, [conversations, firestore, user, userProfile]);
 
     if (isLoading) {
         return (
             <div className="p-2 space-y-1">
-                <Skeleton className="h-20 w-full" />
-                <Skeleton className="h-20 w-full" />
+                <Skeleton className="h-24 w-full" />
+                <Skeleton className="h-24 w-full" />
             </div>
         )
     }
@@ -127,6 +129,8 @@ const ConversationList = ({ conversations, onSelectConversation }: { conversatio
     if (enrichedConversations.length === 0) {
         return <p className="text-sm text-center text-muted-foreground p-8">No conversations in this category.</p>
     }
+    
+    const isUserBrand = userProfile?.role === 'brand';
 
     return (
         <div className="p-2 space-y-1">
@@ -137,7 +141,7 @@ const ConversationList = ({ conversations, onSelectConversation }: { conversatio
                     onClick={onSelectConversation}
                     isActive={conversationId === item.id} 
                     avatar={item.otherUser.photoURL}
-                    name={item.otherUser.name}
+                    name={isUserBrand ? item.otherUser.displayName || item.otherUser.name : item.otherUser.name}
                     title={item.campaignTitle}
                     lastMessage={item.lastMessage || 'No messages yet'}
                     hasAction={item.status === 'NEGOTIATION' && item.last_offer_by !== user?.uid}

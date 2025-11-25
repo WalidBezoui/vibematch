@@ -187,41 +187,26 @@ export default function BrandDashboard() {
   const firestore = useFirestore();
   const { toast } = useToast();
   const { t } = useLanguage();
-  const [campaigns, setCampaigns] = useState<any[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  
+  const campaignsQuery = useMemoFirebase(
+    () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
+    [user, firestore]
+  );
+  const { data: campaigns, isLoading } = useCollection(campaignsQuery);
+
   const [stats, setStats] = useState({ activeCampaigns: 0, totalBudget: 0 });
   const [applicationCounts, setApplicationCounts] = useState<Record<string, number>>({});
   const [isStatsLoading, setIsStatsLoading] = useState(true);
 
   useEffect(() => {
-    if (user && firestore) {
-      const fetchCampaigns = async () => {
-        setIsLoading(true);
-        try {
-          const q = query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid));
-          const querySnapshot = await getDocs(q);
-          const campaignsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          setCampaigns(campaignsData);
-        } catch (error) {
-          console.error("Error fetching campaigns: ", error);
-          setCampaigns([]);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      fetchCampaigns();
-    }
-  }, [user, firestore]);
-  
-  useEffect(() => {
     if (campaigns && firestore && user) {
         setIsStatsLoading(true);
         let totalBudget = 0;
-        const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED' && c.status !== 'REJECTED_BY_CREATOR').length;
+        const activeCampaignsCount = campaigns.filter(c => c.status !== 'COMPLETED' && c.status !== 'REJECTED_BY_CREATOR').length;
         if (campaigns.length > 0) {
             totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0) * (c.numberOfCreators || 1), 0);
         }
-        setStats({ activeCampaigns, totalBudget });
+        setStats({ activeCampaigns: activeCampaignsCount, totalBudget });
         setIsStatsLoading(false);
 
         const unsubscribes: Unsubscribe[] = campaigns.map(campaign => {
@@ -248,7 +233,6 @@ export default function BrandDashboard() {
     
     try {
         await deleteDoc(campaignRef);
-        setCampaigns(prev => prev ? prev.filter(c => c.id !== campaignId) : null);
         toast({
             title: t('brandDashboard.deleteToast.successTitle'),
             description: t('brandDashboard.deleteToast.successDescription'),
@@ -296,8 +280,7 @@ export default function BrandDashboard() {
         };
 
         try {
-            const docRef = await addDoc(collection(firestore, 'campaigns'), testCampaign);
-            setCampaigns(prev => prev ? [{ id: docRef.id, ...testCampaign }, ...prev] : [{ id: docRef.id, ...testCampaign }]);
+            await addDoc(collection(firestore, 'campaigns'), testCampaign);
             toast({
                 title: "Test Campaign Created",
                 description: `Successfully generated and saved "${testCampaign.title}".`,
@@ -375,5 +358,3 @@ export default function BrandDashboard() {
     </div>
   );
 }
-
-    

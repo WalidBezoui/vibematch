@@ -334,6 +334,8 @@ export default function CreatorDashboard() {
 
   const isLoading = isLoadingActive || isLoadingPending || conversationsLoading;
   const hasActiveContracts = activeCampaigns && activeCampaigns.some(c => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED');
+  
+  const awaitingPaymentCampaigns = useMemo(() => activeCampaigns?.filter(c => c.status === 'PENDING_PAYMENT') || [], [activeCampaigns]);
 
   return (
     <div>
@@ -358,8 +360,9 @@ export default function CreatorDashboard() {
         </div>
 
       <Tabs defaultValue="active">
-        <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-3">
+        <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-4">
             <TabsTrigger value="active">Active <Badge variant="secondary" className="ml-2">{activeCampaigns?.length || 0}</Badge></TabsTrigger>
+            <TabsTrigger value="payment">Awaiting Payment <Badge variant="secondary" className="ml-2">{awaitingPaymentCampaigns.length}</Badge></TabsTrigger>
             <TabsTrigger value="discussion">In Discussion <Badge variant="secondary" className="ml-2">{inDiscussionCampaigns?.length || 0}</Badge></TabsTrigger>
             <TabsTrigger value="pending">Pending <Badge variant="secondary" className="ml-2">{pendingCampaigns?.length || 0}</Badge></TabsTrigger>
         </TabsList>
@@ -415,6 +418,47 @@ export default function CreatorDashboard() {
                     buttonText="Find Your First Campaign"
                     buttonLink="/discover"
                     icon={Activity}
+                />
+            )}
+        </TabsContent>
+        <TabsContent value="payment">
+            {isLoadingActive ? (
+                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+                    <CampaignCardSkeleton />
+                </div>
+            ) : awaitingPaymentCampaigns.length > 0 ? (
+                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+                    {awaitingPaymentCampaigns.map((campaign) => (
+                        <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
+                            <CardHeader>
+                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
+                                <div className="flex items-center justify-between pt-2">
+                                    <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
+                                    <Badge className={cn('whitespace-nowrap text-xs', statusStyles.PENDING_PAYMENT)}>
+                                        AWAITING PAYMENT
+                                    </Badge>
+                                </div>
+                            </CardHeader>
+                             <CardContent className="flex-grow">
+                                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
+                            </CardContent>
+                            <CardFooter className="bg-muted/50 p-4">
+                                <Button asChild className="w-full" variant="secondary">
+                                  <Link href={`/campaigns/${campaign.id}`}>
+                                    View Details
+                                  </Link>
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    ))}
+                </div>
+            ) : (
+                 <EmptyState 
+                    title="No payments pending"
+                    description="When a brand funds a campaign you've accepted, it will move to your 'Active' tab."
+                    buttonText="Discover More Campaigns"
+                    buttonLink="/discover"
+                    icon={Wallet}
                 />
             )}
         </TabsContent>
@@ -532,5 +576,3 @@ export default function CreatorDashboard() {
     </div>
   );
 }
-
-
