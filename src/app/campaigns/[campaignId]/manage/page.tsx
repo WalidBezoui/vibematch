@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight, CircleDollarSign, Calendar, Tag } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight, CircleDollarSign, Calendar, Tag, Clock } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -34,6 +34,7 @@ import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/context/language-context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
+import { formatDistanceToNow } from 'date-fns';
 
 
 type Applicant = {
@@ -321,9 +322,8 @@ export default function ManageApplicationsPage() {
     
     const canHireMore = (campaign.creatorIds?.length || 0) < campaign.numberOfCreators;
 
-    const findConversationId = (applicantId: string) => {
-        const convo = conversations?.find(c => c.application_id === applicantId);
-        return convo ? convo.id : null;
+    const findConversation = (applicantId: string) => {
+        return conversations?.find(c => c.application_id === applicantId) || null;
     }
 
     const renderApplicantCard = (applicant: Applicant, type: 'hired' | 'discussion') => {
@@ -337,7 +337,7 @@ export default function ManageApplicationsPage() {
             badgeText = 'Hired';
         }
 
-        const conversationId = findConversationId(applicant.id);
+        const conversation = findConversation(applicant.id);
 
         return (
              <Card key={applicant.id} className="flex flex-col overflow-hidden transition-all hover:shadow-lg">
@@ -360,15 +360,27 @@ export default function ManageApplicationsPage() {
                     </div>
                 </CardHeader>
                 <CardContent className="px-4 pb-4 flex-grow">
-                    <div className="space-y-2">
-                        <h4 className="font-semibold text-xs flex items-center gap-1.5 text-muted-foreground"><FileText className="h-3 w-3" />{t('manageApplicationsPage.coverLetter')}</h4>
-                        <p className="text-sm text-muted-foreground line-clamp-3 bg-muted/50 p-3 rounded-md border break-words">{applicant.coverLetter}</p>
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between text-sm p-3 bg-muted/50 rounded-lg border">
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                                <CircleDollarSign className="h-4 w-4" />
+                                <span>Last Offer</span>
+                            </div>
+                            <span className="font-bold text-foreground">{conversation?.agreed_budget || applicant.bidAmount} MAD</span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs text-muted-foreground p-3 bg-muted/50 rounded-lg border">
+                             <div className="flex items-center gap-2">
+                                <Clock className="h-4 w-4" />
+                                <span>Last Contact</span>
+                            </div>
+                            <span>{conversation?.updatedAt ? formatDistanceToNow(conversation.updatedAt.toDate(), { addSuffix: true }) : 'Not contacted'}</span>
+                        </div>
                     </div>
                 </CardContent>
                 <CardFooter className="flex-col items-stretch gap-2 bg-muted/30 p-3 border-t">
-                    {type === 'discussion' && conversationId && (
+                    {type === 'discussion' && conversation && (
                          <Button asChild className="w-full" size="sm">
-                            <Link href={`/chat?id=${conversationId}`}>
+                            <Link href={`/chat?id=${conversation.id}`}>
                                 Open Chat <ArrowRight className="h-4 w-4 ml-2" />
                             </Link>
                          </Button>
