@@ -1,3 +1,4 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -66,10 +67,13 @@ service cloud.firestore {
       // Only brands can create campaigns, and the brandId in the document must match the authenticated user's UID.
       allow create: if request.auth != null && isBrand(request.auth.uid) && request.resource.data.brandId == request.auth.uid;
       
-      // Allow an authenticated user to read/list campaigns if they are the brand owner OR
-      // if the request is a list operation and specifically queries for their brandId.
+      // Allow a brand to read their own campaigns, and creators to read any campaign.
       allow read: if request.auth != null && 
-                  (resource.data.brandId == request.auth.uid || isCreator(request.auth.uid));
+                  (isCreator(request.auth.uid) || resource.data.brandId == request.auth.uid);
+
+      // Allow a brand to list campaigns they own. Allow creators to list all open campaigns.
+      allow list: if request.auth != null && 
+                    (isCreator(request.auth.uid) || (isBrand(request.auth.uid) && request.query.where[0][2] == request.auth.uid));
 
       // Allow the brand owner to update their own campaign.
       // Allow a participant in a conversation to update the campaign status when an offer is accepted.
@@ -79,6 +83,18 @@ service cloud.firestore {
                         (
                           resource.data.brandId == request.auth.uid &&
                           request.resource.data.diff(resource.data).affectedKeys().hasAny(['creatorIds', 'status'])
+                        ) ||
+                        // Condition for a participant (brand/creator) to update status for payment flow
+                        (
+                          (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
+                          request.resource.data.status == 'PENDING_PAYMENT' &&
+                          resource.data.status == 'OFFER_ACCEPTED'
+                        ) ||
+                         // Condition for any participant (brand or creator) to update status to IN_PROGRESS
+                        (
+                           (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
+                           request.resource.data.status == 'IN_PROGRESS' &&
+                           resource.data.status == 'PENDING_PAYMENT'
                         ) ||
                          // General campaign edits by brand owner
                          (
@@ -167,7 +183,7 @@ service cloud.firestore {
                       // Ensure only the 'metadata' field is being updated at the top level.
                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata']) &&
                       // Ensure that within the 'metadata' map, only 'offer_status' is changing.
-                      request.resource.data.metadata.diff(resource.data.metadata).hasOnly(['offer_status']);
+                      request.resource.data.metadata.diff(resource.data.metadata).affectedKeys().hasOnly(['offer_status']);
     }
   }
 }
