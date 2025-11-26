@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLanguage } from '@/context/language-context';
+import CreatorProfileSheet from '@/components/creator-profile-sheet';
 
 const CreatorCardSkeleton = () => (
     <Card className="overflow-hidden">
@@ -50,7 +51,7 @@ type CreatorProfile = {
     tiktokFollowers: string;
 };
 
-const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, activeCampaigns: any[] }) => {
+const CreatorCard = ({ creator, activeCampaigns, onViewProfile }: { creator: CreatorProfile, activeCampaigns: any[], onViewProfile: (creatorId: string) => void }) => {
     const { t, dir } = useLanguage();
     const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
@@ -126,11 +127,9 @@ const CreatorCard = ({ creator, activeCampaigns }: { creator: CreatorProfile, ac
                         {t('discoverCreators.inviteButton')}
                     </Button>
                 </InviteToCampaignDialog>
-                <Button asChild className="w-full" variant="ghost">
-                    <Link href={`/creators/${creator.id}`}>
-                        {t('discoverCreators.viewProfileButton')}
-                        <Arrow className="ml-2 h-4 w-4" />
-                    </Link>
+                <Button onClick={() => onViewProfile(creator.id)} className="w-full" variant="ghost">
+                    {t('discoverCreators.viewProfileButton')}
+                    <Arrow className="ml-2 h-4 w-4" />
                 </Button>
             </CardFooter>
         </Card>
@@ -142,6 +141,9 @@ export default function CreatorDiscoveryPage() {
     const { user } = useUser();
     const { t } = useLanguage();
     const [creators, setCreators] = useState<CreatorProfile[]>([]);
+    const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
 
     const creatorsQuery = useMemoFirebase(
         () => firestore ? query(collection(firestore, 'users'), where('role', '==', 'creator')) : null,
@@ -171,6 +173,11 @@ export default function CreatorDiscoveryPage() {
         }
     }, [creatorDocs]);
 
+    const handleViewProfile = (creatorId: string) => {
+        setSelectedCreatorId(creatorId);
+        setIsSheetOpen(true);
+    };
+
     const isLoading = areCreatorsLoading || areCampaignsLoading;
 
     return (
@@ -199,7 +206,7 @@ export default function CreatorDiscoveryPage() {
                     {!isLoading && creators && creators.length > 0 && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {creators.map(creator => (
-                                <CreatorCard key={creator.id} creator={creator} activeCampaigns={activeCampaigns || []} />
+                                <CreatorCard key={creator.id} creator={creator} activeCampaigns={activeCampaigns || []} onViewProfile={handleViewProfile} />
                             ))}
                         </div>
                     )}
@@ -212,6 +219,11 @@ export default function CreatorDiscoveryPage() {
                     )}
                 </div>
             </main>
+            <CreatorProfileSheet 
+                creatorId={selectedCreatorId}
+                open={isSheetOpen}
+                onOpenChange={setIsSheetOpen}
+            />
         </div>
     );
 }

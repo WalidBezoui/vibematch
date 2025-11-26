@@ -4,13 +4,15 @@
 import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { doc, collection } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, Award, CalendarDays, ShieldAlert } from 'lucide-react';
+import { MapPin, Briefcase, Award, CalendarDays, ShieldAlert, ExternalLink, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useCollection } from '@/firebase/firestore/use-collection';
 import { useMemo } from 'react';
+import Link from 'next/link';
+import { useLanguage } from '@/context/language-context';
 
 const TrustScoreGauge = ({ score }: { score: number }) => {
   const circumference = 2 * Math.PI * 45; // 2 * pi * radius
@@ -85,6 +87,8 @@ const CreatorProfileSkeleton = () => (
 
 export default function CreatorProfilePreview({ creatorId }: { creatorId: string | null }) {
   const firestore = useFirestore();
+  const { dir } = useLanguage();
+  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   const creatorRef = useMemoFirebase(
     () => (firestore && creatorId) ? doc(firestore, 'users', creatorId) : null,
@@ -151,6 +155,13 @@ export default function CreatorProfilePreview({ creatorId }: { creatorId: string
                 <CardContent>
                     <p className="text-foreground/90 whitespace-pre-wrap">{creator.bio || 'No bio provided.'}</p>
                 </CardContent>
+                 <CardFooter>
+                    <Button asChild variant="outline" className="w-full">
+                        <Link href={`/creators/${creatorId}`}>
+                            View Full Profile <Arrow className="h-4 w-4 ml-2" />
+                        </Link>
+                    </Button>
+                </CardFooter>
                 </Card>
                 <Card>
                 <CardHeader>
@@ -184,5 +195,6 @@ export default function CreatorProfilePreview({ creatorId }: { creatorId: string
     </div>
   );
 }
+
 
 
