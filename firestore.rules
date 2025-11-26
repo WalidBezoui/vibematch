@@ -7,20 +7,36 @@ service cloud.firestore {
     // Helper function to check if the user is a brand
     function isBrand(userId) {
       return exists(/databases/$(database)/documents/users/$(userId)) &&
-             get(/databases/$(database)/documents/users/$(userId)).data.role == 'brand';
+            get(/databases/$(database)/documents/users/$(userId)).data.role == 'brand';
     }
 
     // Helper function to check if the user is a creator
     function isCreator(userId) {
       return exists(/databases/$(database)/documents/users/$(userId)) &&
-             get(/databases/$(database)/documents/users/$(userId)).data.role == 'creator';
+            get(/databases/$(database)/documents/users/$(userId)).data.role == 'creator';
     }
     
     // Helper function to check if the user is a participant in a conversation
     function isParticipant(conversationId) {
       return exists(/databases/$(database)/documents/conversations/$(conversationId)) &&
-             (get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid ||
+            (get(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid ||
               get(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid);
+    }
+
+    // Helper function to prevent sharing contact info or external payment methods in chat
+    function isSecureMessage(messageText) {
+      // If there's no text content, the message is considered secure (e.g., system messages)
+      return messageText == null || (
+        !messageText.matches('.*(06|07)\\d{8}.*') &&       // Moroccan phone numbers
+        !messageText.matches('.*\\+212\\s?\\d{9}.*') &&    // Moroccan phone numbers w/ country code
+        !messageText.matches('.*\\S+@\\S+\\.\\S+.*') &&    // Emails
+        !messageText.matches('.*whatsapp.*') &&
+        !messageText.matches('.*instagram.*') &&
+        !messageText.matches('.*telegram.*') &&
+        !messageText.matches('.*gmail.*') &&
+        !messageText.matches('.*virement.*') &&
+        !messageText.matches('.*cash.*')
+      );
     }
     // --- END HELPER FUNCTIONS ---
 
@@ -44,12 +60,12 @@ service cloud.firestore {
       // - Users can update their own profiles.
       // - Creator profiles: creators cannot update admin-only fields.
       allow update: if request.auth != null && request.auth.uid == userId && 
-                     (isBrand(request.auth.uid) || // Brands can update their own profile fully
+                    (isBrand(request.auth.uid) || // Brands can update their own profile fully
                       (isCreator(request.auth.uid) && // Creators can update their own profile, with restrictions
-                       !('adminBadge' in request.resource.data) &&
-                       !('initialTrustScore' in request.resource.data)
+                        !('adminBadge' in request.resource.data) &&
+                        !('initialTrustScore' in request.resource.data)
                       )
-                     );
+                    );
 
       // Creator Portfolio Subcollection
       match /portfolio/{projectId} {
@@ -91,19 +107,19 @@ service cloud.firestore {
                           request.resource.data.status == 'PENDING_PAYMENT' &&
                           resource.data.status == 'OFFER_ACCEPTED'
                         ) ||
-                         // Condition for any participant (brand or creator) to update status to IN_PROGRESS
+                          // Condition for any participant (brand or creator) to update status to IN_PROGRESS
                         (
-                           (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
-                           request.resource.data.status == 'IN_PROGRESS' &&
-                           resource.data.status == 'PENDING_PAYMENT'
+                            (resource.data.brandId == request.auth.uid || request.auth.uid in resource.data.creatorIds) &&
+                            request.resource.data.status == 'IN_PROGRESS' &&
+                            resource.data.status == 'PENDING_PAYMENT'
                         ) ||
-                         // General campaign edits by brand owner
-                         (
+                        // General campaign edits by brand owner
+                        (
                             resource.data.brandId == request.auth.uid &&
                             !request.resource.data.diff(resource.data).affectedKeys().hasAny(['brandId', 'createdAt'])
-                         )
-                      );
-                       
+                        )
+                    );
+                      
       // Only the brand owner can delete their campaign.
       allow delete: if request.auth != null && resource.data.brandId == request.auth.uid;
 
@@ -140,11 +156,11 @@ service cloud.firestore {
       // CREATE: A user can create a conversation if they are listed as the brand or creator,
       // and all necessary initial fields are present.
       allow create: if request.auth != null &&
-                     (request.resource.data.brand_id == request.auth.uid || request.resource.data.creator_id == request.auth.uid) &&
-                     request.resource.data.campaign_id != null &&
-                     request.resource.data.creator_id != null &&
-                     request.resource.data.brand_id != null &&
-                     request.resource.data.application_id != null;
+                      (request.resource.data.brand_id == request.auth.uid || request.resource.data.creator_id == request.auth.uid) &&
+                      request.resource.data.campaign_id != null &&
+                      request.resource.data.creator_id != null &&
+                      request.resource.data.brand_id != null &&
+                      request.resource.data.application_id != null;
 
       // GET: Only participants can read a specific conversation document.
       allow get: if request.auth != null && isParticipant(conversationId);
@@ -164,27 +180,24 @@ service cloud.firestore {
     }
 
     match /conversations/{conversationId}/messages/{messageId} {
-      // CREATE: Any participant can create a message within an existing or newly created conversation.
+      // CREATE: Any participant can create a message. The message content must be secure.
       allow create: if request.auth != null &&
-                     request.resource.data.sender_id == request.auth.uid &&
-                     (
-                       isParticipant(conversationId) ||
-                       (
-                         existsAfter(/databases/$(database)/documents/conversations/$(conversationId)) &&
-                         (getAfter(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid ||
-                          getAfter(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid)
-                       )
-                     );
+                      request.resource.data.sender_id == request.auth.uid &&
+                      isSecureMessage(request.resource.data.text) &&
+                      (
+                        isParticipant(conversationId) ||
+                        (
+                          existsAfter(/databases/$(database)/documents/conversations/$(conversationId)) &&
+                          (getAfter(/databases/$(database)/documents/conversations/$(conversationId)).data.brand_id == request.auth.uid ||
+                            getAfter(/databases/$(database)/documents/conversations/$(conversationId)).data.creator_id == request.auth.uid)
+                        )
+                      );
       
-      // READ: Any participant can read messages.
-      allow get, list: if request.auth != null && isParticipant(conversationId);
+      // LIST: Participants can list messages in their conversation.
+      allow list: if request.auth != null && isParticipant(conversationId);
 
-      // UPDATE: A participant can only update the 'offer_status' of a message's metadata.
-      allow update: if request.auth != null && isParticipant(conversationId) &&
-                      // Ensure only the 'metadata' field is being updated at the top level.
-                      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['metadata']) &&
-                      // Ensure that within the 'metadata' map, only 'offer_status' is changing.
-                      request.resource.data.metadata.diff(resource.data.metadata).affectedKeys().hasOnly(['offer_status']);
+      // No one can update or delete messages to preserve chat history.
+      allow update, delete: if false;
     }
   }
 }
