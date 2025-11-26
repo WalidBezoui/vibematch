@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight, CircleDollarSign, Calendar, Tag, Clock } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight, CircleDollarSign, Calendar, Tag, Clock, Wallet } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -344,28 +344,34 @@ export default function ManageApplicationsPage() {
             </>
         )
     }
-
-    const hiredCreators = applicants.filter(a => campaign.creatorIds?.includes(a.creatorId));
-    const newApplicants = applicants.filter(a => a.status === 'APPLIED');
-    const negotiatingApplicants = applicants.filter(a => a.status === 'NEGOTIATING');
-    
-    const canHireMore = (campaign.creatorIds?.length || 0) < campaign.numberOfCreators;
-
     const findConversation = (applicantId: string) => {
         return conversations?.find(c => c.application_id === applicantId) || null;
     }
 
-    const renderApplicantCard = (applicant: Applicant, type: 'hired' | 'discussion') => {
+    const newApplicants = applicants.filter(a => a.status === 'APPLIED');
+    const negotiatingApplicants = applicants.filter(a => {
+        const convo = findConversation(a.id);
+        return a.status === 'NEGOTIATING' && convo?.status === 'NEGOTIATION';
+    });
+    const awaitingPaymentApplicants = applicants.filter(a => {
+        const convo = findConversation(a.id);
+        return convo?.status === 'OFFER_ACCEPTED';
+    });
+    const hiredCreators = applicants.filter(a => campaign.creatorIds?.includes(a.creatorId));
+
+    
+    const canHireMore = (campaign.creatorIds?.length || 0) < campaign.numberOfCreators;
+
+    const renderApplicantCard = (applicant: Applicant, type: 'hired' | 'discussion' | 'payment') => {
         const creatorName = applicant.profile?.displayName || applicant.profile?.name?.split(' ')[0] || t('manageApplicationsPage.creator');
         
-        let badgeClass = 'bg-blue-100 text-blue-800';
-        let badgeText = 'In Discussion';
-        
-        if (type === 'hired') {
-            badgeClass = 'bg-green-100 text-green-800';
-            badgeText = 'Hired';
+        const typeStyles = {
+            hired: { badgeClass: 'bg-green-100 text-green-800', badgeText: 'Hired'},
+            discussion: { badgeClass: 'bg-blue-100 text-blue-800', badgeText: 'In Discussion'},
+            payment: { badgeClass: 'bg-yellow-100 text-yellow-800', badgeText: 'Awaiting Payment'}
         }
-
+        
+        const { badgeClass, badgeText } = typeStyles[type];
         const conversation = findConversation(applicant.id);
 
         return (
@@ -395,7 +401,7 @@ export default function ManageApplicationsPage() {
                         <div className="flex items-center justify-between text-sm p-3 bg-muted/50 rounded-lg border">
                             <div className="flex items-center gap-2 text-muted-foreground">
                                 <CircleDollarSign className="h-4 w-4" />
-                                <span>Last Offer</span>
+                                <span>{type === 'discussion' ? 'Last Offer' : 'Agreed Budget'}</span>
                             </div>
                             <span className="font-bold text-foreground">{conversation?.agreed_budget || applicant.bidAmount} MAD</span>
                         </div>
@@ -413,6 +419,13 @@ export default function ManageApplicationsPage() {
                          <Button asChild className="w-full" size="sm">
                             <Link href={`/chat?id=${conversation.id}`}>
                                 Open Chat <ArrowRight className="h-4 w-4 ml-2" />
+                            </Link>
+                         </Button>
+                    )}
+                     {type === 'payment' && (
+                        <Button asChild className="w-full" size="sm">
+                            <Link href={`/campaigns/${campaign.id}/pay`}>
+                                <Wallet className="mr-2 h-4 w-4" /> Fund Now
                             </Link>
                          </Button>
                     )}
@@ -443,9 +456,10 @@ export default function ManageApplicationsPage() {
                     <div className="max-w-4xl mx-auto">
                         {applicants.length > 0 ? (
                             <Tabs defaultValue="new" className="w-full">
-                            <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-3">
+                            <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto grid grid-cols-2 md:grid-cols-4">
                                 <TabsTrigger value="new">{t('manageApplicationsPage.tabs.new')}<Badge variant="secondary" className="ml-2">{newApplicants.length}</Badge></TabsTrigger>
                                 <TabsTrigger value="discussion">{t('manageApplicationsPage.tabs.discussion')}<Badge variant="secondary" className="ml-2">{negotiatingApplicants.length}</Badge></TabsTrigger>
+                                <TabsTrigger value="payment">Awaiting Payment<Badge variant="secondary" className="ml-2">{awaitingPaymentApplicants.length}</Badge></TabsTrigger>
                                 <TabsTrigger value="hired">{t('manageApplicationsPage.tabs.hired')}<Badge variant="secondary" className="ml-2">{hiredCreators.length}</Badge></TabsTrigger>
                             </TabsList>
                             <TabsContent value="new" className="mt-6">
@@ -545,6 +559,18 @@ export default function ManageApplicationsPage() {
                                     <div className="text-center py-20 border-2 border-dashed rounded-lg">
                                         <h2 className="text-2xl font-semibold">{t('manageApplicationsPage.noNegotiatingApplicants.title')}</h2>
                                         <p className="text-muted-foreground mt-2">{t('manageApplicationsPage.noNegotiatingApplicants.description')}</p>
+                                    </div>
+                                )}
+                            </TabsContent>
+                             <TabsContent value="payment" className="mt-6">
+                                {awaitingPaymentApplicants.length > 0 ? (
+                                    <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
+                                        {awaitingPaymentApplicants.map(app => renderApplicantCard(app, 'payment'))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                                        <h2 className="text-2xl font-semibold">No Payments Pending</h2>
+                                        <p className="text-muted-foreground mt-2">Creators who have accepted your offer will appear here, awaiting payment.</p>
                                     </div>
                                 )}
                             </TabsContent>
