@@ -38,6 +38,7 @@
         "hiredCount": "{{hired}}/{{total}} Recrutés",
         "manageButton": "Gérer les candidatures",
         "viewButton": "Voir la campagne",
+        "fundNowButton": "FINANCER MAINTENANT",
         "emptyState": {
             "title": "Votre tableau de bord vous attend",
             "description": "C'est ici que vous gérerez vos campagnes et vous connecterez avec les créateurs. Commencez par créer votre première campagne.",
@@ -50,6 +51,52 @@
             "errorTitle": "Échec de la suppression"
         }
     },
+    "creatorDashboard": {
+        "discoverButton": "Découvrir des Campagnes",
+        "stats": {
+            "escrow": "Fonds sous Séquestre",
+            "escrowSubtitle": "Argent sécurisé pour les projets actifs.",
+            "matching": "Opportunités Compatibles",
+            "matchingSubtitle": "{{value}} campagnes recherchent un profil comme le vôtre.",
+            "views": "Vues du Profil (7j)",
+            "viewsSubtitle": "{{value}} marques ont vu votre profil aujourd'hui."
+        },
+        "tabs": {
+            "active": "Actives",
+            "payment": "En Attente de Paiement",
+            "discussion": "En Discussion",
+            "pending": "En Attente"
+        },
+        "actions": {
+            "review": "Examiner & Accepter",
+            "view": "Voir les Détails",
+            "chat": "Ouvrir le Chat",
+            "withdraw": "Retirer la Candidature"
+        },
+        "deleteDialog": {
+            "title": "Êtes-vous sûr ?",
+            "description": "Cela retirera votre candidature pour \"{{campaignTitle}}\". La marque ne pourra plus la voir. Vous pourrez postuler à nouveau plus tard si la campagne est toujours ouverte.",
+            "confirm": "Oui, Retirer"
+        },
+        "emptyStates": {
+            "active": {
+                "title": "Aucune campagne active pour le moment",
+                "description": "Les campagnes pour lesquelles vous êtes accepté apparaîtront ici. Il est temps de trouver votre prochaine collaboration !"
+            },
+            "payment": {
+                "title": "Aucun paiement en attente",
+                "description": "Lorsqu'une marque finance une campagne que vous avez acceptée, elle passera dans votre onglet 'Actives'."
+            },
+            "discussion": {
+                "title": "Aucune négociation en cours",
+                "description": "Lorsqu'une marque est intéressée par votre candidature, vous pouvez négocier les termes ici."
+            },
+            "pending": {
+                "title": "Vous n'avez postulé à aucune campagne",
+                "description": "Parcourez les campagnes ouvertes des meilleures marques et postulez pour commencer à collaborer."
+            }
+        }
+    },
     "manageApplicationsPage": {
         "title": "Gérer les Candidatures",
         "description": "Examinez et sélectionnez les meilleurs créateurs pour votre campagne :",
@@ -59,6 +106,7 @@
         "tabs": {
             "new": "Nouveaux",
             "discussion": "En Discussion",
+            "payment": "En Attente de Paiement",
             "hired": "Recrutés"
         },
         "closed": {
@@ -308,25 +356,25 @@
         "creatorsFaq": [
             {
                 "question": "Comment rejoindre VibeMatch en tant que créateur ?",
-                "answer": "Pour maintenir un réseau de qualité, VibeMatch fonctionne sur invitation ou candidature. Postulez pour devenir un Créateur Fondateur. Nous étudions chaque profil selon l'engagement, la qualité du contenu et la niche. Notre équipe vous contactera si votre profil correspond à nos critères d'excellence."
+                "answer": "Pour maintenir un réseau de qualité, VibeMatch fonctionne sur invitation ou candidature. Postulez pour devenir un Créateur Fondateur. Nous étudions chaque profil selon l'engagement, la qualité du contenu et la niche. Notre équipe vous contactera si votre profil correspond à nos critères."
             },
             {
                 "question": "Comment VibeMatch garantit-il mes paiements ?",
-                "answer": "Quand une marque vous choisit, elle dépose le montant total de la campagne sur notre système de séquestre sécurisé. Une fois les livrables validés, les fonds sont immédiatement transférés sur votre compte. Fini le stress des paiements en retard."
+                "answer": "Quand une marque vous choisit, elle dépose le montant total sur notre système de séquestre sécurisé. Une fois les livrables validés, les fonds sont virés sur votre compte. Fini le stress des paiements en retard."
             },
             {
                 "question": "Y a-t-il des frais pour les créateurs ?",
-                "answer": "L'inscription et la création de profil sont gratuites. Nous prélevons une faible commission sur vos gains pour chaque campagne réussie. Cela nous permet de couvrir les frais de transaction, la maintenance de la plateforme et de vous offrir un support dédié pour faire évoluer votre carrière."
+                "answer": "L'inscription est gratuite. Nous prélevons une faible commission sur vos gains. Cela nous permet de couvrir les frais, la maintenance et de vous offrir un support dédié."
             }
         ],
         "generalFaq": [
             {
                 "question": "Qu'est-ce qui différencie VibeMatch ?",
-                "answer": "VibeMatch repose sur deux piliers : la Confiance et l'Efficacité. Notre Trust Engine unique garantit des collaborations authentiques, et notre système de paiement automatisé protège les créateurs. Nous sommes spécialisés sur le marché marocain, comprenant ses dynamiques et valorisant les talents locaux."
+                "answer": "VibeMatch repose sur la Confiance et l'Efficacité. Notre Trust Engine garantit des collaborations authentiques, et notre système de paiement automatisé protège les créateurs. Nous sommes spécialisés sur le marché marocain."
             },
             {
                 "question": "Que se passe-t-il en cas de litige ?",
-                "answer": "Dans le cas rare d'un désaccord, VibeMatch propose un processus de médiation. Notre équipe support intervient, examine l'accord de campagne et la communication, et œuvre pour une résolution juste et rapide pour les deux parties."
+                "answer": "VibeMatch propose une médiation. Notre équipe intervient, examine l'accord et la communication, et œuvre pour une résolution juste et rapide."
             }
         ]
     },
@@ -453,7 +501,7 @@
             "tiktokLabel": "Nom d'utilisateur TikTok",
             "handlePlaceholder": "votre_nom_utilisateur",
             "whyConnectLink": "Pourquoi fournir mes noms d'utilisateur ?",
-            "whyConnectAnswer": "Nous utilisons vos identifiants pour une analyse automatisée et unique de vos données de profil public, comme le nombre d'abonnés et le taux d'engagement. Cela nous aide à calculer votre Score de Confiance et à vérifier l'authenticité de votre audience. Nous ne stockons jamais vos identifiants de connexion et ne publions rien en votre nom."
+            "whyConnectAnswer": "Nous utilisons vos identifiants pour une analyse automatisée et unique de vos données de profil public. Cela nous aide à calculer votre Score de Confiance et à vérifier l'authenticité de votre audience. Nous ne stockons jamais vos identifiants."
         },
         "step3": {
             "header": "Quelle est votre Niche ?",
@@ -492,11 +540,11 @@
      "creatorProfile": {
         "nextStepTitle": "Prochaine étape :",
         "completionTips": [
-            "Les créateurs avec des profils complets ont 3 fois plus de chances d'être contactés par les marques.",
-            "Une super bio est votre chance de raconter votre histoire et d'attirer les collaborations de vos rêves.",
-            "Les marques filtrent souvent par lieu pour trouver des créateurs locaux pour des événements et des campagnes.",
-            "Votre photo de profil est la première impression que vous laissez. Assurez-vous qu'elle soit excellente !",
-            "Les tags aident notre algorithme à vous proposer les opportunités de campagnes les plus pertinentes."
+            "Les créateurs avec des profils complets ont 3 fois plus de chances d'être contactés.",
+            "Une super bio est votre chance de raconter votre histoire et d'attirer des collaborations.",
+            "Les marques filtrent souvent par lieu pour trouver des créateurs locaux.",
+            "Votre photo de profil est la première impression. Assurez-vous qu'elle soit excellente !",
+            "Les tags aident notre algorithme à vous proposer les opportunités les plus pertinentes."
         ]
     },
     "contactPage": {
@@ -599,5 +647,23 @@
             "description": "Vous n'avez pas la permission de modifier cette campagne.",
             "cta": "Retour au Tableau de Bord"
         }
+    },
+    "greetings": {
+        "morning": "Bonjour",
+        "afternoon": "Bonjour",
+        "evening": "Bonsoir"
+    },
+    "status": {
+        "OPEN_FOR_APPLICATIONS": "Ouverte aux candidatures",
+        "PENDING_SELECTION": "En attente de sélection",
+        "PENDING_CREATOR_ACCEPTANCE": "En attente d'acceptation",
+        "OFFER_PENDING": "Offre en attente",
+        "PENDING_PAYMENT": "En attente de paiement",
+        "AWAITING_YOUR_PAYMENT": "En attente de votre paiement",
+        "IN_PROGRESS": "En cours",
+        "DELIVERED": "Livrée",
+        "COMPLETED": "Terminée",
+        "REJECTED_BY_CREATOR": "Refusée par le créateur",
+        "YOUR_ACCEPTANCE": "En attente de votre acceptation"
     }
 }

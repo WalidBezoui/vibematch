@@ -104,27 +104,26 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
     const { percentage, nextStepText } = useMemo(() => {
         if (!userProfile) return { percentage: 0, nextStepText: "Complete your profile" };
         
-        let completedFields = 0;
-        const totalFields = 5;
-        let nextStep = "Add portfolio projects to reach the top 10%";
-
         const fields = [
-            { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture" },
-            { key: 'displayName', present: !!userProfile.displayName, text: "Add your display name" },
-            { key: 'location', present: !!userProfile.location, text: "Add your location" },
-            { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: "Choose at least one tag" },
-            { key: 'bio', present: !!userProfile.bio, text: "Write a bio to tell your story" },
+            { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture", icon: ImageIcon },
+            { key: 'displayName', present: !!userProfile.displayName, text: "Add your display name", icon: User },
+            { key: 'location', present: !!userProfile.location, text: "Add your location", icon: MapPin },
+            { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: "Choose at least one tag", icon: Tag },
+            { key: 'bio', present: !!userProfile.bio, text: "Write a bio to tell your story", icon: Type },
         ];
 
-        completedFields = fields.filter(f => f.present).length;
-        const firstIncomplete = fields.find(f => !f.present);
-        if(firstIncomplete) {
-            nextStep = firstIncomplete.text;
-        }
+        const completedFields = fields.filter(f => f.present).length;
+        const totalFields = fields.length;
         
         const percentage = Math.round((completedFields / totalFields) * 100);
 
-        return { percentage, nextStepText: nextStep };
+        const firstIncomplete = fields.find(f => !f.present);
+        if(firstIncomplete) {
+            return { percentage, nextStepText: firstIncomplete.text };
+        }
+        
+        return { percentage, nextStepText: "Profile is complete!" };
+
     }, [userProfile]);
 
     const circumference = 2 * Math.PI * 18;
@@ -188,6 +187,7 @@ export default function CreatorDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
   const [inDiscussionCampaigns, setInDiscussionCampaigns] = useState<any[]>([]);
@@ -205,13 +205,13 @@ export default function CreatorDashboard() {
     const name = userProfile?.displayName?.split(' ')[0] || userProfile?.name?.split(' ')[0] || '';
 
     if (hour < 12) {
-      setGreeting(`Good morning, ${name}`);
+      setGreeting(`${t('greetings.morning')}, ${name}`);
     } else if (hour < 18) {
-      setGreeting(`Good afternoon, ${name}`);
+      setGreeting(`${t('greetings.afternoon')}, ${name}`);
     } else {
-      setGreeting(`Good evening, ${name}`);
+      setGreeting(`${t('greetings.evening')}, ${name}`);
     }
-  }, [userProfile]);
+  }, [userProfile, t]);
 
   // Fetch active campaigns (where creator is assigned)
   const activeCampaignsQuery = useMemoFirebase(
@@ -359,27 +359,27 @@ export default function CreatorDashboard() {
         <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
           <Link href="/discover">
             <Compass className="mr-2 h-5 w-5" />
-            Discover Campaigns
+            {t('creatorDashboard.discoverButton')}
           </Link>
         </Button>
       </div>
 
        <div className="grid gap-4 md:grid-cols-3 mb-8">
             {hasActiveContracts ? (
-                <StatCard isLoading={isLoading} title="Funds in Escrow" value={`${stats.escrow.toLocaleString()} DH`} icon={<Lock className="h-4 w-4 text-muted-foreground" />} color="text-green-500" subtitle="Money secured for active projects." />
+                <StatCard isLoading={isLoading} title={t('creatorDashboard.stats.escrow')} value={`${stats.escrow.toLocaleString()} DH`} icon={<Lock className="h-4 w-4 text-muted-foreground" />} color="text-green-500" subtitle={t('creatorDashboard.stats.escrowSubtitle')} />
             ) : (
                 <ProfileImpactCard isLoading={isLoading} />
             )}
-            <StatCard isLoading={isLoading} title="Matching Opportunities" value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={`${matchingJobsCount} campaigns are looking for a profile like yours.`} cta={{ text: 'Discover Campaigns', href: '/discover' }} />
-            <StatCard isLoading={isLoading} title="Profile Views (7d)" value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={`${Math.floor(profileViews/3)} brands saw your profile today.`} />
+            <StatCard isLoading={isLoading} title={t('creatorDashboard.stats.matching')} value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={t('creatorDashboard.stats.matchingSubtitle')} cta={{ text: t('creatorDashboard.discoverButton'), href: '/discover' }} />
+            <StatCard isLoading={isLoading} title={t('creatorDashboard.stats.views')} value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={t('creatorDashboard.stats.viewsSubtitle')} />
         </div>
 
       <Tabs defaultValue="active">
         <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-4">
-            <TabsTrigger value="active">Active <Badge variant="secondary" className="ml-2">{inProgressCampaigns.length}</Badge></TabsTrigger>
-            <TabsTrigger value="payment">Awaiting Payment <Badge variant="secondary" className="ml-2">{awaitingPaymentCampaigns.length}</Badge></TabsTrigger>
-            <TabsTrigger value="discussion">In Discussion <Badge variant="secondary" className="ml-2">{inDiscussionCampaigns.length}</Badge></TabsTrigger>
-            <TabsTrigger value="pending">Pending <Badge variant="secondary" className="ml-2">{pendingCampaigns.length}</Badge></TabsTrigger>
+            <TabsTrigger value="active">{t('creatorDashboard.tabs.active')} <Badge variant="secondary" className="ml-2">{inProgressCampaigns.length}</Badge></TabsTrigger>
+            <TabsTrigger value="payment">{t('creatorDashboard.tabs.payment')} <Badge variant="secondary" className="ml-2">{awaitingPaymentCampaigns.length}</Badge></TabsTrigger>
+            <TabsTrigger value="discussion">{t('creatorDashboard.tabs.discussion')} <Badge variant="secondary" className="ml-2">{inDiscussionCampaigns.length}</Badge></TabsTrigger>
+            <TabsTrigger value="pending">{t('creatorDashboard.tabs.pending')} <Badge variant="secondary" className="ml-2">{pendingCampaigns.length}</Badge></TabsTrigger>
         </TabsList>
         <TabsContent value="active">
             {isLoadingActive ? (
@@ -391,10 +391,10 @@ export default function CreatorDashboard() {
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
                 {inProgressCampaigns.map((campaign) => {
                         let badgeStatus = campaign.status;
-                        let badgeText = campaign.status.replace(/_/g, ' ');
+                        let badgeText = t(`status.${badgeStatus}`, { default: badgeStatus.replace(/_/g, ' ') });
                         if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
                             badgeStatus = 'YOUR_ACCEPTANCE';
-                            badgeText = 'YOUR ACCEPTANCE';
+                            badgeText = t('status.YOUR_ACCEPTANCE');
                         }
                         const isActionRequired = badgeStatus === 'YOUR_ACCEPTANCE';
                     
@@ -417,7 +417,7 @@ export default function CreatorDashboard() {
                             <CardFooter className="bg-muted/50 p-4">
                                 <Button asChild className="w-full" variant={isActionRequired ? 'default' : 'secondary'}>
                                   <Link href={`/campaigns/${campaign.id}`}>
-                                    {isActionRequired ? "View Offer" : "View Details"}
+                                    {isActionRequired ? t('creatorDashboard.actions.review') : t('creatorDashboard.actions.view')}
                                     {isActionRequired && <ArrowRight className="ml-2 h-4 w-4" />}
                                   </Link>
                                 </Button>
@@ -428,9 +428,9 @@ export default function CreatorDashboard() {
                 </div>
             ) : (
                 <EmptyState 
-                    title="No active campaigns yet"
-                    description="Campaigns you are accepted for will appear here. Time to find your next collaboration!"
-                    buttonText="Find Your First Campaign"
+                    title={t('creatorDashboard.emptyStates.active.title')}
+                    description={t('creatorDashboard.emptyStates.active.description')}
+                    buttonText={t('creatorDashboard.discoverButton')}
                     buttonLink="/discover"
                     icon={Activity}
                 />
@@ -450,7 +450,7 @@ export default function CreatorDashboard() {
                                 <div className="flex items-center justify-between pt-2">
                                     <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                                     <Badge className={cn('whitespace-nowrap text-xs', statusStyles.PENDING_PAYMENT)}>
-                                        AWAITING PAYMENT
+                                        {t('status.AWAITING_PAYMENT')}
                                     </Badge>
                                 </div>
                             </CardHeader>
@@ -460,7 +460,7 @@ export default function CreatorDashboard() {
                             <CardFooter className="bg-muted/50 p-4">
                                 <Button asChild className="w-full" variant="secondary">
                                   <Link href={`/campaigns/${campaign.id}`}>
-                                    View Details
+                                    {t('creatorDashboard.actions.view')}
                                   </Link>
                                 </Button>
                             </CardFooter>
@@ -469,9 +469,9 @@ export default function CreatorDashboard() {
                 </div>
             ) : (
                  <EmptyState 
-                    title="No payments pending"
-                    description="When a brand funds a campaign you've accepted, it will move to your 'Active' tab."
-                    buttonText="Discover More Campaigns"
+                    title={t('creatorDashboard.emptyStates.payment.title')}
+                    description={t('creatorDashboard.emptyStates.payment.description')}
+                    buttonText={t('creatorDashboard.discoverButton')}
                     buttonLink="/discover"
                     icon={Wallet}
                 />
@@ -492,7 +492,7 @@ export default function CreatorDashboard() {
                                   <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                                   <Badge variant="secondary" className="border-blue-200 bg-blue-100 text-blue-800">
                                       <MessageSquare className="mr-1 h-3 w-3" />
-                                      In Discussion
+                                      {t('creatorDashboard.tabs.discussion')}
                                   </Badge>
                                 </div>
                             </CardHeader>
@@ -502,7 +502,7 @@ export default function CreatorDashboard() {
                             <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
                                 <Button asChild className="w-full">
                                   <Link href={`/chat?id=${campaign.conversationId}`}>
-                                    Open Chat
+                                    {t('creatorDashboard.actions.chat')}
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                   </Link>
                                 </Button>
@@ -513,9 +513,9 @@ export default function CreatorDashboard() {
                 </div>
             ) : (
                 <EmptyState 
-                    title="No negotiations in progress"
-                    description="When a brand is interested in your application, you can negotiate terms here."
-                    buttonText="Discover More Campaigns"
+                    title={t('creatorDashboard.emptyStates.discussion.title')}
+                    description={t('creatorDashboard.emptyStates.discussion.description')}
+                    buttonText={t('creatorDashboard.discoverButton')}
                     buttonLink="/discover"
                     icon={MessageSquare}
                 />
@@ -537,7 +537,7 @@ export default function CreatorDashboard() {
                                     <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
                                     <Badge variant="secondary" className="border-yellow-200 bg-yellow-100 text-yellow-800">
                                         <Hourglass className="mr-1 h-3 w-3" />
-                                        Application Sent
+                                        {t('creatorDashboard.tabs.pending')}
                                     </Badge>
                                 </div>
                             </CardHeader>
@@ -547,27 +547,27 @@ export default function CreatorDashboard() {
                             <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
                                 <Button asChild className="w-full" variant="outline">
                                   <Link href={`/campaigns/${campaign.id}`}>
-                                    View Campaign
+                                    {t('creatorDashboard.actions.view')}
                                   </Link>
                                 </Button>
                                 <AlertDialog>
                                     <AlertDialogTrigger asChild>
                                         <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
                                             <Trash2 className="mr-2 h-3 w-3" />
-                                            Withdraw Application
+                                            {t('creatorDashboard.actions.withdraw')}
                                         </Button>
                                     </AlertDialogTrigger>
                                     <AlertDialogContent>
                                         <AlertDialogHeader>
-                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                            <AlertDialogTitle>{t('creatorDashboard.deleteDialog.title')}</AlertDialogTitle>
                                             <AlertDialogDescription>
-                                                This will remove your application for "{campaign.title}". The brand will no longer be able to see it. You can apply again later if the campaign is still open.
+                                                {t('creatorDashboard.deleteDialog.description', { campaignTitle: campaign.title })}
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
-                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogCancel>{t('brandDashboard.deleteDialog.cancel')}</AlertDialogCancel>
                                             <AlertDialogAction onClick={() => handleWithdrawApplication(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                                                Yes, Withdraw
+                                                {t('creatorDashboard.deleteDialog.confirm')}
                                             </AlertDialogAction>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
@@ -579,9 +579,9 @@ export default function CreatorDashboard() {
                 </div>
             ) : (
                 <EmptyState 
-                    title="You haven't applied to any campaigns"
-                    description="Browse open campaigns from top brands and apply to start collaborating."
-                    buttonText="Discover Campaigns"
+                    title={t('creatorDashboard.emptyStates.pending.title')}
+                    description={t('creatorDashboard.emptyStates.pending.description')}
+                    buttonText={t('creatorDashboard.discoverButton')}
                     buttonLink="/discover"
                     icon={Compass}
                 />

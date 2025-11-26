@@ -38,6 +38,7 @@
         "hiredCount": "{{hired}}/{{total}} Hired",
         "manageButton": "Manage Applications",
         "viewButton": "View Campaign",
+        "fundNowButton": "FUND NOW",
         "emptyState": {
             "title": "Your Dashboard Awaits",
             "description": "This is where you'll manage your campaigns and connect with creators. Start by creating your first campaign.",
@@ -50,6 +51,52 @@
             "errorTitle": "Deletion Failed"
         }
     },
+    "creatorDashboard": {
+        "discoverButton": "Discover Campaigns",
+        "stats": {
+            "escrow": "Funds in Escrow",
+            "escrowSubtitle": "Money secured for active projects.",
+            "matching": "Matching Opportunities",
+            "matchingSubtitle": "{{value}} campaigns are looking for a profile like yours.",
+            "views": "Profile Views (7d)",
+            "viewsSubtitle": "{{value}} brands saw your profile today."
+        },
+        "tabs": {
+            "active": "Active",
+            "payment": "Awaiting Payment",
+            "discussion": "In Discussion",
+            "pending": "Pending"
+        },
+        "actions": {
+            "review": "Review & Accept",
+            "view": "View Details",
+            "chat": "Open Chat",
+            "withdraw": "Withdraw Application"
+        },
+        "deleteDialog": {
+            "title": "Are you sure?",
+            "description": "This will remove your application for \"{{campaignTitle}}\". The brand will no longer be able to see it. You can apply again later if the campaign is still open.",
+            "confirm": "Yes, Withdraw"
+        },
+        "emptyStates": {
+            "active": {
+                "title": "No active campaigns yet",
+                "description": "Campaigns you are accepted for will appear here. Time to find your next collaboration!"
+            },
+            "payment": {
+                "title": "No payments pending",
+                "description": "When a brand funds a campaign you've accepted, it will move to your 'Active' tab."
+            },
+            "discussion": {
+                "title": "No negotiations in progress",
+                "description": "When a brand is interested in your application, you can negotiate terms here."
+            },
+            "pending": {
+                "title": "You haven't applied to any campaigns",
+                "description": "Browse open campaigns from top brands and apply to start collaborating."
+            }
+        }
+    },
     "manageApplicationsPage": {
         "title": "Manage Applications",
         "description": "Review and select the best creators for your campaign:",
@@ -59,6 +106,7 @@
         "tabs": {
             "new": "New",
             "discussion": "In Discussion",
+            "payment": "Awaiting Payment",
             "hired": "Hired"
         },
         "closed": {
@@ -501,24 +549,24 @@
     },
     "contactPage": {
         "title": {
-            "part1": "Get in",
-            "part2": "Touch"
+          "part1": "Get in",
+          "part2": "Touch"
         },
         "description": "We're here to help. Whether you have a question about our platform, a partnership inquiry, or need support, our team is ready to assist you.",
         "phone": {
-            "title": "Talk to Support",
-            "description": "Our support team is available from 9 AM to 5 PM, Monday to Friday.",
-            "button": "Call Now"
+          "title": "Talk to Support",
+          "description": "Our support team is available from 9 AM to 5 PM, Monday to Friday.",
+          "button": "Call Now"
         },
         "whatsapp": {
-            "title": "Chat on WhatsApp",
-            "description": "Prefer texting? Reach out to us on WhatsApp for quick answers.",
-            "button": "Start Chat"
+          "title": "Chat on WhatsApp",
+          "description": "Prefer texting? Reach out to us on WhatsApp for quick answers.",
+          "button": "Start Chat"
         },
         "email": {
-            "title": "Send an Email",
-            "description": "For detailed inquiries or feedback, feel free to send us an email.",
-            "button": "Send Email"
+          "title": "Send an Email",
+          "description": "For detailed inquiries or feedback, feel free to send us an email.",
+          "button": "Send Email"
         }
     },
     "currency": "DH",
@@ -599,5 +647,23 @@
             "description": "You don't have permission to edit this campaign.",
             "cta": "Return to Dashboard"
         }
+    },
+    "greetings": {
+        "morning": "Good morning",
+        "afternoon": "Good afternoon",
+        "evening": "Good evening"
+    },
+    "status": {
+        "OPEN_FOR_APPLICATIONS": "Open for Applications",
+        "PENDING_SELECTION": "Pending Selection",
+        "PENDING_CREATOR_ACCEPTANCE": "Pending Creator Acceptance",
+        "OFFER_PENDING": "Offer Pending",
+        "PENDING_PAYMENT": "Pending Payment",
+        "AWAITING_YOUR_PAYMENT": "Awaiting Your Payment",
+        "IN_PROGRESS": "In Progress",
+        "DELIVERED": "Delivered",
+        "COMPLETED": "Completed",
+        "REJECTED_BY_CREATOR": "Rejected by Creator",
+        "YOUR_ACCEPTANCE": "Awaiting Your Acceptance"
     }
 }

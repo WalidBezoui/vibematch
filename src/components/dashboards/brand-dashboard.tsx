@@ -89,6 +89,10 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
     const formattedDate = campaign.createdAt && typeof campaign.createdAt.toDate === 'function' 
         ? format(campaign.createdAt.toDate(), 'MMM d, yyyy') 
         : 'Just now';
+        
+    const statusKey = `status.${campaign.status}`;
+    const statusText = t(statusKey, { default: campaign.status.replace(/_/g, ' ') });
+
 
     return (
         <Card className={cn(
@@ -142,7 +146,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                  <div className="flex items-center justify-between pt-4">
                     <span className="gradient-text font-bold text-lg">{campaign.budget} DH</span>
                      <Badge className={cn('whitespace-nowrap text-xs', statusStyles[campaign.status])}>
-                        {isAwaitingPayment ? 'Awaiting Your Payment' : campaign.status.replace(/_/g, ' ')}
+                        {isAwaitingPayment ? t('status.AWAITING_YOUR_PAYMENT') : statusText}
                     </Badge>
                  </div>
             </CardHeader>
@@ -161,29 +165,19 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                         <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white animate-pulse-button">
                             <Link href={`/campaigns/${campaign.id}/pay`}>
                                 <Wallet className="mr-2 h-4 w-4" />
-                                FUND NOW
+                                {t('brandDashboard.fundNowButton')}
                             </Link>
                         </Button>
                     )}
                     
                     {(campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
-                        isAwaitingPayment ? (
-                            <Button asChild variant="outline" size="sm" className="w-full">
-                                <Link href={manageButtonLink}>
-                                    <Users className="mr-2 h-4 w-4" />
-                                    {t('brandDashboard.manageButton')}
-                                    {applicationCount > 0 && <Badge variant="secondary" className="ml-2">{applicationCount}</Badge>}
-                                </Link>
-                            </Button>
-                        ) : (
-                                <Button asChild variant="secondary" className="w-full">
-                                <Link href={manageButtonLink}>
-                                    <Users className="mr-2 h-4 w-4" />
-                                    {t('brandDashboard.manageButton')}
-                                    {applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
-                                </Link>
-                            </Button>
-                        )
+                        <Button asChild variant="outline" size="sm" className="w-full">
+                            <Link href={manageButtonLink}>
+                                <Users className="mr-2 h-4 w-4" />
+                                {t('brandDashboard.manageButton')}
+                                {applicationCount > 0 && <Badge variant="secondary" className="ml-2">{applicationCount}</Badge>}
+                            </Link>
+                        </Button>
                     ) : (
                         <Button asChild className="w-full">
                             <Link href={`/campaigns/${campaign.id}`}>{t('brandDashboard.viewButton')}</Link>
