@@ -92,7 +92,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
     return (
         <Card className={cn(
           "hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card",
-          isAwaitingPayment && "animate-pulse-border-blue"
+          isAwaitingPayment && "border-blue-300 dark:border-blue-800 shadow-lg shadow-blue-500/10"
         )}>
             <CardHeader>
                 <div className="flex justify-between items-start gap-2">
@@ -155,26 +155,29 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                  </div>
             </CardContent>
             <CardFooter className="bg-muted/50 p-3">
-                {isAwaitingPayment ? (
-                    <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white animate-pulse-button">
-                        <Link href={`/campaigns/${campaign.id}/pay`}>
-                            <Wallet className="mr-2 h-4 w-4" />
-                            FUND NOW
-                        </Link>
-                    </Button>
-                ) : (campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
-                     <Button asChild variant="secondary" className="w-full">
-                        <Link href={manageButtonLink}>
-                            <Users className="mr-2 h-4 w-4" />
-                            {t('brandDashboard.manageButton')}
-                            {applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
-                        </Link>
-                    </Button>
-                ) : (
-                    <Button asChild className="w-full">
-                        <Link href={`/campaigns/${campaign.id}`}>{t('brandDashboard.viewButton')}</Link>
-                    </Button>
-                )}
+                <div className="w-full flex flex-col sm:flex-row gap-2">
+                    {isAwaitingPayment && (
+                        <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white animate-pulse-button">
+                            <Link href={`/campaigns/${campaign.id}/pay`}>
+                                <Wallet className="mr-2 h-4 w-4" />
+                                FUND NOW
+                            </Link>
+                        </Button>
+                    )}
+                    {(campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
+                        <Button asChild variant={isAwaitingPayment ? "outline" : "secondary"} className="w-full">
+                            <Link href={manageButtonLink}>
+                                <Users className="mr-2 h-4 w-4" />
+                                {t('brandDashboard.manageButton')}
+                                {applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
+                            </Link>
+                        </Button>
+                    ) : (
+                        <Button asChild className="w-full">
+                            <Link href={`/campaigns/${campaign.id}`}>{t('brandDashboard.viewButton')}</Link>
+                        </Button>
+                    )}
+                </div>
             </CardFooter>
         </Card>
     );
@@ -337,8 +340,7 @@ export default function BrandDashboard() {
       {!isLoading && campaigns && conversations ? (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {campaigns.map((campaign) => {
-            const campaignConversations = conversations.filter(c => c.campaign_id === campaign.id);
-            const isAwaitingPayment = campaignConversations.some(c => c.status === 'OFFER_ACCEPTED');
+            const isAwaitingPayment = conversations.some(c => c.campaign_id === campaign.id && c.status === 'OFFER_ACCEPTED');
             return (
               <CampaignCard 
                   campaign={campaign} 
