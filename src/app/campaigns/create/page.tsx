@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -306,7 +307,7 @@ export default function CreateCampaignPage() {
             </div>
         ) : (
             <>
-                <div className="text-center mb-10">
+                <div className="mb-10">
                     <h1 className="text-4xl font-bold tracking-tight">Create a New Campaign</h1>
                     <p className="text-muted-foreground mt-2">This will be visible to creators on the platform.</p>
                 </div>
