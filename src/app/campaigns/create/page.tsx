@@ -78,6 +78,7 @@ const deliverableTypes = {
 };
 
 const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
+    const { t } = useLanguage();
     const platformValue = useWatch({
         control,
         name: `deliverables.${index}.platform`
@@ -107,11 +108,11 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
                 name={`deliverables.${index}.platform`}
                 render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Platform</FormLabel>
+                    <FormLabel>{t('createCampaignPage.deliverables.platformLabel')}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                         <SelectTrigger>
-                        <SelectValue placeholder="Select platform" />
+                        <SelectValue placeholder={t('createCampaignPage.deliverables.platformPlaceholder')} />
                         </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -128,11 +129,11 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
                 name={`deliverables.${index}.type`}
                 render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Type</FormLabel>
+                    <FormLabel>{t('createCampaignPage.deliverables.typeLabel')}</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value} disabled={!platformValue}>
                         <FormControl>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select type" />
+                                <SelectValue placeholder={t('createCampaignPage.deliverables.typePlaceholder')} />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -155,7 +156,7 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
                 name={`deliverables.${index}.quantity`}
                 render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Quantity</FormLabel>
+                    <FormLabel>{t('createCampaignPage.deliverables.quantityLabel')}</FormLabel>
                     <FormControl>
                         <Input type="number" placeholder="1" {...field} />
                     </FormControl>
@@ -169,9 +170,9 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
                 name={`deliverables.${index}.note`}
                 render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Optional Note</FormLabel>
+                    <FormLabel>{t('createCampaignPage.deliverables.noteLabel')}</FormLabel>
                     <FormControl>
-                        <Input placeholder="e.g., must include product link" {...field} />
+                        <Input placeholder={t('createCampaignPage.deliverables.notePlaceholder')} {...field} />
                     </FormControl>
                     <FormMessage />
                 </FormItem>
@@ -294,13 +295,13 @@ export default function CreateCampaignPage() {
                                 <path d="M14 27l8.5 8.5L38 20"></path>
                             </svg>
                         </div>
-                        <h2 className="text-3xl font-bold tracking-tight gradient-text">Campaign Published!</h2>
+                        <h2 className="text-3xl font-bold tracking-tight gradient-text">{t('createCampaignPage.success.title')}</h2>
                         <p className="text-muted-foreground mt-2 mb-8">
-                            Your campaign is now live. Creators on VibeMatch can now see and apply to it.
+                            {t('createCampaignPage.success.description')}
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Button size="lg" onClick={() => router.push(`/campaigns/${newCampaignId}/manage`)}>Manage Applications</Button>
-                            <Button size="lg" variant="outline" onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
+                            <Button size="lg" onClick={() => router.push(`/campaigns/${newCampaignId}/manage`)}>{t('createCampaignPage.success.manageButton')}</Button>
+                            <Button size="lg" variant="outline" onClick={() => router.push('/dashboard')}>{t('createCampaignPage.success.dashboardButton')}</Button>
                         </div>
                     </CardContent>
                 </Card>
@@ -308,15 +309,15 @@ export default function CreateCampaignPage() {
         ) : (
             <>
                 <div className="mb-10">
-                    <h1 className="text-4xl font-bold tracking-tight">Create a New Campaign</h1>
-                    <p className="text-muted-foreground mt-2">This will be visible to creators on the platform.</p>
+                    <h1 className="text-4xl font-bold tracking-tight">{t('createCampaignPage.title')}</h1>
+                    <p className="text-muted-foreground mt-2">{t('createCampaignPage.description')}</p>
                 </div>
                 <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Campaign Basics</CardTitle>
-                            <CardDescription>Give your campaign a title and a clear brief.</CardDescription>
+                            <CardTitle>{t('createCampaignPage.basics.title')}</CardTitle>
+                            <CardDescription>{t('createCampaignPage.basics.description')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <FormField
@@ -324,9 +325,9 @@ export default function CreateCampaignPage() {
                                 name="title"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Campaign Title</FormLabel>
+                                    <FormLabel>{t('createCampaignPage.titleLabel')}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="e.g., Summer Skincare Launch" {...field} />
+                                        <Input placeholder={t('createCampaignPage.titlePlaceholder')} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -337,9 +338,9 @@ export default function CreateCampaignPage() {
                                 name="campaignBrief"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Campaign Brief</FormLabel>
+                                    <FormLabel>{t('createCampaignPage.briefLabel')}</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder="Describe the campaign goals, target audience, key messages, and overall vibe." {...field} rows={6} />
+                                        <Textarea placeholder={t('createCampaignPage.briefPlaceholder')} {...field} rows={6} />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -350,8 +351,8 @@ export default function CreateCampaignPage() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Deliverables</CardTitle>
-                             <CardDescription>Specify what content you need from each creator.</CardDescription>
+                            <CardTitle>{t('createCampaignPage.deliverables.title')}</CardTitle>
+                             <CardDescription>{t('createCampaignPage.deliverables.description')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {fields.map((item, index) => (
@@ -364,7 +365,7 @@ export default function CreateCampaignPage() {
                                 onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}
                             >
                                 <PlusCircle className="mr-2 h-4 w-4" />
-                                Add Deliverable
+                                {t('createCampaignPage.deliverables.addButton')}
                             </Button>
                             <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
                         </CardContent>
@@ -372,8 +373,8 @@ export default function CreateCampaignPage() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Discovery & Budget</CardTitle>
-                             <CardDescription>Set tags to attract the right creators and define your budget.</CardDescription>
+                            <CardTitle>{t('createCampaignPage.discovery.title')}</CardTitle>
+                             <CardDescription>{t('createCampaignPage.discovery.description')}</CardDescription>
                         </CardHeader>
                          <CardContent className="space-y-6">
                             <FormField
@@ -381,7 +382,7 @@ export default function CreateCampaignPage() {
                                 name="tags"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Tags</FormLabel>
+                                    <FormLabel>{t('createCampaignPage.tagsLabel')}</FormLabel>
                                     <FormControl>
                                         <div className="flex flex-wrap gap-2">
                                         {niches.map((niche) => (
@@ -416,9 +417,9 @@ export default function CreateCampaignPage() {
                                     name="otherTag"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Custom Tag(s)</FormLabel>
+                                            <FormLabel>{t('createCampaignPage.otherTagLabel')}</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="e.g. Sustainable, Vegan. Separate with commas." {...field} />
+                                                <Input placeholder={t('createCampaignPage.otherTagPlaceholder')} {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -431,7 +432,7 @@ export default function CreateCampaignPage() {
                                 name="budget"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Budget per Creator (in DH)</FormLabel>
+                                    <FormLabel>{t('createCampaignPage.budgetLabel')}</FormLabel>
                                     <FormControl>
                                         <Input type="number" placeholder="500" {...field} />
                                     </FormControl>
@@ -444,7 +445,7 @@ export default function CreateCampaignPage() {
                                     name="numberOfCreators"
                                     render={({ field }) => (
                                         <FormItem>
-                                        <FormLabel>Number of Creators</FormLabel>
+                                        <FormLabel>{t('createCampaignPage.numCreatorsLabel')}</FormLabel>
                                         <FormControl>
                                             <Input type="number" placeholder="1" {...field} />
                                         </FormControl>
@@ -457,7 +458,7 @@ export default function CreateCampaignPage() {
                     </Card>
 
                     <Button type="submit" disabled={form.formState.isSubmitting} className="w-full" size="lg">
-                    {form.formState.isSubmitting ? 'Publishing Campaign...' : 'Publish Campaign'}
+                    {form.formState.isSubmitting ? t('createCampaignPage.publishingButton') : t('createCampaignPage.publishButton')}
                     </Button>
                 </form>
                 </Form>

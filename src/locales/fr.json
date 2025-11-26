@@ -536,5 +536,68 @@
         "source": {
             "applied": "Reçue"
         }
+    },
+    "createCampaignPage": {
+        "title": "Créer une Nouvelle Campagne",
+        "description": "Ceci sera visible par les créateurs sur la plateforme.",
+        "basics": {
+            "title": "Bases de la Campagne",
+            "description": "Donnez un titre et un brief clair à votre campagne."
+        },
+        "titleLabel": "Titre de la Campagne",
+        "titlePlaceholder": "Ex: Lancement Soins d'Été",
+        "briefLabel": "Brief de la Campagne",
+        "briefPlaceholder": "Décrivez les objectifs, le public cible, les messages clés et l'ambiance générale.",
+        "deliverables": {
+            "title": "Livrables",
+            "description": "Spécifiez le contenu que vous attendez de chaque créateur.",
+            "platformLabel": "Plateforme",
+            "platformPlaceholder": "Sélectionner la plateforme",
+            "typeLabel": "Type",
+            "typePlaceholder": "Sélectionner le type",
+            "quantityLabel": "Quantité",
+            "noteLabel": "Note (Optionnel)",
+            "notePlaceholder": "Ex: doit inclure le lien du produit",
+            "addButton": "Ajouter un Livrable"
+        },
+        "discovery": {
+            "title": "Découverte & Budget",
+            "description": "Définissez des tags pour attirer les bons créateurs et fixez votre budget."
+        },
+        "tagsLabel": "Tags",
+        "otherTagLabel": "Tag(s) Personnalisé(s)",
+        "otherTagPlaceholder": "Ex: Durable, Vegan. Séparez par des virgules.",
+        "budgetLabel": "Budget par Créateur (en DH)",
+        "numCreatorsLabel": "Nombre de Créateurs",
+        "publishButton": "Publier la Campagne",
+        "publishingButton": "Publication en cours...",
+        "success": {
+            "title": "Campagne Publiée !",
+            "description": "Votre campagne est maintenant en ligne. Les créateurs sur VibeMatch peuvent la voir et postuler.",
+            "manageButton": "Gérer les candidatures",
+            "dashboardButton": "Retour au tableau de bord"
+        }
+    },
+    "editCampaignPage": {
+        "title": "Modifier la Campagne",
+        "description": "Mettez à jour les détails de votre campagne ci-dessous.",
+        "saveButton": "Enregistrer les modifications",
+        "savingButton": "Enregistrement...",
+        "toast": {
+            "successTitle": "Campagne Mise à Jour !",
+            "successDescription": "Vos modifications ont été enregistrées.",
+            "errorTitle": "Échec de la Mise à Jour",
+            "errorDescription": "Impossible de mettre à jour la campagne."
+        },
+        "notFound": {
+            "title": "Campagne Introuvable",
+            "description": "La campagne que vous essayez de modifier n'existe pas.",
+            "cta": "Retour au Tableau de Bord"
+        },
+        "accessDenied": {
+            "title": "Accès Refusé",
+            "description": "Vous n'avez pas la permission de modifier cette campagne.",
+            "cta": "Retour au Tableau de Bord"
+        }
     }
 }

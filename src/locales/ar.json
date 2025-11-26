@@ -489,7 +489,7 @@
             {"id": "other", "label": "أخرى", "icon": "more_horiz"}
         ]
     },
-    "creatorProfile": {
+     "creatorProfile": {
         "nextStepTitle": "الخطوة التالية:",
         "completionTips": [
             "المبدعون الذين يكملون ملفاتهم الشخصية لديهم فرصة أكبر 3 مرات للتواصل مع العلامات التجارية.",
@@ -535,6 +535,69 @@
         },
         "source": {
             "applied": "مستلم"
+        }
+    },
+    "createCampaignPage": {
+        "title": "إنشاء حملة جديدة",
+        "description": "سيكون هذا مرئيًا للمبدعين على المنصة.",
+        "basics": {
+            "title": "أساسيات الحملة",
+            "description": "أعط حملتك عنوانًا وموجزًا واضحًا."
+        },
+        "titleLabel": "عنوان الحملة",
+        "titlePlaceholder": "مثال: إطلاق منتجات العناية بالبشرة الصيفية",
+        "briefLabel": "موجز الحملة",
+        "briefPlaceholder": "صف أهداف الحملة، الجمهور المستهدف، الرسائل الرئيسية، والأجواء العامة.",
+        "deliverables": {
+            "title": "المخرجات",
+            "description": "حدد المحتوى الذي تحتاجه من كل مبدع.",
+            "platformLabel": "المنصة",
+            "platformPlaceholder": "اختر المنصة",
+            "typeLabel": "النوع",
+            "typePlaceholder": "اختر النوع",
+            "quantityLabel": "الكمية",
+            "noteLabel": "ملاحظة (اختياري)",
+            "notePlaceholder": "مثال: يجب أن يتضمن رابط المنتج",
+            "addButton": "إضافة مخرج"
+        },
+        "discovery": {
+            "title": "الاكتشاف والميزانية",
+            "description": "حدد علامات لجذب المبدعين المناسبين وحدد ميزانيتك."
+        },
+        "tagsLabel": "العلامات",
+        "otherTagLabel": "علامة (علامات) مخصصة",
+        "otherTagPlaceholder": "مثال: مستدام، نباتي. افصل بفواصل.",
+        "budgetLabel": "الميزانية لكل مبدع (بالدرهم)",
+        "numCreatorsLabel": "عدد المبدعين",
+        "publishButton": "نشر الحملة",
+        "publishingButton": "جارٍ النشر...",
+        "success": {
+            "title": "تم نشر الحملة!",
+            "description": "حملتك الآن مباشرة. يمكن للمبدعين على VibeMatch رؤيتها والتقديم عليها.",
+            "manageButton": "إدارة الطلبات",
+            "dashboardButton": "العودة إلى لوحة التحكم"
+        }
+    },
+    "editCampaignPage": {
+        "title": "تعديل الحملة",
+        "description": "قم بتحديث تفاصيل حملتك أدناه.",
+        "saveButton": "حفظ التغييرات",
+        "savingButton": "جارٍ الحفظ...",
+        "toast": {
+            "successTitle": "تم تحديث الحملة!",
+            "successDescription": "تم حفظ تغييراتك.",
+            "errorTitle": "فشل التحديث",
+            "errorDescription": "تعذر تحديث الحملة."
+        },
+        "notFound": {
+            "title": "الحملة غير موجودة",
+            "description": "الحملة التي تحاول تعديلها غير موجودة.",
+            "cta": "العودة إلى لوحة التحكم"
+        },
+        "accessDenied": {
+            "title": "الوصول مرفوض",
+            "description": "ليس لديك إذن لتعديل هذه الحملة.",
+            "cta": "العودة إلى لوحة التحكم"
         }
     }
 }

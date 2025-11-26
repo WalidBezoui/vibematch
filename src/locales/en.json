@@ -536,5 +536,68 @@
         "source": {
             "applied": "Applied"
         }
+    },
+    "createCampaignPage": {
+        "title": "Create a New Campaign",
+        "description": "This will be visible to creators on the platform.",
+        "basics": {
+            "title": "Campaign Basics",
+            "description": "Give your campaign a title and a clear brief."
+        },
+        "titleLabel": "Campaign Title",
+        "titlePlaceholder": "e.g., Summer Skincare Launch",
+        "briefLabel": "Campaign Brief",
+        "briefPlaceholder": "Describe the campaign goals, target audience, key messages, and overall vibe.",
+        "deliverables": {
+            "title": "Deliverables",
+            "description": "Specify what content you need from each creator.",
+            "platformLabel": "Platform",
+            "platformPlaceholder": "Select platform",
+            "typeLabel": "Type",
+            "typePlaceholder": "Select type",
+            "quantityLabel": "Quantity",
+            "noteLabel": "Optional Note",
+            "notePlaceholder": "e.g., must include product link",
+            "addButton": "Add Deliverable"
+        },
+        "discovery": {
+            "title": "Discovery & Budget",
+            "description": "Set tags to attract the right creators and define your budget."
+        },
+        "tagsLabel": "Tags",
+        "otherTagLabel": "Custom Tag(s)",
+        "otherTagPlaceholder": "e.g. Sustainable, Vegan. Separate with commas.",
+        "budgetLabel": "Budget per Creator (in DH)",
+        "numCreatorsLabel": "Number of Creators",
+        "publishButton": "Publish Campaign",
+        "publishingButton": "Publishing Campaign...",
+        "success": {
+            "title": "Campaign Published!",
+            "description": "Your campaign is now live. Creators on VibeMatch can now see and apply to it.",
+            "manageButton": "Manage Applications",
+            "dashboardButton": "Back to Dashboard"
+        }
+    },
+    "editCampaignPage": {
+        "title": "Edit Campaign",
+        "description": "Update the details of your campaign below.",
+        "saveButton": "Save Changes",
+        "savingButton": "Saving...",
+        "toast": {
+            "successTitle": "Campaign Updated!",
+            "successDescription": "Your changes have been saved.",
+            "errorTitle": "Update Failed",
+            "errorDescription": "Could not update the campaign."
+        },
+        "notFound": {
+            "title": "Campaign Not Found",
+            "description": "The campaign you're trying to edit doesn't exist.",
+            "cta": "Return to Dashboard"
+        },
+        "accessDenied": {
+            "title": "Access Denied",
+            "description": "You don't have permission to edit this campaign.",
+            "cta": "Return to Dashboard"
+        }
     }
 }
