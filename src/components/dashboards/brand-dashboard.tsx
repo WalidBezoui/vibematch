@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -155,7 +156,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                  </div>
             </CardContent>
             <CardFooter className="bg-muted/50 p-4">
-                 <div className="w-full flex flex-col gap-2">
+                 <div className="w-full flex flex-col items-center gap-2">
                     {isAwaitingPayment && (
                         <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white animate-pulse-button">
                             <Link href={`/campaigns/${campaign.id}/pay`}>
@@ -167,7 +168,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                     
                     {(campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
                         isAwaitingPayment ? (
-                            <Button asChild variant="ghost" size="sm" className="w-full">
+                            <Button asChild variant="outline" size="sm" className="w-full">
                                 <Link href={manageButtonLink}>
                                     <Users className="mr-2 h-4 w-4" />
                                     {t('brandDashboard.manageButton')}
@@ -175,7 +176,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                                 </Link>
                             </Button>
                         ) : (
-                             <Button asChild variant="secondary" className="w-full">
+                                <Button asChild variant="secondary" className="w-full">
                                 <Link href={manageButtonLink}>
                                     <Users className="mr-2 h-4 w-4" />
                                     {t('brandDashboard.manageButton')}
