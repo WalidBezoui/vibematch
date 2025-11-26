@@ -1,3 +1,4 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -66,10 +67,14 @@ service cloud.firestore {
       // Only brands can create campaigns, and the brandId in the document must match the authenticated user's UID.
       allow create: if request.auth != null && isBrand(request.auth.uid) && request.resource.data.brandId == request.auth.uid;
       
-      // Allow an authenticated user to read/list campaigns if they are the brand owner OR
-      // if the request is a list operation and specifically queries for their brandId.
+      // Allow a brand to read their own campaigns, and creators to read any campaign.
       allow read: if request.auth != null && 
-                  (resource.data.brandId == request.auth.uid || isCreator(request.auth.uid));
+                  (isCreator(request.auth.uid) || resource.data.brandId == request.auth.uid);
+
+      // Allow creators to list all campaigns. Allow brands to list only their own campaigns.
+      allow list: if request.auth != null && 
+                    (isCreator(request.auth.uid) || 
+                    (isBrand(request.auth.uid) && request.query.where[0][2] == request.auth.uid));
 
       // Allow the brand owner to update their own campaign.
       // Allow a participant in a conversation to update the campaign status when an offer is accepted.
