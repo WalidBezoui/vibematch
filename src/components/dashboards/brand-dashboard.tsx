@@ -154,8 +154,8 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                     <Progress value={hiringProgress} className="h-2" />
                  </div>
             </CardContent>
-            <CardFooter className="bg-muted/50 p-3">
-                <div className="w-full flex flex-col sm:flex-row gap-2">
+            <CardFooter className="bg-muted/50 p-4">
+                 <div className="w-full flex flex-col gap-2">
                     {isAwaitingPayment && (
                         <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white animate-pulse-button">
                             <Link href={`/campaigns/${campaign.id}/pay`}>
@@ -164,14 +164,24 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                             </Link>
                         </Button>
                     )}
+                    
                     {(campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
-                        <Button asChild variant={isAwaitingPayment ? "outline" : "secondary"} className="w-full">
-                            <Link href={manageButtonLink}>
-                                <Users className="mr-2 h-4 w-4" />
-                                {t('brandDashboard.manageButton')}
-                                {applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
-                            </Link>
-                        </Button>
+                        isAwaitingPayment ? (
+                             <Button asChild variant="link" className="text-muted-foreground text-xs h-auto py-0" size="sm">
+                                <Link href={manageButtonLink}>
+                                    {t('brandDashboard.manageButton')}
+                                    {applicationCount > 0 && <Badge variant="secondary" className="ml-2">{applicationCount}</Badge>}
+                                </Link>
+                            </Button>
+                        ) : (
+                             <Button asChild variant="secondary" className="w-full">
+                                <Link href={manageButtonLink}>
+                                    <Users className="mr-2 h-4 w-4" />
+                                    {t('brandDashboard.manageButton')}
+                                    {applicationCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{applicationCount}</Badge>}
+                                </Link>
+                            </Button>
+                        )
                     ) : (
                         <Button asChild className="w-full">
                             <Link href={`/campaigns/${campaign.id}`}>{t('brandDashboard.viewButton')}</Link>
