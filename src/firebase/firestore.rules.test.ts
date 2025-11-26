@@ -6,7 +6,7 @@ import {
 } from '@firebase/rules-unit-testing';
 import { setDoc, doc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { readFileSync } from 'fs';
-import { describe, it, beforeAll, afterAll, beforeEach } from 'vitest';
+import { describe, it, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
 
 let testEnv: RulesTestEnvironment;
 
@@ -20,7 +20,7 @@ describe('Firestore Security Rules', () => {
     testEnv = await initializeTestEnvironment({
       projectId: 'vibematch-full-test',
       firestore: {
-        rules: readFileSync('firestore.rules', 'utf8'),
+        rules: readFileSync('src/firestore.rules', 'utf8'),
         host: 'localhost',
         port: 8080,
       },
