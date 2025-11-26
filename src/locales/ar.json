@@ -441,7 +441,8 @@
                 "label": "المدينة (المغرب)",
                 "placeholder": "مدينتك"
             },
-            "submitButton": "الانضمام إلى قائمة الانتظار"
+            "submitButton": "الانضمام إلى قائمة الانتظار",
+            "submittingButton": "جارٍ الإرسال..."
         }
     },
     "brandJoinSuccessPage": {
@@ -538,7 +539,7 @@
         ]
     },
      "creatorProfile": {
-        "nextStepTitle": "الخطوة التالية:",
+        "nextStepTitle": "الخطوة التالية :",
         "completionTips": [
             "المبدعون الذين يكملون ملفاتهم الشخصية لديهم فرصة أكبر 3 مرات للتواصل مع العلامات التجارية.",
             "السيرة الذاتية الرائعة هي فرصتك لسرد قصتك وجذب تعاون أحلامك.",
@@ -665,5 +666,47 @@
         "COMPLETED": "مكتملة",
         "REJECTED_BY_CREATOR": "مرفوضة من قبل المبدع",
         "YOUR_ACCEPTANCE": "في انتظار قبولك"
+    },
+    "discoverCreators": {
+        "title": "اكتشف صناع المحتوى",
+        "description": "تصفح وتواصل مع أفضل المبدعين المغاربة لحملتك القادمة.",
+        "trustScore": "نقاط الثقة",
+        "trustScoreTooltip": "مقياس للموثوقية والأصالة والاحترافية بناءً على النشاط على المنصة.",
+        "followers": "متابع",
+        "inviteButton": "دعوة إلى حملة",
+        "viewProfileButton": "عرض الملف الشخصي",
+        "noCreators": {
+            "title": "لم يتم العثور على مبدعين",
+            "description": "عد قريبًا حيث ينضم مبدعون جدد إلى المنصة!"
+        }
+    },
+    "inviteDialog": {
+        "title": "دعوة {{name}}",
+        "description": "اختر إحدى حملاتك النشطة وأرسل رسالة شخصية.",
+        "campaignLabel": "الحملة",
+        "campaignPlaceholder": "اختر حملة بها أماكن شاغرة...",
+        "noCampaigns": "لا توجد حملات نشطة بها أماكن شاغرة.",
+        "hiredText": "تم توظيف {{hired}} من أصل {{total}}",
+        "messageLabel": "الرسالة",
+        "messagePlaceholder": "اكتب رسالة موجزة إلى المبدع...",
+        "sendButton": "إرسال الدعوة",
+        "defaultMessage": "مرحبًا {{name}}، نعتقد أن ملفك الشخصي سيكون مناسبًا جدًا لحملتنا ونود دعوتك للتقديم!",
+        "validation": {
+            "alreadyHired": "{{name}} هو بالفعل جزء من هذه الحملة.",
+            "alreadyApplied": "{{name}} قد قدم بالفعل طلبًا لهذه الحملة."
+        },
+        "toast": {
+            "error": {
+                "cannotSend": {
+                    "title": "لا يمكن إرسال الدعوة"
+                }
+            },
+            "success": {
+                "title": "تم إرسال الدعوة!",
+                "description": "تمت دعوة {{name}} إلى حملتك."
+            }
+        }
     }
 }
+
+    

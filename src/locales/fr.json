@@ -441,12 +441,13 @@
                 "label": "Ville (Maroc)",
                 "placeholder": "Votre ville"
             },
-            "submitButton": "Rejoindre la liste d'attente"
+            "submitButton": "Rejoindre la liste d'attente",
+            "submittingButton": "Envoi en cours..."
         }
     },
     "brandJoinSuccessPage": {
         "title": "Merci ! Votre place est réservée.",
-        "description": "Vous êtes sur la liste. Nous vous contacterons pour vous donner un accès prioritaire.",
+        "description": "Nous vous contacterons pour vous donner un accès prioritaire.",
         "backButton": "Retour à l'accueil"
     },
     "creatorJoinForm": {
@@ -665,5 +666,47 @@
         "COMPLETED": "Terminée",
         "REJECTED_BY_CREATOR": "Refusée par le créateur",
         "YOUR_ACCEPTANCE": "En attente de votre acceptation"
+    },
+    "discoverCreators": {
+        "title": "Découvrir les Créateurs",
+        "description": "Parcourez et connectez-vous avec les meilleurs créateurs marocains pour votre prochaine campagne.",
+        "trustScore": "Score de Confiance",
+        "trustScoreTooltip": "Une mesure de la fiabilité, de l'authenticité et du professionnalisme basée sur l'activité sur la plateforme.",
+        "followers": "Abonnés",
+        "inviteButton": "Inviter à une Campagne",
+        "viewProfileButton": "Voir le Profil",
+        "noCreators": {
+            "title": "Aucun Créateur Trouvé",
+            "description": "Revenez bientôt, de nouveaux créateurs rejoignent la plateforme !"
+        }
+    },
+    "inviteDialog": {
+        "title": "Inviter {{name}}",
+        "description": "Sélectionnez une de vos campagnes actives et envoyez un message personnalisé.",
+        "campaignLabel": "Campagne",
+        "campaignPlaceholder": "Sélectionnez une campagne avec des places libres...",
+        "noCampaigns": "Aucune campagne active avec des places libres.",
+        "hiredText": "{{hired}}/{{total}} recrutés",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Rédigez un message bref au créateur...",
+        "sendButton": "Envoyer l'Invitation",
+        "defaultMessage": "Bonjour {{name}}, nous pensons que votre profil serait parfait pour notre campagne et nous aimerions vous inviter à postuler !",
+        "validation": {
+            "alreadyHired": "{{name}} fait déjà partie de cette campagne.",
+            "alreadyApplied": "{{name}} a déjà postulé à cette campagne."
+        },
+        "toast": {
+            "error": {
+                "cannotSend": {
+                    "title": "Impossible d'envoyer l'invitation"
+                }
+            },
+            "success": {
+                "title": "Invitation Envoyée !",
+                "description": "{{name}} a été invité(e) à votre campagne."
+            }
+        }
     }
 }
+
+    

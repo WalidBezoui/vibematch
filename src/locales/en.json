@@ -441,7 +441,8 @@
                 "label": "City (Morocco)",
                 "placeholder": "Your city"
             },
-            "submitButton": "Join the waitlist"
+            "submitButton": "Join the waitlist",
+            "submittingButton": "Submitting..."
         }
     },
     "brandJoinSuccessPage": {
@@ -665,5 +666,47 @@
         "COMPLETED": "Completed",
         "REJECTED_BY_CREATOR": "Rejected by Creator",
         "YOUR_ACCEPTANCE": "Awaiting Your Acceptance"
+    },
+    "discoverCreators": {
+        "title": "Discover Creators",
+        "description": "Browse and connect with top-tier Moroccan creators for your next campaign.",
+        "trustScore": "Trust Score",
+        "trustScoreTooltip": "A measure of reliability, authenticity, and professionalism based on platform activity.",
+        "followers": "Followers",
+        "inviteButton": "Invite to Campaign",
+        "viewProfileButton": "View Profile",
+        "noCreators": {
+            "title": "No Creators Found",
+            "description": "Check back soon as new creators join the platform!"
+        }
+    },
+    "inviteDialog": {
+        "title": "Invite {{name}}",
+        "description": "Select one of your active campaigns and send a personalized message.",
+        "campaignLabel": "Campaign",
+        "campaignPlaceholder": "Select a campaign with open slots...",
+        "noCampaigns": "No active campaigns with open slots.",
+        "hiredText": "{{hired}}/{{total}} hired",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Write a brief message to the creator...",
+        "sendButton": "Send Invitation",
+        "defaultMessage": "Hi {{name}}, we think you'd be a great fit for our campaign and would love for you to apply!",
+        "validation": {
+            "alreadyHired": "{{name}} is already part of this campaign.",
+            "alreadyApplied": "{{name}} has already applied to this campaign."
+        },
+        "toast": {
+            "error": {
+                "cannotSend": {
+                    "title": "Cannot send invitation"
+                }
+            },
+            "success": {
+                "title": "Invitation Sent!",
+                "description": "{{name}} has been invited to your campaign."
+            }
+        }
     }
 }
+
+    

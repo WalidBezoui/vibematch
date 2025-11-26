@@ -28,6 +28,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Send, Loader2 } from 'lucide-react';
 import { useFirestore } from '@/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useLanguage } from '@/context/language-context';
 
 const inviteSchema = z.object({
   campaignId: z.string({ required_error: 'Please select a campaign.' }),
@@ -45,6 +46,7 @@ export default function InviteToCampaignDialog({
   campaigns: any[];
   children: React.ReactNode;
 }) {
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const firestore = useFirestore();
@@ -54,7 +56,7 @@ export default function InviteToCampaignDialog({
     resolver: zodResolver(inviteSchema),
     defaultValues: {
       campaignId: '',
-      message: `Hi ${creator.displayName || creator.name}, we think you'd be a great fit for our campaign and would love for you to apply!`,
+      message: t('inviteDialog.defaultMessage', { name: creator.displayName || creator.name }),
     },
   });
 
@@ -69,7 +71,7 @@ export default function InviteToCampaignDialog({
       
       const campaign = campaigns.find(c => c.id === selectedCampaignId);
       if (campaign && campaign.creatorIds?.includes(creator.id)) {
-        setValidationError(`${creator.displayName || creator.name} is already part of this campaign.`);
+        setValidationError(t('inviteDialog.validation.alreadyHired', { name: creator.displayName || creator.name }));
         form.setError('campaignId', { message: 'Creator is already hired.' });
         return;
       }
@@ -79,7 +81,7 @@ export default function InviteToCampaignDialog({
       const querySnapshot = await getDocs(q);
       
       if (!querySnapshot.empty) {
-        setValidationError(`${creator.displayName || creator.name} has already applied to this campaign.`);
+        setValidationError(t('inviteDialog.validation.alreadyApplied', { name: creator.displayName || creator.name }));
         form.setError('campaignId', { message: 'Creator has already applied.' });
         return;
       }
@@ -89,14 +91,14 @@ export default function InviteToCampaignDialog({
     };
 
     validateInvitation();
-  }, [selectedCampaignId, creator.id, creator.displayName, creator.name, campaigns, firestore, form]);
+  }, [selectedCampaignId, creator.id, creator.displayName, creator.name, campaigns, firestore, form, t]);
 
 
   const onSubmit = async (data: InviteFormValues) => {
     if (validationError) {
         toast({
             variant: "destructive",
-            title: "Cannot send invitation",
+            title: t('inviteDialog.toast.error.cannotSend.title'),
             description: validationError,
         });
         return;
@@ -114,8 +116,8 @@ export default function InviteToCampaignDialog({
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
-      title: 'Invitation Sent!',
-      description: `${creator.displayName || creator.name} has been invited to your campaign.`,
+      title: t('inviteDialog.toast.success.title'),
+      description: t('inviteDialog.toast.success.description', { name: creator.displayName || creator.name }),
     });
     setOpen(false);
     form.reset();
@@ -129,9 +131,9 @@ export default function InviteToCampaignDialog({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Invite {creator.displayName || creator.name}</DialogTitle>
+          <DialogTitle>{t('inviteDialog.title', { name: creator.displayName || creator.name })}</DialogTitle>
           <DialogDescription>
-            Select one of your active campaigns and send a personalized message.
+            {t('inviteDialog.description')}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -141,22 +143,22 @@ export default function InviteToCampaignDialog({
               name="campaignId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Campaign</FormLabel>
+                  <FormLabel>{t('inviteDialog.campaignLabel')}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a campaign with open slots..." />
+                        <SelectValue placeholder={t('inviteDialog.campaignPlaceholder')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {activeCampaignsWithSlots.length > 0 ? (
                         activeCampaignsWithSlots.map((campaign) => (
                           <SelectItem key={campaign.id} value={campaign.id}>
-                            {campaign.title} ({campaign.creatorIds?.length || 0}/{campaign.numberOfCreators || 1} hired)
+                            {campaign.title} ({t('inviteDialog.hiredText', { hired: campaign.creatorIds?.length || 0, total: campaign.numberOfCreators || 1 })})
                           </SelectItem>
                         ))
                       ) : (
-                        <div className="p-4 text-sm text-muted-foreground">No active campaigns with open slots.</div>
+                        <div className="p-4 text-sm text-muted-foreground">{t('inviteDialog.noCampaigns')}</div>
                       )}
                     </SelectContent>
                   </Select>
@@ -169,11 +171,11 @@ export default function InviteToCampaignDialog({
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Message</FormLabel>
+                  <FormLabel>{t('inviteDialog.messageLabel')}</FormLabel>
                   <FormControl>
                     <Textarea
                       rows={4}
-                      placeholder="Write a brief message to the creator..."
+                      placeholder={t('inviteDialog.messagePlaceholder')}
                       {...field}
                     />
                   </FormControl>
@@ -188,7 +190,7 @@ export default function InviteToCampaignDialog({
                 ) : (
                   <Send className="mr-2 h-4 w-4" />
                 )}
-                Send Invitation
+                {t('inviteDialog.sendButton')}
               </Button>
             </DialogFooter>
           </form>
@@ -197,5 +199,4 @@ export default function InviteToCampaignDialog({
     </Dialog>
   );
 }
-
     
