@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -8,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Info } from 'lucide-react';
+import { Check, Info, ArrowRight, CircleDollarSign, FileText, CheckCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -31,15 +32,15 @@ type ApplicationForm = z.infer<typeof applicationSchema>;
 
 const ApplyPageSkeleton = () => (
     <div className="max-w-2xl mx-auto">
-        <Card>
+        <Card className="bg-background/80 backdrop-blur-sm">
             <CardHeader>
-                <Skeleton className="h-8 w-3/4" />
-                <Skeleton className="h-4 w-1/2 mt-2" />
+                <Skeleton className="h-10 w-3/4" />
+                <Skeleton className="h-5 w-1/2 mt-2" />
             </CardHeader>
-            <CardContent className="space-y-4">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-20 w-full mt-4" />
-                <Skeleton className="h-10 w-full" />
+            <CardContent className="space-y-6">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-24 w-full mt-4" />
+                <Skeleton className="h-12 w-full mt-4" />
             </CardContent>
         </Card>
     </div>
@@ -117,115 +118,125 @@ export default function ApplyPage() {
     };
     
     const isLoading = isUserLoading || isCampaignLoading || isAlreadyApplied === null;
+    const isSubmitting = form.formState.isSubmitting;
 
-    if (isLoading) {
-        return (
-             <>
-                <AppHeader />
-                <main className="max-w-2xl mx-auto p-8">
-                   <ApplyPageSkeleton />
-                </main>
-            </>
-        )
-    }
-
-    if (!user) {
-        router.push(`/login?redirect=/campaigns/${campaignId}/apply`);
-        return <ApplyPageSkeleton />;
-    }
-
-    if (!campaign || error) {
-        return (
-             <>
-                <AppHeader />
-                <main className="max-w-2xl mx-auto p-8 text-center">
-                    <h1 className="text-2xl font-bold">Campaign not found</h1>
-                    <p className="text-muted-foreground">This campaign may have been closed or does not exist.</p>
-                    <Button asChild className="mt-4"><Link href="/discover">Back to Discovery</Link></Button>
-                </main>
-            </>
-        )
-    }
-
-    if (isAlreadyApplied) {
-        return (
-             <>
-                <AppHeader />
-                <main className="max-w-2xl mx-auto p-8 text-center">
-                     <Alert variant="default" className="border-green-500">
-                        <Check className="h-4 w-4" />
-                        <AlertTitle className="text-green-700">You've Already Applied!</AlertTitle>
-                        <AlertDescription>
-                           The brand has your application. We'll notify you if you're selected.
-                           <div className="mt-4">
-                             <Button asChild><Link href="/discover">Discover More Campaigns</Link></Button>
-                           </div>
-                        </AlertDescription>
-                    </Alert>
-                </main>
-            </>
-        )
-    }
+    const renderContent = () => {
+        if (isLoading) {
+            return <ApplyPageSkeleton />;
+        }
     
-
-    return (
-        <>
-            <AppHeader />
-            <main className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-                <Card>
-                    <CardHeader className="text-center">
-                        <CardTitle className="text-3xl">Apply for: {campaign.title}</CardTitle>
-                        <CardDescription>Briefly explain why you're a great fit and confirm your tariff.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                                 <FormField
-                                    control={form.control}
-                                    name="bidAmount"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Your Tariff for this Mission</FormLabel>
-                                            <FormControl>
-                                                <Input type="number" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                             {isBidHigher && (
-                                                <Alert variant="default" className="border-orange-400 text-orange-700 mt-2">
-                                                    <Info className="h-4 w-4" />
-                                                    <AlertDescription>
-                                                        Note: Your offer is higher than the brand's budget.
-                                                    </AlertDescription>
-                                                </Alert>
-                                            )}
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="coverLetter"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Why you? (Optional)</FormLabel>
-                                            <FormControl>
-                                                <Textarea
-                                                    placeholder="Introduce yourself and explain why you'd be perfect for this collaboration..."
-                                                    rows={5}
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-                                    {form.formState.isSubmitting ? 'Submitting...' : 'Send my Application'}
-                                </Button>
-                            </form>
-                        </Form>
+        if (!user) {
+            router.push(`/login?redirect=/campaigns/${campaignId}/apply`);
+            return <ApplyPageSkeleton />;
+        }
+    
+        if (!campaign || error) {
+            return (
+                <div className="text-center bg-background/80 backdrop-blur-sm p-8 rounded-2xl">
+                    <h1 className="text-2xl font-bold">Campaign not found</h1>
+                    <p className="text-muted-foreground mt-2">This campaign may have been closed or does not exist.</p>
+                    <Button asChild className="mt-6">
+                        <Link href="/discover">Back to Discovery</Link>
+                    </Button>
+                </div>
+            )
+        }
+    
+        if (isAlreadyApplied) {
+            return (
+                <Card className="text-center bg-background/80 backdrop-blur-sm shadow-2xl shadow-primary/10">
+                    <CardContent className="p-8">
+                        <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
+                            <CheckCircle className="h-8 w-8 text-black" />
+                        </div>
+                        <h2 className="text-2xl font-bold">You've Already Applied!</h2>
+                        <p className="text-muted-foreground mt-2">The brand has your application. We'll notify you if you're selected.</p>
+                        <Button asChild className="mt-6">
+                            <Link href="/discover">Discover More Campaigns</Link>
+                        </Button>
                     </CardContent>
                 </Card>
+            )
+        }
+
+        return (
+             <Card className="bg-background/80 backdrop-blur-sm border-border shadow-2xl shadow-primary/5">
+                <CardHeader className="text-center items-center p-8">
+                    <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-black mb-4 shadow-lg shadow-primary/30">
+                        <FileText className="h-8 w-8" />
+                    </div>
+                    <CardTitle className="text-3xl font-extrabold tracking-tight">Apply for Campaign</CardTitle>
+                    <CardDescription className="text-lg gradient-text font-semibold pt-1">{campaign.title}</CardDescription>
+                </CardHeader>
+                <CardContent className="px-8 pb-8">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            <div className="space-y-1 p-4 border rounded-lg bg-muted/50">
+                                <h3 className="text-sm font-semibold text-muted-foreground">Confirm Your Tariff</h3>
+                                <p className="text-xs text-muted-foreground">
+                                    The brand's proposed budget is {campaign.budget} DH. You can adjust this if needed.
+                                </p>
+                            </div>
+
+                             <FormField
+                                control={form.control}
+                                name="bidAmount"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <div className="relative">
+                                            <CircleDollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                            <FormControl>
+                                                <Input type="number" {...field} className="h-14 pl-10 text-lg" />
+                                            </FormControl>
+                                        </div>
+                                        <FormMessage />
+                                         {isBidHigher && (
+                                            <Alert variant="default" className="border-orange-400 text-orange-700 mt-2 text-xs">
+                                                <Info className="h-4 w-4" />
+                                                <AlertDescription>
+                                                    Note: Your offer is higher than the brand's budget.
+                                                </AlertDescription>
+                                            </Alert>
+                                        )}
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="coverLetter"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-sm font-semibold text-muted-foreground">Why you? (Optional cover letter)</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder="Introduce yourself and explain why you'd be perfect for this collaboration..."
+                                                rows={5}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" disabled={isSubmitting} size="lg" className="w-full h-14 text-base font-bold tracking-wide rounded-full gradient-bg text-black hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+                                {isSubmitting ? 'Submitting...' : 'Send my Application'}
+                                {!isSubmitting && <ArrowRight className="ml-2 h-5 w-5" />}
+                            </Button>
+                        </form>
+                    </Form>
+                </CardContent>
+            </Card>
+        )
+    }
+
+    return (
+        <div className="relative min-h-screen w-full flex flex-col">
+            <AppHeader />
+            <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 hero-bg">
+                <div className="w-full max-w-2xl">
+                    {renderContent()}
+                </div>
             </main>
-        </>
+        </div>
     )
 }
