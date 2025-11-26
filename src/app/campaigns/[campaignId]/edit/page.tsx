@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -234,6 +235,14 @@ export default function EditCampaignPage() {
 
   const form = useForm<CampaignForm>({
     resolver: zodResolver(campaignSchema),
+    defaultValues: {
+        title: '',
+        campaignBrief: '',
+        budget: 0,
+        tags: [],
+        deliverables: [],
+        otherTag: '',
+    },
   });
 
   useEffect(() => {

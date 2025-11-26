@@ -1,34 +1,36 @@
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
-import FirebaseErrorListener from '../FirebaseErrorListener';
-import { Toaster } from '../ui/toaster';
+import { vi, beforeEach, describe, it, expect } from 'vitest';
 
-// Mock the useToast hook
-const mockToast = jest.fn();
-jest.mock('../ui/use-toast', () => ({
+// 1. Mock the modules FIRST. The mock functions are created inside the factory.
+//    This ensures the 'vi.fn()' calls are executed when the mock is processed.
+const mockToast = vi.fn();
+vi.mock('@/hooks/use-toast', () => ({
   useToast: () => ({
-    toast: mockToast,
+    toast: mockToast, // Return the globally defined mockToast
   }),
 }));
 
-// Mock the error emitter to spy on its methods
-const mockErrorEmitterOn = jest.fn();
-const mockErrorEmitterOff = jest.fn();
-jest.mock('../../firebase/error-emitter', () => ({
+const mockErrorEmitterOn = vi.fn();
+const mockErrorEmitterOff = vi.fn();
+vi.mock('@/firebase/error-emitter', () => ({
   errorEmitter: {
-    on: mockErrorEmitterOn,
-    off: mockErrorEmitterOff,
+    on: mockErrorEmitterOn, // Return the globally defined mockErrorEmitterOn
+    off: mockErrorEmitterOff, // Return the globally defined mockErrorEmitterOff
   },
 }));
 
-// Import the actual errorEmitter for type inference in tests, though the mock will be used.
-// This is a common pattern for Jest mocks where you need to reference the original type.
-import { errorEmitter } from '../../firebase/error-emitter';
+// 2. NOW, import everything else, including the mocked modules.
+//    These imports will now resolve to their mocked versions.
+import FirebaseErrorListener from '@/components/FirebaseErrorListener';
+import { Toaster } from '@/components/ui/toaster';
+// We don't need to import useToast or errorEmitter directly here
+// as we are referencing the globally defined mock functions.
 
 describe('FirebaseErrorListener', () => {
-  // Clear mocks before each test to ensure isolation
+  // 3. Clear mocks before each test to ensure isolation
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders without crashing and attaches error listener on mount', () => {
@@ -61,16 +63,14 @@ describe('FirebaseErrorListener', () => {
     const errorMessage = 'Permission denied to access resource.';
     const errorDetails = { code: 'permission-denied', name: 'FirebaseError' };
 
-    // Find the registered callback from the mock
+    // The callback is the second argument of the first call to the mock
     const registeredCallback = mockErrorEmitterOn.mock.calls[0][1];
     expect(registeredCallback).toBeInstanceOf(Function);
 
-    // Act to simulate the error emission and ensure state updates are batched
     act(() => {
       registeredCallback(errorMessage, errorDetails);
     });
 
-    // Verify that toast was called with the correct message and description
     expect(mockToast).toHaveBeenCalledTimes(1);
     expect(mockToast).toHaveBeenCalledWith({
       title: 'Firebase Error',
@@ -79,7 +79,7 @@ describe('FirebaseErrorListener', () => {
     });
   });
 
-  it('does not display a toast for non-Firebase errors (e.g., generic errors from client)', () => {
+  it('does not display a toast for non-Firebase errors', () => {
     render(
       <>
         <Toaster />
