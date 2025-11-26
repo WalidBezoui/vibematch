@@ -167,8 +167,9 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                     
                     {(campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
                         isAwaitingPayment ? (
-                             <Button asChild variant="link" className="text-muted-foreground text-xs h-auto py-0" size="sm">
+                            <Button asChild variant="ghost" size="sm" className="w-full">
                                 <Link href={manageButtonLink}>
+                                    <Users className="mr-2 h-4 w-4" />
                                     {t('brandDashboard.manageButton')}
                                     {applicationCount > 0 && <Badge variant="secondary" className="ml-2">{applicationCount}</Badge>}
                                 </Link>
