@@ -5,7 +5,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft, ArrowRight, MessageSquare } from 'lucide-react';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -253,12 +253,23 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
                             </p>
                         )}
                     </CardHeader>
-                    <CardContent className="text-center">
-                        <p className={cn("text-muted-foreground mb-2", (status === 'REJECTED' || status === 'SUPERSEDED') && 'line-through')}>{description}</p>
-                        <p className={cn("text-2xl font-bold", (status === 'REJECTED' || status === 'SUPERSEDED') && 'text-muted-foreground line-through')}>{message.metadata.offer_amount} MAD</p>
+                    <CardContent className="text-center space-y-4">
+                        <div>
+                            <p className={cn("text-muted-foreground text-sm", (status === 'REJECTED' || status === 'SUPERSEDED') && 'line-through')}>{description}</p>
+                            <p className={cn("text-2xl font-bold", (status === 'REJECTED' || status === 'SUPERSEDED') && 'text-muted-foreground line-through')}>{message.metadata.offer_amount} MAD</p>
+                        </div>
+                        
+                        {message.content && message.content.trim() && (
+                            <div className="text-left bg-background/50 p-3 rounded-md border">
+                                <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                                    <MessageSquare className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                                    <p className="italic">"{message.content}"</p>
+                                </div>
+                            </div>
+                        )}
 
                         {isMyTurnToRespond && (
-                            <div className="flex gap-2 mt-4">
+                            <div className="flex gap-2 pt-2">
                                 <Button className="w-full" onClick={() => onRespondToOffer(message, 'ACCEPTED')}>
                                     <CheckCircle className="mr-2 h-4 w-4" /> Accept
                                 </Button>
@@ -689,7 +700,7 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
-        if (!firestore || !user || !conversationRef || !userProfile) return;
+        if (!firestore || !user || !conversationRef || !userProfile || !campaignRef) return;
         
         const batch = writeBatch(firestore);
         const msgRef = doc(firestore, 'conversations', conversationId, 'messages', message.id);
@@ -716,6 +727,9 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
                 timestamp: serverTimestamp(),
             };
             batch.set(newEventRef, eventMessageData);
+
+            batch.update(campaignRef, { status: 'PENDING_PAYMENT' });
+            
             toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
         } else {
              conversationUpdateData = { last_offer_by: user.uid };
@@ -791,5 +805,6 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
+
 
 
