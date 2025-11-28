@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -14,6 +15,7 @@ import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter, useParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, Users, Megaphone, FileVideo, Info, Package, RefreshCw, Computer } from 'lucide-react';
+import * as lucideIcons from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -95,9 +97,9 @@ const influenceDeliverableTypes = {
 };
 
 const ugcDeliverableTypes = [
-    { name: 'deliverables.0.quantity', type: 'UGC_Video_Vertical', label: 'Video 9:16 (Vertical)' },
-    { name: 'deliverables.1.quantity', type: 'UGC_Video_Horizontal', label: 'Video 16:9 (Horizontal)' },
-    { name: 'deliverables.2.quantity', type: 'UGC_Photo_Pack', label: 'Photo Pack' },
+    { name: 'deliverables.1.quantity', type: 'UGC_Video_Vertical', label: 'Video 9:16 (Vertical)' },
+    { name: 'deliverables.2.quantity', type: 'UGC_Video_Horizontal', label: 'Video 16:9 (Horizontal)' },
+    { name: 'deliverables.3.quantity', type: 'UGC_Photo_Pack', label: 'Photo Pack' },
 ]
 
 const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
@@ -247,7 +249,7 @@ export default function EditCampaignPage() {
   const { toast } = useToast();
   const { t } = useLanguage();
   const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
-  const productLogisticsOptions = t('createCampaignPage.logistics.options', { returnObjects: true }) as { value: 'shipping' | 'reimbursement' | 'digital', title: string, description: string, icon: React.ComponentType<{className?: string}> }[];
+  const productLogisticsOptions = t('createCampaignPage.logistics.options', { returnObjects: true }) as { value: 'shipping' | 'reimbursement' | 'digital', title: string, description: string, icon: string }[];
 
   
   const campaignRef = useMemoFirebase(
