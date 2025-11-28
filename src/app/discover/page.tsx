@@ -125,9 +125,7 @@ export default function DiscoverPage() {
                             {campaigns.map(campaign => {
                                 const conversation = conversations?.find(convo => convo.campaign_id === campaign.id);
                                 const application = userApplications?.find(app => app.campaignId === campaign.id);
-                                const hiredCount = campaign.creatorIds?.length || 0;
-                                const totalSeats = campaign.numberOfCreators || 1;
-                                const isFull = hiredCount >= totalSeats;
+                                const isFull = (campaign.creatorIds?.length || 0) >= (campaign.numberOfCreators || 1);
 
                                 let status: 'new' | 'applied' | 'in_discussion' = 'new';
                                 if (conversation) {
@@ -175,18 +173,9 @@ export default function DiscoverPage() {
                                             <p className="text-sm text-muted-foreground line-clamp-3 h-[60px]">
                                                 {campaign.campaignBrief}
                                             </p>
-                                            <div className="flex items-center justify-between">
-                                                <div>
-                                                    <Badge variant="outline">{t('discoverCampaigns.budget')}</Badge>
-                                                    <p className="font-bold text-lg gradient-text mt-1">{campaign.budget} DH</p>
-                                                </div>
-                                                 <div>
-                                                    <Badge variant="outline">{t('discoverCampaigns.slots')}</Badge>
-                                                    <p className="font-bold text-lg mt-1 flex items-center gap-1">
-                                                        <Users className="h-4 w-4 text-muted-foreground"/> 
-                                                        {hiredCount} / {totalSeats}
-                                                    </p>
-                                                </div>
+                                            <div>
+                                                <Badge variant="outline">{t('discoverCampaigns.budget')}</Badge>
+                                                <p className="font-bold text-lg gradient-text mt-1">{campaign.budget} DH</p>
                                             </div>
                                         </CardContent>
                                         <CardFooter className="flex-col items-stretch gap-2">
@@ -231,7 +220,7 @@ export default function DiscoverPage() {
                                                 </Button>
                                             ) : (
                                                 <Button asChild className="w-full">
-                                                    <Link href={`/campaigns/${campaign.id}/apply`}>
+                                                    <Link href={`/campaigns/${campaign.id}`}>
                                                         {t('discoverCampaigns.applyNow')}
                                                         <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Link>

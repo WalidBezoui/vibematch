@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
+import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile, useCollection } from '@/firebase';
 import { doc, updateDoc, serverTimestamp, collection, query, where, getDocs, getDoc, writeBatch } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
@@ -316,8 +316,6 @@ export default function CampaignPage() {
         badgeStatus = 'YOUR_ACCEPTANCE';
         badgeText = t('status.YOUR_ACCEPTANCE');
     }
-    
-    const remainingSlots = Math.max(0, (campaign.numberOfCreators || 1) - (campaign.creatorIds?.length || 0));
 
     return (
         <>
@@ -347,10 +345,12 @@ export default function CampaignPage() {
                                         <CircleDollarSign className="h-4 w-4" />
                                         <span className="font-semibold text-foreground">{campaign.budget} {t('currency')}</span>
                                     </div>
-                                    <div className="flex items-center gap-2 text-muted-foreground">
-                                        <Users className="h-4 w-4" />
-                                        <span className="font-semibold text-foreground">{remainingSlots} {t('campaignPage.slotsRemaining')}</span>
-                                    </div>
+                                    {isBrandOwner && (
+                                        <div className="flex items-center gap-2 text-muted-foreground">
+                                            <Users className="h-4 w-4" />
+                                            <span className="font-semibold text-foreground">{Math.max(0, (campaign.numberOfCreators || 1) - (campaign.creatorIds?.length || 0))} {t('campaignPage.slotsRemaining')}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </CardHeader>
