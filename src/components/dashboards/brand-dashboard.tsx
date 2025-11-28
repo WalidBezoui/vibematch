@@ -294,7 +294,7 @@ export default function BrandDashboard() {
         const sampleTags = ["Fashion", "Beauty", "Food", "Travel", "Lifestyle", "Tech", "Gaming", "UGC"];
         const sampleInstructions = "Please ensure all content is filmed in high resolution (4K if possible). Avoid using copyrighted music. All posts must include the hashtag #VibeMatchTest and tag our brand profile.";
         const logisticsOptions: ['shipping', 'digital'] = ['shipping', 'digital'];
-
+        const campaignTypes: ['influence', 'ugc'] = ['influence', 'ugc'];
 
         const randomTitle = sampleTitles[Math.floor(Math.random() * sampleTitles.length)];
         const randomBrief = sampleBriefs[Math.floor(Math.random() * sampleBriefs.length)];
@@ -302,15 +302,25 @@ export default function BrandDashboard() {
         const randomBudget = Math.floor(Math.random() * 20 + 5) * 100; // 500 to 2500
         const randomCreators = Math.floor(Math.random() * 5) + 1;
         const randomLogistics = logisticsOptions[Math.floor(Math.random() * logisticsOptions.length)];
+        const randomCampaignType = campaignTypes[Math.floor(Math.random() * campaignTypes.length)];
 
+        let randomDeliverables = [];
+        if (randomCampaignType === 'influence') {
+            randomDeliverables = ["1 Instagram Reel", "3 Instagram Stories"];
+        } else {
+            const ugcTypes = ['UGC_Video_Vertical', 'UGC_Video_Horizontal', 'UGC_Photo_Pack'];
+            const selectedType = ugcTypes[Math.floor(Math.random() * ugcTypes.length)];
+            const quantity = Math.floor(Math.random() * 3) + 1;
+            randomDeliverables = [`${quantity} ${selectedType}`];
+        }
 
         const testCampaign = {
             title: `(Test) ${randomTitle}`,
             campaignBrief: randomBrief,
             instructions: sampleInstructions,
             productLogistics: randomLogistics,
-            campaignType: 'influence',
-            deliverables: ["1 Instagram Reel", "3 Instagram Stories"],
+            campaignType: randomCampaignType,
+            deliverables: randomDeliverables,
             budget: randomBudget,
             numberOfCreators: randomCreators,
             tags: randomTags,
