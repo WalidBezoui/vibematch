@@ -628,7 +628,6 @@
             "title": "Product Logistics",
             "options": [
                 { "value": "shipping", "title": "Shipping", "description": "I will ship the product to the creator for free.", "icon": "Package" },
-                { "value": "reimbursement", "title": "Reimbursement", "description": "The creator buys the product, and I will reimburse them.", "icon": "RefreshCw" },
                 { "value": "digital", "title": "Digital / Service", "description": "No physical product is required (app, service, location).", "icon": "Computer" }
             ]
         },

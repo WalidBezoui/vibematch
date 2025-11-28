@@ -628,7 +628,6 @@
             "title": "Logistique du Produit",
             "options": [
                 { "value": "shipping", "title": "Expédition", "description": "J'enverrai le produit gratuitement au créateur.", "icon": "Package" },
-                { "value": "reimbursement", "title": "Remboursement", "description": "Le créateur achète le produit et je le rembourse.", "icon": "RefreshCw" },
                 { "value": "digital", "title": "Digital / Service", "description": "Aucun produit physique requis (app, service, lieu).", "icon": "Computer" }
             ]
         },

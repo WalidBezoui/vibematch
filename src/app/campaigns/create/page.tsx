@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useForm, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -45,7 +45,7 @@ const campaignSchema = z.object({
   campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
   instructions: z.string().optional(),
   campaignType: z.enum(['influence', 'ugc']),
-  productLogistics: z.enum(['shipping', 'reimbursement', 'digital'], { required_error: 'Please select a product logistics option.' }),
+  productLogistics: z.enum(['shipping', 'digital'], { required_error: 'Please select a product logistics option.' }),
   deliverables: z.array(deliverableSchema).min(1, 'Please add at least one deliverable.'),
   budget: z.preprocess(
     (val) => (val === '' ? 0 : Number(val)),
@@ -193,7 +193,7 @@ const UGCDeliverableItem = ({ name, label, type }: { name: string, label: string
             render={({ field }) => (
                 <FormItem className="flex items-center space-x-3 space-y-0 p-4 border rounded-lg bg-muted/50">
                     <FormControl>
-                        <Input type="number" min="0" {...field} className="w-20" placeholder="0" />
+                        <Input type="number" min="0" {...field} value={field.value || 0} className="w-20" placeholder="0" />
                     </FormControl>
                     <FormLabel className="font-normal">{label}</FormLabel>
                 </FormItem>
@@ -213,7 +213,7 @@ export default function CreateCampaignPage() {
   const { t } = useLanguage();
 
   const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
-  const productLogisticsOptions = t('createCampaignPage.logistics.options', { returnObjects: true }) as { value: 'shipping' | 'reimbursement' | 'digital', title: string, description: string, icon: string }[];
+  const productLogisticsOptions = t('createCampaignPage.logistics.options', { returnObjects: true }) as { value: 'shipping' | 'digital', title: string, description: string, icon: string }[];
 
 
   const form = useForm<CampaignForm>({
@@ -494,7 +494,7 @@ export default function CreateCampaignPage() {
                                         <RadioGroup
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
-                                        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                                        className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                         >
                                             {productLogisticsOptions.map(option => {
                                                 const Icon = (lucideIcons as any)[option.icon];
