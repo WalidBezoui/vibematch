@@ -2,12 +2,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useForm, useFieldArray, useWatch } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppHeader } from '@/components/app-header';
@@ -23,6 +22,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import Link from 'next/link';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Label } from '@/components/ui/label';
 
 const TikTokIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -71,9 +71,9 @@ const influenceDeliverableTypes = {
 };
 
 const ugcDeliverableTypes = [
-    { value: 'UGC_Video_Vertical', label: 'Video 9:16 (Vertical)' },
-    { value: 'UGC_Video_Horizontal', label: 'Video 16:9 (Horizontal)' },
-    { value: 'UGC_Photo_Pack', label: 'Photo Pack' },
+    { name: 'deliverables.0.quantity', label: 'Video 9:16 (Vertical)' },
+    { name: 'deliverables.1.quantity', label: 'Video 16:9 (Horizontal)' },
+    { name: 'deliverables.2.quantity', label: 'Photo Pack' },
 ]
 
 const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
@@ -421,7 +421,7 @@ export default function CreateCampaignPage() {
                                         {fields.map((item, index) => (
                                             <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
                                         ))}
-                                        <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}>
+                                        <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1 })}>
                                             <PlusCircle className="mr-2 h-4 w-4" />
                                             {t('createCampaignPage.deliverables.addButton')}
                                         </Button>
@@ -429,9 +429,9 @@ export default function CreateCampaignPage() {
                                 )}
                                 {campaignType === 'ugc' && (
                                     <div className="space-y-4">
-                                        <UGCDeliverableItem name="deliverables.0.quantity" label="Video 9:16 (Vertical)" />
-                                        <UGCDeliverableItem name="deliverables.1.quantity" label="Video 16:9 (Horizontal)" />
-                                        <UGCDeliverableItem name="deliverables.2.quantity" label="Photo Pack" />
+                                        {ugcDeliverableTypes.map((item, index) => (
+                                            <UGCDeliverableItem key={item.name} name={item.name} label={item.label} />
+                                        ))}
                                     </div>
                                 )}
                                 <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>

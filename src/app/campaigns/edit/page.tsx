@@ -2,12 +2,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useForm, useFieldArray, useWatch } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppHeader } from '@/components/app-header';
@@ -24,6 +23,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Label } from '@/components/ui/label';
 
 const TikTokIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -269,7 +269,7 @@ export default function EditCampaignPage() {
         campaignType: campaign.campaignType || 'influence',
         budget: campaign.budget,
         tags: campaign.tags || [],
-        deliverables: parsedDeliverables.length > 0 ? parsedDeliverables : [{ platform: 'instagram', type: 'Post', quantity: 1, note: '' }],
+        deliverables: parsedDeliverables.length > 0 ? parsedDeliverables : [{ platform: 'instagram', type: 'Post', quantity: 1 }],
       });
     }
   }, [campaign, form]);
@@ -302,7 +302,7 @@ export default function EditCampaignPage() {
       deliverables: data.deliverables.map(d => `${d.quantity} ${d.type}`),
       updatedAt: serverTimestamp(),
     };
-    delete submissionData.otherTag;
+    delete (submissionData as any).otherTag;
 
     try {
       await updateDoc(campaignRef, submissionData);
@@ -469,7 +469,7 @@ export default function EditCampaignPage() {
                                     {fields.map((item, index) => (
                                         <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
                                     ))}
-                                    <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}>
+                                    <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1 })}>
                                         <PlusCircle className="mr-2 h-4 w-4" />
                                         {t('createCampaignPage.deliverables.addButton')}
                                     </Button>
