@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -378,11 +377,11 @@ export default function CreateCampaignPage() {
                                         defaultValue={field.value}
                                         className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                         >
-                                            <FormItem>
+                                            <FormItem className="flex">
                                                 <FormControl>
                                                     <RadioGroupItem value="influence" id="influence" className="sr-only" />
                                                 </FormControl>
-                                                <Label htmlFor="influence" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all", field.value === 'influence' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                                <Label htmlFor="influence" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all w-full", field.value === 'influence' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
                                                     <div className="flex items-center gap-3 mb-2">
                                                         <Megaphone className="h-5 w-5 text-primary" />
                                                         <span className="font-bold">{t('createCampaignPage.deliverables.influence.title')}</span>
@@ -390,11 +389,11 @@ export default function CreateCampaignPage() {
                                                     <span className="text-sm text-muted-foreground">{t('createCampaignPage.deliverables.influence.description')}</span>
                                                 </Label>
                                             </FormItem>
-                                            <FormItem>
+                                            <FormItem className="flex">
                                                 <FormControl>
                                                     <RadioGroupItem value="ugc" id="ugc" className="sr-only" />
                                                 </FormControl>
-                                                <Label htmlFor="ugc" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all", field.value === 'ugc' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                                <Label htmlFor="ugc" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all w-full", field.value === 'ugc' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
                                                     <div className="flex items-center gap-3 mb-2">
                                                         <FileVideo className="h-5 w-5 text-primary" />
                                                         <span className="font-bold">{t('createCampaignPage.deliverables.ugc.title')}</span>
@@ -532,7 +531,7 @@ export default function CreateCampaignPage() {
                     </Card>
 
                     <Button type="submit" disabled={form.formState.isSubmitting} className="w-full" size="lg">
-                    {form.formState.isSubmitting ? t('createCampaignPage.publishingButton') : t('createCampaignPage.publishButton')}
+                    {form.formState.isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t('createCampaignPage.publishingButton')}</> : t('createCampaignPage.publishButton')}
                     </Button>
                 </form>
                 </Form>
@@ -543,4 +542,3 @@ export default function CreateCampaignPage() {
   );
 }
 
-    
