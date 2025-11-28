@@ -1,11 +1,12 @@
+
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Send, Lock, Shield, CheckCircle, XCircle, Info, Bot, Handshake, Hourglass, CircleDollarSign, PartyPopper, User, Briefcase, ArrowLeft, ArrowRight, MessageSquare } from 'lucide-react';
 import { useDoc, useCollection, useFirestore, useUser, useUserProfile, useMemoFirebase } from '@/firebase';
-import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch, getDocs, where } from 'firebase/firestore';
+import { doc, collection, query, addDoc, serverTimestamp, updateDoc, orderBy, getDoc, writeBatch } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format, formatDistanceToNow } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -37,6 +38,7 @@ import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/e
 import { errorEmitter } from '@/firebase/error-emitter';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useRouter, useParams } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
 
 
 const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onBack }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onBack: () => void }) => {
@@ -55,14 +57,10 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
         
         switch (conversation.status) {
             case 'NEGOTIATION':
-                let text = isBrand 
-                    ? "Awaiting your response"
-                    : "Awaiting your response";
+                let text = isMyTurn
+                    ? (isBrand ? "Awaiting your response" : "Awaiting your response")
+                    : (isBrand ? "Waiting for creator's response" : "Brand is reviewing your offer");
                 
-                if (!isMyTurn) {
-                    text = isBrand ? "Waiting for creator's response" : "Brand is reviewing your offer";
-                }
-
                 return { icon: Handshake, text, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
 
             case 'OFFER_ACCEPTED':
@@ -92,9 +90,9 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
     }
 
     return (
-        <div className={cn("p-3 sm:p-4 border-b", bgColor)}>
-            <div className="grid grid-cols-2 sm:flex sm:justify-between sm:items-center gap-4">
-                <div className="flex items-center gap-2 col-span-1">
+        <div className="border-b bg-background">
+            <div className="p-3 sm:p-4 grid grid-cols-2 sm:flex sm:justify-between sm:items-center gap-4">
+                 <div className="flex items-center gap-2 min-w-0 col-span-1">
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
                         <ArrowLeft className="h-5 w-5" />
                     </Button>
@@ -123,26 +121,29 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                          <Skeleton className="h-10 w-48" />
                     )}
                  </div>
-
-                <div className="flex items-center justify-end text-right gap-4 col-span-1">
-                     <div className="hidden sm:block">
-                        <p className="text-xs font-semibold text-muted-foreground">Original Budget</p>
-                        <p className="font-bold text-muted-foreground text-sm sm:text-base">{campaign?.budget || 0} MAD</p>
-                    </div>
-                     <div>
-                        <p className="text-xs font-semibold text-muted-foreground">{budgetLabel}</p>
-                        <p className="font-bold text-primary text-sm sm:text-base">{conversation.agreed_budget || 0} MAD</p>
+                 
+                <div className="text-right">
+                    <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
+                    <div className="flex items-baseline gap-x-2 justify-end">
+                        <span className="font-bold text-primary text-lg">{conversation.agreed_budget || 0} MAD</span>
+                        <span className="text-xs text-muted-foreground">/ {campaign?.budget || 0} MAD</span>
                     </div>
                 </div>
 
-                {isBrand && (conversation.status === 'OFFER_ACCEPTED' || campaign?.status === 'PENDING_PAYMENT') && (
-                    <div className="col-span-2 sm:col-auto sm:w-auto">
-                        <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full sm:w-auto">
-                          <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
-                        </Button>
-                    </div>
-                )}
             </div>
+            
+            <div className={cn("flex items-center justify-center gap-2 text-sm font-semibold p-2", color, bgColor)}>
+                <Icon className="h-5 w-5" />
+                <span>{text}</span>
+            </div>
+
+            {isBrand && (conversation.status === 'OFFER_ACCEPTED') && (
+                <div className="p-3 border-t">
+                    <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full">
+                      <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };
@@ -251,12 +252,23 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
                             </p>
                         )}
                     </CardHeader>
-                    <CardContent className="text-center">
-                        <p className={cn("text-muted-foreground mb-2", (status === 'REJECTED' || status === 'SUPERSEDED') && 'line-through')}>{description}</p>
-                        <p className={cn("text-2xl font-bold", (status === 'REJECTED' || status === 'SUPERSEDED') && 'text-muted-foreground line-through')}>{message.metadata.offer_amount} MAD</p>
+                    <CardContent className="text-center space-y-4">
+                        <div>
+                            <p className={cn("text-muted-foreground text-sm", (status === 'REJECTED' || status === 'SUPERSEDED') && 'line-through')}>{description}</p>
+                            <p className={cn("text-2xl font-bold", (status === 'REJECTED' || status === 'SUPERSEDED') && 'text-muted-foreground line-through')}>{message.metadata.offer_amount} MAD</p>
+                        </div>
+                        
+                        {message.content && message.content.trim() && (
+                            <div className="text-left bg-background/50 p-3 rounded-md border">
+                                <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                                    <MessageSquare className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                                    <p className="italic">"{message.content}"</p>
+                                </div>
+                            </div>
+                        )}
 
                         {isMyTurnToRespond && (
-                            <div className="flex gap-2 mt-4">
+                            <div className="flex gap-2 pt-2">
                                 <Button className="w-full" onClick={() => onRespondToOffer(message, 'ACCEPTED')}>
                                     <CheckCircle className="mr-2 h-4 w-4" /> Accept
                                 </Button>
@@ -502,7 +514,7 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
     );
 };
 
-export default function ChatView({ onBack }: { onBack?: () => void }) {
+export default function ChatView() {
     const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
@@ -511,6 +523,8 @@ export default function ChatView({ onBack }: { onBack?: () => void }) {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const params = useParams();
     const conversationId = params.conversationId as string;
+    const router = useRouter();
+
 
     const conversationRef = useMemoFirebase(
         () => (firestore && conversationId ? doc(firestore, 'conversations', conversationId) : null),
@@ -772,7 +786,7 @@ export default function ChatView({ onBack }: { onBack?: () => void }) {
                 campaign={campaign} 
                 onOpenProfile={() => setIsSheetOpen(true)}
                 otherUser={otherUser}
-                onBack={onBack!}
+                onBack={() => router.push('/chat')}
             />
             <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
             {isInNegotiation ? (
