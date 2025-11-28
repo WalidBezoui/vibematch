@@ -221,9 +221,6 @@ export default function ApplyPage() {
                                 )}
                             />
                             <div className="flex flex-col-reverse sm:flex-row gap-2 pt-4">
-                                <Button type="button" variant="outline" size="lg" className="w-full h-14" onClick={() => router.back()}>
-                                    <ArrowLeft className="mr-2 h-5 w-5" /> Back
-                                </Button>
                                 <Button type="submit" disabled={isSubmitting} size="lg" className="w-full h-14 text-base font-bold tracking-wide rounded-full gradient-bg text-black hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
                                     {isSubmitting ? t('applyPage.form.submittingButton') : t('applyPage.form.submitButton')}
                                     {!isSubmitting && <ArrowRight className="ml-2 h-5 w-5" />}
@@ -241,6 +238,12 @@ export default function ApplyPage() {
             <AppHeader />
             <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 hero-bg">
                 <div className="w-full max-w-2xl">
+                    <div className="mb-4">
+                        <Button variant="ghost" onClick={() => router.back()}>
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            Back to Campaign Details
+                        </Button>
+                    </div>
                     {renderContent()}
                 </div>
             </main>
