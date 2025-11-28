@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight, CircleDollarSign, Calendar, Tag, Clock, Wallet } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight, CircleDollarSign, Calendar, Tag, Clock, Wallet, ArrowLeft } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -443,6 +443,12 @@ export default function ManageApplicationsPage() {
             <main className="w-full">
                  <div className="p-4 sm:p-6 lg:p-8">
                     <div className="max-w-4xl mx-auto mb-8">
+                        <div className="mb-6">
+                            <Button variant="ghost" onClick={() => router.push('/dashboard')}>
+                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                Back to Dashboard
+                            </Button>
+                        </div>
                         <h1 className="text-4xl font-bold tracking-tight">{t('manageApplicationsPage.title')}</h1>
                         <p className="text-muted-foreground mt-2 text-lg">
                             {t('manageApplicationsPage.description')}

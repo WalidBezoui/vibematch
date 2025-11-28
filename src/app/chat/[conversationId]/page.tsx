@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogTrigger
+  DialogTrigger,
 } from '@/components/ui/dialog';
 import {
   Sheet,
@@ -33,14 +33,10 @@ import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
-<<<<<<< HEAD
-import { FirestorePermissionError } from '@/firebase/errors';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useRouter, useParams } from 'next/navigation';
-=======
-import { errorEmitter, FirestorePermissionError, type SecurityRuleContext } from '@/firebase';
->>>>>>> 3b61fc345458f3110e37024012eb8e7ee22f7878
 
 
 const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onBack }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onBack: () => void }) => {
@@ -347,7 +343,6 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     );
 };
 
-<<<<<<< HEAD
 const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: number, message: string) => void, setOpen?: (open: boolean) => void }) => {
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
@@ -376,7 +371,7 @@ const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: numbe
     );
   };
   
-const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onDecline: () => void }) => {
+const ActionFooter = ({ conversation, messages, onMakeOffer, onAcceptOffer, onDecline }: { conversation: any, messages: any[], onMakeOffer: (amount: number, message: string) => void, onAcceptOffer: (amount: number) => void, onDecline: () => void }) => {
     const { user } = useUser();
     const isMobile = useIsMobile();
     const [open, setOpen] = useState(false);
@@ -405,7 +400,7 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
     return (
         <div className="p-3 bg-background border-t">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
-                 <Button className="w-full md:w-auto" size="lg" onClick={() => onMakeOffer(offerToRespondTo, "I accept your rate.")}>
+                 <Button className="w-full md:w-auto" size="lg" onClick={() => onAcceptOffer(offerToRespondTo)}>
                     <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate ({offerToRespondTo} MAD)
                 </Button>
                 
@@ -449,8 +444,6 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onDecline }: { conv
     );
 }
 
-=======
->>>>>>> 3b61fc345458f3110e37024012eb8e7ee22f7878
 const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string) => void, disabled: boolean, placeholder: string }) => {
     const [input, setInput] = useState('');
     const [isBlocked, setIsBlocked] = useState(false);
@@ -583,7 +576,6 @@ export default function ChatView({ onBack }: { onBack?: () => void }) {
          )
      }
      
-<<<<<<< HEAD
     const handleMakeOffer = async (amount: number, message: string) => {
         if (!firestore || !user || !userProfile || !conversationRef) return;
         
@@ -628,14 +620,46 @@ export default function ChatView({ onBack }: { onBack?: () => void }) {
             errorEmitter.emit('permission-error', permissionError)
         });
     };
+    
+    const handleAcceptOffer = async (amount: number) => {
+        if (!firestore || !user || !conversationRef || !userProfile) return;
+        
+        const batch = writeBatch(firestore);
+        
+        const conversationUpdateData = {
+          agreed_budget: amount,
+          status: 'OFFER_ACCEPTED',
+          last_offer_by: user.uid,
+          lastMessage: 'Deal agreed!',
+          updatedAt: serverTimestamp(),
+        };
+        batch.update(conversationRef, conversationUpdateData);
+    
+        const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
+        batch.set(newEventRef, {
+            conversation_id: conversationId,
+            sender_id: user.uid,
+            type: 'SYSTEM_EVENT',
+            content: `Deal agreed at ${amount} MAD by ${userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}.`,
+            timestamp: serverTimestamp(),
+        });
+        
+        toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
+    
+        await batch.commit().catch((serverError) => {
+          const permissionError = new FirestorePermissionError({
+              path: `BATCH_WRITE on /conversations/${conversationId}`,
+              operation: 'write',
+              requestResourceData: { conversationUpdate: conversationUpdateData },
+          });
+          errorEmitter.emit('permission-error', permissionError);
+        });
+      };
 
-=======
->>>>>>> 3b61fc345458f3110e37024012eb8e7ee22f7878
     const handleSendMessage = async (text: string) => {
         if (!firestore || !user || isSubmitting) return;
         
         setIsSubmitting(true);
-<<<<<<< HEAD
         const messagesRef = collection(firestore, 'conversations', conversationId, 'messages');
         try {
             await addDoc(messagesRef, {
@@ -660,109 +684,88 @@ export default function ChatView({ onBack }: { onBack?: () => void }) {
              })
              errorEmitter.emit('permission-error', permissionError)
         } finally {
-=======
-        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
-        const messageData = {
-            conversation_id: conversationId,
-            sender_id: user.uid,
-            type: 'TEXT' as const,
-            content: text,
-            timestamp: serverTimestamp(),
-        };
-
-        const conversationUpdate = { 
-            lastMessage: text,
-            updatedAt: serverTimestamp(),
-        };
-
-        const batch = writeBatch(firestore);
-        batch.set(doc(messagesRef), messageData);
-        batch.update(conversationRef!, conversationUpdate);
-
-        batch.commit().catch(async (serverError) => {
-             const permissionError = new FirestorePermissionError({
-                path: `BATCH_WRITE`,
-                operation: 'write',
-                requestResourceData: {
-                    description: "Batch write for sending a text message.",
-                    operations: [
-                        { path: 'new message', data: messageData },
-                        { path: conversationRef!.path, data: conversationUpdate }
-                    ]
-                },
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        }).finally(() => {
->>>>>>> 3b61fc345458f3110e37024012eb8e7ee22f7878
             setIsSubmitting(false);
-        });
+        }
     };
     
     const handleRespondToOffer = async (message: any, response: 'ACCEPTED' | 'REJECTED') => {
-        if (!firestore || !user || !conversationRef || !userProfile) return;
-
-        const messagesRef = collection(firestore, 'conversations', conversationId as string, 'messages');
-        const q = query(messagesRef, where("type", "==", "SYSTEM_OFFER"), where("metadata.offer_status", "==", "PENDING"), orderBy("timestamp", "desc"));
-        
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-            toast({ variant: 'destructive', title: 'No pending offer found.' });
-            return;
-        }
-
-        const lastOfferDoc = querySnapshot.docs[0];
+        if (!firestore || !user || !conversationRef || !userProfile || !campaignRef) return;
         
         const batch = writeBatch(firestore);
-<<<<<<< HEAD
         const msgRef = doc(firestore, 'conversations', conversationId, 'messages', message.id);
-=======
-        const msgRef = lastOfferDoc.ref;
->>>>>>> 3b61fc345458f3110e37024012eb8e7ee22f7878
         
         batch.update(msgRef, { 'metadata.offer_status': response });
         
+        let conversationUpdateData: any = {};
+        
         if (response === 'ACCEPTED') {
-            batch.update(conversationRef, { agreed_budget: lastOfferDoc.data().metadata.offer_amount, status: 'OFFER_ACCEPTED', last_offer_by: user.uid });
+            conversationUpdateData = {
+              agreed_budget: message.metadata.offer_amount,
+              status: 'OFFER_ACCEPTED',
+              last_offer_by: user.uid,
+            };
 
+            batch.update(conversationRef, conversationUpdateData);
+            
             const newEventRef = doc(collection(firestore, 'conversations', conversationId, 'messages'));
-            batch.set(newEventRef, {
+            const eventMessageData = {
                 conversation_id: conversationId,
                 sender_id: user.uid,
                 type: 'SYSTEM_EVENT',
                 content: `Offer accepted by ${userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}. Awaiting funds from the Brand.`,
                 timestamp: serverTimestamp(),
-            });
+            };
+            batch.set(newEventRef, eventMessageData);
+
+            batch.update(campaignRef, { status: 'PENDING_PAYMENT' });
+            
             toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
         } else {
-             batch.update(conversationRef, { last_offer_by: user.uid });
+             conversationUpdateData = { last_offer_by: user.uid };
+             batch.update(conversationRef, conversationUpdateData);
              toast({ title: 'Offer Rejected' });
         }
         
-        await batch.commit();
+        await batch.commit().catch((serverError) => {
+            const permissionError = new FirestorePermissionError({
+                path: `BATCH_WRITE on /conversations/${conversationId} and subcollections`,
+                operation: 'write',
+                requestResourceData: {
+                    messageUpdate: { 'metadata.offer_status': response },
+                    conversationUpdate: conversationUpdateData,
+                },
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
+    };
+
+    const handleDecline = async () => {
+        if (!firestore || !user || !conversationRef) return;
+        try {
+            await updateDoc(conversationRef, {
+                status: 'CANCELLED',
+                lastMessage: 'The negotiation was cancelled.',
+                updatedAt: serverTimestamp(),
+            });
+            toast({ variant: 'destructive', title: 'Negotiation Cancelled' });
+        } catch (error: any) {
+            toast({ variant: 'destructive', title: 'Error', description: 'Could not cancel the negotiation.' });
+        }
     };
 
     const isChatActive = conversation.status === 'ACTIVE' && campaign?.status !== 'PENDING_PAYMENT';
     const isInNegotiation = conversation.status === 'NEGOTIATION';
     const textInputDisabled = !isChatActive && !isInNegotiation;
     
-<<<<<<< HEAD
     let placeholder = "This conversation is not active for messages.";
     if(isInNegotiation) {
         placeholder = "Use the actions below to respond to the offer.";
     }
     if (isChatActive) {
       placeholder = "Discuss creative details...";
-=======
-    let placeholder = "Send a message...";
-    if (conversation.status !== 'NEGOTIATION' && conversation.status !== 'ACTIVE') {
-      placeholder = "This conversation is archived.";
-    } else if (isInNegotiation) {
-        placeholder = "Discuss the terms or send a new offer via text..."
->>>>>>> 3b61fc345458f3110e37024012eb8e7ee22f7878
     }
 
     return (
-<<<<<<< HEAD
         <main className="flex-1 flex flex-col bg-muted/50 h-full">
             <DealStatusHeader 
                 conversation={conversation} 
@@ -777,30 +780,13 @@ export default function ChatView({ onBack }: { onBack?: () => void }) {
                     conversation={conversation}
                     messages={messages || []}
                     onMakeOffer={handleMakeOffer}
+                    onAcceptOffer={handleAcceptOffer}
                     onDecline={handleDecline}
                  />
             ) : (
                <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
             )}
              <CreatorProfileSheet 
-=======
-        <div className="h-screen w-full flex flex-col">
-            <AppHeader />
-            <div className="flex flex-1 overflow-hidden">
-                <ChatSidebar conversationId={conversationId as string} />
-                <main className="flex-1 flex flex-col bg-muted/50">
-                    <DealStatusHeader 
-                        conversation={conversation} 
-                        campaign={campaign} 
-                        onOpenProfile={() => setIsSheetOpen(true)}
-                        otherUser={otherUser}
-                    />
-                    <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
-                    <MessageInput onSend={handleSendMessage} disabled={textInputDisabled} placeholder={placeholder} />
-                </main>
-            </div>
-            <CreatorProfileSheet 
->>>>>>> 3b61fc345458f3110e37024012eb8e7ee22f7878
                 creatorId={conversation.creator_id}
                 open={isSheetOpen}
                 onOpenChange={setIsSheetOpen}
@@ -809,4 +795,3 @@ export default function ChatView({ onBack }: { onBack?: () => void }) {
     );
 }
 
-    
