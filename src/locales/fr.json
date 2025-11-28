@@ -749,5 +749,22 @@
                 "description": "{{name}} a été invité(e) à votre campagne."
             }
         }
+    },
+    "campaignPage": {
+        "postedBy": "Publié par",
+        "slotsRemaining": "places restantes",
+        "briefTitle": "Brief de la Campagne",
+        "deliverablesTitle": "Livrables",
+        "conditionsTitle": "Conditions & Logistique",
+        "logistics": {
+            "title": "Logistique du Produit"
+        },
+        "instructions": {
+            "title": "Instructions & Interdictions"
+        }
+    },
+    "logistics": {
+        "shipping": "La marque vous enverra le produit gratuitement. Vous devrez fournir votre adresse après avoir été recruté.",
+        "digital": "Aucun produit physique n'est requis pour cette campagne (ex: application, service, événement)."
     }
 }

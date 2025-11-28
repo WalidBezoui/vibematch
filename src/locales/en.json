@@ -749,5 +749,22 @@
                 "description": "{{name}} has been invited to your campaign."
             }
         }
+    },
+    "campaignPage": {
+        "postedBy": "Posted by",
+        "slotsRemaining": "slots remaining",
+        "briefTitle": "Campaign Brief",
+        "deliverablesTitle": "Deliverables",
+        "conditionsTitle": "Conditions & Logistics",
+        "logistics": {
+            "title": "Product Logistics"
+        },
+        "instructions": {
+            "title": "Instructions & Prohibitions"
+        }
+    },
+    "logistics": {
+        "shipping": "The brand will ship the product to you for free. You will need to provide your address after being hired.",
+        "digital": "No physical product is required for this campaign (e.g., app, service, event)."
     }
 }

@@ -1,6 +1,4 @@
 
-
-
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile } from '@/firebase';
@@ -13,13 +11,15 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users, MessageSquare } from 'lucide-react';
+import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users, MessageSquare, Package, AlertCircle, FileText, CircleDollarSign } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
+import { useLanguage } from '@/context/language-context';
+import { Separator } from '@/components/ui/separator';
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800',
@@ -36,18 +36,20 @@ const statusStyles: { [key: string]: string } = {
 
 
 const CampaignDetailSkeleton = () => (
-    <Card>
-        <CardHeader>
-            <Skeleton className="h-8 w-3/4" />
-            <Skeleton className="h-4 w-1/4 mt-2" />
-        </CardHeader>
-        <CardContent className="space-y-4">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-2/3 mt-2" />
-            <Skeleton className="h-10 w-1/4 mt-4" />
-        </CardContent>
-    </Card>
+    <div className="grid gap-8">
+        <Card>
+            <CardHeader>
+                <Skeleton className="h-8 w-3/4" />
+                <Skeleton className="h-4 w-1/4 mt-2" />
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3 mt-2" />
+            </CardContent>
+        </Card>
+        <Skeleton className="h-48 w-full" />
+    </div>
 )
 
 const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: any, campaignRef: any, brandProfile: any }) => {
@@ -207,6 +209,7 @@ export default function CampaignPage() {
     const router = useRouter();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
+    const { t } = useLanguage();
     const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | null>(null);
     const [hiredCreators, setHiredCreators] = useState<any[]>([]);
 
@@ -241,7 +244,6 @@ export default function CampaignPage() {
     useEffect(() => {
         if (firestore && campaign?.creatorIds?.length > 0) {
             const fetchCreators = async () => {
-                // To prevent re-fetching if we already have the data
                 if(hiredCreators.length === campaign.creatorIds.length) return;
 
                 const creatorPromises = campaign.creatorIds.map(async (creatorId: string) => {
@@ -309,12 +311,13 @@ export default function CampaignPage() {
     const showInvitation = isSelectedCreator && campaign.status === 'OFFER_PENDING';
     
     let badgeStatus = campaign.status;
-    let badgeText = campaign.status.replace(/_/g, ' ');
+    let badgeText = t(`status.${badgeStatus}`, { default: badgeStatus.replace(/_/g, ' ') });
     if (isSelectedCreator && campaign.status === 'OFFER_PENDING') {
         badgeStatus = 'YOUR_ACCEPTANCE';
-        badgeText = 'YOUR ACCEPTANCE';
+        badgeText = t('status.YOUR_ACCEPTANCE');
     }
-
+    
+    const remainingSlots = Math.max(0, (campaign.numberOfCreators || 1) - (campaign.creatorIds?.length || 0));
 
     return (
         <>
@@ -322,62 +325,108 @@ export default function CampaignPage() {
             <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="grid gap-8">
                     {showInvitation && <CreatorInvitation campaign={campaign} campaignRef={campaignRef} brandProfile={brandProfile} />}
+                    
                     <Card>
                         <CardHeader>
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <CardTitle className="text-3xl">{campaign.title}</CardTitle>
-                                    <div className="flex items-center gap-2 mt-2">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                                <div className="flex-1">
+                                    <Badge className={cn('whitespace-nowrap text-xs mb-2', statusStyles[badgeStatus])}>
+                                        {badgeText}
+                                    </Badge>
+                                    <CardTitle className="text-3xl tracking-tight font-extrabold">{campaign.title}</CardTitle>
+                                    <div className="flex items-center gap-2 mt-3">
                                         <Avatar className="h-6 w-6">
                                             <AvatarImage src={brandProfile?.photoURL || brandProfile?.logoUrl} alt={brandProfile?.name} />
                                             <AvatarFallback>{brandProfile?.name?.[0]}</AvatarFallback>
                                         </Avatar>
-                                        <span className="text-sm text-muted-foreground">Posted by {brandProfile?.name}</span>
+                                        <span className="text-sm text-muted-foreground">{t('campaignPage.postedBy')} {brandProfile?.name}</span>
                                     </div>
                                 </div>
-                                <Badge className={cn('whitespace-nowrap', statusStyles[badgeStatus])}>
-                                    {badgeText}
-                                </Badge>
+                                <div className="flex items-center gap-6 text-sm flex-shrink-0">
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                        <CircleDollarSign className="h-4 w-4" />
+                                        <span className="font-semibold text-foreground">{campaign.budget} {t('currency')}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                        <Users className="h-4 w-4" />
+                                        <span className="font-semibold text-foreground">{remainingSlots} {t('campaignPage.slotsRemaining')}</span>
+                                    </div>
+                                </div>
                             </div>
                         </CardHeader>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{t('campaignPage.briefTitle')}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                             <p className="text-foreground/80 whitespace-pre-wrap">{campaign.campaignBrief}</p>
+                        </CardContent>
+                    </Card>
+
+                    {campaign.deliverables && campaign.deliverables.length > 0 && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>{t('campaignPage.deliverablesTitle')}</CardTitle>
+                            </CardHeader>
+                             <CardContent>
+                                <ul className="space-y-3">
+                                    {campaign.deliverables.map((item: string, index: number) => (
+                                        <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
+                                            <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </CardContent>
+                        </Card>
+                    )}
+                    
+                    <Card className="border-primary/20 bg-primary/5">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><AlertCircle className="text-primary"/> {t('campaignPage.conditionsTitle')}</CardTitle>
+                        </CardHeader>
                         <CardContent className="space-y-6">
-                            <div>
-                                <h3 className="font-semibold text-muted-foreground text-sm uppercase">Campaign Brief</h3>
-                                <p className="text-foreground/80 mt-1 whitespace-pre-wrap">{campaign.campaignBrief}</p>
-                            </div>
-                            {campaign.deliverables && campaign.deliverables.length > 0 && (
-                                <div>
-                                    <h3 className="font-semibold text-muted-foreground text-sm uppercase">Deliverables</h3>
-                                    <ul className="space-y-2 mt-2">
-                                        {campaign.deliverables.map((item: string, index: number) => (
-                                            <li key={index} className="flex items-start gap-3">
-                                                <Check className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
-                                                <span>{item}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                            {campaign.productLogistics && (
+                                <div className="flex items-start gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                                        <Package className="h-5 w-5"/>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold">{t('campaignPage.logistics.title')}</h4>
+                                        <p className="text-sm text-muted-foreground">{t(`logistics.${campaign.productLogistics}`)}</p>
+                                    </div>
                                 </div>
                             )}
-                             <div>
-                                <h3 className="font-semibold text-muted-foreground text-sm uppercase">Budget</h3>
-                                <p className="text-xl font-bold gradient-text">{campaign.budget} DH</p>
-                            </div>
+                            {campaign.instructions && (
+                                <div className="flex items-start gap-4">
+                                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                                        <FileText className="h-5 w-5"/>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold">{t('campaignPage.instructions.title')}</h4>
+                                        <p className="text-sm text-muted-foreground whitespace-pre-wrap">{campaign.instructions}</p>
+                                    </div>
+                                </div>
+                            )}
                         </CardContent>
-                        {isPotentialApplicant && campaign.status === 'OPEN_FOR_APPLICATIONS' && (
+                         {isPotentialApplicant && campaign.status === 'OPEN_FOR_APPLICATIONS' && (
                             <CardFooter>
                                 {isAlreadyApplied ? (
                                      <Button disabled className="w-full bg-green-600 hover:bg-green-600">
                                         <CheckCircle className="mr-2 h-4 w-4" />
-                                        Application Sent
+                                        {t('discoverCampaigns.applied')}
                                     </Button>
                                 ) : (
                                     <Button asChild className="w-full">
-                                        <Link href={`/campaigns/${campaignId}/apply`}>Apply Now</Link>
+                                        <Link href={`/campaigns/${campaignId}/apply`}>{t('discoverCampaigns.applyNow')}</Link>
                                     </Button>
                                 )}
                             </CardFooter>
                         )}
                     </Card>
+
 
                     {isBrandOwner && <BrandWorkspace campaign={campaign} campaignId={campaignId as string} hiredCreators={hiredCreators} conversations={conversations || []} />}
 
@@ -386,6 +435,3 @@ export default function CampaignPage() {
         </>
     );
 }
-
-
-    
