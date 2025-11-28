@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users, MessageSquare, Package, AlertCircle, FileText, CircleDollarSign } from 'lucide-react';
+import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users, MessageSquare, Package, AlertCircle, FileText, CircleDollarSign, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useState, useEffect } from 'react';
@@ -225,7 +225,25 @@ export default function CampaignPage() {
     );
     const { data: brandProfile, isLoading: isBrandLoading } = useDoc(brandRef);
 
-    const conversationsQuery = useMemoFirebase(() => (firestore && campaignId) ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId)) : null, [firestore, campaignId]);
+    const isBrandOwner = user?.uid === campaign?.brandId;
+    const isSelectedCreator = campaign?.creatorIds?.includes(user?.uid);
+
+    const conversationsQuery = useMemoFirebase(() => {
+        if (!firestore || !campaignId || !user?.uid) return null;
+
+        let q = query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId));
+
+        if (isBrandOwner) {
+            q = query(q, where('brand_id', '==', user.uid));
+        } else if (isSelectedCreator) {
+            q = query(q, where('creator_id', '==', user.uid));
+        } else {
+            // If the user is neither the brand owner nor a selected creator, they shouldn't see conversations
+            return null;
+        }
+
+        return q;
+    }, [firestore, campaignId, user?.uid, isBrandOwner, isSelectedCreator]);
     const { data: conversations, isLoading: areConversationsLoading } = useCollection(conversationsQuery);
 
 
@@ -290,8 +308,6 @@ export default function CampaignPage() {
         )
     }
 
-    const isBrandOwner = user?.uid === campaign.brandId;
-    const isSelectedCreator = campaign.creatorIds?.includes(user?.uid);
     const isPotentialApplicant = userProfile?.role === 'creator' && !isBrandOwner && !isSelectedCreator;
     const canView = isBrandOwner || isSelectedCreator || campaign.status === 'OPEN_FOR_APPLICATIONS';
 
@@ -345,12 +361,6 @@ export default function CampaignPage() {
                                         <CircleDollarSign className="h-4 w-4" />
                                         <span className="font-semibold text-foreground">{campaign.budget} {t('currency')}</span>
                                     </div>
-                                    {isBrandOwner && (
-                                        <div className="flex items-center gap-2 text-muted-foreground">
-                                            <Users className="h-4 w-4" />
-                                            <span className="font-semibold text-foreground">{Math.max(0, (campaign.numberOfCreators || 1) - (campaign.creatorIds?.length || 0))} {t('campaignPage.slotsRemaining')}</span>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </CardHeader>
@@ -420,7 +430,10 @@ export default function CampaignPage() {
                                     </Button>
                                 ) : (
                                     <Button asChild className="w-full">
-                                        <Link href={`/campaigns/${campaignId}/apply`}>{t('discoverCampaigns.applyNow')}</Link>
+                                        <Link href={`/campaigns/${campaignId}/apply`}>
+                                            {t('discoverCampaigns.applyNow')}
+                                            <ArrowRight className="ml-2 h-4 w-4" />
+                                        </Link>
                                     </Button>
                                 )}
                             </CardFooter>
