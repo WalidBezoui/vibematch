@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile, useCollection } from '@/firebase';
@@ -11,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users, MessageSquare, Package, AlertCircle, FileText, CircleDollarSign, ArrowRight } from 'lucide-react';
+import { Check, Send, CheckCircle, Hand, Sparkles, UserCheck, Users, MessageSquare, Package, AlertCircle, FileText, CircleDollarSign, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useState, useEffect } from 'react';
@@ -337,6 +336,12 @@ export default function CampaignPage() {
         <>
             <AppHeader />
             <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+                <div className="mb-6">
+                    <Button variant="ghost" onClick={() => router.back()}>
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to Discovery
+                    </Button>
+                </div>
                 <div className="grid gap-8">
                     {showInvitation && <CreatorInvitation campaign={campaign} campaignRef={campaignRef} brandProfile={brandProfile} />}
                     
@@ -356,12 +361,14 @@ export default function CampaignPage() {
                                         <span className="text-sm text-muted-foreground">{t('campaignPage.postedBy')} {brandProfile?.name}</span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-6 text-sm flex-shrink-0">
-                                    <div className="flex items-center gap-2 text-muted-foreground">
-                                        <CircleDollarSign className="h-4 w-4" />
-                                        <span className="font-semibold text-foreground">{campaign.budget} {t('currency')}</span>
+                                {!isBrandOwner && (
+                                    <div className="flex items-center gap-6 text-sm flex-shrink-0">
+                                        <div className="flex items-center gap-2 text-muted-foreground">
+                                            <CircleDollarSign className="h-4 w-4" />
+                                            <span className="font-semibold text-foreground">{campaign.budget} {t('currency')}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </CardHeader>
                     </Card>
@@ -431,7 +438,7 @@ export default function CampaignPage() {
                                 ) : (
                                     <Button asChild className="w-full">
                                         <Link href={`/campaigns/${campaignId}/apply`}>
-                                            {t('discoverCampaigns.applyNow')}
+                                            {t('campaignPage.applyNow')}
                                             <ArrowRight className="ml-2 h-4 w-4" />
                                         </Link>
                                     </Button>

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { AppHeader } from '@/components/app-header';
@@ -181,7 +180,7 @@ export default function DiscoverPage() {
                                         <CardFooter className="flex-col items-stretch gap-2">
                                             {status === 'in_discussion' ? (
                                                 <Button asChild className="w-full">
-                                                    <Link href={`/chat/${conversation.id}`}>
+                                                    <Link href={`/chat?id=${conversation.id}`}>
                                                         {t('creatorDashboard.actions.chat')} <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Link>
                                                 </Button>

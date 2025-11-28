@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -17,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/context/language-context';
 
@@ -241,7 +240,7 @@ export default function ApplyPage() {
                     <div className="mb-4">
                         <Button variant="ghost" onClick={() => router.back()}>
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Back to Campaign Details
+                            {t('applyPage.backButton')}
                         </Button>
                     </div>
                     {renderContent()}

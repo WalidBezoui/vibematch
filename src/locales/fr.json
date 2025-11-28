@@ -694,7 +694,7 @@
         "title": "Découvrir les Campagnes",
         "description": "Parcourez et postulez à des campagnes exclusives des meilleures marques marocaines.",
         "budget": "Budget",
-        "applyNow": "Voir &amp; Postuler",
+        "applyNow": "Voir la Campagne",
         "applied": "Candidature Envoyée",
         "full": "Campagne Complète",
         "noCampaigns": {
@@ -768,8 +768,8 @@
         "digital": "Aucun produit physique n'est requis pour cette campagne (ex: application, service, événement)."
     },
     "applyPage": {
-        "title": "Postuler pour {{title}}",
-        "backButton": "Retour aux détails de la campagne",
+        "title": "Postuler pour",
+        "backButton": "Retour aux détails",
         "alreadyApplied": {
             "title": "Vous avez déjà postulé !",
             "description": "La marque a bien reçu votre candidature. Nous vous informerons si vous êtes sélectionné."
@@ -789,5 +789,4 @@
         }
     }
 }
-
     
