@@ -211,7 +211,12 @@ export default function CreateCampaignPage() {
       title: '',
       campaignBrief: '',
       campaignType: 'influence',
-      deliverables: [{ platform: 'instagram', type: 'Post', quantity: 1 }],
+      deliverables: [
+        { platform: 'instagram', type: 'Post', quantity: 1 },
+        { platform: 'instagram', type: 'UGC_Video_Vertical', quantity: 0 },
+        { platform: 'instagram', type: 'UGC_Video_Horizontal', quantity: 0 },
+        { platform: 'instagram', type: 'UGC_Photo_Pack', quantity: 0 },
+      ],
       budget: 0,
       numberOfCreators: 1,
       tags: [],
@@ -537,3 +542,5 @@ export default function CreateCampaignPage() {
     </>
   );
 }
+
+    

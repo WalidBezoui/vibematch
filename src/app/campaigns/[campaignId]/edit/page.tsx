@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useForm, useFieldArray, useWatch } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -14,13 +14,16 @@ import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter, useParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, Users } from 'lucide-react';
+import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, Users, Megaphone, FileVideo, Info } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Label } from '@/components/ui/label';
 
 const TikTokIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -29,19 +32,19 @@ const TikTokIcon = () => (
 );
 
 const deliverableSchema = z.object({
-  platform: z.enum(['instagram', 'tiktok'], { required_error: "Platform is required."}),
-  type: z.enum(['Post', 'Story', 'Reel', 'Video'], { required_error: "Type is required."}),
+  platform: z.enum(['instagram', 'tiktok']),
+  type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC_Video_Vertical', 'UGC_Video_Horizontal', 'UGC_Photo_Pack']),
   quantity: z.preprocess(
     (val) => (val === '' ? undefined : Number(val)),
     z.number({ invalid_type_error: 'Qty must be a number.' }).min(1, 'Quantity must be at least 1.')
   ),
-  note: z.string().optional(),
 });
 
 
 const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
   campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
+  campaignType: z.enum(['influence', 'ugc']),
   deliverables: z.array(deliverableSchema).min(1, 'Please add at least one deliverable.'),
   budget: z.preprocess(
     (val) => (val === '' ? 0 : Number(val)),
@@ -49,37 +52,34 @@ const campaignSchema = z.object({
   ),
   tags: z.array(z.string()).min(1, "Please select at least one tag."),
   otherTag: z.string().optional(),
-}).refine(data => {
-    return data.deliverables.every(d => {
-        if (d.platform === 'instagram') return ['Post', 'Story', 'Reel'].includes(d.type);
-        if (d.platform === 'tiktok') return ['Video'].includes(d.type);
-        return false;
-    });
-}, {
-    message: "Invalid deliverable type for the selected platform.",
-    path: ['deliverables'],
 });
 
 type CampaignForm = z.infer<typeof campaignSchema>;
 
 const parseDeliverableString = (deliverable: string): z.infer<typeof deliverableSchema> | null => {
-    const regex = /(\d+)\s(instagram|tiktok)\s(Post|Story|Reel|Video)\(s\)(?:\s-\s(.+))?/;
+    const regex = /(\d+)\s(.*)/;
     const match = deliverable.match(regex);
     
     if (!match) return null;
 
-    const [, quantity, platform, type, note] = match;
+    const [, quantity, type] = match;
+
+    const platformMap: Record<string, 'instagram' | 'tiktok'> = {
+        'Post': 'instagram',
+        'Story': 'instagram',
+        'Reel': 'instagram',
+        'Video': 'tiktok',
+    }
 
     return {
         quantity: parseInt(quantity, 10),
-        platform: platform as 'instagram' | 'tiktok',
-        type: type as 'Post' | 'Story' | 'Reel' | 'Video',
-        note: note || '',
+        platform: platformMap[type] || 'instagram', // Fallback, shouldn't happen with new data
+        type: type as any,
     };
 };
 
 
-const deliverableTypes = {
+const influenceDeliverableTypes = {
     instagram: [
         { value: 'Post', label: 'Post', icon: StickyNote },
         { value: 'Story', label: 'Story', icon: Repeat },
@@ -90,6 +90,12 @@ const deliverableTypes = {
     ]
 };
 
+const ugcDeliverableTypes = [
+    { name: 'deliverables.0.quantity', label: 'Video 9:16 (Vertical)' },
+    { name: 'deliverables.1.quantity', label: 'Video 16:9 (Horizontal)' },
+    { name: 'deliverables.2.quantity', label: 'Photo Pack' },
+]
+
 const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
     const { t } = useLanguage();
     const platformValue = useWatch({
@@ -97,7 +103,7 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
         name: `deliverables.${index}.platform`
     });
 
-    const availableTypes = deliverableTypes[platformValue as keyof typeof deliverableTypes] || [];
+    const availableTypes = influenceDeliverableTypes[platformValue as keyof typeof influenceDeliverableTypes] || [];
 
     useEffect(() => {
         if (platformValue && availableTypes.length > 0) {
@@ -175,19 +181,7 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
                 )}
             />
             </div>
-            <FormField
-                control={control}
-                name={`deliverables.${index}.note`}
-                render={({ field }) => (
-                <FormItem>
-                    <FormLabel>{t('createCampaignPage.deliverables.noteLabel')}</FormLabel>
-                    <FormControl>
-                        <Input placeholder={t('createCampaignPage.deliverables.notePlaceholder')} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-                )}
-            />
+            
             <Button
                 type="button"
                 variant="ghost"
@@ -201,9 +195,28 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
     )
 }
 
+const UGCDeliverableItem = ({ name, label }: { name: string, label: string }) => {
+    const { control } = useFormContext();
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem className="flex items-center space-x-3 space-y-0 p-4 border rounded-lg bg-muted/50">
+                    <FormControl>
+                        <Input type="number" min="0" {...field} className="w-20" placeholder="0" />
+                    </FormControl>
+                    <FormLabel className="font-normal">{label}</FormLabel>
+                </FormItem>
+            )}
+        />
+    )
+}
+
+
 const EditCampaignPageSkeleton = () => (
     <div className="space-y-8">
-        <div className="mb-10">
+        <div className="mb-10 text-left">
             <Skeleton className="h-10 w-2/3" />
             <Skeleton className="h-6 w-1/3 mt-2" />
         </div>
@@ -234,27 +247,34 @@ export default function EditCampaignPage() {
   const form = useForm<CampaignForm>({
     resolver: zodResolver(campaignSchema),
     defaultValues: {
-        title: campaign?.title || '',
-        campaignBrief: campaign?.campaignBrief || '',
-        budget: campaign?.budget || 0,
-        tags: campaign?.tags || [],
-        deliverables: (campaign?.deliverables || []).map(parseDeliverableString).filter(Boolean) as any[],
+        title: '',
+        campaignBrief: '',
+        campaignType: 'influence',
+        budget: 0,
+        tags: [],
+        deliverables: [
+            { platform: 'instagram', type: 'Post', quantity: 1 },
+            { platform: 'instagram', type: 'UGC_Video_Vertical', quantity: 0 },
+            { platform: 'instagram', type: 'UGC_Video_Horizontal', quantity: 0 },
+            { platform: 'instagram', type: 'UGC_Photo_Pack', quantity: 0 },
+        ],
         otherTag: '',
     },
   });
 
   useEffect(() => {
     if (campaign) {
-      const parsedDeliverables = campaign.deliverables
+      const parsedDeliverables = (campaign.deliverables || [])
         .map(parseDeliverableString)
         .filter((d: any): d is z.infer<typeof deliverableSchema> => d !== null);
 
       form.reset({
         title: campaign.title,
         campaignBrief: campaign.campaignBrief,
+        campaignType: campaign.campaignType || 'influence',
         budget: campaign.budget,
         tags: campaign.tags || [],
-        deliverables: parsedDeliverables.length > 0 ? parsedDeliverables : [{ platform: 'instagram', type: 'Post', quantity: 1, note: '' }],
+        deliverables: parsedDeliverables.length > 0 ? parsedDeliverables : [{ platform: 'instagram', type: 'Post', quantity: 1 }],
       });
     }
   }, [campaign, form]);
@@ -263,6 +283,8 @@ export default function EditCampaignPage() {
     control: form.control,
     name: "deliverables"
   });
+
+  const campaignType = useWatch({ control: form.control, name: 'campaignType'});
 
   const onSubmit = async (data: CampaignForm) => {
     if (!campaignRef) return;
@@ -281,10 +303,11 @@ export default function EditCampaignPage() {
     const submissionData = {
       ...data,
       tags: finalTags,
-      deliverables: data.deliverables.map(d => `${d.quantity} ${d.platform} ${d.type}(s)${d.note ? ` - ${d.note}`: ''}`),
+      campaignType: data.campaignType,
+      deliverables: data.deliverables.map(d => `${d.quantity} ${d.type}`),
       updatedAt: serverTimestamp(),
     };
-    delete submissionData.otherTag;
+    delete (submissionData as any).otherTag;
 
     try {
       await updateDoc(campaignRef, submissionData);
@@ -345,7 +368,7 @@ export default function EditCampaignPage() {
     <>
       <AppHeader />
       <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-            <div className="mb-10">
+            <div className="mb-10 text-left">
                 <h1 className="text-4xl font-bold tracking-tight">{t('editCampaignPage.title')}</h1>
                 <p className="text-muted-foreground mt-2">{t('editCampaignPage.description')}</p>
             </div>
@@ -389,22 +412,83 @@ export default function EditCampaignPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle>{t('createCampaignPage.deliverables.title')}</CardTitle>
-                        <CardDescription>{t('createCampaignPage.deliverables.description')}</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        {fields.map((item, index) => (
-                            <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
-                        ))}
-                        <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}
-                        >
-                            <PlusCircle className="mr-2 h-4 w-4" />
-                            {t('createCampaignPage.deliverables.addButton')}
-                        </Button>
-                        <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
+                    <CardContent className="space-y-6">
+                        <FormField
+                            control={form.control}
+                            name="campaignType"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                <FormLabel>{t('createCampaignPage.deliverables.campaignTypeLabel')}</FormLabel>
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                                    >
+                                        <FormItem>
+                                            <FormControl>
+                                                <RadioGroupItem value="influence" id="influence" className="sr-only" />
+                                            </FormControl>
+                                            <Label htmlFor="influence" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all", field.value === 'influence' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <Megaphone className="h-5 w-5 text-primary" />
+                                                    <span className="font-bold">{t('createCampaignPage.deliverables.influence.title')}</span>
+                                                </div>
+                                                <span className="text-sm text-muted-foreground">{t('createCampaignPage.deliverables.influence.description')}</span>
+                                            </Label>
+                                        </FormItem>
+                                        <FormItem>
+                                            <FormControl>
+                                                <RadioGroupItem value="ugc" id="ugc" className="sr-only" />
+                                            </FormControl>
+                                            <Label htmlFor="ugc" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all", field.value === 'ugc' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <FileVideo className="h-5 w-5 text-primary" />
+                                                    <span className="font-bold">{t('createCampaignPage.deliverables.ugc.title')}</span>
+                                                    <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <Info className="h-4 w-4 text-muted-foreground ml-auto" />
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>{t('createCampaignPage.deliverables.ugc.tooltip')}</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                    </TooltipProvider>
+                                                </div>
+                                                <span className="text-sm text-muted-foreground">{t('createCampaignPage.deliverables.ugc.description')}</span>
+                                            </Label>
+                                        </FormItem>
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        
+                        <div className="space-y-4 pt-4">
+                            <h3 className="font-semibold">{t('createCampaignPage.deliverables.selectLabel')}</h3>
+                            {campaignType === 'influence' && (
+                                    <>
+                                    {fields.map((item, index) => (
+                                        <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
+                                    ))}
+                                    <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1 })}>
+                                        <PlusCircle className="mr-2 h-4 w-4" />
+                                        {t('createCampaignPage.deliverables.addButton')}
+                                    </Button>
+                                </>
+                            )}
+                            {campaignType === 'ugc' && (
+                                <div className="space-y-4">
+                                     {ugcDeliverableTypes.map((item, index) => (
+                                         <UGCDeliverableItem key={item.name} name={item.name} label={item.label} />
+                                     ))}
+                                </div>
+                            )}
+                            <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
+                        </div>
                     </CardContent>
                 </Card>
 
@@ -491,3 +575,5 @@ export default function EditCampaignPage() {
     </>
   );
 }
+
+    
