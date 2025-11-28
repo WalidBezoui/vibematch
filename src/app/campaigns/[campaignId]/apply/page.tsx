@@ -2,14 +2,14 @@
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { doc, collection, addDoc, serverTimestamp, getDocs, query, where, writeBatch } from 'firebase/firestore';
+import { doc, collection, addDoc, serverTimestamp, getDocs, query, where } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Check, Info, ArrowRight, CircleDollarSign, FileText, CheckCircle } from 'lucide-react';
+import { Check, Info, ArrowRight, CircleDollarSign, FileText, CheckCircle, ArrowLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -49,8 +49,8 @@ const ApplyPageSkeleton = () => (
 
 export default function ApplyPage() {
     const { campaignId } = useParams();
-    const firestore = useFirestore();
     const router = useRouter();
+    const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { toast } = useToast();
     const { t } = useLanguage();
@@ -220,10 +220,15 @@ export default function ApplyPage() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" disabled={isSubmitting} size="lg" className="w-full h-14 text-base font-bold tracking-wide rounded-full gradient-bg text-black hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
-                                {isSubmitting ? t('applyPage.form.submittingButton') : t('applyPage.form.submitButton')}
-                                {!isSubmitting && <ArrowRight className="ml-2 h-5 w-5" />}
-                            </Button>
+                            <div className="flex flex-col-reverse sm:flex-row gap-2 pt-4">
+                                <Button type="button" variant="outline" size="lg" className="w-full h-14" onClick={() => router.back()}>
+                                    <ArrowLeft className="mr-2 h-5 w-5" /> Back
+                                </Button>
+                                <Button type="submit" disabled={isSubmitting} size="lg" className="w-full h-14 text-base font-bold tracking-wide rounded-full gradient-bg text-black hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+                                    {isSubmitting ? t('applyPage.form.submittingButton') : t('applyPage.form.submitButton')}
+                                    {!isSubmitting && <ArrowRight className="ml-2 h-5 w-5" />}
+                                </Button>
+                            </div>
                         </form>
                     </Form>
                 </CardContent>
