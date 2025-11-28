@@ -4,7 +4,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
@@ -93,6 +93,21 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
     const statusKey = `status.${campaign.status}`;
     const statusText = t(statusKey, { default: campaign.status.replace(/_/g, ' ') });
 
+    const campaignType = campaign.campaignType || 'influence';
+    const typeInfo = {
+        influence: { 
+            badgeText: t('campaignTypes.influence.badge'), 
+            badgeIcon: Megaphone,
+            badgeClass: "bg-teal-100 text-teal-800 border-teal-200" 
+        },
+        ugc: { 
+            badgeText: t('campaignTypes.ugc.badge'),
+            badgeIcon: FileVideo,
+            badgeClass: "bg-sky-100 text-sky-800 border-sky-200" 
+        },
+    };
+    const TypeIcon = typeInfo[campaignType].badgeIcon;
+
 
     return (
         <Card className={cn(
@@ -150,7 +165,11 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                     </Badge>
                  </div>
             </CardHeader>
-            <CardContent className="flex-grow">
+            <CardContent className="flex-grow space-y-4">
+                 <Badge variant="secondary" className={cn("whitespace-nowrap text-xs", typeInfo[campaignType].badgeClass)}>
+                    <TypeIcon className="mr-1.5 h-3 w-3" />
+                    {typeInfo[campaignType].badgeText}
+                </Badge>
                  <div className="space-y-2">
                     <div className="flex justify-between items-center text-xs font-medium text-muted-foreground">
                         <span>{t('brandDashboard.hiringProgress')}</span>
