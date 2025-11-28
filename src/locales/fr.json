@@ -600,6 +600,17 @@
         "deliverables": {
             "title": "Livrables",
             "description": "Spécifiez le contenu que vous attendez de chaque créateur.",
+            "campaignTypeLabel": "Quel est l'objectif principal de cette campagne ?",
+            "influence": {
+                "title": "Influence (Publication Sponsorisée)",
+                "description": "Le créateur publie sur ses réseaux sociaux pour atteindre son audience."
+            },
+            "ugc": {
+                "title": "UGC (Contenu Uniquement)",
+                "description": "Le créateur vous envoie les fichiers vidéo/photo. Il ne publie rien.",
+                "tooltip": "Le créateur livrera le fichier vidéo brut (MP4). Vous pourrez l'utiliser sur vos propres réseaux sociaux et publicités. Le créateur ne le publiera pas."
+            },
+            "selectLabel": "Que doivent livrer les créateurs ?",
             "platformLabel": "Plateforme",
             "platformPlaceholder": "Sélectionner la plateforme",
             "typeLabel": "Type",
@@ -667,6 +678,27 @@
         "REJECTED_BY_CREATOR": "Refusée par le créateur",
         "YOUR_ACCEPTANCE": "En attente de votre acceptation"
     },
+    "discoverCampaigns": {
+        "title": "Découvrir les Campagnes",
+        "description": "Parcourez et postulez à des campagnes exclusives des meilleures marques marocaines.",
+        "budget": "Budget",
+        "slots": "Places",
+        "applyNow": "Voir & Postuler",
+        "applied": "Candidature Envoyée",
+        "full": "Campagne Complète",
+        "noCampaigns": {
+            "title": "Aucune Campagne Ouverte pour le Moment",
+            "description": "Revenez bientôt pour de nouvelles opportunités !"
+        }
+    },
+    "campaignTypes": {
+        "influence": {
+            "badge": "INFLUENCE"
+        },
+        "ugc": {
+            "badge": "UGC"
+        }
+    },
     "discoverCreators": {
         "title": "Découvrir les Créateurs",
         "description": "Parcourez et connectez-vous avec les meilleurs créateurs marocains pour votre prochaine campagne.",
@@ -708,5 +740,4 @@
         }
     }
 }
-
     

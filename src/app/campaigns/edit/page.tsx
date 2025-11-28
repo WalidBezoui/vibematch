@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -10,19 +10,19 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppHeader } from '@/components/app-header';
-import { useFirestore, useUser } from '@/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
+import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { useRouter, useParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, PartyPopper, Users, Megaphone, FileVideo, Info } from 'lucide-react';
+import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, Users, Megaphone, FileVideo, Info } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-
 
 const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -32,10 +32,6 @@ const campaignSchema = z.object({
   budget: z.preprocess(
     (val) => (val === '' ? 0 : Number(val)),
     z.number({ invalid_type_error: 'Budget must be a number.' }).positive('Budget must be a positive number.')
-  ),
-  numberOfCreators: z.preprocess(
-    (val) => (val === '' ? 1 : Number(val)),
-    z.number({ invalid_type_error: 'Must be a number.' }).min(1, 'You must hire at least 1 creator.')
   ),
   tags: z.array(z.string()).min(1, "Please select at least one tag."),
   otherTag: z.string().optional(),
@@ -57,165 +53,191 @@ const ugcDeliverables = [
 ];
 
 
-export default function CreateCampaignPage() {
+const EditCampaignPageSkeleton = () => (
+    <div className="space-y-8">
+        <div className="mb-10 text-left">
+            <Skeleton className="h-10 w-2/3" />
+            <Skeleton className="h-6 w-1/3 mt-2" />
+        </div>
+        <div className="space-y-8">
+            <Skeleton className="h-48 w-full" />
+            <Skeleton className="h-48 w-full" />
+            <Skeleton className="h-48 w-full" />
+            <Skeleton className="h-12 w-full mt-4" />
+        </div>
+    </div>
+);
+
+export default function EditCampaignPage() {
+  const { campaignId } = useParams();
   const router = useRouter();
   const firestore = useFirestore();
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [newCampaignId, setNewCampaignId] = useState('');
   const { t } = useLanguage();
-
   const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
+  
+  const campaignRef = useMemoFirebase(
+    () => (firestore && campaignId ? doc(firestore, 'campaigns', campaignId as string) : null),
+    [firestore, campaignId]
+  );
+  const { data: campaign, isLoading: isCampaignLoading, error: campaignError } = useDoc(campaignRef);
 
   const form = useForm<CampaignForm>({
     resolver: zodResolver(campaignSchema),
     defaultValues: {
-      title: '',
-      campaignBrief: '',
-      deliverables: [],
-      budget: 0,
-      numberOfCreators: 1,
-      tags: [],
-      otherTag: '',
+        title: '',
+        campaignBrief: '',
+        campaignType: 'influence',
+        budget: 0,
+        tags: [],
+        deliverables: [],
+        otherTag: '',
     },
   });
+
+  useEffect(() => {
+    if (campaign) {
+      form.reset({
+        title: campaign.title,
+        campaignBrief: campaign.campaignBrief,
+        campaignType: campaign.campaignType || 'influence',
+        budget: campaign.budget,
+        tags: campaign.tags || [],
+        deliverables: campaign.deliverables || [],
+      });
+    }
+  }, [campaign, form]);
 
   const campaignType = useWatch({ control: form.control, name: 'campaignType' });
 
   const onSubmit = async (data: CampaignForm) => {
-    if (!firestore || !user) {
-        toast({ variant: 'destructive', title: 'You must be logged in to create a campaign.'});
-        return;
-    }
+    if (!campaignRef) return;
     
     let finalTags = [...data.tags];
     if (data.tags.includes('Other') && data.otherTag) {
         const customTags = data.otherTag.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
         finalTags.push(...customTags);
     }
-    
     const otherIndex = finalTags.indexOf('Other');
     if (otherIndex > -1) {
         finalTags.splice(otherIndex, 1);
     }
-
     finalTags = [...new Set(finalTags)];
 
     const submissionData = {
       ...data,
       tags: finalTags,
-      brandId: user.uid,
-      status: 'OPEN_FOR_APPLICATIONS',
-      createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
-      creatorIds: [],
     };
-    
-    delete submissionData.otherTag;
+    delete (submissionData as any).otherTag;
 
     try {
-        const campaignsCollectionRef = collection(firestore, 'campaigns');
-        const campaignDocRef = await addDoc(campaignsCollectionRef, submissionData);
-
+      await updateDoc(campaignRef, submissionData);
       toast({
-        title: t('createCampaignPage.success.title'),
-        description: t('createCampaignPage.success.description'),
+        title: t('editCampaignPage.toast.successTitle'),
+        description: t('editCampaignPage.toast.successDescription'),
       });
-      setNewCampaignId(campaignDocRef.id);
-      setIsSuccess(true);
+      router.push('/dashboard');
     } catch (e: any) {
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: e.message || "Could not create the campaign.",
+        title: t('editCampaignPage.toast.errorTitle'),
+        description: e.message || t('editCampaignPage.toast.errorDescription'),
       });
     }
   };
+  
+  const isLoading = isUserLoading || isCampaignLoading;
 
-  if (isUserLoading) {
-      return <div>Loading...</div>
+  if (isLoading) {
+    return (
+        <>
+            <AppHeader />
+            <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+                <EditCampaignPageSkeleton />
+            </div>
+        </>
+    );
   }
 
-  if (!user) {
-      router.push('/login');
-      return null;
+  if (campaignError || !campaign) {
+      return (
+        <>
+            <AppHeader />
+            <div className="max-w-2xl mx-auto p-8 text-center">
+                <h1 className="text-2xl font-bold">{t('editCampaignPage.notFound.title')}</h1>
+                <p className="text-muted-foreground mt-2">{t('editCampaignPage.notFound.description')}</p>
+                <Button asChild className="mt-4"><Link href="/dashboard">{t('editCampaignPage.notFound.cta')}</Link></Button>
+            </div>
+        </>
+      )
+  }
+  
+  if (user?.uid !== campaign.brandId) {
+      return (
+        <>
+            <AppHeader />
+            <div className="max-w-2xl mx-auto p-8 text-center">
+                <h1 className="text-2xl font-bold">{t('editCampaignPage.accessDenied.title')}</h1>
+                <p className="text-muted-foreground mt-2">{t('editCampaignPage.accessDenied.description')}</p>
+                <Button asChild className="mt-4"><Link href="/dashboard">{t('editCampaignPage.accessDenied.cta')}</Link></Button>
+            </div>
+        </>
+      )
   }
 
   return (
     <>
       <AppHeader />
       <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-        
-        {isSuccess ? (
-            <div className="w-full flex items-center justify-center min-h-[calc(100vh-200px)]">
-                <Card className="text-center p-8 border-green-500/50 shadow-lg shadow-green-500/10 w-full max-w-lg">
-                    <CardContent className="p-0">
-                        <div className="w-20 h-20 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30 animate-circle-grow">
-                            <svg className="w-12 h-12 text-black animate-check-grow" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" viewBox="0 0 52 52">
-                                <path d="M14 27l8.5 8.5L38 20"></path>
-                            </svg>
-                        </div>
-                        <h2 className="text-3xl font-bold tracking-tight gradient-text">{t('createCampaignPage.success.title')}</h2>
-                        <p className="text-muted-foreground mt-2 mb-8">
-                            {t('createCampaignPage.success.description')}
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Button size="lg" onClick={() => router.push(`/campaigns/${newCampaignId}/manage`)}>{t('createCampaignPage.success.manageButton')}</Button>
-                            <Button size="lg" variant="outline" onClick={() => router.push('/dashboard')}>{t('createCampaignPage.success.dashboardButton')}</Button>
-                        </div>
+            <div className="mb-10 text-left">
+                <h1 className="text-4xl font-bold tracking-tight">{t('editCampaignPage.title')}</h1>
+                <p className="text-muted-foreground mt-2">{t('editCampaignPage.description')}</p>
+            </div>
+            <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{t('createCampaignPage.basics.title')}</CardTitle>
+                        <CardDescription>{t('createCampaignPage.basics.description')}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>{t('createCampaignPage.titleLabel')}</FormLabel>
+                                <FormControl>
+                                    <Input placeholder={t('createCampaignPage.titlePlaceholder')} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="campaignBrief"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>{t('createCampaignPage.briefLabel')}</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder={t('createCampaignPage.briefPlaceholder')} {...field} rows={6} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </CardContent>
                 </Card>
-            </div>
-        ) : (
-            <>
-                <div className="mb-10 text-left">
-                    <h1 className="text-4xl font-bold tracking-tight">{t('createCampaignPage.title')}</h1>
-                    <p className="text-muted-foreground mt-2">{t('createCampaignPage.description')}</p>
-                </div>
-                <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>{t('createCampaignPage.basics.title')}</CardTitle>
-                            <CardDescription>{t('createCampaignPage.basics.description')}</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <FormField
-                                control={form.control}
-                                name="title"
-                                render={({ field }) => (
-                                    <FormItem>
-                                    <FormLabel>{t('createCampaignPage.titleLabel')}</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder={t('createCampaignPage.titlePlaceholder')} {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="campaignBrief"
-                                render={({ field }) => (
-                                    <FormItem>
-                                    <FormLabel>{t('createCampaignPage.briefLabel')}</FormLabel>
-                                    <FormControl>
-                                        <Textarea placeholder={t('createCampaignPage.briefPlaceholder')} {...field} rows={6} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </CardContent>
-                    </Card>
 
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>{t('createCampaignPage.deliverables.title')}</CardTitle>
-                             <CardDescription>{t('createCampaignPage.deliverables.description')}</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{t('createCampaignPage.deliverables.title')}</CardTitle>
+                        <CardDescription>{t('createCampaignPage.deliverables.description')}</CardDescription>
+                    </CardHeader>
+                     <CardContent className="space-y-6">
                              <FormField
                                 control={form.control}
                                 name="campaignType"
@@ -321,66 +343,65 @@ export default function CreateCampaignPage() {
                                 </div>
                             )}
                         </CardContent>
-                    </Card>
+                </Card>
 
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>{t('createCampaignPage.discovery.title')}</CardTitle>
-                             <CardDescription>{t('createCampaignPage.discovery.description')}</CardDescription>
-                        </CardHeader>
-                         <CardContent className="space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{t('createCampaignPage.discovery.title')}</CardTitle>
+                        <CardDescription>{t('createCampaignPage.discovery.description')}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <FormField
+                            control={form.control}
+                            name="tags"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>{t('createCampaignPage.tagsLabel')}</FormLabel>
+                                <FormControl>
+                                    <div className="flex flex-wrap gap-2">
+                                    {niches.map((niche) => (
+                                        <Button
+                                        key={niche.id}
+                                        type="button"
+                                        variant="outline"
+                                        className={cn(
+                                            "rounded-full",
+                                            field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+                                        )}
+                                        onClick={() => {
+                                            const currentTags = field.value || [];
+                                            const newTags = currentTags.includes(niche.label)
+                                            ? currentTags.filter(t => t !== niche.label)
+                                            : [...currentTags, niche.label];
+                                            field.onChange(newTags);
+                                        }}
+                                        >
+                                        {niche.label}
+                                        </Button>
+                                    ))}
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {form.watch('tags')?.includes('Other') && (
                             <FormField
                                 control={form.control}
-                                name="tags"
+                                name="otherTag"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>{t('createCampaignPage.tagsLabel')}</FormLabel>
-                                    <FormControl>
-                                        <div className="flex flex-wrap gap-2">
-                                        {niches.map((niche) => (
-                                            <Button
-                                            key={niche.id}
-                                            type="button"
-                                            variant="outline"
-                                            className={cn(
-                                                "rounded-full",
-                                                field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
-                                            )}
-                                            onClick={() => {
-                                                const currentTags = field.value || [];
-                                                const newTags = currentTags.includes(niche.label)
-                                                ? currentTags.filter(t => t !== niche.label)
-                                                : [...currentTags, niche.label];
-                                                field.onChange(newTags);
-                                            }}
-                                            >
-                                            {niche.label}
-                                            </Button>
-                                        ))}
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
+                                        <FormLabel>{t('createCampaignPage.otherTagLabel')}</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder={t('createCampaignPage.otherTagPlaceholder')} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            {form.watch('tags')?.includes('Other') && (
-                                <FormField
-                                    control={form.control}
-                                    name="otherTag"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>{t('createCampaignPage.otherTagLabel')}</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder={t('createCampaignPage.otherTagPlaceholder')} {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            )}
-                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
-                                <FormField
+                        )}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+                            <FormField
                                 control={form.control}
                                 name="budget"
                                 render={({ field }) => (
@@ -392,31 +413,17 @@ export default function CreateCampaignPage() {
                                     <FormMessage />
                                     </FormItem>
                                 )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="numberOfCreators"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                        <FormLabel>{t('createCampaignPage.numCreatorsLabel')}</FormLabel>
-                                        <FormControl>
-                                            <Input type="number" placeholder="1" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                        </CardContent>
-                    </Card>
+                            />
+                             {/* The numberOfCreators field is not editable once set */}
+                        </div>
+                    </CardContent>
+                </Card>
 
-                    <Button type="submit" disabled={form.formState.isSubmitting} className="w-full" size="lg">
-                    {form.formState.isSubmitting ? t('createCampaignPage.publishingButton') : t('createCampaignPage.publishButton')}
-                    </Button>
-                </form>
-                </Form>
-            </>
-        )}
+                <Button type="submit" disabled={form.formState.isSubmitting} className="w-full" size="lg">
+                {form.formState.isSubmitting ? t('editCampaignPage.savingButton') : t('editCampaignPage.saveButton')}
+                </Button>
+            </form>
+            </Form>
       </div>
     </>
   );

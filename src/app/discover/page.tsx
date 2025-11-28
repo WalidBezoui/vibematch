@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, Trash2, Users, Hourglass, MessageSquare } from 'lucide-react';
+import { ArrowRight, CheckCircle, Trash2, Users, Hourglass, MessageSquare, Megaphone, FileVideo } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +24,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/context/language-context';
 
 const CampaignCardSkeleton = () => (
     <Card className="flex flex-col">
@@ -46,6 +47,7 @@ export default function DiscoverPage() {
     const firestore = useFirestore();
     const { user } = useUser();
     const { toast } = useToast();
+    const { t } = useLanguage();
 
     // Fetch all open campaigns
     const campaignsQuery = useMemoFirebase(
@@ -79,8 +81,8 @@ export default function DiscoverPage() {
         try {
             await deleteDoc(applicationRef);
             toast({
-                title: 'Application Withdrawn',
-                description: 'You can apply again in the future if you change your mind.',
+                title: t('creatorDashboard.deleteToast.successTitle'),
+                description: t('creatorDashboard.deleteToast.successDescription'),
             });
             // Optimistically update the UI by removing the application locally
             mutateApplications(prev => prev ? prev.filter(app => app.id !== application.id) : null);
@@ -103,10 +105,10 @@ export default function DiscoverPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-12">
                         <h1 className="text-5xl md:text-6xl font-extrabold tracking-tighter leading-tight">
-                           Discover Campaigns
+                           {t('discoverCampaigns.title')}
                         </h1>
                         <p className="mt-4 text-lg md:text-xl max-w-3xl text-foreground/60">
-                            Browse and apply for exclusive campaigns from top Moroccan brands.
+                            {t('discoverCampaigns.description')}
                         </p>
                     </div>
 
@@ -135,24 +137,31 @@ export default function DiscoverPage() {
                                 }
                                 
                                 const isHighlighted = status === 'in_discussion';
+                                const campaignType = campaign.campaignType || 'influence';
+                                const typeInfo = {
+                                    influence: { 
+                                        badgeText: t('campaignTypes.influence.badge'), 
+                                        badgeIcon: Megaphone,
+                                        badgeClass: "bg-teal-100 text-teal-800 border-teal-200" 
+                                    },
+                                    ugc: { 
+                                        badgeText: t('campaignTypes.ugc.badge'),
+                                        badgeIcon: FileVideo,
+                                        badgeClass: "bg-sky-100 text-sky-800 border-sky-200" 
+                                    },
+                                };
+                                const TypeIcon = typeInfo[campaignType].badgeIcon;
+
 
                                 return (
                                     <Card key={campaign.id} className={cn("flex flex-col hover:shadow-lg transition-shadow", isHighlighted && "border-primary/50 shadow-primary/10")}>
                                         <CardHeader>
-                                            <div className="flex justify-between items-start">
+                                            <div className="flex justify-between items-start gap-2">
                                                 <CardTitle className="line-clamp-1">{campaign.title}</CardTitle>
-                                                {status === 'in_discussion' && (
-                                                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200 whitespace-nowrap">
-                                                        <MessageSquare className="mr-1.5 h-3 w-3" />
-                                                        In Discussion
-                                                    </Badge>
-                                                )}
-                                                {status === 'applied' && (
-                                                    <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200 whitespace-nowrap">
-                                                        <Hourglass className="mr-1.5 h-3 w-3" />
-                                                        Applied
-                                                    </Badge>
-                                                )}
+                                                 <Badge variant="secondary" className={cn("whitespace-nowrap text-xs", typeInfo[campaignType].badgeClass)}>
+                                                    <TypeIcon className="mr-1.5 h-3 w-3" />
+                                                    {typeInfo[campaignType].badgeText}
+                                                </Badge>
                                             </div>
                                             {campaign.tags && campaign.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-2 pt-2">
@@ -168,11 +177,11 @@ export default function DiscoverPage() {
                                             </p>
                                             <div className="flex items-center justify-between">
                                                 <div>
-                                                    <Badge variant="outline">Budget</Badge>
+                                                    <Badge variant="outline">{t('discoverCampaigns.budget')}</Badge>
                                                     <p className="font-bold text-lg gradient-text mt-1">{campaign.budget} DH</p>
                                                 </div>
                                                  <div>
-                                                    <Badge variant="outline">Slots</Badge>
+                                                    <Badge variant="outline">{t('discoverCampaigns.slots')}</Badge>
                                                     <p className="font-bold text-lg mt-1 flex items-center gap-1">
                                                         <Users className="h-4 w-4 text-muted-foreground"/> 
                                                         {hiredCount} / {totalSeats}
@@ -184,33 +193,33 @@ export default function DiscoverPage() {
                                             {status === 'in_discussion' ? (
                                                 <Button asChild className="w-full">
                                                     <Link href={`/chat/${conversation.id}`}>
-                                                        Open Chat <ArrowRight className="ml-2 h-4 w-4" />
+                                                        {t('creatorDashboard.actions.chat')} <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                             ) : status === 'applied' ? (
                                                 <>
                                                     <Button disabled className="w-full bg-green-600 hover:bg-green-600">
                                                         <CheckCircle className="mr-2 h-4 w-4" />
-                                                        Application Sent
+                                                        {t('discoverCampaigns.applied')}
                                                     </Button>
                                                     <AlertDialog>
                                                         <AlertDialogTrigger asChild>
                                                             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
                                                                 <Trash2 className="mr-2 h-3 w-3" />
-                                                                Withdraw Application
+                                                                {t('creatorDashboard.actions.withdraw')}
                                                             </Button>
                                                         </AlertDialogTrigger>
                                                         <AlertDialogContent>
                                                             <AlertDialogHeader>
-                                                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                <AlertDialogTitle>{t('creatorDashboard.deleteDialog.title')}</AlertDialogTitle>
                                                                 <AlertDialogDescription>
-                                                                    This will remove your application for "{campaign.title}". The brand will no longer be able to see it. You can apply again later if the campaign is still open.
+                                                                    {t('creatorDashboard.deleteDialog.description', { campaignTitle: campaign.title })}
                                                                 </AlertDialogDescription>
                                                             </AlertDialogHeader>
                                                             <AlertDialogFooter>
-                                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                <AlertDialogCancel>{t('brandDashboard.deleteDialog.cancel')}</AlertDialogCancel>
                                                                 <AlertDialogAction onClick={() => handleWithdrawApplication(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                                                                    Yes, Withdraw
+                                                                    {t('creatorDashboard.deleteDialog.confirm')}
                                                                 </AlertDialogAction>
                                                             </AlertDialogFooter>
                                                         </AlertDialogContent>
@@ -218,12 +227,12 @@ export default function DiscoverPage() {
                                                 </>
                                             ) : isFull ? (
                                                 <Button disabled className="w-full">
-                                                    Campaign Full
+                                                    {t('discoverCampaigns.full')}
                                                 </Button>
                                             ) : (
                                                 <Button asChild className="w-full">
                                                     <Link href={`/campaigns/${campaign.id}/apply`}>
-                                                        View & Apply
+                                                        {t('discoverCampaigns.applyNow')}
                                                         <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Link>
                                                 </Button>
@@ -237,8 +246,8 @@ export default function DiscoverPage() {
 
                      {!isLoading && (!campaigns || campaigns.length === 0) && (
                         <div className="text-center py-24 border-2 border-dashed rounded-lg">
-                            <h2 className="text-2xl font-semibold">No Open Campaigns Right Now</h2>
-                            <p className="text-muted-foreground mt-2">Check back soon for new opportunities!</p>
+                            <h2 className="text-2xl font-semibold">{t('discoverCampaigns.noCampaigns.title')}</h2>
+                            <p className="text-muted-foreground mt-2">{t('discoverCampaigns.noCampaigns.description')}</p>
                         </div>
                     )}
                 </div>

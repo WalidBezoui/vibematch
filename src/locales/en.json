@@ -600,6 +600,17 @@
         "deliverables": {
             "title": "Deliverables",
             "description": "Specify what content you need from each creator.",
+            "campaignTypeLabel": "What's the main goal of this campaign?",
+            "influence": {
+                "title": "Influence (Sponsored Post)",
+                "description": "The creator posts on their social media to reach their audience."
+            },
+            "ugc": {
+                "title": "UGC (Content Only)",
+                "description": "The creator sends you the video/photo files. They don't post anything.",
+                "tooltip": "The creator will deliver the raw video file (MP4). You can use it on your own social media and for ads. The creator will not post it."
+            },
+            "selectLabel": "What do you need creators to deliver?",
             "platformLabel": "Platform",
             "platformPlaceholder": "Select platform",
             "typeLabel": "Type",
@@ -666,6 +677,27 @@
         "COMPLETED": "Completed",
         "REJECTED_BY_CREATOR": "Rejected by Creator",
         "YOUR_ACCEPTANCE": "Awaiting Your Acceptance"
+    },
+    "discoverCampaigns": {
+        "title": "Discover Campaigns",
+        "description": "Browse and apply for exclusive campaigns from top Moroccan brands.",
+        "budget": "Budget",
+        "slots": "Slots",
+        "applyNow": "View & Apply",
+        "applied": "Application Sent",
+        "full": "Campaign Full",
+        "noCampaigns": {
+            "title": "No Open Campaigns Right Now",
+            "description": "Check back soon for new opportunities!"
+        }
+    },
+    "campaignTypes": {
+        "influence": {
+            "badge": "INFLUENCE"
+        },
+        "ugc": {
+            "badge": "UGC"
+        }
     },
     "discoverCreators": {
         "title": "Discover Creators",
