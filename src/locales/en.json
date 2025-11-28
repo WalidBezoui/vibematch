@@ -597,6 +597,10 @@
         "titlePlaceholder": "e.g., Summer Skincare Launch",
         "briefLabel": "Campaign Brief",
         "briefPlaceholder": "Describe the campaign goals, target audience, key messages, and overall vibe.",
+        "instructions": {
+            "label": "Instructions & Prohibitions (Do's & Don'ts)",
+            "placeholder": "e.g., Do not show competitor logos. Film only in daylight. Use a dynamic format..."
+        },
         "deliverables": {
             "title": "Deliverables",
             "description": "Specify what content you need from each creator.",
@@ -619,6 +623,14 @@
             "noteLabel": "Optional Note",
             "notePlaceholder": "e.g., must include product link",
             "addButton": "Add Deliverable"
+        },
+        "logistics": {
+            "title": "Product Logistics",
+            "options": [
+                { "value": "shipping", "title": "Shipping", "description": "I will ship the product to the creator for free.", "icon": "Package" },
+                { "value": "reimbursement", "title": "Reimbursement", "description": "The creator buys the product, and I will reimburse them.", "icon": "RefreshCw" },
+                { "value": "digital", "title": "Digital / Service", "description": "No physical product is required (app, service, location).", "icon": "Computer" }
+            ]
         },
         "discovery": {
             "title": "Discovery & Budget",
@@ -740,5 +752,3 @@
         }
     }
 }
-
-    

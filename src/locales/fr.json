@@ -597,6 +597,10 @@
         "titlePlaceholder": "Ex: Lancement Soins d'Été",
         "briefLabel": "Brief de la Campagne",
         "briefPlaceholder": "Décrivez les objectifs, le public cible, les messages clés et l'ambiance générale.",
+        "instructions": {
+            "label": "Instructions & Interdictions (À faire & à ne pas faire)",
+            "placeholder": "Ex: Ne pas montrer de logos concurrents. Filmer uniquement à la lumière du jour. Format dynamique..."
+        },
         "deliverables": {
             "title": "Livrables",
             "description": "Spécifiez le contenu que vous attendez de chaque créateur.",
@@ -607,7 +611,7 @@
             },
             "ugc": {
                 "title": "UGC (Contenu Uniquement)",
-                "description": "Le créateur vous envoie les fichiers vidéo/photo. Il ne publie rien.",
+                "description": "Le créateur vous envoie les fichiers vidéo/photo. Il ne poste rien.",
                 "tooltip": "Le créateur livrera le fichier vidéo brut (MP4). Vous pourrez l'utiliser sur vos propres réseaux sociaux et publicités. Le créateur ne le publiera pas."
             },
             "selectLabel": "Que doivent livrer les créateurs ?",
@@ -619,6 +623,14 @@
             "noteLabel": "Note (Optionnel)",
             "notePlaceholder": "Ex: doit inclure le lien du produit",
             "addButton": "Ajouter un Livrable"
+        },
+        "logistics": {
+            "title": "Logistique du Produit",
+            "options": [
+                { "value": "shipping", "title": "Expédition", "description": "J'enverrai le produit gratuitement au créateur.", "icon": "Package" },
+                { "value": "reimbursement", "title": "Remboursement", "description": "Le créateur achète le produit et je le rembourse.", "icon": "RefreshCw" },
+                { "value": "digital", "title": "Digital / Service", "description": "Aucun produit physique requis (app, service, lieu).", "icon": "Computer" }
+            ]
         },
         "discovery": {
             "title": "Découverte & Budget",
@@ -740,4 +752,3 @@
         }
     }
 }
-    
