@@ -326,8 +326,8 @@
     },
     "faqPage": {
         "title": {
-            "part1": "أسئلة",
-            "part2": "شائعة"
+          "part1": "أسئلة",
+          "part2": "شائعة"
         },
         "description": "هل لديك سؤال؟ نحن هنا لمساعدتك. استكشف الأسئلة الشائعة للعثور على إجابات حول VibeMatch.",
         "categories": "الفئات",
@@ -530,7 +530,8 @@
             {"id": "travel", "label": "السفر والمغامرات", "icon": "flight_takeoff"},
             {"id": "lifestyle", "label": "أسلوب الحياة", "icon": "self_improvement"},
             {"id": "fitness", "label": "الرياضة واللياقة", "icon": "fitness_center"},
-            {"id": "comedy", "label": "الكوميديا والفكاهة", "icon": "mood"},
+            {"id": "comedy", "label": "الكوميديا والفكاهة",
+            "icon": "mood"},
             {"id": "art", "label": "الفن والموسيقى", "icon": "music_note"},
             {"id": "gaming", "label": "التقنية والألعاب", "icon": "stadia_controller"},
             {"id": "family", "label": "الأسرة والتربية", "icon": "family_restroom"},
@@ -724,7 +725,7 @@
         "noCampaigns": "لا توجد حملات نشطة بها أماكن شاغرة.",
         "hiredText": "تم توظيف {{hired}} من أصل {{total}}",
         "messageLabel": "الرسالة",
-        "messagePlaceholder": "اكتب رسالة موجزة إلى المبدع...",
+        "messagePlaceholder": "اكتب رسالة موجزة إلى המبدע...",
         "sendButton": "إرسال الدعوة",
         "defaultMessage": "مرحبًا {{name}}، نعتقد أن ملفك الشخصي سيكون مناسبًا جدًا لحملتنا ونود دعوتك للتقديم!",
         "validation": {
