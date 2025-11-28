@@ -693,8 +693,7 @@
         "title": "Discover Campaigns",
         "description": "Browse and apply for exclusive campaigns from top Moroccan brands.",
         "budget": "Budget",
-        "slots": "Slots",
-        "applyNow": "Apply",
+        "applyNow": "View &amp; Apply",
         "applied": "Application Sent",
         "full": "Campaign Full",
         "noCampaigns": {
@@ -752,7 +751,6 @@
     },
     "campaignPage": {
         "postedBy": "Posted by",
-        "slotsRemaining": "slots remaining",
         "briefTitle": "Campaign Brief",
         "deliverablesTitle": "Deliverables",
         "conditionsTitle": "Conditions & Logistics",
@@ -761,14 +759,16 @@
         },
         "instructions": {
             "title": "Instructions & Prohibitions"
-        }
+        },
+        "applyNow": "Apply"
     },
     "logistics": {
         "shipping": "The brand will ship the product to you for free. You will need to provide your address after being hired.",
         "digital": "No physical product is required for this campaign (e.g., app, service, event)."
     },
     "applyPage": {
-        "title": "Apply for Campaign",
+        "title": "Apply for {{title}}",
+        "backButton": "Back to Campaign Details",
         "alreadyApplied": {
             "title": "You've Already Applied!",
             "description": "The brand has your application. We'll notify you if you're selected."
@@ -788,3 +788,5 @@
         }
     }
 }
+
+    

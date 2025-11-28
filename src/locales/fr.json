@@ -530,7 +530,8 @@
             {"id": "travel", "label": "Voyage & Découverte", "icon": "flight_takeoff"},
             {"id": "lifestyle", "label": "Lifestyle & Quotidien", "icon": "self_improvement"},
             {"id": "fitness", "label": "Sport & Fitness", "icon": "fitness_center"},
-            {"id": "comedy", "label": "Humour & Comédie", "icon": "mood"},
+            {"id": "comedy", "label": "Humour & Comédie",
+            "icon": "mood"},
             {"id": "art", "label": "Art & Musique", "icon": "music_note"},
             {"id": "gaming", "label": "Tech & Gaming", "icon": "stadia_controller"},
             {"id": "family", "label": "Famille & Parentalité", "icon": "family_restroom"},
@@ -693,8 +694,7 @@
         "title": "Découvrir les Campagnes",
         "description": "Parcourez et postulez à des campagnes exclusives des meilleures marques marocaines.",
         "budget": "Budget",
-        "slots": "Places",
-        "applyNow": "Postuler",
+        "applyNow": "Voir &amp; Postuler",
         "applied": "Candidature Envoyée",
         "full": "Campagne Complète",
         "noCampaigns": {
@@ -752,7 +752,6 @@
     },
     "campaignPage": {
         "postedBy": "Publié par",
-        "slotsRemaining": "places restantes",
         "briefTitle": "Brief de la Campagne",
         "deliverablesTitle": "Livrables",
         "conditionsTitle": "Conditions & Logistique",
@@ -761,14 +760,16 @@
         },
         "instructions": {
             "title": "Instructions & Interdictions"
-        }
+        },
+        "applyNow": "Postuler"
     },
     "logistics": {
         "shipping": "La marque vous enverra le produit gratuitement. Vous devrez fournir votre adresse après avoir été recruté.",
         "digital": "Aucun produit physique n'est requis pour cette campagne (ex: application, service, événement)."
     },
     "applyPage": {
-        "title": "Postuler à la Campagne",
+        "title": "Postuler pour {{title}}",
+        "backButton": "Retour aux détails de la campagne",
         "alreadyApplied": {
             "title": "Vous avez déjà postulé !",
             "description": "La marque a bien reçu votre candidature. Nous vous informerons si vous êtes sélectionné."
@@ -788,3 +789,5 @@
         }
     }
 }
+
+    
