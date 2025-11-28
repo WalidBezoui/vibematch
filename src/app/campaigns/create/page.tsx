@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -15,7 +15,7 @@ import { useFirestore, useUser } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, PartyPopper, Users, Megaphone, FileVideo, Info } from 'lucide-react';
+import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, PartyPopper, Users, Megaphone, FileVideo, Info, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -24,7 +24,6 @@ import Link from 'next/link';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-
 const TikTokIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
         <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
@@ -32,19 +31,18 @@ const TikTokIcon = () => (
 );
 
 const deliverableSchema = z.object({
-  platform: z.enum(['instagram', 'tiktok'], { required_error: "Platform is required."}),
-  type: z.enum(['Post', 'Story', 'Reel', 'Video'], { required_error: "Type is required."}),
+  platform: z.enum(['instagram', 'tiktok']),
+  type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC_Video_Vertical', 'UGC_Video_Horizontal', 'UGC_Photo_Pack']),
   quantity: z.preprocess(
     (val) => (val === '' ? undefined : Number(val)),
     z.number({ invalid_type_error: 'Qty must be a number.' }).min(1, 'Quantity must be at least 1.')
   ),
-  note: z.string().optional(),
 });
-
 
 const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
   campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
+  campaignType: z.enum(['influence', 'ugc']),
   deliverables: z.array(deliverableSchema).min(1, 'Please add at least one deliverable.'),
   budget: z.preprocess(
     (val) => (val === '' ? 0 : Number(val)),
@@ -56,21 +54,12 @@ const campaignSchema = z.object({
   ),
   tags: z.array(z.string()).min(1, "Please select at least one tag."),
   otherTag: z.string().optional(),
-}).refine(data => {
-    return data.deliverables.every(d => {
-        if (d.platform === 'instagram') return ['Post', 'Story', 'Reel'].includes(d.type);
-        if (d.platform === 'tiktok') return ['Video'].includes(d.type);
-        return false;
-    });
-}, {
-    message: "Invalid deliverable type for the selected platform.",
-    path: ['deliverables'],
 });
 
 type CampaignForm = z.infer<typeof campaignSchema>;
 
 
-const deliverableTypes = {
+const influenceDeliverableTypes = {
     instagram: [
         { value: 'Post', label: 'Post', icon: StickyNote },
         { value: 'Story', label: 'Story', icon: Repeat },
@@ -81,6 +70,12 @@ const deliverableTypes = {
     ]
 };
 
+const ugcDeliverableTypes = [
+    { value: 'UGC_Video_Vertical', label: 'Video 9:16 (Vertical)' },
+    { value: 'UGC_Video_Horizontal', label: 'Video 16:9 (Horizontal)' },
+    { value: 'UGC_Photo_Pack', label: 'Photo Pack' },
+]
+
 const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
     const { t } = useLanguage();
     const platformValue = useWatch({
@@ -88,7 +83,7 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
         name: `deliverables.${index}.platform`
     });
 
-    const availableTypes = deliverableTypes[platformValue as keyof typeof deliverableTypes] || [];
+    const availableTypes = influenceDeliverableTypes[platformValue as keyof typeof influenceDeliverableTypes] || [];
 
     useEffect(() => {
         if (platformValue && availableTypes.length > 0) {
@@ -166,19 +161,7 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
                 )}
             />
             </div>
-            <FormField
-                control={control}
-                name={`deliverables.${index}.note`}
-                render={({ field }) => (
-                <FormItem>
-                    <FormLabel>{t('createCampaignPage.deliverables.noteLabel')}</FormLabel>
-                    <FormControl>
-                        <Input placeholder={t('createCampaignPage.deliverables.notePlaceholder')} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-                )}
-            />
+            
             <Button
                 type="button"
                 variant="ghost"
@@ -191,6 +174,25 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
         </div>
     )
 }
+
+const UGCDeliverableItem = ({ name, label }: { name: string, label: string }) => {
+    const { control } = useFormContext();
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem className="flex items-center space-x-3 space-y-0 p-4 border rounded-lg bg-muted/50">
+                    <FormControl>
+                        <Input type="number" min="0" {...field} className="w-20" placeholder="0" />
+                    </FormControl>
+                    <FormLabel className="font-normal">{label}</FormLabel>
+                </FormItem>
+            )}
+        />
+    )
+}
+
 
 export default function CreateCampaignPage() {
   const router = useRouter();
@@ -208,7 +210,8 @@ export default function CreateCampaignPage() {
     defaultValues: {
       title: '',
       campaignBrief: '',
-      deliverables: [{ platform: 'instagram', type: 'Post', quantity: 1, note: '' }],
+      campaignType: 'influence',
+      deliverables: [{ platform: 'instagram', type: 'Post', quantity: 1 }],
       budget: 0,
       numberOfCreators: 1,
       tags: [],
@@ -220,6 +223,8 @@ export default function CreateCampaignPage() {
     control: form.control,
     name: "deliverables"
   });
+
+  const campaignType = useWatch({ control: form.control, name: 'campaignType'});
 
   const onSubmit = async (data: CampaignForm) => {
     if (!firestore || !user) {
@@ -242,8 +247,9 @@ export default function CreateCampaignPage() {
 
     const submissionData = {
       ...data,
+      campaignType: data.campaignType,
       tags: finalTags,
-      deliverables: data.deliverables.map(d => `${d.quantity} ${d.platform} ${d.type}(s)${d.note ? ` - ${d.note}`: ''}`),
+      deliverables: data.deliverables.map(d => `${d.quantity} ${d.type}`),
       brandId: user.uid,
       status: 'OPEN_FOR_APPLICATIONS',
       createdAt: serverTimestamp(),
@@ -277,6 +283,7 @@ export default function CreateCampaignPage() {
   }
 
   if (!user) {
+      // It might be better to use middleware for this, but for now this works
       router.push('/login');
       return null;
   }
@@ -348,26 +355,87 @@ export default function CreateCampaignPage() {
                             />
                         </CardContent>
                     </Card>
-
+                    
                     <Card>
                         <CardHeader>
                             <CardTitle>{t('createCampaignPage.deliverables.title')}</CardTitle>
-                            <CardDescription>{t('createCampaignPage.deliverables.description')}</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-4">
-                            {fields.map((item, index) => (
-                                <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
-                            ))}
-                            <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}
-                            >
-                                <PlusCircle className="mr-2 h-4 w-4" />
-                                {t('createCampaignPage.deliverables.addButton')}
-                            </Button>
-                            <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
+                        <CardContent className="space-y-6">
+                             <FormField
+                                control={form.control}
+                                name="campaignType"
+                                render={({ field }) => (
+                                    <FormItem className="space-y-3">
+                                    <FormLabel>{t('createCampaignPage.deliverables.campaignTypeLabel')}</FormLabel>
+                                    <FormControl>
+                                        <RadioGroup
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                                        >
+                                            <FormItem>
+                                                <FormControl>
+                                                    <RadioGroupItem value="influence" id="influence" className="sr-only" />
+                                                </FormControl>
+                                                <Label htmlFor="influence" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all", field.value === 'influence' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                                    <div className="flex items-center gap-3 mb-2">
+                                                        <Megaphone className="h-5 w-5 text-primary" />
+                                                        <span className="font-bold">{t('createCampaignPage.deliverables.influence.title')}</span>
+                                                    </div>
+                                                    <span className="text-sm text-muted-foreground">{t('createCampaignPage.deliverables.influence.description')}</span>
+                                                </Label>
+                                            </FormItem>
+                                            <FormItem>
+                                                <FormControl>
+                                                    <RadioGroupItem value="ugc" id="ugc" className="sr-only" />
+                                                </FormControl>
+                                                <Label htmlFor="ugc" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all", field.value === 'ugc' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                                    <div className="flex items-center gap-3 mb-2">
+                                                        <FileVideo className="h-5 w-5 text-primary" />
+                                                        <span className="font-bold">{t('createCampaignPage.deliverables.ugc.title')}</span>
+                                                        <TooltipProvider>
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Info className="h-4 w-4 text-muted-foreground ml-auto" />
+                                                            </TooltipTrigger>
+                                                            <TooltipContent>
+                                                                <p>{t('createCampaignPage.deliverables.ugc.tooltip')}</p>
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                        </TooltipProvider>
+                                                    </div>
+                                                    <span className="text-sm text-muted-foreground">{t('createCampaignPage.deliverables.ugc.description')}</span>
+                                                </Label>
+                                            </FormItem>
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            
+                            <div className="space-y-4 pt-4">
+                                <h3 className="font-semibold">{t('createCampaignPage.deliverables.selectLabel')}</h3>
+                                {campaignType === 'influence' && (
+                                     <>
+                                        {fields.map((item, index) => (
+                                            <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
+                                        ))}
+                                        <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1, note: '' })}>
+                                            <PlusCircle className="mr-2 h-4 w-4" />
+                                            {t('createCampaignPage.deliverables.addButton')}
+                                        </Button>
+                                    </>
+                                )}
+                                {campaignType === 'ugc' && (
+                                    <div className="space-y-4">
+                                        <UGCDeliverableItem name="deliverables.0.quantity" label="Video 9:16 (Vertical)" />
+                                        <UGCDeliverableItem name="deliverables.1.quantity" label="Video 16:9 (Horizontal)" />
+                                        <UGCDeliverableItem name="deliverables.2.quantity" label="Photo Pack" />
+                                    </div>
+                                )}
+                                <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
+                            </div>
                         </CardContent>
                     </Card>
 
