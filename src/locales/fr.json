@@ -7,7 +7,7 @@
         "support": "Support",
         "login": "Connexion",
         "logout": "Déconnexion",
-        "dashboard": "Tableau de bord",
+        "dashboard": "Accueil",
         "home": "Accueil",
         "profile": "Mon Profil",
         "discover": "Découvrir",
@@ -694,7 +694,7 @@
         "description": "Parcourez et postulez à des campagnes exclusives des meilleures marques marocaines.",
         "budget": "Budget",
         "slots": "Places",
-        "applyNow": "Postuler Maintenant",
+        "applyNow": "Postuler",
         "applied": "Candidature Envoyée",
         "full": "Campagne Complète",
         "noCampaigns": {
@@ -766,5 +766,25 @@
     "logistics": {
         "shipping": "La marque vous enverra le produit gratuitement. Vous devrez fournir votre adresse après avoir été recruté.",
         "digital": "Aucun produit physique n'est requis pour cette campagne (ex: application, service, événement)."
+    },
+    "applyPage": {
+        "title": "Postuler à la Campagne",
+        "alreadyApplied": {
+            "title": "Vous avez déjà postulé !",
+            "description": "La marque a bien reçu votre candidature. Nous vous informerons si vous êtes sélectionné."
+        },
+        "form": {
+            "tariff": {
+                "title": "Confirmez Votre Tarif",
+                "description": "Le budget proposé par la marque est de {{budget}} DH. Vous pouvez ajuster ce montant si nécessaire.",
+                "warning": "Note : Votre offre est supérieure au budget de la marque."
+            },
+            "coverLetter": {
+                "label": "Pourquoi vous ? (Lettre de motivation optionnelle)",
+                "placeholder": "Présentez-vous et expliquez pourquoi vous seriez parfait pour cette collaboration..."
+            },
+            "submitButton": "Envoyer ma candidature",
+            "submittingButton": "Envoi en cours..."
+        }
     }
 }

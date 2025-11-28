@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { useLanguage } from '@/context/language-context';
 
 const applicationSchema = z.object({
   coverLetter: z.string().optional(),
@@ -52,6 +53,7 @@ export default function ApplyPage() {
     const router = useRouter();
     const { user, isUserLoading } = useUser();
     const { toast } = useToast();
+    const { t } = useLanguage();
     const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | null>(null);
 
     const campaignRef = useMemoFirebase(
@@ -133,10 +135,10 @@ export default function ApplyPage() {
         if (!campaign || error) {
             return (
                 <div className="text-center bg-background/80 backdrop-blur-sm p-8 rounded-2xl">
-                    <h1 className="text-2xl font-bold">Campaign not found</h1>
-                    <p className="text-muted-foreground mt-2">This campaign may have been closed or does not exist.</p>
+                    <h1 className="text-2xl font-bold">{t('editCampaignPage.notFound.title')}</h1>
+                    <p className="text-muted-foreground mt-2">{t('editCampaignPage.notFound.description')}</p>
                     <Button asChild className="mt-6">
-                        <Link href="/discover">Back to Discovery</Link>
+                        <Link href="/discover">{t('discoverCampaigns.title')}</Link>
                     </Button>
                 </div>
             )
@@ -149,10 +151,10 @@ export default function ApplyPage() {
                         <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
                             <CheckCircle className="h-8 w-8 text-black" />
                         </div>
-                        <h2 className="text-2xl font-bold">You've Already Applied!</h2>
-                        <p className="text-muted-foreground mt-2">The brand has your application. We'll notify you if you're selected.</p>
+                        <h2 className="text-2xl font-bold">{t('applyPage.alreadyApplied.title')}</h2>
+                        <p className="text-muted-foreground mt-2">{t('applyPage.alreadyApplied.description')}</p>
                         <Button asChild className="mt-6">
-                            <Link href="/discover">Discover More Campaigns</Link>
+                            <Link href="/discover">{t('discoverCampaigns.title')}</Link>
                         </Button>
                     </CardContent>
                 </Card>
@@ -165,16 +167,16 @@ export default function ApplyPage() {
                     <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-black mb-4 shadow-lg shadow-primary/30">
                         <FileText className="h-8 w-8" />
                     </div>
-                    <CardTitle className="text-3xl font-extrabold tracking-tight">Apply for Campaign</CardTitle>
+                    <CardTitle className="text-3xl font-extrabold tracking-tight">{t('applyPage.title')}</CardTitle>
                     <CardDescription className="text-lg gradient-text font-semibold pt-1">{campaign.title}</CardDescription>
                 </CardHeader>
                 <CardContent className="px-8 pb-8">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             <div className="space-y-1 p-4 border rounded-lg bg-muted/50">
-                                <h3 className="text-sm font-semibold text-muted-foreground">Confirm Your Tariff</h3>
+                                <h3 className="text-sm font-semibold text-muted-foreground">{t('applyPage.form.tariff.title')}</h3>
                                 <p className="text-xs text-muted-foreground">
-                                    The brand's proposed budget is {campaign.budget} DH. You can adjust this if needed.
+                                    {t('applyPage.form.tariff.description', { budget: campaign.budget })}
                                 </p>
                             </div>
 
@@ -194,7 +196,7 @@ export default function ApplyPage() {
                                             <Alert variant="default" className="border-orange-400 text-orange-700 mt-2 text-xs">
                                                 <Info className="h-4 w-4" />
                                                 <AlertDescription>
-                                                    Note: Your offer is higher than the brand's budget.
+                                                    {t('applyPage.form.tariff.warning')}
                                                 </AlertDescription>
                                             </Alert>
                                         )}
@@ -206,10 +208,10 @@ export default function ApplyPage() {
                                 name="coverLetter"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-sm font-semibold text-muted-foreground">Why you? (Optional cover letter)</FormLabel>
+                                        <FormLabel className="text-sm font-semibold text-muted-foreground">{t('applyPage.form.coverLetter.label')}</FormLabel>
                                         <FormControl>
                                             <Textarea
-                                                placeholder="Introduce yourself and explain why you'd be perfect for this collaboration..."
+                                                placeholder={t('applyPage.form.coverLetter.placeholder')}
                                                 rows={5}
                                                 {...field}
                                             />
@@ -219,7 +221,7 @@ export default function ApplyPage() {
                                 )}
                             />
                             <Button type="submit" disabled={isSubmitting} size="lg" className="w-full h-14 text-base font-bold tracking-wide rounded-full gradient-bg text-black hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
-                                {isSubmitting ? 'Submitting...' : 'Send my Application'}
+                                {isSubmitting ? t('applyPage.form.submittingButton') : t('applyPage.form.submitButton')}
                                 {!isSubmitting && <ArrowRight className="ml-2 h-5 w-5" />}
                             </Button>
                         </form>
