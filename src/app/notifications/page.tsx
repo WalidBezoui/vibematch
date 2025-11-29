@@ -216,9 +216,9 @@ export default function NotificationsPage() {
 
 
     useEffect(() => {
-        const processNotifications = async () => {
-             if (isUserLoading || isProfileLoading || !firestore || !user || !userProfile) return;
+        if (isUserLoading || isProfileLoading || !firestore || !user || !userProfile) return;
 
+        const processNotifications = async () => {
              const allNotifications: NotificationItem[] = [];
 
              if (isBrand) {

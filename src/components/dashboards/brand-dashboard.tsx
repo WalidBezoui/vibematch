@@ -104,19 +104,22 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         if (!campaigns || !conversations) return [];
         const items = [];
 
-        // 1. Awaiting Payment
-        const paymentNeeded = campaigns.filter(c => c.status === 'PENDING_PAYMENT');
-        paymentNeeded.forEach(c => {
-            items.push({
-                id: `payment-${c.id}`,
-                icon: <Wallet className="h-5 w-5 text-blue-500" />,
-                text: <><strong>{t('brandDashboard.actions.payment')}:</strong> {c.title}</>,
-                buttonText: t('brandDashboard.actions.pay'),
-                href: `/campaigns/${c.id}/pay`
-            });
+        // 1. Awaiting Payment (from accepted conversation offers)
+        const paymentNeededFromConvo = conversations.filter(c => c.status === 'OFFER_ACCEPTED');
+        paymentNeededFromConvo.forEach(c => {
+            const campaign = campaigns.find(camp => camp.id === c.campaign_id);
+            if(campaign){
+                items.push({
+                    id: `payment-convo-${c.id}`,
+                    icon: <Wallet className="h-5 w-5 text-blue-500" />,
+                    text: <><strong>{t('brandDashboard.actions.payment')}:</strong> {t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator', title: campaign.title})}</>,
+                    buttonText: t('brandDashboard.actions.pay'),
+                    href: `/campaigns/${c.campaign_id}/pay`
+                });
+            }
         });
-
-        // 2. New Applicants
+        
+        // New Applicants
         const applicantNeeded = campaigns.filter(c => (applicationCounts[c.id] || 0) > 0);
         applicantNeeded.forEach(c => {
             items.push({
@@ -128,7 +131,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
             });
         });
         
-        // 3. Unread Messages
+        // Unread Messages/Offers
         const unreadMessages = conversations.filter(c => c.status === 'NEGOTIATION' && c.last_offer_by !== campaigns.find(camp => camp.id === c.campaign_id)?.brandId);
         unreadMessages.forEach(c => {
             const campaignTitle = campaigns.find(camp => camp.id === c.campaign_id)?.title || "a campaign";
@@ -351,6 +354,11 @@ export default function BrandDashboard() {
             const q = query(collection(firestore, 'campaigns', campaign.id, 'applications'), where('status', '==', 'APPLIED'));
             return onSnapshot(q, (snapshot) => {
                 setApplicationCounts(prev => ({ ...prev, [campaign.id]: snapshot.size }));
+            }, (error) => {
+                // Ignore permissions errors, as they are expected for some queries.
+                if (error.code !== 'permission-denied') {
+                  console.error("Error fetching application counts:", error);
+                }
             });
         });
 
@@ -363,10 +371,15 @@ export default function BrandDashboard() {
 
   
   const filteredCampaigns = useMemo(() => {
-    if (!campaigns) return [];
+    if (!campaigns || !conversations) return [];
+    
+    const campaignsAwaitingPayment = new Set(
+        conversations.filter(c => c.status === 'OFFER_ACCEPTED').map(c => c.campaign_id)
+    );
+    
     switch (activeFilter) {
       case 'to_fund':
-        return campaigns.filter(c => c.status === 'PENDING_PAYMENT');
+        return campaigns.filter(c => campaignsAwaitingPayment.has(c.id));
       case 'hiring':
         return campaigns.filter(c => c.status === 'OPEN_FOR_APPLICATIONS' && (c.creatorIds?.length || 0) < (c.numberOfCreators || 1));
       case 'in_progress':
@@ -376,7 +389,7 @@ export default function BrandDashboard() {
       default:
         return campaigns;
     }
-  }, [campaigns, activeFilter]);
+  }, [campaigns, conversations, activeFilter]);
 
 
   const handleDeleteCampaign = async (campaignId: string) => {
@@ -515,7 +528,7 @@ export default function BrandDashboard() {
       {!isLoading && filteredCampaigns && conversations ? (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredCampaigns.map((campaign) => {
-            const isAwaitingPayment = campaign.status === 'PENDING_PAYMENT';
+            const isAwaitingPayment = conversations?.some(c => c.campaign_id === campaign.id && c.status === 'OFFER_ACCEPTED') || campaign.status === 'PENDING_PAYMENT';
             return (
               <CampaignCard 
                   campaign={campaign} 

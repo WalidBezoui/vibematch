@@ -154,6 +154,7 @@
             "title": "Action Requise",
             "payment": "PAIEMENT",
             "pay": "Payer",
+            "fundCreator": "Financez l'accord avec {{name}} pour \"{{title}}\"",
             "applicants": "CANDIDATS",
             "review": "Voir",
             "message": "MESSAGE",
@@ -472,31 +473,31 @@
                 "question": "Comment sont gérés les paiements ?",
                 "answer": "Les paiements sont sécurisés via un compte séquestre. Vous financez la campagne lors de l'accord, et nous ne libérons les fonds au créateur qu'après votre approbation du contenu. Ce système protège les deux parties et assure une collaboration sereine."
             }
-        ],
-        "creatorsFaq": [
-            {
-                "question": "Comment rejoindre VibeMatch en tant que créateur ?",
-                "answer": "Pour maintenir un réseau de qualité, VibeMatch fonctionne sur invitation ou candidature. Postulez pour devenir un Créateur Fondateur. Nous étudions chaque profil selon l'engagement, la qualité du contenu et la niche. Notre équipe vous contactera si votre profil correspond à nos critères."
-            },
-            {
-                "question": "Comment VibeMatch garantit-il mes paiements ?",
-                "answer": "Quand une marque vous choisit, elle dépose le montant total sur notre système de séquestre sécurisé. Une fois les livrables validés, les fonds sont virés sur votre compte. Fini le stress des paiements en retard."
-            },
-            {
-                "question": "Y a-t-il des frais pour les créateurs ?",
-                "answer": "L'inscription est gratuite. Nous prélevons une faible commission sur vos gains. Cela nous permet de couvrir les frais, la maintenance et de vous offrir un support dédié."
-            }
-        ],
-        "generalFaq": [
-            {
-                "question": "Qu'est-ce qui différencie VibeMatch ?",
-                "answer": "VibeMatch repose sur la Confiance et l'Efficacité. Notre Trust Engine garantit des collaborations authentiques, et notre système de paiement automatisé protège les créateurs. Nous sommes spécialisés sur le marché marocain."
-            },
-            {
-                "question": "Que se passe-t-il en cas de litige ?",
-                "answer": "VibeMatch propose une médiation. Notre équipe intervient, examine l'accord et la communication, et œuvre pour une résolution juste et rapide."
-            }
-        ]
+          ],
+          "creatorsFaq": [
+              {
+                  "question": "Comment suis-je rémunéré ?",
+                  "answer": "Nous garantissons vos paiements. Une fois une campagne terminée et approuvée, les fonds sont libérés sur votre compte VibeMatch. Vous pouvez ensuite retirer vos gains directement sur votre compte bancaire. Fini la course aux factures !"
+              },
+              {
+                  "question": "Quelles sont les conditions pour devenir créateur ?",
+                  "answer": "Nous recherchons des créateurs ayant une connexion authentique avec leur public, quelle que soit la taille de leur communauté. Nous évaluons la qualité de l'engagement, la créativité du contenu et la pertinence de la niche. Si vous créez du contenu de haute qualité et avez une communauté fidèle, nous vous encourageons à postuler."
+              },
+              {
+                  "question": "Y a-t-il des frais pour les créateurs ?",
+                  "answer": "L'inscription est gratuite. Nous prélevons une faible commission sur vos gains. Cela nous permet de couvrir les frais, la maintenance et de vous offrir un support dédié."
+              }
+          ],
+          "generalFaq": [
+              {
+                  "question": "Qu'est-ce qui différencie VibeMatch ?",
+                  "answer": "VibeMatch repose sur la Confiance et l'Efficacité. Notre Trust Engine garantit des collaborations authentiques, et notre système de paiement automatisé protège les créateurs. Nous sommes spécialisés sur le marché marocain."
+              },
+              {
+                  "question": "Que se passe-t-il en cas de litige ?",
+                  "answer": "VibeMatch propose une médiation. Notre équipe intervient, examine l'accord et la communication, et œuvre pour une résolution juste et rapide."
+              }
+          ]
     },
     "loginPage": {
         "title": {
@@ -759,7 +760,7 @@
             "appliedTo": "A postulé à"
         },
         "source": {
-            "applied": "Reçue"
+            "applied": "Candidature"
         }
     },
     "createCampaignPage": {
@@ -969,9 +970,9 @@
         "Story": "{{count}} Story Instagram",
         "Reel": "{{count}} Reel Instagram",
         "Video": "{{count}} Vidéo TikTok",
-        "UGC_Video_Vertical": "{{count}} Vidéo UGC (Verticale)",
-        "UGC_Video_Horizontal": "{{count}} Vidéo UGC (Horizontale)",
-        "UGC_Photo_Pack": "{{count}} Pack Photos UGC"
+        "UGC_Video_Vertical": "Vidéo UGC (Verticale)",
+        "UGC_Video_Horizontal": "Vidéo UGC (Horizontale)",
+        "UGC_Photo_Pack": "Pack Photos UGC"
     }
 }
     

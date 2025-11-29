@@ -152,11 +152,12 @@
         },
         "actions": {
             "title": "Action Required",
-            "payment": "Payment",
+            "payment": "PAYMENT",
             "pay": "Pay",
-            "applicants": "Applicants",
+            "fundCreator": "Fund the deal with {{name}} for \"{{title}}\"",
+            "applicants": "APPLICANTS",
             "review": "Review",
-            "message": "Message",
+            "message": "MESSAGE",
             "reply": "Reply"
         },
         "filters": {
@@ -461,16 +462,16 @@
         },
         "brandsFaq": [
             {
-              "question": "What is VibeMatch's Trust Engine?",
-              "answer": "Our Trust Engine is a proprietary system that analyzes over 50 data points to vet influencers. It checks for fake followers, bot activity, and engagement authenticity to ensure you connect with creators who have a genuine and engaged audience, maximizing your campaign's ROI."
+                "question": "What is VibeMatch's Trust Engine?",
+                "answer": "Our Trust Engine is a proprietary system that analyzes over 50 data points to vet influencers. It checks for fake followers, bot activity, and engagement authenticity to ensure you connect with creators who have a genuine and engaged audience, maximizing your campaign's ROI."
             },
             {
-              "question": "How do I find influencers for my campaign?",
-              "answer": "VibeMatch offers advanced search and filtering tools. You can search for influencers based on niche, audience demographics, engagement rates, location, and more. Our platform will recommend the best matches for your brand based on your campaign goals and our Trust Engine data."
+                "question": "How do I find influencers for my campaign?",
+                "answer": "VibeMatch offers advanced search and filtering tools. You can search for influencers based on niche, audience demographics, engagement rates, location, and more. Our platform will recommend the best matches for your brand based on your campaign goals and our Trust Engine data."
             },
             {
-              "question": "How are payments handled on the platform?",
-              "answer": "Payments are held securely in escrow by VibeMatch. You fund the campaign upon agreement, and we release the payment to the creator only after you have approved the content and campaign deliverables have been met. This protects both parties and ensures a smooth collaboration."
+                "question": "How are payments handled on the platform?",
+                "answer": "Payments are held securely in escrow by VibeMatch. You fund the campaign upon agreement, and we release the payment to the creator only after you have approved the content and campaign deliverables have been met. This protects both parties and ensures a smooth collaboration."
             }
           ],
           "creatorsFaq": [
@@ -969,9 +970,9 @@
         "Story": "{{count}} Instagram Story",
         "Reel": "{{count}} Instagram Reel",
         "Video": "{{count}} TikTok Video",
-        "UGC_Video_Vertical": "{{count}} UGC Video (Vertical)",
-        "UGC_Video_Horizontal": "{{count}} UGC Video (Horizontal)",
-        "UGC_Photo_Pack": "{{count}} UGC Photo Pack"
+        "UGC_Video_Vertical": "UGC Video (Vertical)",
+        "UGC_Video_Horizontal": "UGC Video (Horizontal)",
+        "UGC_Photo_Pack": "UGC Photo Pack"
     }
 }
     

@@ -46,10 +46,10 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
     const { user } = useUser();
     const { userProfile } = useUserProfile();
     const router = useRouter();
-    const { dir } = useLanguage();
-    const Arrow = dir === 'rtl' ? ArrowRight : ArrowLeft;
+    const { t, dir } = useLanguage();
     
     const isBrand = userProfile?.role === 'brand';
+    const Arrow = dir === 'rtl' ? ArrowRight : ArrowLeft;
     
     const handleFund = () => {
         router.push(`/campaigns/${conversation.campaign_id}/pay`)
@@ -61,44 +61,44 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
         switch (conversation.status) {
             case 'NEGOTIATION':
                 let text = isMyTurn
-                    ? (isBrand ? "Awaiting your response" : "Awaiting your response")
-                    : (isBrand ? "Waiting for creator's response" : "Brand is reviewing your offer");
+                    ? t('chat.status.yourResponse')
+                    : (isBrand ? t('chat.status.waitingForCreator') : t('chat.status.brandReviewing'));
                 
                 return { icon: Handshake, text, color: 'text-amber-800 dark:text-amber-200', bgColor: 'bg-amber-100/50 dark:bg-amber-900/20' };
 
             case 'OFFER_ACCEPTED':
-                 return { icon: Handshake, text: isBrand ? "Deal Agreed. Fund to start." : "Deal Agreed. Awaiting funds.", color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
+                 return { icon: Handshake, text: isBrand ? t('chat.status.fund') : t('chat.status.awaitingFunds'), color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
             
             case 'ACTIVE':
                  if (campaign?.status === 'PENDING_PAYMENT') {
-                     return { icon: Hourglass, text: 'Offer accepted. Awaiting payment.', color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
+                     return { icon: Hourglass, text: t('chat.status.offerAccepted'), color: 'text-blue-800 dark:text-blue-200', bgColor: 'bg-blue-100/50 dark:bg-blue-900/20' };
                 }
-                return { icon: Shield, text: 'Funds Secured. Work in progress.', color: 'text-green-800 dark:text-green-200', bgColor: 'bg-green-100/50 dark:bg-green-900/20' };
+                return { icon: Shield, text: t('chat.status.fundsSecured'), color: 'text-green-800 dark:text-green-200', bgColor: 'bg-green-100/50 dark:bg-green-900/20' };
             case 'REVIEW':
-                 return { icon: Info, text: 'Work submitted for validation.', color: 'text-purple-800 dark:text-purple-200', bgColor: 'bg-purple-100/50 dark:bg-purple-900/20' };
+                 return { icon: Info, text: t('chat.status.review'), color: 'text-purple-800 dark:text-purple-200', bgColor: 'bg-purple-100/50 dark:bg-purple-900/20' };
             case 'COMPLETED':
-                return { icon: PartyPopper, text: 'Campaign complete!', color: 'text-gray-800 dark:text-gray-200', bgColor: 'bg-gray-100/50 dark:bg-gray-800/20' };
+                return { icon: PartyPopper, text: t('chat.status.completed'), color: 'text-gray-800 dark:text-gray-200', bgColor: 'bg-gray-100/50 dark:bg-gray-800/20' };
             case 'CANCELLED':
-                 return { icon: XCircle, text: 'Negotiation cancelled.', color: 'text-red-800 dark:text-red-200', bgColor: 'bg-red-100/50 dark:bg-red-900/20' };
+                 return { icon: XCircle, text: t('chat.status.cancelled'), color: 'text-red-800 dark:text-red-200', bgColor: 'bg-red-100/50 dark:bg-red-900/20' };
             default:
-                return { icon: Info, text: 'Status: ' + conversation.status, color: 'text-gray-800 dark:text-gray-200', bgColor: 'bg-gray-100/50 dark:bg-gray-800/20' };
+                return { icon: Info, text: `${t('chat.status.status')}: ${conversation.status}`, color: 'text-gray-800 dark:text-gray-200', bgColor: 'bg-gray-100/50 dark:bg-gray-800/20' };
         }
     }
 
     const { icon: Icon, text, color, bgColor } = getStatusInfo();
     
-    let budgetLabel = conversation.status === 'NEGOTIATION' ? 'Last Offer' : 'Agreed Budget';
+    let budgetLabel = conversation.status === 'NEGOTIATION' ? t('chat.budget.lastOffer') : t('chat.budget.agreed');
     if(conversation.status === 'NEGOTIATION' && conversation.last_offer_by !== user?.uid) {
-        budgetLabel = "Their Offer";
+        budgetLabel = t('chat.budget.theirOffer');
     }
 
     return (
         <div className="border-b bg-background">
-            <div className="p-3 sm:p-4 grid grid-cols-2 sm:flex sm:justify-between sm:items-center gap-4">
-                 <div className="flex items-center gap-2 min-w-0 col-span-1">
-                    <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
-                        <Arrow className="h-5 w-5" />
-                    </Button>
+            <div className="p-3 sm:p-4 grid grid-cols-[auto,1fr,auto] sm:flex sm:justify-between sm:items-center gap-4">
+                 <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
+                    <Arrow className="h-5 w-5" />
+                </Button>
+                 <div className="flex items-center gap-3 min-w-0 flex-1">
                      {isBrand && otherUser ? (
                         <div className="flex items-center gap-3 min-w-0">
                             <Avatar className="h-10 w-10 border">
@@ -107,7 +107,7 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                             </Avatar>
                             <div className="flex-1 min-w-0">
                                 <p className="font-semibold truncate">{otherUser.displayName || otherUser.name}</p>
-                                <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground hover:text-primary" onClick={onOpenProfile}>View Profile</Button>
+                                <Button variant="link" size="sm" className="h-auto p-0 text-xs text-muted-foreground hover:text-primary" onClick={onOpenProfile}>{t('chat.viewProfile')}</Button>
                             </div>
                         </div>
                     ) : !isBrand && campaign ? (
@@ -125,9 +125,9 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
                     )}
                  </div>
                  
-                <div className="text-right">
+                <div className={cn("text-right", dir === 'rtl' && 'text-left')}>
                     <p className="text-xs font-semibold text-primary">{budgetLabel}</p>
-                    <div className="flex items-baseline gap-x-2 justify-end">
+                    <div className={cn("flex items-baseline gap-x-2", dir === 'rtl' ? 'justify-start' : 'justify-end')}>
                         <span className="font-bold text-primary text-lg">{conversation.agreed_budget || 0} MAD</span>
                         <span className="text-xs text-muted-foreground">/ {campaign?.budget || 0} MAD</span>
                     </div>
@@ -143,7 +143,7 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
             {isBrand && (conversation.status === 'OFFER_ACCEPTED') && (
                 <div className="p-3 border-t">
                     <Button size="sm" onClick={handleFund} disabled={!conversation.agreed_budget || conversation.agreed_budget <= 0} className="w-full">
-                      <CircleDollarSign className="mr-2 h-4 w-4" /> Fund Escrow
+                      <CircleDollarSign className="mr-2 h-4 w-4" /> {t('chat.fundEscrow')}
                     </Button>
                 </div>
             )}
@@ -175,6 +175,7 @@ const MessageBubble = ({ message, isOwnMessage, senderProfile }: { message: any,
 
 const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOffer: (message: any, response: 'ACCEPTED' | 'REJECTED') => void }) => {
     const { userProfile } = useUserProfile();
+    const { t } = useLanguage();
 
     // For the initial context message
     if (message.type === 'TEXT' && message.content.startsWith('Discussion opened for campaign:')) {
@@ -188,12 +189,12 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
         const [, campaignTitle, offerAmount, coverLetter] = match;
 
         const cardTitle = isCreator
-          ? `Discussion for "${campaignTitle}"`
-          : `Application for "${campaignTitle}"`;
+          ? `${t('chat.initialCard.titleCreator')} "${campaignTitle}"`
+          : `${t('chat.initialCard.titleBrand')} "${campaignTitle}"`;
         
         const cardDescription = isCreator
-          ? `The brand has opened a discussion based on your application.`
-          : `Opened on ${message.timestamp ? format(message.timestamp.toDate(), 'MMM d, yyyy') : ''}`;
+          ? t('chat.initialCard.descriptionCreator')
+          : `${t('chat.initialCard.descriptionBrand')} ${message.timestamp ? format(message.timestamp.toDate(), 'MMM d, yyyy') : ''}`;
 
         return (
             <div className="py-4">
@@ -207,13 +208,13 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
                     <CardContent className="space-y-4">
                         <div>
                             <p className="text-sm font-semibold text-muted-foreground">
-                                {isCreator ? "Your Opening Offer" : "Creator's Opening Offer"}
+                                {isCreator ? t('chat.initialCard.yourOffer') : t('chat.initialCard.creatorOffer')}
                             </p>
                             <p className="text-xl font-bold gradient-text">{offerAmount} MAD</p>
                         </div>
                          {coverLetter && coverLetter.trim().length > 0 && (
                             <div>
-                                <p className="text-sm font-semibold text-muted-foreground">Original Cover Letter</p>
+                                <p className="text-sm font-semibold text-muted-foreground">{t('chat.initialCard.coverLetter')}</p>
                                 <p className="text-sm text-foreground/80 mt-1 whitespace-pre-wrap border p-3 rounded-md bg-background/50 break-words">{coverLetter}</p>
                             </div>
                         )}
@@ -229,11 +230,11 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
         
         let title, description;
         if (message.sender_id === userProfile?.uid) {
-            title = "Your Offer";
-            description = `You proposed a budget of`;
+            title = t('chat.offerCard.yourOffer');
+            description = t('chat.offerCard.youProposed');
         } else {
-            title = "Offer Received";
-            description = `${message.sender_name || 'The other party'} proposed a budget of`;
+            title = t('chat.offerCard.offerReceived');
+            description = t('chat.offerCard.theyProposed', { name: message.sender_name || t('chat.otherParty') });
         }
 
         return (
@@ -273,16 +274,16 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
                         {isMyTurnToRespond && (
                             <div className="flex gap-2 pt-2">
                                 <Button className="w-full" onClick={() => onRespondToOffer(message, 'ACCEPTED')}>
-                                    <CheckCircle className="mr-2 h-4 w-4" /> Accept
+                                    <CheckCircle className="mr-2 h-4 w-4" /> {t('chat.accept')}
                                 </Button>
                                 <Button variant="destructive" className="w-full" onClick={() => onRespondToOffer(message, 'REJECTED')}>
-                                    <XCircle className="mr-2 h-4 w-4" /> Reject
+                                    <XCircle className="mr-2 h-4 w-4" /> {t('chat.reject')}
                                 </Button>
                             </div>
                         )}
-                        {status === 'ACCEPTED' && <Badge className="mt-4 bg-green-100 text-green-800">Accepted</Badge>}
-                        {status === 'REJECTED' && <Badge variant="destructive" className="mt-4">Rejected</Badge>}
-                         {status === 'SUPERSEDED' && <Badge variant="outline" className="mt-4">Superseded</Badge>}
+                        {status === 'ACCEPTED' && <Badge className="mt-4 bg-green-100 text-green-800">{t('chat.accepted')}</Badge>}
+                        {status === 'REJECTED' && <Badge variant="destructive" className="mt-4">{t('chat.rejected')}</Badge>}
+                         {status === 'SUPERSEDED' && <Badge variant="outline" className="mt-4">{t('chat.superseded')}</Badge>}
                     </CardContent>
                 </Card>
             </div>
@@ -292,11 +293,10 @@ const SystemCard = ({ message, onRespondToOffer }: { message: any, onRespondToOf
     if(message.type === 'SYSTEM_ESCROW' || message.type === 'SYSTEM_EVENT') {
         const eventIcons: { [key: string]: React.ElementType } = {
           'accepté': CheckCircle,
-          'financé': Shield,
           'funded': Shield,
         };
         
-        const eventType = message.content.includes('accepté') ? 'accepté' : message.content.includes('financé') || message.content.includes('funded') ? 'funded' : 'info';
+        const eventType = message.content.includes(t('chat.eventAccepted')) ? 'accepté' : message.content.includes(t('chat.eventFunded')) ? 'funded' : 'info';
         const Icon = eventIcons[eventType] || Info;
 
         return (
@@ -315,6 +315,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     const [profiles, setProfiles] = useState<any>({});
     const firestore = useFirestore();
     const scrollRef = useRef<HTMLDivElement>(null);
+    const { t } = useLanguage();
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -343,7 +344,7 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
     }, [conversation, firestore]);
     
     if(!messages) {
-        return <div className="flex-1 p-6 space-y-4 overflow-y-auto" ref={scrollRef}>Loading messages...</div>
+        return <div className="flex-1 p-6 space-y-4 overflow-y-auto" ref={scrollRef}>{t('chat.loadingMessages')}</div>
     }
 
     return (
@@ -361,6 +362,8 @@ const MessageStream = ({ messages, conversation, onRespondToOffer }: { messages:
 const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: number, message: string) => void, setOpen?: (open: boolean) => void }) => {
     const [newOffer, setNewOffer] = useState('');
     const [message, setMessage] = useState('');
+    const { t, dir } = useLanguage();
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
   
     const handleSubmitOffer = () => {
       if (!newOffer || isNaN(parseFloat(newOffer)) || parseFloat(newOffer) <= 0) {
@@ -376,11 +379,11 @@ const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: numbe
     return (
       <div className="grid gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="budget">Amount (MAD)</Label>
+          <Label htmlFor="budget">{t('chat.proposalForm.amount')}</Label>
           <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
-          <Label htmlFor="message">Message (optional)</Label>
-          <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g., This is my maximum budget..."/>
-          <Button onClick={handleSubmitOffer}>Send Offer <ArrowRight className="ml-2 h-4 w-4" /></Button>
+          <Label htmlFor="message">{t('chat.proposalForm.message')}</Label>
+          <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder={t('chat.proposalForm.placeholder')}/>
+          <Button onClick={handleSubmitOffer}>{t('chat.proposalForm.send')} <Arrow className={cn("h-4 w-4", dir === 'rtl' ? 'mr-2' : 'ml-2')} /></Button>
         </div>
       </div>
     );
@@ -390,6 +393,7 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onAcceptOffer, onDe
     const { user } = useUser();
     const isMobile = useIsMobile();
     const [open, setOpen] = useState(false);
+    const { t } = useLanguage();
     
     if (conversation.status !== 'NEGOTIATION') {
         return null;
@@ -400,7 +404,7 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onAcceptOffer, onDe
     if (!isMyTurn) {
         return (
             <div className="p-4 bg-background border-t text-center text-sm text-muted-foreground">
-                Waiting for the other party's response...
+                {t('chat.waitingResponse')}
             </div>
         )
     }
@@ -416,34 +420,34 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onAcceptOffer, onDe
         <div className="p-3 bg-background border-t">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
                  <Button className="w-full md:w-auto" size="lg" onClick={() => onAcceptOffer(offerToRespondTo)}>
-                    <CheckCircle className="mr-2 h-4 w-4" /> Accept Rate ({offerToRespondTo} MAD)
+                    <CheckCircle className="mr-2 h-4 w-4" /> {t('chat.acceptRate', { amount: offerToRespondTo })}
                 </Button>
                 
                 <div className="relative flex items-center md:hidden">
                     <div className="flex-grow border-t border-border"></div>
-                    <span className="flex-shrink mx-2 text-xs text-muted-foreground">OR</span>
+                    <span className="flex-shrink mx-2 text-xs text-muted-foreground">{t('chat.or')}</span>
                     <div className="flex-grow border-t border-border"></div>
                 </div>
                  
                 <div className="flex flex-col md:flex-row items-center gap-2">
                  {isMobile ? (
                     <Sheet open={open} onOpenChange={setOpen}>
-                        <SheetTrigger asChild><Button variant="outline" size="lg" className="w-full">Propose New Rate</Button></SheetTrigger>
+                        <SheetTrigger asChild><Button variant="outline" size="lg" className="w-full">{t('chat.proposeNew')}</Button></SheetTrigger>
                         <SheetContent side="bottom" className="rounded-t-lg">
                            <SheetHeader className="text-left">
-                            <SheetTitle>New Proposal</SheetTitle>
-                            <SheetDescription>Propose a new budget and add a message if you wish.</SheetDescription>
+                            <SheetTitle>{t('chat.proposalForm.title')}</SheetTitle>
+                            <SheetDescription>{t('chat.proposalForm.description')}</SheetDescription>
                            </SheetHeader>
                            <div className="py-4">{ProposalContent}</div>
                         </SheetContent>
                     </Sheet>
                  ) : (
                     <Dialog open={open} onOpenChange={setOpen}>
-                        <DialogTrigger asChild><Button variant="outline" size="lg">Propose New Rate</Button></DialogTrigger>
+                        <DialogTrigger asChild><Button variant="outline" size="lg">{t('chat.proposeNew')}</Button></DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>
-                                <DialogTitle>New Proposal</DialogTitle>
-                                <DialogDescription>Propose a new budget and add a message if you wish.</DialogDescription>
+                                <DialogTitle>{t('chat.proposalForm.title')}</DialogTitle>
+                                <DialogDescription>{t('chat.proposalForm.description')}</DialogDescription>
                             </DialogHeader>
                             {ProposalContent}
                         </DialogContent>
@@ -451,7 +455,7 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onAcceptOffer, onDe
                  )}
 
                 <Button variant="ghost" size="lg" className="w-full md:w-auto text-destructive hover:text-destructive hover:bg-destructive/10" onClick={onDecline}>
-                    <XCircle className="mr-2 h-4 w-4 md:hidden" /> Decline
+                    <XCircle className="mr-2 h-4 w-4 md:hidden" /> {t('chat.decline')}
                 </Button>
                 </div>
             </div>
@@ -462,6 +466,7 @@ const ActionFooter = ({ conversation, messages, onMakeOffer, onAcceptOffer, onDe
 const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string) => void, disabled: boolean, placeholder: string }) => {
     const [input, setInput] = useState('');
     const [isBlocked, setIsBlocked] = useState(false);
+    const { t } = useLanguage();
 
     const GuardianBot = {
         isSecure: (text: string): boolean => {
@@ -496,8 +501,8 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
             {isBlocked && (
                 <Alert variant="destructive" className="mb-2">
                     <Bot className="h-4 w-4" />
-                    <AlertTitle>Message Blocked by Guardian Bot</AlertTitle>
-                    <AlertDescription>Sharing contact information is forbidden during negotiation. Please keep communication on VibeMatch for your security.</AlertDescription>
+                    <AlertTitle>{t('chat.guardianBot.title')}</AlertTitle>
+                    <AlertDescription>{t('chat.guardianBot.description')}</AlertDescription>
                 </Alert>
             )}
             <div className="relative">
@@ -517,17 +522,14 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
     );
 };
 
-export default function ChatPage() {
+export default function ChatView({ conversationId, onBack }: { conversationId: string, onBack: () => void }) {
     const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
     const [isSheetOpen, setIsSheetOpen] = useState(false);
-    const params = useParams();
-    const conversationId = params.conversationId as string;
-    const router = useRouter();
-
+    const { t } = useLanguage();
 
     const conversationRef = useMemoFirebase(
         () => (firestore && conversationId ? doc(firestore, 'conversations', conversationId) : null),
@@ -575,7 +577,7 @@ export default function ChatPage() {
              <main className="flex-1 flex items-center justify-center bg-muted/50 h-full">
                 <div className="text-center">
                     <Info className="mx-auto h-12 w-12 text-muted-foreground" />
-                    <h2 className="mt-4 text-xl font-semibold text-muted-foreground">Conversation not found</h2>
+                    <h2 className="mt-4 text-xl font-semibold text-muted-foreground">{t('chat.notFound.title')}</h2>
                 </div>
             </main>
         )
@@ -586,8 +588,8 @@ export default function ChatPage() {
          return (
              <main className="flex-1 flex items-center justify-center bg-muted/50 h-full">
                 <Alert variant="destructive" className="max-w-md">
-                   <AlertTitle>Access Denied</AlertTitle>
-                   <AlertDescription>You are not a participant in this conversation.</AlertDescription>
+                   <AlertTitle>{t('chat.accessDenied.title')}</AlertTitle>
+                   <AlertDescription>{t('chat.accessDenied.description')}</AlertDescription>
                 </Alert>
             </main>
          )
@@ -657,11 +659,11 @@ export default function ChatPage() {
             conversation_id: conversationId,
             sender_id: user.uid,
             type: 'SYSTEM_EVENT',
-            content: `Deal agreed at ${amount} MAD by ${userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}.`,
+            content: t('chat.eventAccepted', { role: userProfile?.role === 'creator' ? 'the Creator' : 'the Brand', amount }),
             timestamp: serverTimestamp(),
         });
         
-        toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
+        toast({ title: t('chat.toast.offerAccepted.title'), description: t('chat.toast.offerAccepted.description')});
     
         await batch.commit().catch((serverError) => {
           const permissionError = new FirestorePermissionError({
@@ -729,18 +731,18 @@ export default function ChatPage() {
                 conversation_id: conversationId,
                 sender_id: user.uid,
                 type: 'SYSTEM_EVENT',
-                content: `Offer accepted by ${userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}. Awaiting funds from the Brand.`,
+                content: t('chat.eventAcceptedAwaitingFunds', { role: userProfile?.role === 'creator' ? 'the Creator' : 'the Brand'}),
                 timestamp: serverTimestamp(),
             };
             batch.set(newEventRef, eventMessageData);
 
             batch.update(campaignRef, { status: 'PENDING_PAYMENT' });
             
-            toast({ title: 'Offer Accepted!', description: 'The brand can now fund the project.'});
+            toast({ title: t('chat.toast.offerAccepted.title'), description: t('chat.toast.offerAccepted.description')});
         } else {
              conversationUpdateData = { last_offer_by: user.uid };
              batch.update(conversationRef, conversationUpdateData);
-             toast({ title: 'Offer Rejected' });
+             toast({ title: t('chat.toast.offerRejected') });
         }
         
         await batch.commit().catch((serverError) => {
@@ -761,12 +763,12 @@ export default function ChatPage() {
         try {
             await updateDoc(conversationRef, {
                 status: 'CANCELLED',
-                lastMessage: 'The negotiation was cancelled.',
+                lastMessage: t('chat.negotiationCancelled'),
                 updatedAt: serverTimestamp(),
             });
-            toast({ variant: 'destructive', title: 'Negotiation Cancelled' });
+            toast({ variant: 'destructive', title: t('chat.toast.negotiationCancelled') });
         } catch (error: any) {
-            toast({ variant: 'destructive', title: 'Error', description: 'Could not cancel the negotiation.' });
+            toast({ variant: 'destructive', title: 'Error', description: t('chat.toast.cancelError') });
         }
     };
 
@@ -774,16 +776,16 @@ export default function ChatPage() {
     const isInNegotiation = conversation.status === 'NEGOTIATION';
     const textInputDisabled = !isChatActive && !isInNegotiation;
     
-    let placeholder = "This conversation is not active for messages.";
+    let placeholder = t('chat.placeholder.inactive');
     if(isInNegotiation) {
-        placeholder = "Use the actions below to respond to the offer.";
+        placeholder = t('chat.placeholder.negotiation');
     }
     if (isChatActive) {
-      placeholder = "Discuss creative details...";
+      placeholder = t('chat.placeholder.active');
     }
 
     return (
-        <div className="flex-1 flex flex-col bg-muted/50 h-full">
+        <main className="flex-1 flex flex-col bg-muted/50 h-full">
             <DealStatusHeader 
                 conversation={conversation} 
                 campaign={campaign} 
@@ -808,6 +810,6 @@ export default function ChatPage() {
                 open={isSheetOpen}
                 onOpenChange={setIsSheetOpen}
             />
-        </div>
+        </main>
     );
 }
