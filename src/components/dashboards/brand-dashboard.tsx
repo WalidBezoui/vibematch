@@ -86,15 +86,15 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
 
 const ActionRequiredItem = ({ icon, text, buttonText, href, type }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string }) => {
   const typeStyles = {
-    payment: 'text-blue-500',
-    applicants: 'text-green-500',
-    message: 'text-amber-500'
+    payment: 'text-blue-500 bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300',
+    applicants: 'text-green-500 bg-green-100 dark:bg-green-900/20 dark:text-green-300',
+    message: 'text-amber-500 bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300'
   };
 
   return (
     <div className="flex items-center justify-between gap-4 p-3 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4">
-            <div className={cn("w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-muted", typeStyles[type as keyof typeof typeStyles])}>
+            <div className={cn("w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full", typeStyles[type as keyof typeof typeStyles])}>
                 {icon}
             </div>
             <p className="text-sm">{text}</p>
@@ -180,11 +180,12 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     }
 
     return (
-        <Card className="mb-8 shadow-sm">
+        <Card className="mb-8 shadow-sm bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <AlertCircle className="text-primary" />
-                    {t('brandDashboard.actions.title')} ({actionItems.length})
+                <CardTitle className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
+                    <AlertCircle />
+                    {t('brandDashboard.actions.title')}
+                    <Badge variant="destructive" className="rounded-full">{actionItems.length}</Badge>
                 </CardTitle>
             </CardHeader>
             <CardContent className="p-2">
