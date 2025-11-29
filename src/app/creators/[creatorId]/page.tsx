@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Award, CalendarDays, Info, ShieldAlert, Send } from 'lucide-react';
 import { useCollection } from '@/firebase/firestore/use-collection';
 import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
+import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
 const TrustScoreGauge = ({ score }: { score: number }) => {
   const circumference = 2 * Math.PI * 45; // 2 * pi * radius
@@ -92,6 +93,8 @@ export default function CreatorPublicProfilePage() {
   const { creatorId } = useParams();
   const firestore = useFirestore();
   const { user } = useUser();
+  const { getNicheLabel } = useNicheTranslation();
+
 
   const creatorRef = useMemoFirebase(
     () => firestore ? doc(firestore, 'users', creatorId as string) : null,
@@ -155,7 +158,7 @@ export default function CreatorPublicProfilePage() {
                  {creator.tags && creator.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1 justify-center pt-2">
                         {creator.tags.slice(0, 3).map((tag: string) => (
-                            <Badge key={tag} variant="secondary" className="font-normal">{tag}</Badge>
+                            <Badge key={tag} variant="secondary" className="font-normal">{getNicheLabel(tag)}</Badge>
                         ))}
                     </div>
                 )}

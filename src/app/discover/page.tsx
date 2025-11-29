@@ -25,6 +25,7 @@ import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
+import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
 const CampaignCardSkeleton = () => (
     <Card className="flex flex-col">
@@ -48,6 +49,7 @@ export default function DiscoverPage() {
     const { user } = useUser();
     const { toast } = useToast();
     const { t, dir } = useLanguage();
+    const { getNicheLabel } = useNicheTranslation();
     const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
     // Fetch all open campaigns
@@ -165,7 +167,7 @@ export default function DiscoverPage() {
                                             {campaign.tags && campaign.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-2 pt-2">
                                                     {campaign.tags.slice(0, 3).map((tag: string) => (
-                                                        <Badge key={tag} variant="secondary">{tag}</Badge>
+                                                        <Badge key={tag} variant="secondary">{getNicheLabel(tag)}</Badge>
                                                     ))}
                                                 </div>
                                             )}
@@ -176,7 +178,7 @@ export default function DiscoverPage() {
                                             </p>
                                             <div>
                                                 <Badge variant="outline">{t('discoverCampaigns.budget')}</Badge>
-                                                <p className="font-bold text-lg gradient-text mt-1">{campaign.budget} DH</p>
+                                                <p className="font-bold text-lg gradient-text mt-1">{campaign.budget} {t('currency')}</p>
                                             </div>
                                         </CardContent>
                                         <CardFooter className="flex-col items-stretch gap-2">

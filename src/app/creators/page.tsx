@@ -18,6 +18,7 @@ import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLanguage } from '@/context/language-context';
 import CreatorProfileSheet from '@/components/creator-profile-sheet';
+import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
 const CreatorCardSkeleton = () => (
     <Card className="overflow-hidden">
@@ -53,6 +54,7 @@ type CreatorProfile = {
 
 const CreatorCard = ({ creator, activeCampaigns, onViewProfile }: { creator: CreatorProfile, activeCampaigns: any[], onViewProfile: (creatorId: string) => void }) => {
     const { t, dir } = useLanguage();
+    const { getNicheLabel } = useNicheTranslation();
     const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
     return (
@@ -82,7 +84,7 @@ const CreatorCard = ({ creator, activeCampaigns, onViewProfile }: { creator: Cre
                 <div className="flex flex-wrap gap-2 min-h-[26px]">
                     {creator.tags && creator.tags.length > 0 && (
                         creator.tags.slice(0, 3).map(tag => (
-                            <Badge key={tag} variant="secondary">{tag}</Badge>
+                            <Badge key={tag} variant="secondary">{getNicheLabel(tag)}</Badge>
                         ))
                     )}
                 </div>

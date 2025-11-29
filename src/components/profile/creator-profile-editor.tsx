@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
@@ -17,6 +18,7 @@ import { Upload, User, MapPin, Edit, ImageIcon, Tag, Type, Lightbulb, Briefcase 
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
+import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
 
 const creatorProfileSchema = z.object({
@@ -54,9 +56,10 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const { t } = useLanguage();
-  const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
   const { userProfile } = useUserProfile();
   const [motivationalTip, setMotivationalTip] = useState('');
+  const { niches, getNicheLabel } = useNicheTranslation();
+
 
    const { nextStep, percentage } = useMemo(() => {
     if (!userProfile) return { percentage: 0, nextStep: { text: "Complete your profile", icon: User } };
@@ -72,7 +75,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
     const completedFields = fields.filter(f => f.present).length;
     const totalFields = fields.length;
     
-    const percentage = Math.round((completedFields / totalFields) * 100);
+    const percentage = 30 + Math.round((completedFields / totalFields) * 70);
 
     const firstIncompleteStep = fields.find(f => !f.present);
     const nextStep = firstIncompleteStep || { text: "Profile is complete!", icon: User };
@@ -183,7 +186,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                             {profile.tags && profile.tags.length > 0 && (
                                 <div className="flex flex-wrap gap-1 justify-center pt-2">
                                     {profile.tags.slice(0, 3).map((tag: string) => (
-                                        <Badge key={tag} variant="secondary" className="font-normal">{tag}</Badge>
+                                        <Badge key={tag} variant="secondary" className="font-normal">{getNicheLabel(tag)}</Badge>
                                     ))}
                                 </div>
                             )}
@@ -294,13 +297,13 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                                         variant="outline"
                                         className={cn(
                                             "rounded-full",
-                                            field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+                                            field.value?.includes(niche.id) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
                                         )}
                                         onClick={() => {
                                             const currentTags = field.value || [];
-                                            const newTags = currentTags.includes(niche.label)
-                                            ? currentTags.filter(t => t !== niche.label)
-                                            : [...currentTags, niche.label];
+                                            const newTags = currentTags.includes(niche.id)
+                                            ? currentTags.filter(t => t !== niche.id)
+                                            : [...currentTags, niche.id];
                                             field.onChange(newTags);
                                         }}
                                         >
