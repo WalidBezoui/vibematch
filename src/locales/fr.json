@@ -17,6 +17,99 @@
         "myAccount": "Mon Compte",
         "settings": "Paramètres"
     },
+    "chat": {
+        "title": "Contrats",
+        "tabs": {
+            "negotiations": "Négociation",
+            "active": "Actifs",
+            "archived": "Archivés"
+        },
+        "emptyTab": "Aucune conversation dans cette catégorie.",
+        "noMessages": "Pas encore de messages",
+        "loadingMessages": "Chargement des messages...",
+        "viewProfile": "Voir le profil",
+        "status": {
+            "yourResponse": "En attente de votre réponse",
+            "waitingForCreator": "En attente de la réponse du créateur",
+            "brandReviewing": "La marque examine votre offre",
+            "fund": "Accord conclu. Financez pour démarrer.",
+            "awaitingFunds": "Accord conclu. En attente du financement.",
+            "offerAccepted": "Offre acceptée. En attente de paiement.",
+            "fundsSecured": "Fonds sécurisés. Travail en cours.",
+            "review": "Travail soumis pour validation.",
+            "completed": "Campagne terminée !",
+            "cancelled": "Négociation annulée.",
+            "status": "Statut"
+        },
+        "budget": {
+            "lastOffer": "Dernière Offre",
+            "agreed": "Budget Convenu",
+            "theirOffer": "Son Offre"
+        },
+        "fundEscrow": "Financer le Séquestre",
+        "initialCard": {
+            "titleCreator": "Discussion pour",
+            "titleBrand": "Candidature pour",
+            "descriptionCreator": "La marque a ouvert une discussion suite à votre candidature.",
+            "descriptionBrand": "Ouvert le",
+            "yourOffer": "Votre Offre Initiale",
+            "creatorOffer": "Offre Initiale du Créateur",
+            "coverLetter": "Lettre de Motivation Initiale"
+        },
+        "offerCard": {
+            "yourOffer": "Votre Offre",
+            "youProposed": "Vous avez proposé un budget de",
+            "offerReceived": "Offre Reçue",
+            "theyProposed": "{{name}} a proposé un budget de"
+        },
+        "accept": "Accepter",
+        "reject": "Rejeter",
+        "accepted": "Acceptée",
+        "rejected": "Rejetée",
+        "superseded": "Remplacée",
+        "eventAccepted": "Offre acceptée par {{role}} à {{amount}} MAD.",
+        "eventFunded": "Les fonds ont été sécurisés par la marque.",
+        "eventAcceptedAwaitingFunds": "Offre acceptée par {{role}}. En attente du financement par la marque.",
+        "waitingResponse": "En attente de la réponse de l'autre partie...",
+        "acceptRate": "Accepter le tarif ({{amount}} MAD)",
+        "or": "OU",
+        "proposeNew": "Proposer un nouveau tarif",
+        "decline": "Refuser",
+        "proposalForm": {
+            "title": "Nouvelle Proposition",
+            "description": "Proposez un nouveau budget et ajoutez un message si vous le souhaitez.",
+            "amount": "Montant (MAD)",
+            "message": "Message (optionnel)",
+            "placeholder": "Ex: C'est mon budget maximum...",
+            "send": "Envoyer l'Offre"
+        },
+        "guardianBot": {
+            "title": "Message Bloqué par Guardian Bot",
+            "description": "Le partage d'informations de contact est interdit pendant la négociation. Veuillez garder la communication sur VibeMatch pour votre sécurité."
+        },
+        "placeholder": {
+            "inactive": "Cette conversation n'est pas active pour les messages.",
+            "negotiation": "Utilisez les actions ci-dessous pour répondre à l'offre.",
+            "active": "Discutez des détails créatifs..."
+        },
+        "notFound": {
+            "title": "Conversation introuvable"
+        },
+        "accessDenied": {
+            "title": "Accès Refusé",
+            "description": "Vous n'êtes pas un participant de cette conversation."
+        },
+        "toast": {
+            "offerAccepted": {
+                "title": "Offre Acceptée !",
+                "description": "La marque peut maintenant financer le projet."
+            },
+            "offerRejected": "Offre Rejetée",
+            "negotiationCancelled": "Négociation Annulée",
+            "cancelError": "Impossible d'annuler la négociation."
+        },
+        "otherParty": "L'autre partie"
+    },
     "brandDashboard": {
         "title": "Tableau de Bord Marque",
         "createButton": "Nouvelle Campagne",
@@ -551,24 +644,24 @@
     },
     "contactPage": {
         "title": {
-          "part1": "Contactez-",
-          "part2": "nous"
+            "part1": "Contactez-",
+            "part2": "nous"
         },
         "description": "Nous sommes là pour vous aider. Que vous ayez une question, une proposition de partenariat ou besoin d'aide, notre équipe est à votre écoute.",
         "phone": {
-          "title": "Support Téléphonique",
-          "description": "Notre équipe est disponible du lundi au vendredi, de 9h à 17h.",
-          "button": "Appeler Maintenant"
+            "title": "Support Téléphonique",
+            "description": "Notre équipe est disponible du lundi au vendredi, de 9h à 17h.",
+            "button": "Appeler Maintenant"
         },
         "whatsapp": {
-          "title": "Discuter sur WhatsApp",
-          "description": "Vous préférez les messages ? Contactez-nous sur WhatsApp pour une réponse rapide.",
-          "button": "Démarrer la Discussion"
+            "title": "Discuter sur WhatsApp",
+            "description": "Vous préférez les messages ? Contactez-nous sur WhatsApp pour une réponse rapide.",
+            "button": "Démarrer la Discussion"
         },
         "email": {
-          "title": "Envoyer un E-mail",
-          "description": "Pour toute demande détaillée ou pour nous faire part de vos suggestions.",
-          "button": "Envoyer un E-mail"
+            "title": "Envoyer un E-mail",
+            "description": "Pour toute demande détaillée ou pour nous faire part de vos suggestions.",
+            "button": "Envoyer un E-mail"
         }
     },
     "currency": "MAD",

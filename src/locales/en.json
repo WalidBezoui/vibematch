@@ -17,6 +17,99 @@
         "myAccount": "My Account",
         "settings": "Settings"
     },
+    "chat": {
+        "title": "Deals",
+        "tabs": {
+            "negotiations": "Negotiating",
+            "active": "Active",
+            "archived": "Archived"
+        },
+        "emptyTab": "No conversations in this category.",
+        "noMessages": "No messages yet",
+        "loadingMessages": "Loading messages...",
+        "viewProfile": "View Profile",
+        "status": {
+            "yourResponse": "Awaiting your response",
+            "waitingForCreator": "Waiting for creator's response",
+            "brandReviewing": "Brand is reviewing your offer",
+            "fund": "Deal Agreed. Fund to start.",
+            "awaitingFunds": "Deal Agreed. Awaiting funds.",
+            "offerAccepted": "Offer accepted. Awaiting payment.",
+            "fundsSecured": "Funds Secured. Work in progress.",
+            "review": "Work submitted for validation.",
+            "completed": "Campaign complete!",
+            "cancelled": "Negotiation cancelled.",
+            "status": "Status"
+        },
+        "budget": {
+            "lastOffer": "Last Offer",
+            "agreed": "Agreed Budget",
+            "theirOffer": "Their Offer"
+        },
+        "fundEscrow": "Fund Escrow",
+        "initialCard": {
+            "titleCreator": "Discussion for",
+            "titleBrand": "Application for",
+            "descriptionCreator": "The brand has opened a discussion based on your application.",
+            "descriptionBrand": "Opened on",
+            "yourOffer": "Your Opening Offer",
+            "creatorOffer": "Creator's Opening Offer",
+            "coverLetter": "Original Cover Letter"
+        },
+        "offerCard": {
+            "yourOffer": "Your Offer",
+            "youProposed": "You proposed a budget of",
+            "offerReceived": "Offer Received",
+            "theyProposed": "{{name}} proposed a budget of"
+        },
+        "accept": "Accept",
+        "reject": "Reject",
+        "accepted": "Accepted",
+        "rejected": "Rejected",
+        "superseded": "Superseded",
+        "eventAccepted": "Offer accepted by {{role}} at {{amount}} MAD.",
+        "eventFunded": "The funds have been secured by the brand.",
+        "eventAcceptedAwaitingFunds": "Offer accepted by {{role}}. Awaiting funds from the Brand.",
+        "waitingResponse": "Waiting for the other party's response...",
+        "acceptRate": "Accept Rate ({{amount}} MAD)",
+        "or": "OR",
+        "proposeNew": "Propose New Rate",
+        "decline": "Decline",
+        "proposalForm": {
+            "title": "New Proposal",
+            "description": "Propose a new budget and add a message if you wish.",
+            "amount": "Amount (MAD)",
+            "message": "Message (optional)",
+            "placeholder": "e.g., This is my maximum budget...",
+            "send": "Send Offer"
+        },
+        "guardianBot": {
+            "title": "Message Blocked by Guardian Bot",
+            "description": "Sharing contact information is forbidden during negotiation. Please keep communication on VibeMatch for your security."
+        },
+        "placeholder": {
+            "inactive": "This conversation is not active for messages.",
+            "negotiation": "Use the actions below to respond to the offer.",
+            "active": "Discuss creative details..."
+        },
+        "notFound": {
+            "title": "Conversation not found"
+        },
+        "accessDenied": {
+            "title": "Access Denied",
+            "description": "You are not a participant in this conversation."
+        },
+        "toast": {
+            "offerAccepted": {
+                "title": "Offer Accepted!",
+                "description": "The brand can now fund the project."
+            },
+            "offerRejected": "Offer Rejected",
+            "negotiationCancelled": "Negotiation Cancelled",
+            "cancelError": "Could not cancel the negotiation."
+        },
+        "otherParty": "The other party"
+    },
     "brandDashboard": {
         "title": "Brand Dashboard",
         "createButton": "New Campaign",
@@ -551,24 +644,24 @@
     },
     "contactPage": {
         "title": {
-          "part1": "Get in",
-          "part2": "Touch"
+            "part1": "Get in",
+            "part2": "Touch"
         },
         "description": "We're here to help. Whether you have a question about our platform, a partnership inquiry, or need support, our team is ready to assist you.",
         "phone": {
-          "title": "Talk to Support",
-          "description": "Our support team is available from 9 AM to 5 PM, Monday to Friday.",
-          "button": "Call Now"
+            "title": "Talk to Support",
+            "description": "Our support team is available from 9 AM to 5 PM, Monday to Friday.",
+            "button": "Call Now"
         },
         "whatsapp": {
-          "title": "Chat on WhatsApp",
-          "description": "Prefer texting? Reach out to us on WhatsApp for quick answers.",
-          "button": "Start Chat"
+            "title": "Chat on WhatsApp",
+            "description": "Prefer texting? Reach out to us on WhatsApp for quick answers.",
+            "button": "Start Chat"
         },
         "email": {
-          "title": "Send an Email",
-          "description": "For detailed inquiries or feedback, feel free to send us an email.",
-          "button": "Send Email"
+            "title": "Send an Email",
+            "description": "For detailed inquiries or feedback, feel free to send us an email.",
+            "button": "Send Email"
         }
     },
     "currency": "DH",
@@ -629,7 +722,7 @@
             "title": "Product Logistics",
             "options": [
                 { "value": "shipping", "title": "Shipping", "description": "I will ship the product to the creator for free.", "icon": "Package" },
-                { "value": "digital", "title": "Digital / Service", "description": "No physical product is required (app, service, location).", "icon": "Computer" }
+                { "value": "digital", "title": "Digital / Service", "description": "No physical product is required (app, service, event).", "icon": "Computer" }
             ]
         },
         "discovery": {

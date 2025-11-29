@@ -17,6 +17,99 @@
         "myAccount": "حسابي",
         "settings": "الإعدادات"
     },
+    "chat": {
+        "title": "العقود",
+        "tabs": {
+            "negotiations": "قيد التفاوض",
+            "active": "نشطة",
+            "archived": "مؤرشفة"
+        },
+        "emptyTab": "لا توجد محادثات في هذه الفئة.",
+        "noMessages": "لا توجد رسائل بعد",
+        "loadingMessages": "جارٍ تحميل الرسائل...",
+        "viewProfile": "عرض الملف الشخصي",
+        "status": {
+            "yourResponse": "في انتظار ردك",
+            "waitingForCreator": "في انتظار رد صانع المحتوى",
+            "brandReviewing": "العلامة التجارية تراجع عرضك",
+            "fund": "تم الاتفاق. قم بالتمويل للبدء.",
+            "awaitingFunds": "تم الاتفاق. في انتظار التمويل.",
+            "offerAccepted": "تم قبول العرض. في انتظار الدفع.",
+            "fundsSecured": "الأموال مؤمنة. العمل قيد التنفيذ.",
+            "review": "تم تقديم العمل للتحقق.",
+            "completed": "الحملة مكتملة!",
+            "cancelled": "تم إلغاء التفاوض.",
+            "status": "الحالة"
+        },
+        "budget": {
+            "lastOffer": "آخر عرض",
+            "agreed": "الميزانية المتفق عليها",
+            "theirOffer": "عرضهم"
+        },
+        "fundEscrow": "تمويل الضمان",
+        "initialCard": {
+            "titleCreator": "مناقشة لـ",
+            "titleBrand": "طلب لـ",
+            "descriptionCreator": "فتحت العلامة التجارية نقاشًا بناءً على طلبك.",
+            "descriptionBrand": "افتتح في",
+            "yourOffer": "عرضك المبدئي",
+            "creatorOffer": "العرض المبدئي لصانع المحتوى",
+            "coverLetter": "خطاب التقديم الأصلي"
+        },
+        "offerCard": {
+            "yourOffer": "عرضك",
+            "youProposed": "لقد اقترحت ميزانية قدرها",
+            "offerReceived": "تم استلام عرض",
+            "theyProposed": "اقترح {{name}} ميزانية قدرها"
+        },
+        "accept": "قبول",
+        "reject": "رفض",
+        "accepted": "مقبول",
+        "rejected": "مرفوض",
+        "superseded": "تم استبداله",
+        "eventAccepted": "تم قبول العرض من قبل {{role}} بمبلغ {{amount}} درهم.",
+        "eventFunded": "تم تأمين الأموال من قبل العلامة التجارية.",
+        "eventAcceptedAwaitingFunds": "تم قبول العرض من قبل {{role}}. في انتظار التمويل من العلامة التجارية.",
+        "waitingResponse": "في انتظار رد الطرف الآخر...",
+        "acceptRate": "قبول السعر ({{amount}} درهم)",
+        "or": "أو",
+        "proposeNew": "اقتراح سعر جديد",
+        "decline": "رفض",
+        "proposalForm": {
+            "title": "اقتراح جديد",
+            "description": "اقترح ميزانية جديدة وأضف رسالة إذا كنت ترغب في ذلك.",
+            "amount": "المبلغ (بالدرهم)",
+            "message": "رسالة (اختياري)",
+            "placeholder": "مثال: هذه هي ميزانيتي القصوى...",
+            "send": "إرسال العرض"
+        },
+        "guardianBot": {
+            "title": "تم حظر الرسالة بواسطة Guardian Bot",
+            "description": "يُمنع مشاركة معلومات الاتصال أثناء التفاوض. يرجى الحفاظ على التواصل على VibeMatch لسلامتك."
+        },
+        "placeholder": {
+            "inactive": "هذه المحادثة غير نشطة للرسائل.",
+            "negotiation": "استخدم الإجراءات أدناه للرد على العرض.",
+            "active": "ناقش التفاصيل الإبداعية..."
+        },
+        "notFound": {
+            "title": "المحادثة غير موجودة"
+        },
+        "accessDenied": {
+            "title": "الوصول مرفوض",
+            "description": "أنت لست مشاركًا في هذه المحادثة."
+        },
+        "toast": {
+            "offerAccepted": {
+                "title": "تم قبول العرض!",
+                "description": "يمكن للعلامة التجارية الآن تمويل المشروع."
+            },
+            "offerRejected": "تم رفض العرض",
+            "negotiationCancelled": "تم إلغاء التفاوض",
+            "cancelError": "تعذر إلغاء التفاوض."
+        },
+        "otherParty": "الطرف الآخر"
+    },
     "brandDashboard": {
         "title": "لوحة تحكم العلامة التجارية",
         "createButton": "حملة جديدة",
@@ -688,7 +781,7 @@
         "title": "اكتشف الحملات",
         "description": "تصفح وقدم طلبًا لحملات حصرية من أفضل العلامات التجارية المغربية.",
         "budget": "الميزانية",
-        "viewAndApply": "عرض وتقديم طلب",
+        "viewCampaign": "عرض الحملة",
         "applied": "تم إرسال الطلب",
         "full": "الحملة مكتملة",
         "noCampaigns": {

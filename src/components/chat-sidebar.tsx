@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from './ui/badge';
 import { useSearchParams } from 'next/navigation';
+import { useLanguage } from '@/context/language-context';
 
 const ConversationCard = ({
   id,
@@ -32,6 +33,8 @@ const ConversationCard = ({
   awaitingFunding?: boolean;
   onClick: (id: string) => void;
 }) => {
+  const { t } = useLanguage();
+
   return (
     <div 
       onClick={() => onClick(id)}
@@ -47,7 +50,7 @@ const ConversationCard = ({
             <div className="flex-1 overflow-hidden">
                 <p className="font-semibold truncate">{name}</p>
                 <p className="text-xs text-muted-foreground truncate">{title}</p>
-                <p className="text-sm text-muted-foreground truncate mt-1">{lastMessage}</p>
+                <p className="text-sm text-muted-foreground truncate mt-1">{lastMessage || t('chat.noMessages')}</p>
             </div>
         </div>
         {hasAction && (
@@ -73,6 +76,7 @@ const ConversationList = ({ conversations, onSelectConversation }: { conversatio
     const [isLoading, setIsLoading] = useState(true);
     const searchParams = useSearchParams();
     const conversationId = searchParams.get('id');
+    const { t } = useLanguage();
 
     useEffect(() => {
         const enrichConversations = async () => {
@@ -127,7 +131,7 @@ const ConversationList = ({ conversations, onSelectConversation }: { conversatio
     }
 
     if (enrichedConversations.length === 0) {
-        return <p className="text-sm text-center text-muted-foreground p-8">No conversations in this category.</p>
+        return <p className="text-sm text-center text-muted-foreground p-8">{t('chat.emptyTab')}</p>
     }
     
     const isUserBrand = userProfile?.role === 'brand';
@@ -143,7 +147,7 @@ const ConversationList = ({ conversations, onSelectConversation }: { conversatio
                     avatar={item.otherUser.photoURL}
                     name={isUserBrand ? item.otherUser.displayName || item.otherUser.name : item.otherUser.name}
                     title={item.campaignTitle}
-                    lastMessage={item.lastMessage || 'No messages yet'}
+                    lastMessage={item.lastMessage}
                     hasAction={item.status === 'NEGOTIATION' && item.last_offer_by !== user?.uid}
                     awaitingFunding={item.status === 'OFFER_ACCEPTED'}
                 />
@@ -156,6 +160,7 @@ export function ChatSidebar({ onSelectConversation }: { onSelectConversation: (i
   const firestore = useFirestore();
   const { user } = useUser();
   const { userProfile } = useUserProfile();
+  const { t } = useLanguage();
 
   const conversationsQuery = useMemoFirebase(() => {
     if (!user || !firestore || !userProfile) return null;
@@ -172,7 +177,7 @@ export function ChatSidebar({ onSelectConversation }: { onSelectConversation: (i
   return (
     <aside className="w-full border-r flex-col h-full bg-background flex">
       <div className="p-4 border-b">
-        <h2 className="text-2xl font-bold tracking-tight">Deals</h2>
+        <h2 className="text-2xl font-bold tracking-tight">{t('chat.title')}</h2>
       </div>
        {isLoading ? (
             <div className="p-4 space-y-4">
@@ -184,13 +189,13 @@ export function ChatSidebar({ onSelectConversation }: { onSelectConversation: (i
              <Tabs defaultValue="negotiations" className="flex-1 flex flex-col">
                 <TabsList className="m-2 grid grid-cols-3 h-auto p-1 bg-muted rounded-full">
                     <TabsTrigger value="negotiations" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
-                        Negotiating <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{negotiations.length}</Badge>
+                        {t('chat.tabs.negotiations')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{negotiations.length}</Badge>
                     </TabsTrigger>
                     <TabsTrigger value="active" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
-                        Active <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{active.length}</Badge>
+                        {t('chat.tabs.active')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{active.length}</Badge>
                     </TabsTrigger>
                     <TabsTrigger value="completed" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
-                        Archived <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{completed.length}</Badge>
+                        {t('chat.tabs.archived')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{completed.length}</Badge>
                     </TabsTrigger>
                 </TabsList>
                 <div className="flex-1 overflow-y-auto">
