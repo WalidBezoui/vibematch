@@ -79,13 +79,13 @@ const CreatorCard = ({ creator, activeCampaigns, onViewProfile }: { creator: Cre
                     )}
                 </div>
 
-                {creator.tags && creator.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                        {creator.tags.slice(0, 3).map(tag => (
+                <div className="flex flex-wrap gap-2 min-h-[26px]">
+                    {creator.tags && creator.tags.length > 0 && (
+                        creator.tags.slice(0, 3).map(tag => (
                             <Badge key={tag} variant="secondary">{tag}</Badge>
-                        ))}
-                    </div>
-                )}
+                        ))
+                    )}
+                </div>
                 <div className="flex items-center justify-between text-sm font-semibold">
                     <div className="flex items-center gap-1 text-green-600">
                         <ShieldCheck className="h-4 w-4" />
