@@ -88,15 +88,18 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, camp
   const typeStyles = {
     payment: {
       iconBg: 'bg-blue-100 dark:bg-blue-900/20',
-      iconColor: 'text-blue-600 dark:text-blue-300'
+      iconColor: 'text-blue-600 dark:text-blue-300',
+      metricColor: 'text-blue-600 dark:text-blue-300',
     },
     applicants: {
       iconBg: 'bg-green-100 dark:bg-green-900/20',
-      iconColor: 'text-green-600 dark:text-green-300'
+      iconColor: 'text-green-600 dark:text-green-300',
+      metricColor: 'text-green-600 dark:text-green-300',
     },
     message: {
       iconBg: 'bg-amber-100 dark:bg-amber-900/20',
-      iconColor: 'text-amber-600 dark:text-amber-300'
+      iconColor: 'text-amber-600 dark:text-amber-300',
+      metricColor: 'text-amber-600 dark:text-amber-300',
     }
   };
   const styles = typeStyles[type as keyof typeof typeStyles];
@@ -104,16 +107,14 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, camp
   return (
     <div className="flex items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className={cn("w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-2xl", styles.iconBg)}>
-                <div className={cn("flex flex-col items-center gap-1", styles.iconColor)}>
-                    {icon}
-                    <p className="text-2xl font-bold">{metric}</p>
-                </div>
+            <div className={cn("w-16 h-16 flex-shrink-0 flex flex-col items-center justify-center rounded-2xl", styles.iconBg, styles.iconColor)}>
+                {icon}
+                <p className={cn("text-lg font-bold", styles.metricColor)}>{metric}</p>
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground uppercase tracking-wider">{typeText}</p>
+                <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{typeText}</p>
                 <p className="font-semibold truncate">{campaignTitle}</p>
-                <p className="text-sm text-muted-foreground truncate">{text}</p>
+                <div className="text-sm text-muted-foreground truncate">{text}</div>
             </div>
         </div>
         <Button asChild size="sm">
@@ -140,7 +141,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                     type: 'payment',
                     typeText: t('brandDashboard.actions.payment'),
                     id: `payment-convo-${c.id}`,
-                    icon: <Wallet className="h-6 w-6" />,
+                    icon: <Wallet className="h-5 w-5" />,
                     metric: `${c.agreed_budget} DH`,
                     campaignTitle: campaign.title,
                     text: <>{t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator'})}</>,
@@ -158,7 +159,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 type: 'applicants',
                 typeText: t('brandDashboard.actions.applicants'),
                 id: `applicants-${c.id}`,
-                icon: <Users className="h-6 w-6" />,
+                icon: <Users className="h-5 w-5" />,
                 metric: count,
                 campaignTitle: c.title,
                 text: t('brandDashboard.actions.newApplicants', { count }),
@@ -176,7 +177,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 type: 'message',
                 typeText: t('brandDashboard.actions.message'),
                 id: `message-${c.id}`,
-                icon: <MessageSquare className="h-6 w-6" />,
+                icon: <MessageSquare className="h-5 w-5" />,
                 metric: '1',
                 campaignTitle: campaignTitle,
                 text: <>{t('brandDashboard.actions.newMessage', { name: creatorName })}</>,
