@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
@@ -95,8 +94,8 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
 
     return (
         <div className="border-b bg-background">
-            <div className={cn("p-3 sm:p-4 flex justify-between items-center gap-4", dir === 'rtl' && 'flex-row-reverse')}>
-                 <div className="flex items-center gap-2 min-w-0">
+            <div className="p-3 sm:p-4 flex items-center gap-4">
+                 <div className="flex items-center gap-2 min-w-0 flex-1">
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
                         <Arrow className="h-5 w-5" />
                     </Button>
@@ -384,7 +383,7 @@ const NewProposalForm = ({ onMakeOffer, setOpen }: { onMakeOffer: (amount: numbe
           <Input id="budget" type="number" value={newOffer} onChange={(e) => setNewOffer(e.target.value)} />
           <Label htmlFor="message">{t('chat.proposalForm.message')}</Label>
           <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder={t('chat.proposalForm.placeholder')}/>
-          <Button onClick={handleSubmitOffer}>{t('chat.proposalForm.send')} <Arrow className="ml-2 h-4 w-4" /></Button>
+          <Button onClick={handleSubmitOffer}>{t('chat.proposalForm.send')} <Arrow className={cn("h-4 w-4", dir === 'rtl' ? 'mr-2' : 'ml-2')} /></Button>
         </div>
       </div>
     );

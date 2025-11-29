@@ -216,7 +216,7 @@ export default function CampaignPage() {
     const { t, dir } = useLanguage();
     const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | null>(null);
     const [hiredCreators, setHiredCreators] = useState<any[]>([]);
-    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
+    const Arrow = dir === 'rtl' ? ArrowRight : ArrowLeft;
 
     const campaignRef = useMemoFirebase(
         () => firestore ? doc(firestore, 'campaigns', campaignId as string) : null,
@@ -345,7 +345,7 @@ export default function CampaignPage() {
                 <div className="mb-6">
                     <Button variant="ghost" onClick={() => router.push('/discover')}>
                         <Arrow className={cn("h-4 w-4", dir === 'rtl' ? 'ml-2' : 'mr-2')} />
-                        Back to Discovery
+                        {t('navigation.backToDiscovery')}
                     </Button>
                 </div>
                 <div className="grid gap-8">
@@ -395,12 +395,15 @@ export default function CampaignPage() {
                             </CardHeader>
                              <CardContent>
                                 <ul className="space-y-3">
-                                    {campaign.deliverables.map((item: string, index: number) => (
+                                    {campaign.deliverables.map((item: string, index: number) => {
+                                        const [quantity, ...typeParts] = item.split(' ');
+                                        const typeKey = typeParts.join('_');
+                                        return (
                                         <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
                                             <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                                            <span>{t(`deliverableTypes.${item.split(' ').slice(1).join('_')}`, { defaultValue: item.replace(/_/g, ' '), count: parseInt(item.split(' ')[0]) })}</span>
+                                            <span>{t(`deliverableTypes.${typeKey}`, { defaultValue: item, count: parseInt(quantity) })}</span>
                                         </li>
-                                    ))}
+                                    )})}
                                 </ul>
                             </CardContent>
                         </Card>
@@ -445,7 +448,7 @@ export default function CampaignPage() {
                                     <Button asChild className="w-full">
                                         <Link href={`/campaigns/${campaignId}/apply`}>
                                             {t('campaignPage.applyNow')}
-                                            <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />
+                                            <ArrowRight className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />
                                         </Link>
                                     </Button>
                                 )}

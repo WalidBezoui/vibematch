@@ -17,6 +17,11 @@
         "myAccount": "حسابي",
         "settings": "الإعدادات"
     },
+    "navigation": {
+        "backToDashboard": "العودة إلى لوحة التحكم",
+        "backToDiscovery": "العودة إلى الاكتشاف",
+        "backToCampaign": "العودة إلى تفاصيل الحملة"
+    },
     "chat": {
         "title": "العقود",
         "tabs": {
@@ -192,6 +197,7 @@
     },
     "manageApplicationsPage": {
         "title": "إدارة الطلبات",
+        "backToDashboard": "العودة إلى لوحة التحكم",
         "description": "راجع واختر أفضل المبدعين لحملتك:",
         "hiredDescription": "لقد وظفت {{hired}} من أصل {{total}} مبدع لهذه الحملة.",
         "hiredLabel": "تم توظيفهم",
@@ -856,7 +862,7 @@
     },
     "applyPage": {
         "title": "التقديم لـ",
-        "backButton": "العودة إلى التفاصيل",
+        "backButton": "العودة إلى تفاصيل الحملة",
         "alreadyApplied": {
             "title": "لقد قدمت طلبًا بالفعل!",
             "description": "العلامة التجارية لديها طلبك. سنقوم بإعلامك إذا تم اختيارك."
@@ -876,10 +882,10 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{{count}} منشور Instagram",
-        "Story": "{{count}} قصة Instagram",
-        "Reel": "{{count}} Instagram Reel",
-        "Video": "{{count}} فيديو TikTok",
+        "Post": "{{count}} منشور انستغرام",
+        "Story": "{{count}} قصة انستغرام",
+        "Reel": "{{count}} ريل انستغرام",
+        "Video": "{{count}} فيديو تيك توك",
         "UGC_Video_Vertical": "{{count}} فيديو UGC (عمودي)",
         "UGC_Video_Horizontal": "{{count}} فيديو UGC (أفقي)",
         "UGC_Photo_Pack": "{{count}} حزمة صور UGC"

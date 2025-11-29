@@ -17,6 +17,11 @@
         "myAccount": "Mon Compte",
         "settings": "Paramètres"
     },
+    "navigation": {
+        "backToDashboard": "Retour au Tableau de Bord",
+        "backToDiscovery": "Retour à la Découverte",
+        "backToCampaign": "Retour aux Détails"
+    },
     "chat": {
         "title": "Contrats",
         "tabs": {
@@ -192,6 +197,7 @@
     },
     "manageApplicationsPage": {
         "title": "Gérer les Candidatures",
+        "backToDashboard": "Retour au Tableau de Bord",
         "description": "Examinez et sélectionnez les meilleurs créateurs pour votre campagne :",
         "hiredDescription": "Vous avez recruté {{hired}} sur {{total}} créateurs pour cette campagne.",
         "hiredLabel": "Recrutés",

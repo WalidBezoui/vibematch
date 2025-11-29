@@ -446,7 +446,7 @@ export default function ManageApplicationsPage() {
                         <div className="mb-6">
                             <Button variant="ghost" onClick={() => router.push('/dashboard')}>
                                 <Arrow className={cn("h-4 w-4", dir === 'rtl' ? 'ml-2' : 'mr-2')} />
-                                Back to Dashboard
+                                {t('navigation.backToDashboard')}
                             </Button>
                         </div>
                         <h1 className="text-4xl font-bold tracking-tight">{t('manageApplicationsPage.title')}</h1>

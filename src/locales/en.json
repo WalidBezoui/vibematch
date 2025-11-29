@@ -17,6 +17,11 @@
         "myAccount": "My Account",
         "settings": "Settings"
     },
+    "navigation": {
+        "backToDashboard": "Back to Dashboard",
+        "backToDiscovery": "Back to Discovery",
+        "backToCampaign": "Back to Campaign Details"
+    },
     "chat": {
         "title": "Deals",
         "tabs": {
@@ -192,6 +197,7 @@
     },
     "manageApplicationsPage": {
         "title": "Manage Applications",
+        "backToDashboard": "Back to Dashboard",
         "description": "Review and select the best creators for your campaign:",
         "hiredDescription": "You've hired {{hired}} out of {{total}} creators for this campaign.",
         "hiredLabel": "Hired",
@@ -342,7 +348,7 @@
         "creatorFeatures": {
             "paycheck": {
                 "title": "Your 100% Automated Paycheck",
-                "description": "Never create an invoice again. Never follow up on a payment again. As soon as the brand approves your post, our system generates the invoice and transfers the money to you automatically. You are a creator, not an accountant."
+                "description": "Never create an invoice again. Never follow up on a payment again. As soon as the brand approves your content, our system generates the invoice and transfers the money to you automatically. You are a creator, not an accountant."
             },
             "confidence": {
                 "title": "Work with Absolute Confidence",
@@ -419,8 +425,8 @@
     },
     "faqPage": {
         "title": {
-            "part1": "Frequently Asked",
-            "part2": "Questions"
+          "part1": "Frequently Asked",
+          "part2": "Questions"
         },
         "description": "Have a question? We're here to help. Explore our FAQ to find answers to common questions about VibeMatch.",
         "categories": "Categories",
@@ -644,24 +650,24 @@
     },
     "contactPage": {
         "title": {
-            "part1": "Get in",
-            "part2": "Touch"
+          "part1": "Get in",
+          "part2": "Touch"
         },
         "description": "We're here to help. Whether you have a question about our platform, a partnership inquiry, or need support, our team is ready to assist you.",
         "phone": {
-            "title": "Talk to Support",
-            "description": "Our support team is available from 9 AM to 5 PM, Monday to Friday.",
-            "button": "Call Now"
+          "title": "Talk to Support",
+          "description": "Our support team is available from 9 AM to 5 PM, Monday to Friday.",
+          "button": "Call Now"
         },
         "whatsapp": {
-            "title": "Chat on WhatsApp",
-            "description": "Prefer texting? Reach out to us on WhatsApp for quick answers.",
-            "button": "Start Chat"
+          "title": "Chat on WhatsApp",
+          "description": "Prefer texting? Reach out to us on WhatsApp for quick answers.",
+          "button": "Start Chat"
         },
         "email": {
-            "title": "Send an Email",
-            "description": "For detailed inquiries or feedback, feel free to send us an email.",
-            "button": "Send Email"
+          "title": "Send an Email",
+          "description": "For detailed inquiries or feedback, feel free to send us an email.",
+          "button": "Send Email"
         }
     },
     "currency": "DH",
