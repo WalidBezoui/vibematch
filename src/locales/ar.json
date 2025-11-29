@@ -152,10 +152,10 @@
         },
         "actions": {
             "title": "مركز الإجراءات",
-            "payment": "الدفع",
-            "pay": "دفع",
+            "payment": "دفع",
+            "pay": "ادفع",
             "fundCreator": "مول الصفقة مع {{name}}",
-            "applicants": "المرشحون",
+            "applicants": "مرشحون",
             "review": "مراجعة",
             "newApplicants": "{{count}} طلبات جديدة تنتظر المراجعة.",
             "message": "رسالة",

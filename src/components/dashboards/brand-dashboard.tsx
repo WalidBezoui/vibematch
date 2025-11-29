@@ -84,20 +84,12 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
     </Card>
 );
 
-const ActionRequiredItem = ({ icon, text, buttonText, href, type }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string }) => {
+const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string, typeText: string }) => {
   const typeStyles = {
-    payment: 'text-blue-500 bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300',
-    applicants: 'text-green-500 bg-green-100 dark:bg-green-900/20 dark:text-green-300',
-    message: 'text-amber-500 bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300'
+    payment: 'text-blue-600 bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300',
+    applicants: 'text-green-600 bg-green-100 dark:bg-green-900/20 dark:text-green-300',
+    message: 'text-amber-600 bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300'
   };
-
-  const typeTexts = {
-    payment: 'PAIEMENT',
-    applicants: 'CANDIDATS',
-    message: 'MESSAGE',
-  }
-
-  const { t } = useLanguage();
 
   return (
     <div className="flex items-center justify-between gap-4 p-3 hover:bg-muted/50 rounded-lg transition-colors">
@@ -106,11 +98,14 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type }: { icon: Reac
                 {icon}
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm truncate"><span className="font-bold mr-2">[{t(`brandDashboard.actions.${type}`) as string}]</span>{text}</p>
+                <p className="text-sm truncate">
+                    <Badge variant="secondary" className={cn("mr-2 font-bold text-xs", typeStyles[type as keyof typeof typeStyles])}>{typeText}</Badge>
+                    {text}
+                </p>
             </div>
         </div>
         <Button asChild size="sm" variant="ghost">
-            <Link href={href}>{t(`brandDashboard.actions.${buttonText}`)}</Link>
+            <Link href={href}>{buttonText}</Link>
         </Button>
     </div>
   )
@@ -131,12 +126,13 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
             if(campaign){
                 items.push({
                     type: 'payment',
+                    typeText: t('brandDashboard.actions.payment'),
                     id: `payment-convo-${c.id}`,
                     icon: <Wallet className="h-5 w-5" />,
                     text: <>
                         <span className="font-semibold text-primary">{campaign.title}:</span> {t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator'})}
                     </>,
-                    buttonText: 'pay',
+                    buttonText: t('brandDashboard.actions.pay'),
                     href: `/campaigns/${c.campaign_id}/pay`
                 });
             }
@@ -147,10 +143,11 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         applicantNeeded.forEach(c => {
             items.push({
                 type: 'applicants',
+                typeText: t('brandDashboard.actions.applicants'),
                 id: `applicants-${c.id}`,
                 icon: <Users className="h-5 w-5" />,
                 text: <><span className="font-semibold text-primary">{c.title}:</span> {t('brandDashboard.actions.newApplicants', { count: applicationCounts[c.id] })}</>,
-                buttonText: 'review',
+                buttonText: t('brandDashboard.actions.review'),
                 href: `/campaigns/${c.id}/manage`
             });
         });
@@ -162,10 +159,11 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
             const creatorName = c.creator_name || 'A creator';
             items.push({
                 type: 'message',
+                typeText: t('brandDashboard.actions.message'),
                 id: `message-${c.id}`,
                 icon: <MessageSquare className="h-5 w-5" />,
                 text: <><span className="font-semibold text-primary">{campaignTitle}:</span> {t('brandDashboard.actions.newMessage', { name: creatorName })}</>,
-                buttonText: 'reply',
+                buttonText: t('brandDashboard.actions.reply'),
                 href: `/chat?id=${c.id}`
             });
         });
