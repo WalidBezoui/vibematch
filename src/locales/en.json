@@ -197,7 +197,6 @@
     },
     "manageApplicationsPage": {
         "title": "Manage Applications",
-        "backToDashboard": "Back to Dashboard",
         "description": "Review and select the best creators for your campaign:",
         "hiredDescription": "You've hired {{hired}} out of {{total}} creators for this campaign.",
         "hiredLabel": "Hired",
@@ -796,6 +795,7 @@
         "viewCampaign": "View Campaign",
         "applied": "Application Sent",
         "full": "Campaign Full",
+        "applyNow": "Apply Now",
         "noCampaigns": {
             "title": "No Open Campaigns Right Now",
             "description": "Check back soon for new opportunities!"
