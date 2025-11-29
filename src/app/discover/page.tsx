@@ -1,3 +1,4 @@
+
 'use client';
 
 import { AppHeader } from '@/components/app-header';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, CheckCircle, Trash2, Users, Hourglass, MessageSquare, Megaphone, FileVideo } from 'lucide-react';
+import { ArrowRight, CheckCircle, Trash2, Users, Hourglass, MessageSquare, Megaphone, FileVideo, ArrowLeft } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,7 +47,8 @@ export default function DiscoverPage() {
     const firestore = useFirestore();
     const { user } = useUser();
     const { toast } = useToast();
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
     // Fetch all open campaigns
     const campaignsQuery = useMemoFirebase(
@@ -181,7 +183,7 @@ export default function DiscoverPage() {
                                             {status === 'in_discussion' ? (
                                                 <Button asChild className="w-full">
                                                     <Link href={`/chat?id=${conversation.id}`}>
-                                                        {t('creatorDashboard.actions.chat')} <ArrowRight className="ml-2 h-4 w-4" />
+                                                        {t('creatorDashboard.actions.chat')} <Arrow className="h-4 w-4 ml-2 rtl:mr-2 rtl:ml-0" />
                                                     </Link>
                                                 </Button>
                                             ) : status === 'applied' ? (
@@ -221,7 +223,7 @@ export default function DiscoverPage() {
                                                 <Button asChild className="w-full">
                                                     <Link href={`/campaigns/${campaign.id}`}>
                                                         {t('discoverCampaigns.applyNow')}
-                                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                                        <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                             )}
