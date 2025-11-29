@@ -105,21 +105,27 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, camp
   const styles = typeStyles[type as keyof typeof typeStyles];
 
   return (
-    <div className="flex items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className={cn("w-16 h-16 flex-shrink-0 flex flex-col items-center justify-center rounded-2xl", styles.iconBg, styles.iconColor)}>
-                {icon}
-                <p className={cn("text-lg font-bold", styles.metricColor)}>{metric}</p>
+            <div className={cn("w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full", styles.iconBg)}>
+                <div className={cn("w-8 h-8 flex items-center justify-center", styles.iconColor)}>
+                  {icon}
+                </div>
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{typeText}</p>
-                <p className="font-semibold truncate">{campaignTitle}</p>
-                <div className="text-sm text-muted-foreground truncate">{text}</div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge variant="secondary" className={cn("font-semibold text-xs", styles.iconBg, styles.iconColor)}>{typeText}</Badge>
+                  <div className={cn("text-lg font-bold", styles.metricColor)}>{metric}</div>
+                </div>
+                <div className="font-semibold text-foreground truncate">{campaignTitle}</div>
+                <p className="text-sm text-muted-foreground truncate">{text}</p>
             </div>
         </div>
-        <Button asChild size="sm">
-            <Link href={href}>{buttonText}</Link>
-        </Button>
+        <div className="w-full sm:w-auto flex flex-col sm:items-end gap-2 pl-0 sm:pl-4 mt-2 sm:mt-0">
+            <Button asChild size="sm" className="w-full sm:w-auto">
+                <Link href={href}>{buttonText}</Link>
+            </Button>
+        </div>
     </div>
   )
 };
@@ -132,26 +138,31 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         if (!campaigns || !conversations) return [];
         const items = [];
 
-        // 1. Awaiting Payment (from accepted conversation offers)
+        // 1. Awaiting Payment
+        const paymentNeededCampaigns = campaigns.filter(c => c.status === 'PENDING_PAYMENT');
         const paymentNeededFromConvo = conversations.filter(c => c.status === 'OFFER_ACCEPTED');
-        paymentNeededFromConvo.forEach(c => {
-            const campaign = campaigns.find(camp => camp.id === c.campaign_id);
+
+        const campaignsAwaitingPayment = new Set([...paymentNeededCampaigns.map(c=>c.id), ...paymentNeededFromConvo.map(c => c.campaign_id)]);
+        
+        campaignsAwaitingPayment.forEach(campaignId => {
+            const campaign = campaigns.find(c => c.id === campaignId);
             if(campaign){
+                const convo = paymentNeededFromConvo.find(c=>c.campaign_id === campaignId);
                 items.push({
                     type: 'payment',
                     typeText: t('brandDashboard.actions.payment'),
-                    id: `payment-convo-${c.id}`,
-                    icon: <Wallet className="h-5 w-5" />,
-                    metric: `${c.agreed_budget} DH`,
+                    id: `payment-${campaign.id}`,
+                    icon: <Wallet className="h-6 w-6" />,
+                    metric: `${convo?.agreed_budget || campaign.budget} DH`,
                     campaignTitle: campaign.title,
-                    text: <>{t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator'})}</>,
+                    text: <>{t('brandDashboard.actions.fundCreator', {name: convo?.creator_name || 'a creator'})}</>,
                     buttonText: t('brandDashboard.actions.pay'),
-                    href: `/campaigns/${c.campaign_id}/pay`
+                    href: `/campaigns/${campaign.id}/pay`
                 });
             }
         });
         
-        // New Applicants
+        // 2. New Applicants
         const applicantNeeded = campaigns.filter(c => (applicationCounts[c.id] || 0) > 0);
         applicantNeeded.forEach(c => {
             const count = applicationCounts[c.id];
@@ -159,7 +170,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 type: 'applicants',
                 typeText: t('brandDashboard.actions.applicants'),
                 id: `applicants-${c.id}`,
-                icon: <Users className="h-5 w-5" />,
+                icon: <Users className="h-6 w-6" />,
                 metric: count,
                 campaignTitle: c.title,
                 text: t('brandDashboard.actions.newApplicants', { count }),
@@ -168,7 +179,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
             });
         });
         
-        // Unread Messages/Offers
+        // 3. Unread Messages/Offers
         const unreadMessages = conversations.filter(c => c.status === 'NEGOTIATION' && c.last_offer_by !== campaigns.find(camp => camp.id === c.campaign_id)?.brandId);
         unreadMessages.forEach(c => {
             const campaignTitle = campaigns.find(camp => camp.id === c.campaign_id)?.title || "a campaign";
@@ -177,7 +188,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 type: 'message',
                 typeText: t('brandDashboard.actions.message'),
                 id: `message-${c.id}`,
-                icon: <MessageSquare className="h-5 w-5" />,
+                icon: <MessageSquare className="h-6 w-6" />,
                 metric: '1',
                 campaignTitle: campaignTitle,
                 text: <>{t('brandDashboard.actions.newMessage', { name: creatorName })}</>,
@@ -209,13 +220,13 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     }
 
     return (
-        <Card className="mb-8 shadow-sm border-t-4 border-t-amber-500 bg-amber-500/5">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                    <AlertCircle className="text-amber-600" />
+        <Card className="mb-8 shadow-sm bg-card border-t-4 border-amber-400">
+            <CardHeader className="flex flex-row items-center gap-3">
+                <AlertCircle className="text-amber-500 h-6 w-6" />
+                <CardTitle>
                     {t('brandDashboard.actions.title')}
-                    <Badge variant="destructive" className="rounded-full">{actionItems.length}</Badge>
                 </CardTitle>
+                <Badge variant="destructive" className="rounded-full">{actionItems.length}</Badge>
             </CardHeader>
             <CardContent className="p-2">
                 <div className="space-y-1">
