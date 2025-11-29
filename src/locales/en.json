@@ -160,7 +160,8 @@
             "newApplicants": "{{count}} new applicants to review.",
             "message": "MESSAGE",
             "newMessage": "{{name}} has sent you a new message.",
-            "reply": "Reply"
+            "reply": "Reply",
+            "aCreator": "a creator"
         },
         "filters": {
             "all": "All",
@@ -630,7 +631,7 @@
         "step3": {
             "header": "What's Your Niche?",
             "otherNicheLabel": "Please specify your niche",
-            "otherNichePlaceholder": "e.g., Sustainable Living, Pet Content"
+            "otherNichePlaceholder": "e.g. Sustainable Living, Pet Content"
         },
         "step4": {
             "header": "Our Pledge for Quality",
@@ -749,7 +750,7 @@
           "button": "Send Email"
         }
     },
-    "currency": "DH",
+    "currency": "MAD",
     "notificationsPage": {
         "title": "Notifications",
         "description": "Review all your campaign applications, invitations, and updates in one place.",

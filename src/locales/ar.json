@@ -32,13 +32,13 @@
         "emptyTab": "لا توجد محادثات في هذه الفئة.",
         "noMessages": "لا توجد رسائل بعد",
         "loadingMessages": "جارٍ تحميل الرسائل...",
-        "viewProfile": "عرض الملف الشخصي",
+        "viewProfile": "Voir le profil",
         "status": {
-            "yourResponse": "في انتظار ردك",
-            "waitingForCreator": "في انتظار رد صانع المحتوى",
-            "brandReviewing": "العلامة التجارية تراجع عرضك",
+            "yourResponse": "En attente de votre réponse",
+            "waitingForCreator": "En attente de la réponse du créateur",
+            "brandReviewing": "La marque examine votre offre",
             "fund": "تم الاتفاق. قم بالتمويل للبدء.",
-            "awaitingFunds": "تم الاتفاق. في انتظار التمويل.",
+            "awaitingFunds": "Deal Agreed. Awaiting funds.",
             "offerAccepted": "تم قبول العرض. في انتظار الدفع.",
             "fundsSecured": "الأموال مؤمنة. العمل قيد التنفيذ.",
             "review": "تم تقديم العمل للتحقق.",
@@ -47,73 +47,73 @@
             "status": "الحالة"
         },
         "budget": {
-            "lastOffer": "آخر عرض",
-            "agreed": "الميزانية المتفق عليها",
-            "theirOffer": "عرضهم"
+            "lastOffer": "Dernière Offre",
+            "agreed": "Budget Convenu",
+            "theirOffer": "Son Offre"
         },
-        "fundEscrow": "تمويل الضمان",
+        "fundEscrow": "Financer le Séquestre",
         "initialCard": {
-            "titleCreator": "مناقشة لـ",
-            "titleBrand": "طلب لـ",
-            "descriptionCreator": "فتحت العلامة التجارية نقاشًا بناءً على طلبك.",
-            "descriptionBrand": "افتتح في",
-            "yourOffer": "عرضك المبدئي",
-            "creatorOffer": "العرض المبدئي لصانع المحتوى",
-            "coverLetter": "خطاب التقديم الأصلي"
+            "titleCreator": "Discussion pour",
+            "titleBrand": "Candidature pour",
+            "descriptionCreator": "La marque a ouvert une discussion suite à votre candidature.",
+            "descriptionBrand": "Ouvert le",
+            "yourOffer": "Votre Offre Initiale",
+            "creatorOffer": "Offre Initiale du Créateur",
+            "coverLetter": "Lettre de Motivation Initiale"
         },
         "offerCard": {
-            "yourOffer": "عرضك",
-            "youProposed": "لقد اقترحت ميزانية قدرها",
-            "offerReceived": "تم استلام عرض",
-            "theyProposed": "اقترح {{name}} ميزانية قدرها"
+            "yourOffer": "Votre Offre",
+            "youProposed": "Vous avez proposé un budget de",
+            "offerReceived": "Offre Reçue",
+            "theyProposed": "{{name}} a proposé un budget de"
         },
-        "accept": "قبول",
-        "reject": "رفض",
-        "accepted": "مقبول",
-        "rejected": "مرفوض",
-        "superseded": "تم استبداله",
-        "eventAccepted": "تم قبول العرض من قبل {{role}} بمبلغ {{amount}} درهم.",
-        "eventFunded": "تم تأمين الأموال من قبل العلامة التجارية.",
+        "accept": "Accepter",
+        "reject": "Rejeter",
+        "accepted": "Acceptée",
+        "rejected": "Rejetée",
+        "superseded": "Remplacée",
+        "eventAccepted": "Offre acceptée par {{role}} à {{amount}} MAD.",
+        "eventFunded": "Les fonds ont été sécurisés par la marque.",
         "eventAcceptedAwaitingFunds": "تم قبول العرض من قبل {{role}}. في انتظار التمويل من العلامة التجارية.",
-        "waitingResponse": "في انتظار رد الطرف الآخر...",
-        "acceptRate": "قبول السعر ({{amount}} درهم)",
-        "or": "أو",
-        "proposeNew": "اقتراح سعر جديد",
-        "decline": "رفض",
+        "waitingResponse": "En attente de la réponse de l'autre partie...",
+        "acceptRate": "Accepter le tarif ({{amount}} MAD)",
+        "or": "OU",
+        "proposeNew": "Proposer un nouveau tarif",
+        "decline": "Refuser",
         "proposalForm": {
-            "title": "اقتراح جديد",
-            "description": "اقترح ميزانية جديدة وأضف رسالة إذا كنت ترغب في ذلك.",
-            "amount": "المبلغ (بالدرهم)",
-            "message": "رسالة (اختياري)",
-            "placeholder": "مثال: هذه هي ميزانيتي القصوى...",
-            "send": "إرسال العرض"
+            "title": "Nouvelle Proposition",
+            "description": "Proposez un nouveau budget et ajoutez un message si vous le souhaitez.",
+            "amount": "Montant (MAD)",
+            "message": "Message (optionnel)",
+            "placeholder": "Ex: C'est mon budget maximum...",
+            "send": "Envoyer l'Offre"
         },
         "guardianBot": {
-            "title": "تم حظر الرسالة بواسطة Guardian Bot",
-            "description": "يُمنع مشاركة معلومات الاتصال أثناء التفاوض. يرجى الحفاظ على التواصل على VibeMatch لسلامتك."
+            "title": "Message Bloqué par Guardian Bot",
+            "description": "Le partage d'informations de contact est interdit pendant la négociation. Veuillez garder la communication sur VibeMatch pour votre sécurité."
         },
         "placeholder": {
-            "inactive": "هذه المحادثة غير نشطة للرسائل.",
-            "negotiation": "استخدم الإجراءات أدناه للرد على العرض.",
-            "active": "ناقش التفاصيل الإبداعية..."
+            "inactive": "Cette conversation n'est pas active pour les messages.",
+            "negotiation": "Utilisez les actions ci-dessous pour répondre à l'offre.",
+            "active": "Discutez des détails créatifs..."
         },
         "notFound": {
-            "title": "المحادثة غير موجودة"
+            "title": "Conversation introuvable"
         },
         "accessDenied": {
-            "title": "الوصول مرفوض",
-            "description": "أنت لست مشاركًا في هذه المحادثة."
+            "title": "Accès Refusé",
+            "description": "Vous n'êtes pas un participant de cette conversation."
         },
         "toast": {
             "offerAccepted": {
-                "title": "تم قبول العرض!",
-                "description": "يمكن للعلامة التجارية الآن تمويل المشروع."
+                "title": "Offre Acceptée !",
+                "description": "La marque peut maintenant financer le projet."
             },
-            "offerRejected": "تم رفض العرض",
-            "negotiationCancelled": "تم إلغاء التفاوض",
-            "cancelError": "تعذر إلغاء التفاوض."
+            "offerRejected": "Offre Rejetée",
+            "negotiationCancelled": "Négociation Annulée",
+            "cancelError": "Impossible d'annuler la négociation."
         },
-        "otherParty": "الطرف الآخر"
+        "otherParty": "L'autre partie"
     },
     "brandDashboard": {
         "title": "لوحة تحكم العلامة التجارية",
@@ -157,10 +157,11 @@
             "fundCreator": "مول الصفقة مع {{name}}",
             "applicants": "مرشحون",
             "review": "مراجعة",
-            "newApplicants": "{{count, plural, one {هناك طلب جديد للمراجعة.} other {هناك {{count}} طلبات جديدة للمراجعة.}}}",
+            "newApplicants": "{{count}} مرشح جديد للمراجعة.",
             "message": "رسالة",
             "newMessage": "{{name}} أرسل لك رسالة جديدة.",
-            "reply": "رد"
+            "reply": "رد",
+            "aCreator": "مبدع"
         },
         "filters": {
             "all": "الكل",
@@ -765,7 +766,7 @@
             "description_brand": "عندما يقدم المبدعون طلبات لحملاتك، سترى الإشعارات هنا."
         },
         "card": {
-            "appliedTo": "قدم على"
+            "appliedTo": "A postulé à"
         },
         "source": {
             "applied": "Candidature"

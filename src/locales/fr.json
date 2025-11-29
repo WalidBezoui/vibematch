@@ -38,7 +38,7 @@
             "waitingForCreator": "En attente de la réponse du créateur",
             "brandReviewing": "La marque examine votre offre",
             "fund": "Accord conclu. Financez pour démarrer.",
-            "awaitingFunds": "Accord conclu. En attente du financement.",
+            "awaitingFunds": "Deal Agreed. Awaiting funds.",
             "offerAccepted": "Offre acceptée. En attente de paiement.",
             "fundsSecured": "Fonds sécurisés. Travail en cours.",
             "review": "Travail soumis pour validation.",
@@ -157,10 +157,11 @@
             "fundCreator": "Financez l'accord avec {{name}}",
             "applicants": "CANDIDATS",
             "review": "Examiner",
-            "newApplicants": "{{count, plural, one {Une nouvelle candidature à examiner.} other {{{count}} nouvelles candidatures à examiner.}}}",
+            "newApplicants": "{{count}} nouvelles candidatures à examiner.",
             "message": "MESSAGE",
             "newMessage": "{{name}} vous a envoyé un nouveau message.",
-            "reply": "Répondre"
+            "reply": "Répondre",
+            "aCreator": "un créateur"
         },
         "filters": {
             "all": "Tout",

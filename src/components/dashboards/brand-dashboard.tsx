@@ -85,6 +85,9 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
 );
 
 const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, campaignTitle, metric }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string, typeText: string, campaignTitle: string, metric: string | number }) => {
+  const { dir } = useLanguage();
+  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
+
   const typeStyles = {
     payment: {
       iconBg: 'bg-blue-100 dark:bg-blue-900/20',
@@ -107,7 +110,7 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, camp
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className={cn("w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full", styles.iconBg)}>
+            <div className={cn("w-16 h-16 flex-shrink-0 flex flex-col items-center justify-center rounded-full text-center", styles.iconBg)}>
                 <div className={cn("w-8 h-8 flex items-center justify-center", styles.iconColor)}>
                   {icon}
                 </div>
@@ -118,12 +121,12 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, camp
                   <div className={cn("text-lg font-bold", styles.metricColor)}>{metric}</div>
                 </div>
                 <div className="font-semibold text-foreground truncate">{campaignTitle}</div>
-                <p className="text-sm text-muted-foreground truncate">{text}</p>
+                <div className="text-sm text-muted-foreground truncate">{text}</div>
             </div>
         </div>
         <div className="w-full sm:w-auto flex flex-col sm:items-end gap-2 pl-0 sm:pl-4 mt-2 sm:mt-0">
             <Button asChild size="sm" className="w-full sm:w-auto">
-                <Link href={href}>{buttonText}</Link>
+                <Link href={href}>{buttonText} <Arrow className="h-4 w-4 ml-2" /></Link>
             </Button>
         </div>
     </div>
@@ -148,6 +151,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
             const campaign = campaigns.find(c => c.id === campaignId);
             if(campaign){
                 const convo = paymentNeededFromConvo.find(c=>c.campaign_id === campaignId);
+                const creatorName = convo?.otherUser?.name || t('brandDashboard.actions.aCreator');
                 items.push({
                     type: 'payment',
                     typeText: t('brandDashboard.actions.payment'),
@@ -155,7 +159,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                     icon: <Wallet className="h-6 w-6" />,
                     metric: `${convo?.agreed_budget || campaign.budget} DH`,
                     campaignTitle: campaign.title,
-                    text: <>{t('brandDashboard.actions.fundCreator', {name: convo?.creator_name || 'a creator'})}</>,
+                    text: <>{t('brandDashboard.actions.fundCreator', {name: creatorName})}</>,
                     buttonText: t('brandDashboard.actions.pay'),
                     href: `/campaigns/${campaign.id}/pay`
                 });
@@ -183,7 +187,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         const unreadMessages = conversations.filter(c => c.status === 'NEGOTIATION' && c.last_offer_by !== campaigns.find(camp => camp.id === c.campaign_id)?.brandId);
         unreadMessages.forEach(c => {
             const campaignTitle = campaigns.find(camp => camp.id === c.campaign_id)?.title || "a campaign";
-            const creatorName = c.creator_name || 'A creator';
+            const creatorName = c.otherUser?.name || 'A creator';
             items.push({
                 type: 'message',
                 typeText: t('brandDashboard.actions.message'),
@@ -385,14 +389,35 @@ export default function BrandDashboard() {
     () => (user && firestore) ? query(collection(firestore, 'conversations'), where('brand_id', '==', user.uid)) : null,
     [user, firestore]
   );
-  const { data: conversations, isLoading: isLoadingConversations } = useCollection(conversationsQuery);
+  const { data: rawConversations, isLoading: isLoadingConversations } = useCollection(conversationsQuery);
 
 
   const [stats, setStats] = useState({ plannedBudget: 0, escrowedFunds: 0 });
   const [applicationCounts, setApplicationCounts] = useState<Record<string, number>>({});
   const [isStatsLoading, setIsStatsLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
+  const [conversations, setConversations] = useState<any[]>([]);
 
+
+  useEffect(() => {
+    if (rawConversations && firestore) {
+      const enrichConversations = async () => {
+        const enriched = await Promise.all(rawConversations.map(async (convo) => {
+          try {
+            const userDocRef = doc(firestore, 'users', convo.creator_id);
+            const userSnap = await getDoc(userDocRef);
+            const otherUser = userSnap.exists() ? userSnap.data() : { name: 'Unknown User' };
+            return { ...convo, otherUser };
+          } catch (error) {
+            console.error("Error enriching conversation:", error);
+            return { ...convo, otherUser: { name: 'Error' } };
+          }
+        }));
+        setConversations(enriched);
+      };
+      enrichConversations();
+    }
+  }, [rawConversations, firestore]);
 
   useEffect(() => {
     if (campaigns && firestore && user) {
@@ -409,7 +434,6 @@ export default function BrandDashboard() {
             return onSnapshot(q, (snapshot) => {
                 setApplicationCounts(prev => ({ ...prev, [campaign.id]: snapshot.size }));
             }, (error) => {
-                // Ignore permissions errors, as they are expected for some queries.
                 if (error.code !== 'permission-denied') {
                   console.error("Error fetching application counts:", error);
                 }
