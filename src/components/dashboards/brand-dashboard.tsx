@@ -84,17 +84,27 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
     </Card>
 );
 
-const ActionRequiredItem = ({ icon, text, buttonText, href }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string }) => (
+const ActionRequiredItem = ({ icon, text, buttonText, href, type }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string }) => {
+  const typeStyles = {
+    payment: 'text-blue-500',
+    applicants: 'text-green-500',
+    message: 'text-amber-500'
+  };
+
+  return (
     <div className="flex items-center justify-between gap-4 p-3 hover:bg-muted/50 rounded-lg transition-colors">
-        <div className="flex items-center gap-3">
-            {icon}
+        <div className="flex items-center gap-4">
+            <div className={cn("w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-muted", typeStyles[type as keyof typeof typeStyles])}>
+                {icon}
+            </div>
             <p className="text-sm">{text}</p>
         </div>
         <Button asChild size="sm" variant="ghost">
             <Link href={href}>{buttonText}</Link>
         </Button>
     </div>
-);
+  )
+};
 
 
 const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, isLoading }: { campaigns: any[], applicationCounts: Record<string, number>, conversations: any[], isLoading: boolean }) => {
@@ -110,8 +120,9 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
             const campaign = campaigns.find(camp => camp.id === c.campaign_id);
             if(campaign){
                 items.push({
+                    type: 'payment',
                     id: `payment-convo-${c.id}`,
-                    icon: <Wallet className="h-5 w-5 text-blue-500" />,
+                    icon: <Wallet className="h-5 w-5" />,
                     text: <><strong>{t('brandDashboard.actions.payment')}:</strong> {t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator', title: campaign.title})}</>,
                     buttonText: t('brandDashboard.actions.pay'),
                     href: `/campaigns/${c.campaign_id}/pay`
@@ -123,8 +134,9 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         const applicantNeeded = campaigns.filter(c => (applicationCounts[c.id] || 0) > 0);
         applicantNeeded.forEach(c => {
             items.push({
+                type: 'applicants',
                 id: `applicants-${c.id}`,
-                icon: <Users className="h-5 w-5 text-green-500" />,
+                icon: <Users className="h-5 w-5" />,
                 text: <><strong>{t('brandDashboard.actions.applicants')}:</strong> {c.title} has {applicationCounts[c.id]} new applicants.</>,
                 buttonText: t('brandDashboard.actions.review'),
                 href: `/campaigns/${c.id}/manage`
@@ -136,8 +148,9 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         unreadMessages.forEach(c => {
             const campaignTitle = campaigns.find(camp => camp.id === c.campaign_id)?.title || "a campaign";
             items.push({
+                type: 'message',
                 id: `message-${c.id}`,
-                icon: <MessageSquare className="h-5 w-5 text-amber-500" />,
+                icon: <MessageSquare className="h-5 w-5" />,
                 text: <><strong>{t('brandDashboard.actions.message')}:</strong> New message in "{campaignTitle}" negotiation.</>,
                 buttonText: t('brandDashboard.actions.reply'),
                 href: `/chat?id=${c.id}`
@@ -167,10 +180,10 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     }
 
     return (
-        <Card className="mb-8 border-amber-500/30 bg-amber-500/5 shadow-lg">
+        <Card className="mb-8 shadow-sm">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-amber-600">
-                    <AlertCircle />
+                <CardTitle className="flex items-center gap-2">
+                    <AlertCircle className="text-primary" />
                     {t('brandDashboard.actions.title')} ({actionItems.length})
                 </CardTitle>
             </CardHeader>
@@ -508,7 +521,7 @@ export default function BrandDashboard() {
       </div>
 
        <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
+            <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-5">
                 <TabsTrigger value="all">{t('brandDashboard.filters.all')} ({campaigns?.length || 0})</TabsTrigger>
                 <TabsTrigger value="to_fund" className="text-blue-600">{t('brandDashboard.filters.toFund')}</TabsTrigger>
                 <TabsTrigger value="hiring" className="text-green-600">{t('brandDashboard.filters.hiring')}</TabsTrigger>

@@ -154,6 +154,7 @@
             "title": "إجراء مطلوب",
             "payment": "دفع",
             "pay": "دفع",
+            "fundCreator": "مول الصفقة مع {{name}} لحملة \"{{title}}\"",
             "applicants": "مرشحون",
             "review": "مراجعة",
             "message": "رسالة",
@@ -377,7 +378,7 @@
             },
             "briefs": {
                 "title": "اتفاقيات واضحة، صفر التباسات",
-                "description": "قل وداعاً للتغييرات المفاجئة. عقودنا الذكية توثق كل التفاصيل: الأهداف، المخرجات، والميزانية. ما يتم الاتفاق عليه هو ما يتم تنفيذه. احمِ عملك ووقتك."
+                "description": "قل وداعاً للتغييرات المفاجئة. عقودنا الذكية توثق كل التفاصيل: الأهداف, التسليمات, والميزانية. ما يتم الاتفاق عليه هو ما يتم تنفيذه. احمِ عملك ووقتك."
             }
         },
         "testimonialsTitle1": "شهادات نعتز بها من",
@@ -659,7 +660,7 @@
             {"id": "other", "label": "أخرى", "icon": "more_horiz"}
         ]
     },
-    "creatorProfile": {
+     "creatorProfile": {
         "nextStepTitle": "الخطوة التالية :",
         "nextStepLabel": "التالي",
         "completeProfileButton": "أكمل الملف الشخصي",
@@ -817,7 +818,13 @@
         "budgetLabel": "الميزانية لكل مبدع (بالدرهم)",
         "numCreatorsLabel": "عدد المبدعين",
         "publishButton": "نشر الحملة",
-        "publishingButton": "جارٍ النشر..."
+        "publishingButton": "جارٍ النشر...",
+        "success": {
+            "title": "تم نشر الحملة!",
+            "description": "حملتك الآن مباشرة. يمكن للمبدعين على VibeMatch الآن رؤيتها والتقدم بطلباتهم.",
+            "manageButton": "إدارة الطلبات",
+            "dashboardButton": "العودة إلى لوحة التحكم"
+        }
     },
     "editCampaignPage": {
         "title": "تعديل الحملة",
@@ -959,21 +966,13 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{{count}} منشور انستغرام",
-        "Story": "{{count}} قصة انستغرام",
-        "Reel": "{{count}} ريل انستغرام",
-        "Video": "{{count}} فيديو تيك توك",
-        "UGC_Video_Vertical": "{{count}} فيديو UGC (عمودي)",
-        "UGC_Video_Horizontal": "{{count}} فيديو UGC (أفقي)",
-        "UGC_Photo_Pack": "{{count}} حزمة صور UGC"
-    },
-    "createCampaignPage": {
-        "success": {
-            "title": "تم نشر الحملة!",
-            "description": "حملتك الآن مباشرة. يمكن للمبدعين على VibeMatch الآن رؤيتها والتقدم بطلباتهم.",
-            "manageButton": "إدارة الطلبات",
-            "dashboardButton": "العودة إلى لوحة التحكم"
-        }
+        "Post": "{{count, plural, one {منشور انستغرام} other {{{count}} منشورات انستغرام}}}",
+        "Story": "{{count, plural, one {قصة انستغرام} other {{{count}} قصص انستغرام}}}",
+        "Reel": "{{count, plural, one {ريل انستغرام} other {{{count}} ريلات انستغرام}}}",
+        "Video": "{{count, plural, one {فيديو تيك توك} other {{{count}} فيديوهات تيك توك}}}",
+        "UGC_Video_Vertical": "فيديو UGC (عمودي)",
+        "UGC_Video_Horizontal": "فيديو UGC (أفقي)",
+        "UGC_Photo_Pack": "حزمة صور UGC"
     }
 }
     
