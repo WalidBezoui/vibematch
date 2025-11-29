@@ -453,12 +453,12 @@
           ],
           "creatorsFaq": [
               {
-                  "question": "How do I join VibeMatch as a creator?",
-                  "answer": "To maintain a high-quality network, VibeMatch is currently invite-only or requires an application. You can apply to become a Founding Creator. We review each application based on audience engagement, content quality, and niche. Our team will get in touch if your profile is a good fit for our platform."
+                  "question": "How do I get paid?",
+                  "answer": "We guarantee your payments. Once a campaign is completed and approved, funds are released to your VibeMatch account. You can then withdraw your earnings directly to your bank account. No more chasing invoices!"
               },
               {
-                  "question": "How does VibeMatch guarantee my payments?",
-                  "answer": "When a brand hires you for a campaign, they deposit the full payment into our secure escrow system. Once you've completed the agreed-upon deliverables and the brand approves them, we release the funds directly to your account. This eliminates the risk of late or missed payments, letting you focus on creating."
+                  "question": "What are the requirements to join as a creator?",
+                  "answer": "We look for creators with an authentic connection to their audience, regardless of follower size. We evaluate engagement quality, content creativity, and niche relevance. If you create high-quality content and have a loyal community, we encourage you to apply."
               },
               {
                   "question": "Is there a fee to use VibeMatch?",
@@ -639,13 +639,68 @@
     },
      "creatorProfile": {
         "nextStepTitle": "Next Step:",
+        "nextStepLabel": "Next",
+        "completeProfileButton": "Complete Profile",
         "completionTips": [
             "Creators with complete profiles are 3x more likely to be contacted by brands.",
             "A great bio is your chance to tell your story and attract your dream collaborations.",
             "Brands often filter by location to find local creators for events and campaigns.",
             "Your profile picture is the first impression you make. Make it a great one!",
             "Tags help our algorithm match you with the most relevant campaign opportunities."
-        ]
+        ],
+        "steps": {
+            "completeProfile": "Complete your profile",
+            "addPicture": "Add a profile picture",
+            "addName": "Add your display name",
+            "addLocation": "Add your location",
+            "addTag": "Choose at least one tag",
+            "addBio": "Write a bio to tell your story",
+            "complete": "Profile is complete!"
+        },
+        "edit": {
+            "title": "Editing Profile",
+            "cardTitle": "Edit Public Profile",
+            "cardDescription": "This is how brands will see you on VibeMatch.",
+            "nameLabel": "Display Name",
+            "namePlaceholder": "Your first name or nickname",
+            "locationLabel": "Location",
+            "locationPlaceholder": "e.g., Marrakech, Morocco",
+            "tagsLabel": "Tags",
+            "bioLabel": "Bio",
+            "bioPlaceholder": "Tell brands what makes you unique. What's your story and your content's vibe?",
+            "cancelButton": "Cancel",
+            "saveButton": "Save Changes",
+            "savingButton": "Saving..."
+        },
+        "stats": {
+            "title": "Collaboration Stats",
+            "campaignsCompleted": "Campaigns Completed",
+            "newTalent": "New Talent",
+            "joined": "Joined VibeMatch"
+        },
+        "publicProfile": {
+            "title": "Public Profile",
+            "description": "This is how brands will see you.",
+            "editButton": "Edit Profile",
+            "bioLabel": "Bio",
+            "noBio": "No bio provided."
+        },
+        "portfolio": {
+            "title": "My Portfolio",
+            "description": "Showcase your best work.",
+            "empty": "Your portfolio is empty.",
+            "addButton": "Add a Project"
+        },
+        "toast": {
+            "success": {
+                "title": "Profile Updated",
+                "description": "Your information has been successfully saved."
+            },
+            "error": {
+                "title": "Update Failed",
+                "description": "Could not update your profile."
+            }
+        }
     },
     "contactPage": {
         "title": {

@@ -637,15 +637,70 @@
             {"id": "other", "label": "أخرى", "icon": "more_horiz"}
         ]
     },
-     "creatorProfile": {
+    "creatorProfile": {
         "nextStepTitle": "الخطوة التالية :",
+        "nextStepLabel": "التالي",
+        "completeProfileButton": "أكمل الملف الشخصي",
         "completionTips": [
             "المبدعون الذين يكملون ملفاتهم الشخصية لديهم فرصة أكبر 3 مرات للتواصل مع العلامات التجارية.",
             "السيرة الذاتية الرائعة هي فرصتك لسرد قصتك وجذب تعاون أحلامك.",
             "غالباً ما تقوم العلامات التجارية بالتصفية حسب الموقع للعثور على مبدعين محليين للفعاليات والحملات.",
             "صورة ملفك الشخصي هي الانطباع الأول الذي تتركه. اجعلها رائعة!",
             "تساعد العلامات خوارزميتنا على مطابقتك مع فرص الحملات الأكثر صلة."
-        ]
+        ],
+        "steps": {
+            "completeProfile": "أكمل ملفك الشخصي",
+            "addPicture": "أضف صورة للملف الشخصي",
+            "addName": "أضف اسم العرض الخاص بك",
+            "addLocation": "أضف موقعك",
+            "addTag": "اختر علامة واحدة على الأقل",
+            "addBio": "اكتب سيرة ذاتية لتروي قصتك",
+            "complete": "اكتمل الملف الشخصي!"
+        },
+        "edit": {
+            "title": "تعديل الملف الشخصي",
+            "cardTitle": "تعديل الملف الشخصي العام",
+            "cardDescription": "هكذا ستراك العلامات التجارية على VibeMatch.",
+            "nameLabel": "اسم العرض",
+            "namePlaceholder": "اسمك الأول أو لقبك",
+            "locationLabel": "الموقع",
+            "locationPlaceholder": "مثال: مراكش، المغرب",
+            "tagsLabel": "العلامات",
+            "bioLabel": "السيرة الذاتية",
+            "bioPlaceholder": "أخبر العلامات التجارية بما يجعلك فريدًا. ما هي قصتك وأجواء محتواك؟",
+            "cancelButton": "إلغاء",
+            "saveButton": "حفظ التغييرات",
+            "savingButton": "جارٍ الحفظ..."
+        },
+        "stats": {
+            "title": "إحصائيات التعاون",
+            "campaignsCompleted": "الحملات المكتملة",
+            "newTalent": "موهبة جديدة",
+            "joined": "انضم إلى VibeMatch"
+        },
+        "publicProfile": {
+            "title": "الملف الشخصي العام",
+            "description": "هكذا ستراك العلامات التجارية.",
+            "editButton": "تعديل الملف الشخصي",
+            "bioLabel": "السيرة الذاتية",
+            "noBio": "لم يتم تقديم سيرة ذاتية."
+        },
+        "portfolio": {
+            "title": "معرض أعمالي",
+            "description": "اعرض أفضل أعمالك.",
+            "empty": "معرض أعمالك فارغ.",
+            "addButton": "إضافة مشروع"
+        },
+        "toast": {
+            "success": {
+                "title": "تم تحديث الملف الشخصي",
+                "description": "تم حفظ معلوماتك بنجاح."
+            },
+            "error": {
+                "title": "فشل التحديث",
+                "description": "تعذر تحديث ملفك الشخصي."
+            }
+        }
     },
     "contactPage": {
         "title": {
@@ -889,6 +944,14 @@
         "UGC_Video_Vertical": "{{count}} فيديو UGC (عمودي)",
         "UGC_Video_Horizontal": "{{count}} فيديو UGC (أفقي)",
         "UGC_Photo_Pack": "{{count}} حزمة صور UGC"
+    },
+    "createCampaignPage": {
+        "success": {
+            "title": "تم نشر الحملة!",
+            "description": "حملتك الآن مباشرة. يمكن للمبدعين على VibeMatch الآن رؤيتها والتقدم بطلباتهم.",
+            "manageButton": "إدارة الطلبات",
+            "dashboardButton": "العودة إلى لوحة التحكم"
+        }
     }
 }
     

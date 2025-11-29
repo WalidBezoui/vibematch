@@ -637,36 +637,91 @@
             {"id": "other", "label": "Autre", "icon": "more_horiz"}
         ]
     },
-     "creatorProfile": {
-        "nextStepTitle": "Prochaine étape :",
+    "creatorProfile": {
+        "nextStepTitle": "Prochaine Étape :",
+        "nextStepLabel": "Suivant",
+        "completeProfileButton": "Compléter le Profil",
         "completionTips": [
-            "Les créateurs avec des profils complets ont 3 fois plus de chances d'être contactés.",
+            "Les créateurs avec des profils complets sont 3x plus susceptibles d'être contactés.",
             "Une super bio est votre chance de raconter votre histoire et d'attirer des collaborations.",
             "Les marques filtrent souvent par lieu pour trouver des créateurs locaux.",
             "Votre photo de profil est la première impression. Assurez-vous qu'elle soit excellente !",
             "Les tags aident notre algorithme à vous proposer les opportunités les plus pertinentes."
-        ]
+        ],
+        "steps": {
+            "completeProfile": "Complétez votre profil",
+            "addPicture": "Ajoutez une photo de profil",
+            "addName": "Ajoutez votre nom d'affichage",
+            "addLocation": "Ajoutez votre localisation",
+            "addTag": "Choisissez au moins un tag",
+            "addBio": "Écrivez une biographie pour raconter votre histoire",
+            "complete": "Le profil est complet !"
+        },
+        "edit": {
+            "title": "Modification du Profil",
+            "cardTitle": "Modifier le Profil Public",
+            "cardDescription": "C'est ainsi que les marques vous verront sur VibeMatch.",
+            "nameLabel": "Nom d'Affichage",
+            "namePlaceholder": "Votre prénom ou surnom",
+            "locationLabel": "Localisation",
+            "locationPlaceholder": "ex: Marrakech, Maroc",
+            "tagsLabel": "Tags",
+            "bioLabel": "Bio",
+            "bioPlaceholder": "Dites aux marques ce qui vous rend unique. Quelle est votre histoire et l'ambiance de votre contenu ?",
+            "cancelButton": "Annuler",
+            "saveButton": "Enregistrer",
+            "savingButton": "Enregistrement..."
+        },
+        "stats": {
+            "title": "Statistiques de Collaboration",
+            "campaignsCompleted": "Campagnes Terminées",
+            "newTalent": "Nouveau Talent",
+            "joined": "A rejoint VibeMatch"
+        },
+        "publicProfile": {
+            "title": "Profil Public",
+            "description": "C'est ainsi que les marques vous verront.",
+            "editButton": "Modifier le Profil",
+            "bioLabel": "Bio",
+            "noBio": "Aucune biographie fournie."
+        },
+        "portfolio": {
+            "title": "Mon Portfolio",
+            "description": "Mettez en avant vos meilleurs travaux.",
+            "empty": "Votre portfolio est vide.",
+            "addButton": "Ajouter un Projet"
+        },
+        "toast": {
+            "success": {
+                "title": "Profil Mis à Jour",
+                "description": "Vos informations ont été enregistrées avec succès."
+            },
+            "error": {
+                "title": "Échec de la Mise à Jour",
+                "description": "Impossible de mettre à jour votre profil."
+            }
+        }
     },
     "contactPage": {
         "title": {
-            "part1": "Contactez-",
-            "part2": "nous"
+          "part1": "Contactez-",
+          "part2": "nous"
         },
         "description": "Nous sommes là pour vous aider. Que vous ayez une question, une proposition de partenariat ou besoin d'aide, notre équipe est à votre écoute.",
         "phone": {
-            "title": "Support Téléphonique",
-            "description": "Notre équipe est disponible du lundi au vendredi, de 9h à 17h.",
-            "button": "Appeler Maintenant"
+          "title": "Support Téléphonique",
+          "description": "Notre équipe est disponible du lundi au vendredi, de 9h à 17h.",
+          "button": "Appeler Maintenant"
         },
         "whatsapp": {
-            "title": "Discuter sur WhatsApp",
-            "description": "Vous préférez les messages ? Contactez-nous sur WhatsApp pour une réponse rapide.",
-            "button": "Démarrer la Discussion"
+          "title": "Discuter sur WhatsApp",
+          "description": "Vous préférez les messages ? Contactez-nous sur WhatsApp pour une réponse rapide.",
+          "button": "Démarrer la Discussion"
         },
         "email": {
-            "title": "Envoyer un E-mail",
-            "description": "Pour toute demande détaillée ou pour nous faire part de vos suggestions.",
-            "button": "Envoyer un E-mail"
+          "title": "Envoyer un E-mail",
+          "description": "Pour toute demande détaillée ou pour nous faire part de vos suggestions.",
+          "button": "Envoyer un E-mail"
         }
     },
     "currency": "MAD",

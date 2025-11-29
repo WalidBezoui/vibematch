@@ -62,14 +62,14 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
 
 
    const { nextStep, percentage } = useMemo(() => {
-    if (!userProfile) return { percentage: 0, nextStep: { text: "Complete your profile", icon: User } };
+    if (!userProfile) return { percentage: 0, nextStep: { text: t('creatorProfile.steps.completeProfile'), icon: User } };
     
     const fields = [
-        { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture", icon: ImageIcon },
-        { key: 'displayName', present: !!userProfile.displayName, text: "Add your display name", icon: User },
-        { key: 'location', present: !!userProfile.location, text: "Add your location", icon: MapPin },
-        { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: "Choose at least one tag", icon: Tag },
-        { key: 'bio', present: !!userProfile.bio, text: "Write a bio to tell your story", icon: Type },
+        { key: 'photoURL', present: !!userProfile.photoURL, text: t('creatorProfile.steps.addPicture'), icon: ImageIcon },
+        { key: 'displayName', present: !!userProfile.displayName, text: t('creatorProfile.steps.addName'), icon: User },
+        { key: 'location', present: !!userProfile.location, text: t('creatorProfile.steps.addLocation'), icon: MapPin },
+        { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: t('creatorProfile.steps.addTag'), icon: Tag },
+        { key: 'bio', present: !!userProfile.bio, text: t('creatorProfile.steps.addBio'), icon: Type },
     ];
 
     const completedFields = fields.filter(f => f.present).length;
@@ -78,10 +78,10 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
     const percentage = 30 + Math.round((completedFields / totalFields) * 70);
 
     const firstIncompleteStep = fields.find(f => !f.present);
-    const nextStep = firstIncompleteStep || { text: "Profile is complete!", icon: User };
+    const nextStep = firstIncompleteStep || { text: t('creatorProfile.steps.complete'), icon: User };
 
     return { percentage, nextStep };
-  }, [userProfile]);
+  }, [userProfile, t]);
 
   useEffect(() => {
     const tips = t('creatorProfile.completionTips', { returnObjects: true }) as string[];
@@ -130,15 +130,15 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
     try {
       await updateDoc(userDocRef, updateData);
       toast({
-        title: 'Profile Updated',
-        description: 'Your information has been successfully saved.',
+        title: t('creatorProfile.toast.success.title'),
+        description: t('creatorProfile.toast.success.description'),
       });
       setIsEditing(false);
     } catch (error: any) {
       toast({
         variant: 'destructive',
-        title: 'Update Failed',
-        description: error.message || 'Could not update your profile.',
+        title: t('creatorProfile.toast.error.title'),
+        description: error.message || t('creatorProfile.toast.error.description'),
       });
     }
   };
@@ -159,7 +159,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground bg-background/50 p-3 rounded-lg">
+                        <div className="flex items-start gap-3 text-sm text-muted-foreground bg-background/50 p-3 rounded-lg">
                             <Lightbulb className="h-5 w-5 text-primary flex-shrink-0" />
                             <span>{motivationalTip}</span>
                         </div>
@@ -199,35 +199,60 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                             <AdminBadgeDisplay badge={profile.adminBadge} />
                         </CardContent>
                     </Card>
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="text-base font-semibold text-muted-foreground">{t('creatorProfile.stats.title')}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-black">
+                                    <Award className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <p className="font-bold text-lg">{t('creatorProfile.stats.newTalent')}</p>
+                                    <p className="text-sm text-muted-foreground">{t('creatorProfile.stats.campaignsCompleted')}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-black">
+                                    <CalendarDays className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <p className="font-bold text-lg">{profile.createdAt ? new Date(profile.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}</p>
+                                    <p className="text-sm text-muted-foreground">{t('creatorProfile.stats.joined')}</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
                 <div className="md:col-span-2 space-y-8">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
-                                <CardTitle>Public Profile</CardTitle>
-                                <CardDescription>This is how brands will see you.</CardDescription>
+                                <CardTitle>{t('creatorProfile.publicProfile.title')}</CardTitle>
+                                <CardDescription>{t('creatorProfile.publicProfile.description')}</CardDescription>
                             </div>
                             <Button variant="outline" onClick={() => setIsEditing(true)}>
-                                <Edit className="mr-2 h-4 w-4" /> Edit Profile
+                                <Edit className="mr-2 h-4 w-4" /> {t('creatorProfile.publicProfile.editButton')}
                             </Button>
                         </CardHeader>
                         <CardContent className="space-y-6 pt-6">
                             <div className="space-y-1">
-                                <h4 className="text-sm font-medium text-muted-foreground">Bio</h4>
-                                <p className="text-foreground/90 whitespace-pre-wrap">{profile.bio || 'No bio provided.'}</p>
+                                <h4 className="text-sm font-medium text-muted-foreground">{t('creatorProfile.publicProfile.bioLabel')}</h4>
+                                <p className="text-foreground/90 whitespace-pre-wrap">{profile.bio || t('creatorProfile.publicProfile.noBio')}</p>
                             </div>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader>
-                            <CardTitle>My Portfolio</CardTitle>
-                            <CardDescription>Showcase your best work.</CardDescription>
+                            <CardTitle>{t('creatorProfile.portfolio.title')}</CardTitle>
+                            <CardDescription>{t('creatorProfile.portfolio.description')}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="text-center py-10 border-2 border-dashed rounded-lg">
-                                <p className="text-muted-foreground">Your portfolio is empty.</p>
+                                <p className="text-muted-foreground">{t('creatorProfile.portfolio.empty')}</p>
                                 <Button variant="outline" className="mt-4">
-                                    <Briefcase className="mr-2 h-4 w-4" /> Add a Project
+                                    <Briefcase className="mr-2 h-4 w-4" /> {t('creatorProfile.portfolio.addButton')}
                                 </Button>
                             </div>
                         </CardContent>
@@ -244,13 +269,13 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
       <form onSubmit={form.handleSubmit(onSubmit)}>
          <div className="grid md:grid-cols-3 gap-8 items-start">
             <div className="md:col-span-1 space-y-6">
-                 <h2 className="text-xl font-semibold">Editing Profile</h2>
+                 <h2 className="text-xl font-semibold">{t('creatorProfile.edit.title')}</h2>
             </div>
             <div className="md:col-span-2 space-y-8">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Edit Public Profile</CardTitle>
-                        <CardDescription>This is how brands will see you on VibeMatch.</CardDescription>
+                        <CardTitle>{t('creatorProfile.edit.cardTitle')}</CardTitle>
+                        <CardDescription>{t('creatorProfile.edit.cardDescription')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="grid sm:grid-cols-2 gap-4">
@@ -259,9 +284,9 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                                 name="displayName"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Display Name</FormLabel>
+                                    <FormLabel>{t('creatorProfile.edit.nameLabel')}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Your first name or nickname" {...field} />
+                                        <Input placeholder={t('creatorProfile.edit.namePlaceholder')} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -272,9 +297,9 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                                 name="location"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Location</FormLabel>
+                                    <FormLabel>{t('creatorProfile.edit.locationLabel')}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="e.g., Marrakech, Morocco" {...field} />
+                                        <Input placeholder={t('creatorProfile.edit.locationPlaceholder')} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -287,7 +312,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                             name="tags"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Tags</FormLabel>
+                                <FormLabel>{t('creatorProfile.edit.tagsLabel')}</FormLabel>
                                 <FormControl>
                                     <div className="flex flex-wrap gap-2">
                                     {niches.map((niche) => (
@@ -322,9 +347,9 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                             name="bio"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Bio</FormLabel>
+                                <FormLabel>{t('creatorProfile.edit.bioLabel')}</FormLabel>
                                 <FormControl>
-                                    <Textarea rows={5} placeholder="Tell brands what makes you unique. What's your story and your content's vibe?" {...field} />
+                                    <Textarea rows={5} placeholder={t('creatorProfile.edit.bioPlaceholder')} {...field} />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
@@ -332,9 +357,9 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                             />
                     </CardContent>
                     <CardFooter className="border-t px-6 py-4 flex justify-end gap-2">
-                         <Button type="button" variant="ghost" onClick={handleCancel}>Cancel</Button>
+                         <Button type="button" variant="ghost" onClick={handleCancel}>{t('creatorProfile.edit.cancelButton')}</Button>
                          <Button type="submit" disabled={form.formState.isSubmitting}>
-                            {form.formState.isSubmitting ? 'Saving...' : 'Save Changes'}
+                            {form.formState.isSubmitting ? t('creatorProfile.edit.savingButton') : t('creatorProfile.edit.saveButton')}
                         </Button>
                     </CardFooter>
                 </Card>

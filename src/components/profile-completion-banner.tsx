@@ -25,14 +25,14 @@ export function ProfileCompletionBanner() {
   }, [t]);
 
   const { percentage, nextStep } = useMemo(() => {
-    if (!userProfile) return { percentage: 30, nextStep: { text: "Complete your profile", icon: User } };
+    if (!userProfile) return { percentage: 30, nextStep: { text: t('creatorProfile.steps.completeProfile'), icon: User } };
     
     const fields = [
-        { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture", icon: ImageIcon },
-        { key: 'displayName', present: !!userProfile.displayName, text: "Add your display name", icon: User },
-        { key: 'location', present: !!userProfile.location, text: "Add your location", icon: MapPin },
-        { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: "Choose at least one tag", icon: Tag },
-        { key: 'bio', present: !!userProfile.bio, text: "Write a bio to tell your story", icon: Type },
+        { key: 'photoURL', present: !!userProfile.photoURL, text: t('creatorProfile.steps.addPicture'), icon: ImageIcon },
+        { key: 'displayName', present: !!userProfile.displayName, text: t('creatorProfile.steps.addName'), icon: User },
+        { key: 'location', present: !!userProfile.location, text: t('creatorProfile.steps.addLocation'), icon: MapPin },
+        { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: t('creatorProfile.steps.addTag'), icon: Tag },
+        { key: 'bio', present: !!userProfile.bio, text: t('creatorProfile.steps.addBio'), icon: Type },
     ];
 
     const completedFields = fields.filter(f => f.present).length;
@@ -41,10 +41,10 @@ export function ProfileCompletionBanner() {
     const percentage = 30 + Math.round((completedFields / totalFields) * 70);
 
     const firstIncompleteStep = fields.find(f => !f.present);
-    const nextStep = firstIncompleteStep || { text: "Profile is complete!", icon: User };
+    const nextStep = firstIncompleteStep || { text: t('creatorProfile.steps.complete'), icon: User };
 
     return { percentage, nextStep };
-  }, [userProfile]);
+  }, [userProfile, t]);
 
   if (isProfileLoading) {
       return (
@@ -72,7 +72,7 @@ export function ProfileCompletionBanner() {
                 <div className="text-xs text-muted-foreground hidden md:flex items-center gap-4">
                    <div className="flex items-center gap-2">
                      <NextStepIcon className="h-3 w-3" />
-                     <span>Next: {nextStep.text}</span>
+                     <span>{t('creatorProfile.nextStepLabel')}: {nextStep.text}</span>
                    </div>
                    {motivationalTip && (
                      <div className="flex items-center gap-2 border-l pl-4">
@@ -84,7 +84,7 @@ export function ProfileCompletionBanner() {
             </div>
           <Button asChild size="sm" className="rounded-full gradient-bg text-black font-semibold h-8 flex-shrink-0">
             <Link href="/profile">
-              Complete Profile <ArrowRight className="h-4 w-4 ml-2" />
+              {t('creatorProfile.completeProfileButton')} <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>
         </div>
