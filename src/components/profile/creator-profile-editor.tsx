@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Upload, User, MapPin, Edit, ImageIcon, Tag, Type, Lightbulb, Briefcase } from 'lucide-react';
+import { Upload, User, MapPin, Edit, ImageIcon, Tag, Type, Lightbulb, Briefcase, Award, CalendarDays } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
@@ -348,6 +348,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                             render={({ field }) => (
                                 <FormItem>
                                 <FormLabel>{t('creatorProfile.edit.bioLabel')}</FormLabel>
+
                                 <FormControl>
                                     <Textarea rows={5} placeholder={t('creatorProfile.edit.bioPlaceholder')} {...field} />
                                 </FormControl>
@@ -369,3 +370,5 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
     </Form>
   );
 }
+
+    
