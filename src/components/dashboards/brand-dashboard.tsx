@@ -1,17 +1,16 @@
 
-
 'use client';
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
-import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { format } from 'date-fns';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -33,13 +32,15 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/language-context';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 
 const statusStyles: { [key: string]: string } = {
     OPEN_FOR_APPLICATIONS: 'bg-green-100 text-green-800 border-green-200',
     PENDING_SELECTION: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     PENDING_CREATOR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200',
     OFFER_PENDING: 'bg-blue-100 text-blue-800 border-blue-200',
-    PENDING_PAYMENT: 'bg-blue-100 text-blue-800 border-blue-200',
+    PENDING_PAYMENT: 'bg-yellow-100 text-yellow-800 border-yellow-200 animate-pulse',
     IN_PROGRESS: 'bg-indigo-100 text-indigo-800 border-indigo-200',
     DELIVERED: 'bg-purple-100 text-purple-800 border-purple-200',
     COMPLETED: 'bg-gray-200 text-gray-800 border-gray-300',
@@ -61,7 +62,7 @@ const CampaignCardSkeleton = () => (
     </Card>
 );
 
-const StatCard = ({ title, value, icon, isLoading }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean }) => (
+const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreground' }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean, subtitle?: string, color?: string }) => (
     <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
@@ -69,13 +70,115 @@ const StatCard = ({ title, value, icon, isLoading }: { title: string; value: str
         </CardHeader>
         <CardContent>
             {isLoading ? (
-                <Skeleton className="h-8 w-1/2" />
+                 <>
+                    <Skeleton className="h-8 w-1/2" />
+                    {subtitle && <Skeleton className="h-4 w-3/4 mt-2" />}
+                </>
             ) : (
-                <div className="text-2xl font-bold">{value}</div>
+                 <>
+                    <div className={cn("text-2xl font-bold", color)}>{value}</div>
+                    {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
+                </>
             )}
         </CardContent>
     </Card>
 );
+
+const ActionRequiredItem = ({ icon, text, buttonText, href }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string }) => (
+    <div className="flex items-center justify-between gap-4 p-3 hover:bg-muted/50 rounded-lg transition-colors">
+        <div className="flex items-center gap-3">
+            {icon}
+            <p className="text-sm">{text}</p>
+        </div>
+        <Button asChild size="sm" variant="ghost">
+            <Link href={href}>{buttonText}</Link>
+        </Button>
+    </div>
+);
+
+
+const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, isLoading }: { campaigns: any[], applicationCounts: Record<string, number>, conversations: any[], isLoading: boolean }) => {
+    const { t } = useLanguage();
+
+    const actionItems = useMemo(() => {
+        if (!campaigns || !conversations) return [];
+        const items = [];
+
+        // 1. Awaiting Payment
+        const paymentNeeded = campaigns.filter(c => c.status === 'PENDING_PAYMENT');
+        paymentNeeded.forEach(c => {
+            items.push({
+                id: `payment-${c.id}`,
+                icon: <Wallet className="h-5 w-5 text-blue-500" />,
+                text: <><strong>{t('brandDashboard.actions.payment')}:</strong> {c.title}</>,
+                buttonText: t('brandDashboard.actions.pay'),
+                href: `/campaigns/${c.id}/pay`
+            });
+        });
+
+        // 2. New Applicants
+        const applicantNeeded = campaigns.filter(c => (applicationCounts[c.id] || 0) > 0);
+        applicantNeeded.forEach(c => {
+            items.push({
+                id: `applicants-${c.id}`,
+                icon: <Users className="h-5 w-5 text-green-500" />,
+                text: <><strong>{t('brandDashboard.actions.applicants')}:</strong> {c.title} has {applicationCounts[c.id]} new applicants.</>,
+                buttonText: t('brandDashboard.actions.review'),
+                href: `/campaigns/${c.id}/manage`
+            });
+        });
+        
+        // 3. Unread Messages
+        const unreadMessages = conversations.filter(c => c.status === 'NEGOTIATION' && c.last_offer_by !== campaigns.find(camp => camp.id === c.campaign_id)?.brandId);
+        unreadMessages.forEach(c => {
+            const campaignTitle = campaigns.find(camp => camp.id === c.campaign_id)?.title || "a campaign";
+            items.push({
+                id: `message-${c.id}`,
+                icon: <MessageSquare className="h-5 w-5 text-amber-500" />,
+                text: <><strong>{t('brandDashboard.actions.message')}:</strong> New message in "{campaignTitle}" negotiation.</>,
+                buttonText: t('brandDashboard.actions.reply'),
+                href: `/chat?id=${c.id}`
+            });
+        });
+
+
+        return items;
+    }, [campaigns, applicationCounts, conversations, t]);
+
+    if (isLoading) {
+        return (
+            <Card className="mb-8">
+                <CardHeader>
+                     <Skeleton className="h-6 w-48" />
+                </CardHeader>
+                <CardContent className="space-y-2">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                </CardContent>
+            </Card>
+        )
+    }
+
+    if (actionItems.length === 0) {
+        return null;
+    }
+
+    return (
+        <Card className="mb-8 border-amber-500/30 bg-amber-500/5 shadow-lg">
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-amber-600">
+                    <AlertCircle />
+                    {t('brandDashboard.actions.title')} ({actionItems.length})
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="p-2">
+                <div className="space-y-1">
+                    {actionItems.map(item => <ActionRequiredItem key={item.id} {...item} />)}
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
 
 const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment }: { campaign: any, onDelete: (campaignId: string) => Promise<void>, applicationCount: number, isAwaitingPayment: boolean }) => {
     const { t } = useLanguage();
@@ -190,7 +293,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                     )}
                     
                     {(campaign.status !== 'COMPLETED' && campaign.status !== 'REJECTED_BY_CREATOR') ? (
-                        <Button asChild variant="outline" size="sm" className="w-full">
+                        <Button asChild variant={applicationCount > 0 ? "default" : "outline"} size="sm" className="w-full">
                             <Link href={manageButtonLink}>
                                 <Users className="mr-2 h-4 w-4" />
                                 {t('brandDashboard.manageButton')}
@@ -219,28 +322,29 @@ export default function BrandDashboard() {
     () => (user && firestore) ? query(collection(firestore, 'campaigns'), where('brandId', '==', user.uid)) : null,
     [user, firestore]
   );
-  const { data: campaigns, isLoading } = useCollection(campaignsQuery);
+  const { data: campaigns, isLoading: isLoadingCampaigns } = useCollection(campaignsQuery);
 
   const conversationsQuery = useMemoFirebase(
     () => (user && firestore) ? query(collection(firestore, 'conversations'), where('brand_id', '==', user.uid)) : null,
     [user, firestore]
   );
-  const { data: conversations } = useCollection(conversationsQuery);
+  const { data: conversations, isLoading: isLoadingConversations } = useCollection(conversationsQuery);
 
 
-  const [stats, setStats] = useState({ activeCampaigns: 0, totalBudget: 0 });
+  const [stats, setStats] = useState({ plannedBudget: 0, escrowedFunds: 0 });
   const [applicationCounts, setApplicationCounts] = useState<Record<string, number>>({});
   const [isStatsLoading, setIsStatsLoading] = useState(true);
+  const [activeFilter, setActiveFilter] = useState('all');
+
 
   useEffect(() => {
     if (campaigns && firestore && user) {
         setIsStatsLoading(true);
-        let totalBudget = 0;
-        const activeCampaignsCount = campaigns.filter(c => c.status !== 'COMPLETED' && c.status !== 'REJECTED_BY_CREATOR').length;
-        if (campaigns.length > 0) {
-            totalBudget = campaigns.reduce((sum, c) => sum + (c.budget || 0) * (c.numberOfCreators || 1), 0);
-        }
-        setStats({ activeCampaigns: activeCampaignsCount, totalBudget });
+        const activeCampaigns = campaigns.filter(c => c.status !== 'COMPLETED' && c.status !== 'REJECTED_BY_CREATOR');
+        const plannedBudget = activeCampaigns.reduce((sum, c) => sum + (c.budget || 0) * (c.numberOfCreators || 1), 0);
+        const escrowedFunds = activeCampaigns.reduce((sum, c) => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED' ? sum + c.budget * (c.creatorIds?.length || 0) : sum, 0);
+
+        setStats({ plannedBudget, escrowedFunds });
         setIsStatsLoading(false);
 
         const unsubscribes: Unsubscribe[] = campaigns.map(campaign => {
@@ -252,12 +356,28 @@ export default function BrandDashboard() {
 
         return () => unsubscribes.forEach(unsub => unsub());
 
-    } else if (!isLoading) {
+    } else if (!isLoadingCampaigns) {
         setIsStatsLoading(false);
     }
-  }, [campaigns, firestore, user, isLoading]);
+  }, [campaigns, firestore, user, isLoadingCampaigns]);
 
-  const totalApplications = Object.values(applicationCounts).reduce((sum, count) => sum + count, 0);
+  
+  const filteredCampaigns = useMemo(() => {
+    if (!campaigns) return [];
+    switch (activeFilter) {
+      case 'to_fund':
+        return campaigns.filter(c => c.status === 'PENDING_PAYMENT');
+      case 'hiring':
+        return campaigns.filter(c => c.status === 'OPEN_FOR_APPLICATIONS' && (c.creatorIds?.length || 0) < (c.numberOfCreators || 1));
+      case 'in_progress':
+        return campaigns.filter(c => ['IN_PROGRESS', 'DELIVERED', 'PENDING_CREATOR_ACCEPTANCE'].includes(c.status) || (c.status === 'OPEN_FOR_APPLICATIONS' && (c.creatorIds?.length || 0) >= (c.numberOfCreators || 1)));
+      case 'archived':
+        return campaigns.filter(c => ['COMPLETED', 'REJECTED_BY_CREATOR'].includes(c.status));
+      default:
+        return campaigns;
+    }
+  }, [campaigns, activeFilter]);
+
 
   const handleDeleteCampaign = async (campaignId: string) => {
     if (!firestore) return;
@@ -345,7 +465,8 @@ export default function BrandDashboard() {
             });
         }
     };
-
+    
+  const isLoading = isLoadingCampaigns || isLoadingConversations;
 
   return (
     <div>
@@ -365,12 +486,23 @@ export default function BrandDashboard() {
         </div>
       </div>
       
-      <div className="grid gap-4 md:grid-cols-3 mb-8">
-        <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.active')} value={stats.activeCampaigns} icon={<Activity className="h-4 w-4 text-muted-foreground" />} />
-        <StatCard isLoading={isLoading} title={t('brandDashboard.stats.applications')} value={totalApplications} icon={<FileText className="h-4 w-4 text-muted-foreground" />} />
-        <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.budget')} value={`${stats.totalBudget.toLocaleString()} DH`} icon={<CircleDollarSign className="h-4 w-4 text-muted-foreground" />} />
+      <ActionRequiredSection campaigns={campaigns || []} applicationCounts={applicationCounts} conversations={conversations || []} isLoading={isLoading} />
+      
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
+        <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.budget')} value={`${stats.plannedBudget.toLocaleString()} DH`} icon={<FileText className="h-4 w-4 text-muted-foreground" />} subtitle={t('brandDashboard.stats.plannedBudgetSubtitle')} />
+        <StatCard isLoading={isStatsLoading} title={t('brandDashboard.stats.escrow')} value={`${stats.escrowedFunds.toLocaleString()} DH`} icon={<Wallet className="h-4 w-4 text-muted-foreground" />} color="text-green-500" subtitle={t('brandDashboard.stats.escrowSubtitle')} />
+        <StatCard isLoading={isLoadingCampaigns} title={t('brandDashboard.stats.active')} value={campaigns ? campaigns.filter(c => c.status !== 'COMPLETED').length : 0} icon={<Activity className="h-4 w-4 text-muted-foreground" />} />
       </div>
 
+       <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
+                <TabsTrigger value="all">{t('brandDashboard.filters.all')} ({campaigns?.length || 0})</TabsTrigger>
+                <TabsTrigger value="to_fund" className="text-blue-600">{t('brandDashboard.filters.toFund')}</TabsTrigger>
+                <TabsTrigger value="hiring" className="text-green-600">{t('brandDashboard.filters.hiring')}</TabsTrigger>
+                <TabsTrigger value="in_progress">{t('brandDashboard.filters.inProgress')}</TabsTrigger>
+                <TabsTrigger value="archived">{t('brandDashboard.filters.archived')}</TabsTrigger>
+            </TabsList>
+        </Tabs>
 
       {isLoading && (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -380,10 +512,10 @@ export default function BrandDashboard() {
         </div>
       )}
 
-      {!isLoading && campaigns && conversations ? (
+      {!isLoading && filteredCampaigns && conversations ? (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {campaigns.map((campaign) => {
-            const isAwaitingPayment = conversations.some(c => c.campaign_id === campaign.id && c.status === 'OFFER_ACCEPTED');
+          {filteredCampaigns.map((campaign) => {
+            const isAwaitingPayment = campaign.status === 'PENDING_PAYMENT';
             return (
               <CampaignCard 
                   campaign={campaign} 
@@ -397,21 +529,12 @@ export default function BrandDashboard() {
         </div>
       ) : null}
 
-      {!isLoading && (!campaigns || campaigns.length === 0) && (
+      {!isLoading && (!filteredCampaigns || filteredCampaigns.length === 0) && (
         <div className="text-center py-20 border-2 border-dashed rounded-2xl bg-muted/20 mt-8">
-            <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
-              <PlusCircle className="h-8 w-8 text-black" />
-            </div>
-            <h2 className="text-2xl font-bold">{t('brandDashboard.emptyState.title')}</h2>
-            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{t('brandDashboard.emptyState.description')}</p>
-            <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
-                <Link href="/campaigns/create">
-                    {t('brandDashboard.emptyState.cta')}
-                </Link>
-            </Button>
+            <h2 className="text-2xl font-bold">{t('brandDashboard.emptyFilter.title')}</h2>
+            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{t('brandDashboard.emptyFilter.description')}</p>
         </div>
       )}
     </div>
   );
 }
-

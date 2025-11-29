@@ -120,8 +120,11 @@
         "createButton": "New Campaign",
         "stats": {
             "active": "Active Campaigns",
-            "applications": "Total Applications",
-            "budget": "Total Budget"
+            "applications": "New Applications",
+            "budget": "Planned Budget",
+            "escrow": "Secured in Escrow",
+            "escrowSubtitle": "Real money locked for active projects.",
+            "plannedBudgetSubtitle": "Sum of your active campaigns."
         },
         "createdOn": "Created on {{date}}",
         "editAction": "Edit",
@@ -133,7 +136,6 @@
             "confirm": "Yes, Delete"
         },
         "hiringProgress": "Hiring Progress",
-        "hiredCount": "{{hired}}/{{total}} Hired",
         "manageButton": "Manage Applications",
         "viewButton": "View Campaign",
         "fundNowButton": "FUND NOW",
@@ -147,6 +149,26 @@
             "successTitle": "Campaign Deleted",
             "successDescription": "Your campaign has been successfully removed.",
             "errorTitle": "Deletion Failed"
+        },
+        "actions": {
+            "title": "Action Required",
+            "payment": "Payment",
+            "pay": "Pay",
+            "applicants": "Applicants",
+            "review": "Review",
+            "message": "Message",
+            "reply": "Reply"
+        },
+        "filters": {
+            "all": "All",
+            "toFund": "To Fund",
+            "hiring": "Hiring",
+            "inProgress": "In Progress",
+            "archived": "Archived"
+        },
+        "emptyFilter": {
+            "title": "No Campaigns Here",
+            "description": "There are no campaigns matching your current filter."
         }
     },
     "creatorDashboard": {

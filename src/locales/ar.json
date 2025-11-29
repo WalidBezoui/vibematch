@@ -120,8 +120,11 @@
         "createButton": "حملة جديدة",
         "stats": {
             "active": "الحملات النشطة",
-            "applications": "إجمالي الطلبات",
-            "budget": "الميزانية الإجمالية"
+            "applications": "طلبات جديدة",
+            "budget": "الميزانية المخطط لها",
+            "escrow": "الأموال المؤمنة",
+            "escrowSubtitle": "الأموال الحقيقية المقفلة للمشاريع النشطة.",
+            "plannedBudgetSubtitle": "مجموع ميزانيات حملاتك النشطة."
         },
         "createdOn": "تم الإنشاء في {{date}}",
         "editAction": "تعديل",
@@ -133,7 +136,6 @@
             "confirm": "نعم، احذف"
         },
         "hiringProgress": "تقدم التوظيف",
-        "hiredCount": "{{hired}}/{{total}} تم توظيفهم",
         "manageButton": "إدارة الطلبات",
         "viewButton": "عرض الحملة",
         "fundNowButton": "مول الآن",
@@ -147,6 +149,26 @@
             "successTitle": "تم حذف الحملة",
             "successDescription": "تمت إزالة حملتك بنجاح.",
             "errorTitle": "فشل الحذف"
+        },
+        "actions": {
+            "title": "إجراء مطلوب",
+            "payment": "دفع",
+            "pay": "دفع",
+            "applicants": "مرشحون",
+            "review": "مراجعة",
+            "message": "رسالة",
+            "reply": "رد"
+        },
+        "filters": {
+            "all": "الكل",
+            "toFund": "للتمويل",
+            "hiring": "توظيف",
+            "inProgress": "قيد التنفيذ",
+            "archived": "مؤرشفة"
+        },
+        "emptyFilter": {
+            "title": "لا توجد حملات هنا",
+            "description": "لا توجد حملات تطابق الفلتر الحالي الخاص بك."
         }
     },
     "creatorDashboard": {

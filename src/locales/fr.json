@@ -120,8 +120,11 @@
         "createButton": "Nouvelle Campagne",
         "stats": {
             "active": "Campagnes Actives",
-            "applications": "Candidatures Totales",
-            "budget": "Budget Total"
+            "applications": "Nouvelles Candidatures",
+            "budget": "Budget Planifié",
+            "escrow": "Fonds Séquestrés",
+            "escrowSubtitle": "Argent réel bloqué pour les projets actifs.",
+            "plannedBudgetSubtitle": "Somme de vos campagnes actives."
         },
         "createdOn": "Créée le {{date}}",
         "editAction": "Modifier",
@@ -133,7 +136,6 @@
             "confirm": "Oui, Supprimer"
         },
         "hiringProgress": "Progression du recrutement",
-        "hiredCount": "{{hired}}/{{total}} Recrutés",
         "manageButton": "Gérer les candidatures",
         "viewButton": "Voir la campagne",
         "fundNowButton": "FINANCER MAINTENANT",
@@ -147,6 +149,26 @@
             "successTitle": "Campagne Supprimée",
             "successDescription": "Votre campagne a été supprimée avec succès.",
             "errorTitle": "Échec de la suppression"
+        },
+        "actions": {
+            "title": "Action Requise",
+            "payment": "PAIEMENT",
+            "pay": "Payer",
+            "applicants": "CANDIDATS",
+            "review": "Voir",
+            "message": "MESSAGE",
+            "reply": "Répondre"
+        },
+        "filters": {
+            "all": "Tout",
+            "toFund": "À Financer",
+            "hiring": "Recrutement",
+            "inProgress": "En Cours",
+            "archived": "Archivées"
+        },
+        "emptyFilter": {
+            "title": "Aucune Campagne Ici",
+            "description": "Il n'y a aucune campagne correspondant à votre filtre actuel."
         }
     },
     "creatorDashboard": {
@@ -637,7 +659,7 @@
             {"id": "other", "label": "Autre", "icon": "more_horiz"}
         ]
     },
-    "creatorProfile": {
+     "creatorProfile": {
         "nextStepTitle": "Prochaine Étape :",
         "nextStepLabel": "Suivant",
         "completeProfileButton": "Compléter le Profil",
