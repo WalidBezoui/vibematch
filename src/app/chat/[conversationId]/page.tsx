@@ -39,12 +39,15 @@ import { errorEmitter } from '@/firebase/error-emitter';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useRouter, useParams } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
+import { useLanguage } from '@/context/language-context';
 
 
 const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, onBack }: { conversation: any, campaign: any, onOpenProfile: () => void, otherUser: any, onBack: () => void }) => {
     const { user } = useUser();
     const { userProfile } = useUserProfile();
     const router = useRouter();
+    const { dir } = useLanguage();
+    const Arrow = dir === 'rtl' ? ArrowRight : ArrowLeft;
     
     const isBrand = userProfile?.role === 'brand';
     
@@ -94,7 +97,7 @@ const DealStatusHeader = ({ conversation, campaign, onOpenProfile, otherUser, on
             <div className="p-3 sm:p-4 grid grid-cols-2 sm:flex sm:justify-between sm:items-center gap-4">
                  <div className="flex items-center gap-2 min-w-0 col-span-1">
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2" onClick={onBack}>
-                        <ArrowLeft className="h-5 w-5" />
+                        <Arrow className="h-5 w-5" />
                     </Button>
                      {isBrand && otherUser ? (
                         <div className="flex items-center gap-3 min-w-0">
@@ -514,7 +517,7 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
     );
 };
 
-export default function ChatView() {
+export default function ChatPage() {
     const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
@@ -780,13 +783,13 @@ export default function ChatView() {
     }
 
     return (
-        <main className="flex-1 flex flex-col bg-muted/50 h-full">
+        <div className="flex-1 flex flex-col bg-muted/50 h-full">
             <DealStatusHeader 
                 conversation={conversation} 
                 campaign={campaign} 
                 onOpenProfile={() => setIsSheetOpen(true)}
                 otherUser={otherUser}
-                onBack={() => router.push('/chat')}
+                onBack={onBack}
             />
             <MessageStream messages={messages || []} conversation={conversation} onRespondToOffer={handleRespondToOffer} />
             {isInNegotiation ? (
@@ -805,7 +808,6 @@ export default function ChatView() {
                 open={isSheetOpen}
                 onOpenChange={setIsSheetOpen}
             />
-        </main>
+        </div>
     );
 }
-

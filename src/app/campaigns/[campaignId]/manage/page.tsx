@@ -119,11 +119,11 @@ const CampaignInfoCard = ({ campaign }: { campaign: any }) => {
 
 export default function ManageApplicationsPage() {
     const { campaignId } = useParams();
-    const firestore = useFirestore();
     const router = useRouter();
+    const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { toast } = useToast();
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
     const [selectedCreatorId, setSelectedCreatorId] = useState<string | null>(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -308,6 +308,7 @@ export default function ManageApplicationsPage() {
     };
     
     const isLoading = isUserLoading || isCampaignLoading || areApplicationsLoading || (applications && applicants.length !== applications.length) || areConversationsLoading;
+    const Arrow = dir === 'rtl' ? ArrowRight : ArrowLeft;
 
     if (isLoading) {
         return (
@@ -444,7 +445,7 @@ export default function ManageApplicationsPage() {
                     <div className="max-w-4xl mx-auto mb-8">
                         <div className="mb-6">
                             <Button variant="ghost" onClick={() => router.push('/dashboard')}>
-                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                <Arrow className={cn("h-4 w-4", dir === 'rtl' ? 'ml-2' : 'mr-2')} />
                                 Back to Dashboard
                             </Button>
                         </div>

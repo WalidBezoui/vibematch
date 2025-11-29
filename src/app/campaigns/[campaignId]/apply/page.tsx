@@ -20,6 +20,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/context/language-context';
+import { cn } from '@/lib/utils';
 
 const applicationSchema = z.object({
   coverLetter: z.string().optional(),
@@ -53,7 +54,7 @@ export default function ApplyPage() {
     const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { toast } = useToast();
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
     const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | null>(null);
 
     const campaignRef = useMemoFirebase(
@@ -121,6 +122,8 @@ export default function ApplyPage() {
     
     const isLoading = isUserLoading || isCampaignLoading || isAlreadyApplied === null;
     const isSubmitting = form.formState.isSubmitting;
+    const Arrow = dir === 'rtl' ? ArrowRight : ArrowLeft;
+
 
     const renderContent = () => {
         if (isLoading) {
@@ -240,7 +243,7 @@ export default function ApplyPage() {
                 <div className="w-full max-w-2xl">
                     <div className="mb-4">
                         <Button variant="ghost" onClick={() => router.back()}>
-                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            <Arrow className={cn("h-4 w-4", dir === 'rtl' ? 'ml-2' : 'mr-2')} />
                             {t('applyPage.backButton')}
                         </Button>
                     </div>

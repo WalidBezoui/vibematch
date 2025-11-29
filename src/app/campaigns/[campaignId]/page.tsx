@@ -344,7 +344,7 @@ export default function CampaignPage() {
             <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="mb-6">
                     <Button variant="ghost" onClick={() => router.push('/discover')}>
-                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        <Arrow className={cn("h-4 w-4", dir === 'rtl' ? 'ml-2' : 'mr-2')} />
                         Back to Discovery
                     </Button>
                 </div>
