@@ -151,13 +151,13 @@
             "errorTitle": "Échec de la suppression"
         },
         "actions": {
-            "title": "CENTRE D'ACTION",
+            "title": "CENTRE D'ACTIONS",
             "payment": "PAIEMENT",
             "pay": "Payer",
             "fundCreator": "Financez l'accord avec {{name}}",
             "applicants": "CANDIDATS",
-            "review": "Voir",
-            "newApplicants": "{{count}} nouvelles candidatures à examiner.",
+            "review": "Examiner",
+            "newApplicants": "{{count, plural, one {Une nouvelle candidature à examiner.} other {{{count}} nouvelles candidatures à examiner.}}}",
             "message": "MESSAGE",
             "newMessage": "{{name}} vous a envoyé un nouveau message.",
             "reply": "Répondre"

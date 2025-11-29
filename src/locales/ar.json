@@ -157,7 +157,7 @@
             "fundCreator": "مول الصفقة مع {{name}}",
             "applicants": "مرشحون",
             "review": "مراجعة",
-            "newApplicants": "{{count}} طلبات جديدة تنتظر المراجعة.",
+            "newApplicants": "{{count, plural, one {هناك طلب جديد للمراجعة.} other {هناك {{count}} طلبات جديدة للمراجعة.}}}",
             "message": "رسالة",
             "newMessage": "{{name}} أرسل لك رسالة جديدة.",
             "reply": "رد"
@@ -768,7 +768,7 @@
             "appliedTo": "قدم على"
         },
         "source": {
-            "applied": "مستلم"
+            "applied": "Candidature"
         }
     },
     "createCampaignPage": {

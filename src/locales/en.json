@@ -417,7 +417,7 @@
         "brandsFaq": [
             {
               "question": "How does VibeMatch ensure creator quality?",
-              "answer": "Our Trust Engine analyzes over 50 data points, including audience demographics, engagement rates, and past performance, to verify every creator. We ensure you connect with influencers who have genuine, engaged audiences that match your brand values."
+              "answer": "Our Trust Engine analyzes over 50 data points, including audience demographics, engagement rates, and past performance, to verify every creator. We ensure you connect with influencers who have a genuine, engaged audience that match your brand values."
             },
             {
               "question": "What is the pricing model for brands?",
@@ -968,10 +968,10 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{{count}} Instagram Post",
-        "Story": "{{count}} Instagram Story",
-        "Reel": "{{count}} Instagram Reel",
-        "Video": "{{count}} TikTok Video",
+        "Post": "{{count, plural, one {Instagram Post} other {{{count}} Instagram Posts}}}",
+        "Story": "{{count, plural, one {Instagram Story} other {{{count}} Instagram Stories}}}",
+        "Reel": "{{count, plural, one {Instagram Reel} other {{{count}} Instagram Reels}}}",
+        "Video": "{{count, plural, one {TikTok Video} other {{{count}} TikTok Videos}}}",
         "UGC_Video_Vertical": "UGC Video (Vertical)",
         "UGC_Video_Horizontal": "UGC Video (Horizontal)",
         "UGC_Photo_Pack": "UGC Photo Pack"

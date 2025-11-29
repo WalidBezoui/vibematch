@@ -84,7 +84,7 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
     </Card>
 );
 
-const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string, typeText: string }) => {
+const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, campaignTitle, metric }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string, typeText: string, campaignTitle: string, metric: string | number }) => {
   const typeStyles = {
     payment: {
       iconBg: 'bg-blue-100 dark:bg-blue-900/20',
@@ -102,19 +102,21 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText }: { 
   const styles = typeStyles[type as keyof typeof typeStyles];
 
   return (
-    <div className="flex items-center justify-between gap-4 p-3 hover:bg-muted/50 rounded-lg transition-colors">
+    <div className="flex items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className={cn("w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full", styles.iconBg)}>
-                <div className={cn(styles.iconColor)}>{icon}</div>
-            </div>
-            <div className="flex-1 min-w-0">
-                <div className="text-sm truncate">
-                    <Badge variant="secondary" className={cn("mr-2 font-semibold", styles.iconBg, styles.iconColor)}>{typeText}</Badge>
-                    <span className="text-sm truncate">{text}</span>
+            <div className={cn("w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-2xl", styles.iconBg)}>
+                <div className={cn("flex flex-col items-center gap-1", styles.iconColor)}>
+                    {icon}
+                    <p className="text-2xl font-bold">{metric}</p>
                 </div>
             </div>
+            <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground uppercase tracking-wider">{typeText}</p>
+                <p className="font-semibold truncate">{campaignTitle}</p>
+                <p className="text-sm text-muted-foreground truncate">{text}</p>
+            </div>
         </div>
-        <Button asChild size="sm" variant="ghost">
+        <Button asChild size="sm">
             <Link href={href}>{buttonText}</Link>
         </Button>
     </div>
@@ -138,10 +140,10 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                     type: 'payment',
                     typeText: t('brandDashboard.actions.payment'),
                     id: `payment-convo-${c.id}`,
-                    icon: <Wallet className="h-5 w-5" />,
-                    text: <>
-                        <span className="font-semibold text-primary">{campaign.title}:</span> {t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator'})}
-                    </>,
+                    icon: <Wallet className="h-6 w-6" />,
+                    metric: `${c.agreed_budget} DH`,
+                    campaignTitle: campaign.title,
+                    text: <>{t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator'})}</>,
                     buttonText: t('brandDashboard.actions.pay'),
                     href: `/campaigns/${c.campaign_id}/pay`
                 });
@@ -151,12 +153,15 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         // New Applicants
         const applicantNeeded = campaigns.filter(c => (applicationCounts[c.id] || 0) > 0);
         applicantNeeded.forEach(c => {
+            const count = applicationCounts[c.id];
             items.push({
                 type: 'applicants',
                 typeText: t('brandDashboard.actions.applicants'),
                 id: `applicants-${c.id}`,
-                icon: <Users className="h-5 w-5" />,
-                text: <><span className="font-semibold text-primary">{c.title}:</span> {t('brandDashboard.actions.newApplicants', { count: applicationCounts[c.id] })}</>,
+                icon: <Users className="h-6 w-6" />,
+                metric: count,
+                campaignTitle: c.title,
+                text: t('brandDashboard.actions.newApplicants', { count }),
                 buttonText: t('brandDashboard.actions.review'),
                 href: `/campaigns/${c.id}/manage`
             });
@@ -171,8 +176,10 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 type: 'message',
                 typeText: t('brandDashboard.actions.message'),
                 id: `message-${c.id}`,
-                icon: <MessageSquare className="h-5 w-5" />,
-                text: <><span className="font-semibold text-primary">{campaignTitle}:</span> {t('brandDashboard.actions.newMessage', { name: creatorName })}</>,
+                icon: <MessageSquare className="h-6 w-6" />,
+                metric: '1',
+                campaignTitle: campaignTitle,
+                text: <>{t('brandDashboard.actions.newMessage', { name: creatorName })}</>,
                 buttonText: t('brandDashboard.actions.reply'),
                 href: `/chat?id=${c.id}`
             });
@@ -189,8 +196,8 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                      <Skeleton className="h-6 w-48" />
                 </CardHeader>
                 <CardContent className="space-y-2">
-                    <Skeleton className="h-10 w-full" />
-                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-16 w-full" />
+                    <Skeleton className="h-16 w-full" />
                 </CardContent>
             </Card>
         )
@@ -201,10 +208,10 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     }
 
     return (
-        <Card className="mb-8 shadow-sm border-t-4 border-t-amber-500 bg-amber-50/50 dark:bg-amber-900/10">
+        <Card className="mb-8 shadow-sm border-t-4 border-t-amber-500 bg-amber-500/5">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
-                    <AlertCircle />
+                <CardTitle className="flex items-center gap-3">
+                    <AlertCircle className="text-amber-600" />
                     {t('brandDashboard.actions.title')}
                     <Badge variant="destructive" className="rounded-full">{actionItems.length}</Badge>
                 </CardTitle>
