@@ -98,10 +98,10 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText }: { 
                 {icon}
             </div>
             <div className="flex-1 min-w-0">
-                <p className="text-sm truncate">
+                <div className="text-sm truncate">
                     <Badge variant="secondary" className={cn("mr-2 font-bold text-xs", typeStyles[type as keyof typeof typeStyles])}>{typeText}</Badge>
-                    {text}
-                </p>
+                    <span className="text-sm truncate">{text}</span>
+                </div>
             </div>
         </div>
         <Button asChild size="sm" variant="ghost">
@@ -404,7 +404,7 @@ export default function BrandDashboard() {
     
     switch (activeFilter) {
       case 'to_fund':
-        return campaigns.filter(c => campaignsAwaitingPayment.has(c.id));
+        return campaigns.filter(c => campaignsAwaitingPayment.has(c.id) || c.status === 'PENDING_PAYMENT');
       case 'hiring':
         return campaigns.filter(c => c.status === 'OPEN_FOR_APPLICATIONS' && (c.creatorIds?.length || 0) < (c.numberOfCreators || 1));
       case 'in_progress':
@@ -534,7 +534,7 @@ export default function BrandDashboard() {
 
        <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
             <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-5">
-                <TabsTrigger value="all">{t('brandDashboard.filters.all')} ({campaigns?.length || 0})</TabsTrigger>
+                <TabsTrigger value="all">{t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{campaigns?.length || 0}</Badge></TabsTrigger>
                 <TabsTrigger value="to_fund" className="text-blue-600">{t('brandDashboard.filters.toFund')}</TabsTrigger>
                 <TabsTrigger value="hiring" className="text-green-600">{t('brandDashboard.filters.hiring')}</TabsTrigger>
                 <TabsTrigger value="in_progress">{t('brandDashboard.filters.inProgress')}</TabsTrigger>
