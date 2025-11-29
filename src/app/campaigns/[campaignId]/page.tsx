@@ -54,6 +54,8 @@ const CampaignDetailSkeleton = () => (
 
 const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: any, campaignRef: any, brandProfile: any }) => {
     const { toast } = useToast();
+    const { dir } = useLanguage();
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
     const handleAccept = async () => {
         try {
@@ -108,6 +110,8 @@ const CreatorInvitation = ({ campaign, campaignRef, brandProfile }: { campaign: 
 
 const BrandWorkspace = ({ campaign, campaignId, hiredCreators, conversations }: { campaign: any, campaignId: string, hiredCreators: any[], conversations: any[] }) => {
     const router = useRouter();
+    const { dir } = useLanguage();
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
@@ -209,9 +213,10 @@ export default function CampaignPage() {
     const router = useRouter();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
     const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | null>(null);
     const [hiredCreators, setHiredCreators] = useState<any[]>([]);
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
     const campaignRef = useMemoFirebase(
         () => firestore ? doc(firestore, 'campaigns', campaignId as string) : null,
@@ -338,7 +343,7 @@ export default function CampaignPage() {
             <AppHeader />
             <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="mb-6">
-                    <Button variant="ghost" onClick={() => router.back()}>
+                    <Button variant="ghost" onClick={() => router.push('/discover')}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Back to Discovery
                     </Button>
@@ -393,7 +398,7 @@ export default function CampaignPage() {
                                     {campaign.deliverables.map((item: string, index: number) => (
                                         <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
                                             <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                                            <span>{item.replace(/_/g, ' ')}</span>
+                                            <span>{t(`deliverableTypes.${item.split(' ').slice(1).join('_')}`, { defaultValue: item.replace(/_/g, ' '), count: parseInt(item.split(' ')[0]) })}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -440,7 +445,7 @@ export default function CampaignPage() {
                                     <Button asChild className="w-full">
                                         <Link href={`/campaigns/${campaignId}/apply`}>
                                             {t('campaignPage.applyNow')}
-                                            <ArrowRight className="ml-2 h-4 w-4" />
+                                            <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />
                                         </Link>
                                     </Button>
                                 )}

@@ -694,7 +694,7 @@
         "title": "Découvrir les Campagnes",
         "description": "Parcourez et postulez à des campagnes exclusives des meilleures marques marocaines.",
         "budget": "Budget",
-        "applyNow": "Voir la Campagne",
+        "viewCampaign": "Voir la campagne",
         "applied": "Candidature Envoyée",
         "full": "Campagne Complète",
         "noCampaigns": {
@@ -787,6 +787,15 @@
             "submitButton": "Envoyer ma candidature",
             "submittingButton": "Envoi en cours..."
         }
+    },
+    "deliverableTypes": {
+        "Post": "{{count}} Post Instagram",
+        "Story": "{{count}} Story Instagram",
+        "Reel": "{{count}} Reel Instagram",
+        "Video": "{{count}} Vidéo TikTok",
+        "UGC_Video_Vertical": "{{count}} Vidéo UGC (Vertical)",
+        "UGC_Video_Horizontal": "{{count}} Vidéo UGC (Horizontal)",
+        "UGC_Photo_Pack": "{{count}} Pack Photos UGC"
     }
 }
     

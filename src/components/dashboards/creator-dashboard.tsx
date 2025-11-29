@@ -10,7 +10,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, ArrowRight, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, Trash2, MessageSquare } from 'lucide-react';
+import { Compass, Hourglass, Activity, ArrowRight, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, Trash2, MessageSquare, ArrowLeft } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
@@ -53,43 +53,49 @@ const CampaignCardSkeleton = () => (
     </Card>
 );
 
-const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground', subtitle, cta }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean, color?: string, subtitle?: string, cta?: { text: string; href: string; } }) => (
-    <Card className="shadow-sm flex flex-col">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
-            {icon}
-        </CardHeader>
-        <CardContent className="flex-grow">
-            {isLoading ? (
-                <>
-                    <Skeleton className="h-8 w-1/2" />
-                    {subtitle && <Skeleton className="h-4 w-3/4 mt-2" />}
-                </>
-            ) : (
-                <>
-                    <div className={cn("text-3xl font-bold", color)}>{value}</div>
-                    {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
-                </>
+const StatCard = ({ title, value, icon, isLoading, color = 'text-foreground', subtitle, cta }: { title: string; value: string | number; icon: React.ReactNode, isLoading: boolean, color?: string, subtitle?: string, cta?: { text: string; href: string; } }) => {
+    const { dir } = useLanguage();
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
+
+    return (
+        <Card className="shadow-sm flex flex-col">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+                {icon}
+            </CardHeader>
+            <CardContent className="flex-grow">
+                {isLoading ? (
+                    <>
+                        <Skeleton className="h-8 w-1/2" />
+                        {subtitle && <Skeleton className="h-4 w-3/4 mt-2" />}
+                    </>
+                ) : (
+                    <>
+                        <div className={cn("text-3xl font-bold", color)}>{value}</div>
+                        {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
+                    </>
+                )}
+            </CardContent>
+            {cta && !isLoading && (
+                <CardFooter className="pt-0">
+                    <Button asChild size="sm" className="w-full gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105">
+                        <Link href={cta.href}>
+                            {cta.text}
+                            <Arrow className="h-4 w-4 ml-2 rtl:mr-2 rtl:ml-0" />
+                        </Link>
+                    </Button>
+                </CardFooter>
             )}
-        </CardContent>
-        {cta && !isLoading && (
-            <CardFooter className="pt-0">
-                 <Button asChild size="sm" className="w-full gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105">
-                    <Link href={cta.href}>
-                        {cta.text}
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                    </Link>
-                </Button>
-            </CardFooter>
-        )}
-    </Card>
-);
+        </Card>
+    );
+};
 
 
 const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
     const { userProfile } = useUserProfile();
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
     const [motivationalTip, setMotivationalTip] = useState('');
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
      useEffect(() => {
         const tips = t('creatorProfile.completionTips', { returnObjects: true }) as string[];
@@ -167,27 +173,34 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
 };
 
 
-const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: any) => (
-    <div className="text-center py-20 border-2 border-dashed rounded-2xl bg-muted/20 mt-8">
-        <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
-            <Icon className="h-8 w-8 text-black" />
+const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: any) => {
+    const { dir } = useLanguage();
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
+
+    return (
+        <div className="text-center py-20 border-2 border-dashed rounded-2xl bg-muted/20 mt-8">
+            <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
+                <Icon className="h-8 w-8 text-black" />
+            </div>
+            <h2 className="text-2xl font-bold">{title}</h2>
+            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{description}</p>
+            <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+                <Link href={buttonLink}>
+                    {buttonText}
+                    <Arrow className="h-4 w-4 ml-2 rtl:mr-2 rtl:ml-0" />
+                </Link>
+            </Button>
         </div>
-        <h2 className="text-2xl font-bold">{title}</h2>
-        <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{description}</p>
-         <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
-            <Link href={buttonLink}>
-                {buttonText}
-            </Link>
-        </Button>
-    </div>
-);
+    );
+}
 
 export default function CreatorDashboard() {
   const { userProfile } = useUserProfile();
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, dir } = useLanguage();
+  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
   const [inDiscussionCampaigns, setInDiscussionCampaigns] = useState<any[]>([]);
@@ -358,7 +371,7 @@ export default function CreatorDashboard() {
         <h1 className="text-4xl font-bold tracking-tight">{greeting}</h1>
         <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
           <Link href="/discover">
-            <Compass className="mr-2 h-5 w-5" />
+            <Compass className="mr-2 rtl:mr-0 rtl:ml-2 h-5 w-5" />
             {t('creatorDashboard.discoverButton')}
           </Link>
         </Button>
@@ -418,7 +431,7 @@ export default function CreatorDashboard() {
                                 <Button asChild className="w-full" variant={isActionRequired ? 'default' : 'secondary'}>
                                   <Link href={`/campaigns/${campaign.id}`}>
                                     {isActionRequired ? t('creatorDashboard.actions.review') : t('creatorDashboard.actions.view')}
-                                    {isActionRequired && <ArrowRight className="ml-2 h-4 w-4" />}
+                                    {isActionRequired && <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />}
                                   </Link>
                                 </Button>
                             </CardFooter>
@@ -503,7 +516,7 @@ export default function CreatorDashboard() {
                                 <Button asChild className="w-full">
                                   <Link href={`/chat?id=${campaign.conversationId}`}>
                                     {t('creatorDashboard.actions.chat')}
-                                    <ArrowRight className="ml-2 h-4 w-4" />
+                                    <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />
                                   </Link>
                                 </Button>
                             </CardFooter>

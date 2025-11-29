@@ -694,7 +694,7 @@
         "title": "Discover Campaigns",
         "description": "Browse and apply for exclusive campaigns from top Moroccan brands.",
         "budget": "Budget",
-        "applyNow": "View & Apply",
+        "viewCampaign": "View Campaign",
         "applied": "Application Sent",
         "full": "Campaign Full",
         "noCampaigns": {
@@ -787,6 +787,15 @@
             "submitButton": "Send my Application",
             "submittingButton": "Submitting..."
         }
+    },
+    "deliverableTypes": {
+        "Post": "{{count}} Instagram Post",
+        "Story": "{{count}} Instagram Story",
+        "Reel": "{{count}} Instagram Reel",
+        "Video": "{{count}} TikTok Video",
+        "UGC_Video_Vertical": "{{count}} UGC Video (Vertical)",
+        "UGC_Video_Horizontal": "{{count}} UGC Video (Horizontal)",
+        "UGC_Photo_Pack": "{{count}} UGC Photo Pack"
     }
 }
     

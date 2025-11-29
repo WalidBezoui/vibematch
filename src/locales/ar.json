@@ -441,7 +441,7 @@
                 "label": "المدينة (المغرب)",
                 "placeholder": "مدينتك"
             },
-            "submitButton": "الانضمام إلى قائمة الانتظar",
+            "submitButton": "الانضمام إلى قائمة الانتظار",
             "submittingButton": "جارٍ الإرسال..."
         }
     },
@@ -603,7 +603,7 @@
             "placeholder": "مثال: عدم عرض شعارات المنافسين. التصوير فقط في ضوء النهار. تنسيق ديناميكي..."
         },
         "deliverables": {
-            "title": "المخرجات",
+            "title": "التسليمات",
             "description": "حدد المحتوى الذي تحتاجه من كل مبدع.",
             "campaignTypeLabel": "ما هو الهدف الرئيسي لهذه الحملة؟",
             "influence": {
@@ -688,7 +688,7 @@
         "title": "اكتشف الحملات",
         "description": "تصفح وقدم طلبًا لحملات حصرية من أفضل العلامات التجارية المغربية.",
         "budget": "الميزانية",
-        "applyNow": "عرض الحملة",
+        "viewAndApply": "عرض وتقديم طلب",
         "applied": "تم إرسال الطلب",
         "full": "الحملة مكتملة",
         "noCampaigns": {
@@ -725,7 +725,7 @@
         "noCampaigns": "لا توجد حملات نشطة بها أماكن شاغرة.",
         "hiredText": "تم توظيف {{hired}} من أصل {{total}}",
         "messageLabel": "الرسالة",
-        "messagePlaceholder": "اكتب رسالة موجزة إلى המبدע...",
+        "messagePlaceholder": "Rédigez un message bref au créateur...",
         "sendButton": "إرسال الدعوة",
         "defaultMessage": "مرحبًا {{name}}، نعتقد أن ملفك الشخصي سيكون مناسبًا جدًا لحملتنا ونود دعوتك للتقديم!",
         "validation": {
@@ -747,7 +747,7 @@
     "campaignPage": {
         "postedBy": "نشرت بواسطة",
         "briefTitle": "موجز الحملة",
-        "deliverablesTitle": "المخرجات",
+        "deliverablesTitle": "التسليمات",
         "conditionsTitle": "الشروط واللوجستيات",
         "logistics": {
             "title": "لوجستيات المنتج"
@@ -781,6 +781,15 @@
             "submitButton": "إرسال طلبي",
             "submittingButton": "جارٍ الإرسال..."
         }
+    },
+    "deliverableTypes": {
+        "Post": "{{count}} منشور Instagram",
+        "Story": "{{count}} قصة Instagram",
+        "Reel": "{{count}} Instagram Reel",
+        "Video": "{{count}} فيديو TikTok",
+        "UGC_Video_Vertical": "{{count}} فيديو UGC (عمودي)",
+        "UGC_Video_Horizontal": "{{count}} فيديو UGC (أفقي)",
+        "UGC_Photo_Pack": "{{count}} حزمة صور UGC"
     }
 }
     

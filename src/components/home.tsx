@@ -72,7 +72,7 @@ export function HomeComponent() {
               className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
               onClick={() => setUserInterest('brand')}
             >
-              <Link href="/#brands">{t('homePage.hero.brandsButton')}</Link>
+              <Link href="/brands/join">{t('homePage.hero.brandsButton')}</Link>
             </Button>
             <Button
               asChild
@@ -81,7 +81,7 @@ export function HomeComponent() {
               className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
               onClick={() => setUserInterest('creator')}
             >
-              <Link href="/#creators">{t('homePage.hero.creatorsButton')}</Link>
+              <Link href="/creators/join">{t('homePage.hero.creatorsButton')}</Link>
             </Button>
           </div>
         </div>
@@ -131,91 +131,6 @@ export function HomeComponent() {
         className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-16"
         id="creators"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-12">
-            <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-secondary/50 via-transparent to-transparent rounded-3xl shadow-2xl shadow-secondary/10 order-2 md:order-1 overflow-hidden">
-                {guaranteedPaymentsImg && (
-                <Image
-                    src={guaranteedPaymentsImg.imageUrl}
-                    alt={guaranteedPaymentsImg.description}
-                    data-ai-hint={guaranteedPaymentsImg.imageHint}
-                    fill
-                    className="object-contain"
-                />
-                )}
-            </div>
-          <div className="flex flex-col gap-6 order-1 md:order-2" onClick={() => setUserInterest('creator')}>
-            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
-              {t('homePage.creators.title1')}{' '}
-              <span className="gradient-text text-glow">
-                {t('homePage.creators.title2')}
-              </span>
-            </h2>
-            <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
-              {t('homePage.creators.description')}
-            </p>
-            <div className="mt-4 flex flex-col items-start gap-4">
-              {creatorCta ? (
-                  <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
-                    <DynamicIcon name={creatorCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
-                    <p>{creatorCta.text}</p>
-                  </div>
-              ) : <div className="h-[20px]" />}
-              <Button
-                asChild
-                className="w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-                onClick={() => setUserInterest('creator')}
-              >
-                <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="py-24 md:py-32">
-        <div className="text-center mb-16 max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">
-            {t('homePage.results.title1')} <br className="hidden md:block" />{' '}
-            {t('homePage.results.title2')}{' '}
-            <span className="gradient-text text-glow">{t('homePage.results.title3')}</span>
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
-            <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
-              <span className="material-symbols-outlined text-4xl text-black">
-                verified_user
-              </span>
-            </div>
-            <h3 className="text-xl font-bold mt-2">{t('homePage.features.shield.title')}</h3>
-            <p className="text-foreground/70 leading-relaxed">
-              {t('homePage.features.shield.description')}
-            </p>
-          </div>
-          <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
-            <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
-              <span className="material-symbols-outlined text-4xl text-black">
-                event_available
-              </span>
-            </div>
-            <h3 className="text-xl font-bold mt-2">{t('homePage.features.deadlines.title')}</h3>
-            <p className="text-foreground/70 leading-relaxed">
-             {t('homePage.features.deadlines.description')}
-            </p>
-          </div>
-          <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/50 border transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2">
-            <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
-              <span className="material-symbols-outlined text-4xl text-black">
-                dashboard_customize
-              </span>
-            </div>
-            <h3 className="text-xl font-bold mt-2">{t('homePage.features.autopilot.title')}</h3>
-            <p className="text-foreground/70 leading-relaxed">
-              {t('homePage.features.autopilot.description')}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="py-24 md:py-32 bg-muted/50 rounded-3xl">
         <div className="px-4 md:px-10 lg:px-12">
           <div className="text-center mb-16 max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">
