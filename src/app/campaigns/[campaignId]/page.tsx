@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase, useUserProfile, useCollection } from '@/firebase';
@@ -392,7 +393,7 @@ export default function CampaignPage() {
                                     {campaign.deliverables.map((item: string, index: number) => (
                                         <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
                                             <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                                            <span>{item}</span>
+                                            <span>{item.replace(/_/g, ' ')}</span>
                                         </li>
                                     ))}
                                 </ul>
