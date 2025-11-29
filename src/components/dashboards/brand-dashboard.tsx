@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
@@ -86,20 +86,29 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
 
 const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string, typeText: string }) => {
   const typeStyles = {
-    payment: 'text-blue-600 bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300',
-    applicants: 'text-green-600 bg-green-100 dark:bg-green-900/20 dark:text-green-300',
-    message: 'text-amber-600 bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300'
+    payment: {
+      iconBg: 'bg-blue-100 dark:bg-blue-900/20',
+      iconColor: 'text-blue-600 dark:text-blue-300'
+    },
+    applicants: {
+      iconBg: 'bg-green-100 dark:bg-green-900/20',
+      iconColor: 'text-green-600 dark:text-green-300'
+    },
+    message: {
+      iconBg: 'bg-amber-100 dark:bg-amber-900/20',
+      iconColor: 'text-amber-600 dark:text-amber-300'
+    }
   };
+  const styles = typeStyles[type as keyof typeof typeStyles];
 
   return (
     <div className="flex items-center justify-between gap-4 p-3 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className={cn("w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full", typeStyles[type as keyof typeof typeStyles])}>
-                {icon}
+            <div className={cn("w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full", styles.iconBg)}>
+                <div className={cn(styles.iconColor)}>{icon}</div>
             </div>
             <div className="flex-1 min-w-0">
                 <div className="text-sm truncate">
-                    <Badge variant="secondary" className={cn("mr-2 font-bold text-xs", typeStyles[type as keyof typeof typeStyles])}>{typeText}</Badge>
                     <span className="text-sm truncate">{text}</span>
                 </div>
             </div>
@@ -191,7 +200,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     }
 
     return (
-        <Card className="mb-8 shadow-sm bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800">
+        <Card className="mb-8 shadow-sm border-t-4 border-t-amber-500">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
                     <AlertCircle />
