@@ -151,13 +151,15 @@
             "errorTitle": "Deletion Failed"
         },
         "actions": {
-            "title": "Action Required",
+            "title": "ACTION CENTER",
             "payment": "PAYMENT",
             "pay": "Pay",
-            "fundCreator": "Fund the deal with {{name}} for \"{{title}}\"",
+            "fundCreator": "Fund the deal with {{name}}",
             "applicants": "APPLICANTS",
             "review": "Review",
+            "newApplicants": "{{count}} new applicants await.",
             "message": "MESSAGE",
+            "newMessage": "{{name}} has sent you a new message.",
             "reply": "Reply"
         },
         "filters": {

@@ -151,13 +151,15 @@
             "errorTitle": "فشل الحذف"
         },
         "actions": {
-            "title": "إجراء مطلوب",
-            "payment": "دفع",
+            "title": "مركز الإجراءات",
+            "payment": "الدفع",
             "pay": "دفع",
-            "fundCreator": "مول الصفقة مع {{name}} لحملة \"{{title}}\"",
-            "applicants": "مرشحون",
+            "fundCreator": "مول الصفقة مع {{name}}",
+            "applicants": "المرشحون",
             "review": "مراجعة",
+            "newApplicants": "{{count}} طلبات جديدة تنتظر المراجعة.",
             "message": "رسالة",
+            "newMessage": "{{name}} أرسل لك رسالة جديدة.",
             "reply": "رد"
         },
         "filters": {

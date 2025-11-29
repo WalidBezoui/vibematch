@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
@@ -91,16 +91,26 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type }: { icon: Reac
     message: 'text-amber-500 bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300'
   };
 
+  const typeTexts = {
+    payment: 'PAIEMENT',
+    applicants: 'CANDIDATS',
+    message: 'MESSAGE',
+  }
+
+  const { t } = useLanguage();
+
   return (
     <div className="flex items-center justify-between gap-4 p-3 hover:bg-muted/50 rounded-lg transition-colors">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-1 min-w-0">
             <div className={cn("w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full", typeStyles[type as keyof typeof typeStyles])}>
                 {icon}
             </div>
-            <p className="text-sm">{text}</p>
+            <div className="flex-1 min-w-0">
+                <p className="text-sm truncate"><span className="font-bold mr-2">[{t(`brandDashboard.actions.${type}`) as string}]</span>{text}</p>
+            </div>
         </div>
         <Button asChild size="sm" variant="ghost">
-            <Link href={href}>{buttonText}</Link>
+            <Link href={href}>{t(`brandDashboard.actions.${buttonText}`)}</Link>
         </Button>
     </div>
   )
@@ -123,8 +133,10 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                     type: 'payment',
                     id: `payment-convo-${c.id}`,
                     icon: <Wallet className="h-5 w-5" />,
-                    text: <><strong>{t('brandDashboard.actions.payment')}:</strong> {t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator', title: campaign.title})}</>,
-                    buttonText: t('brandDashboard.actions.pay'),
+                    text: <>
+                        <span className="font-semibold text-primary">{campaign.title}:</span> {t('brandDashboard.actions.fundCreator', {name: c.creator_name || 'A creator'})}
+                    </>,
+                    buttonText: 'pay',
                     href: `/campaigns/${c.campaign_id}/pay`
                 });
             }
@@ -137,8 +149,8 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 type: 'applicants',
                 id: `applicants-${c.id}`,
                 icon: <Users className="h-5 w-5" />,
-                text: <><strong>{t('brandDashboard.actions.applicants')}:</strong> {c.title} has {applicationCounts[c.id]} new applicants.</>,
-                buttonText: t('brandDashboard.actions.review'),
+                text: <><span className="font-semibold text-primary">{c.title}:</span> {t('brandDashboard.actions.newApplicants', { count: applicationCounts[c.id] })}</>,
+                buttonText: 'review',
                 href: `/campaigns/${c.id}/manage`
             });
         });
@@ -147,12 +159,13 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         const unreadMessages = conversations.filter(c => c.status === 'NEGOTIATION' && c.last_offer_by !== campaigns.find(camp => camp.id === c.campaign_id)?.brandId);
         unreadMessages.forEach(c => {
             const campaignTitle = campaigns.find(camp => camp.id === c.campaign_id)?.title || "a campaign";
+            const creatorName = c.creator_name || 'A creator';
             items.push({
                 type: 'message',
                 id: `message-${c.id}`,
                 icon: <MessageSquare className="h-5 w-5" />,
-                text: <><strong>{t('brandDashboard.actions.message')}:</strong> New message in "{campaignTitle}" negotiation.</>,
-                buttonText: t('brandDashboard.actions.reply'),
+                text: <><span className="font-semibold text-primary">{campaignTitle}:</span> {t('brandDashboard.actions.newMessage', { name: creatorName })}</>,
+                buttonText: 'reply',
                 href: `/chat?id=${c.id}`
             });
         });

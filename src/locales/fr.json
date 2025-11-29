@@ -151,13 +151,15 @@
             "errorTitle": "Échec de la suppression"
         },
         "actions": {
-            "title": "Action Requise",
+            "title": "CENTRE D'ACTION",
             "payment": "PAIEMENT",
             "pay": "Payer",
-            "fundCreator": "Financez l'accord avec {{name}} pour \"{{title}}\"",
+            "fundCreator": "Financez l'accord avec {{name}}",
             "applicants": "CANDIDATS",
             "review": "Voir",
+            "newApplicants": "{{count}} nouvelles candidatures à examiner.",
             "message": "MESSAGE",
+            "newMessage": "{{name}} vous a envoyé un nouveau message.",
             "reply": "Répondre"
         },
         "filters": {
