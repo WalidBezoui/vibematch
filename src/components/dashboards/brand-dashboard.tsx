@@ -109,6 +109,7 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText }: { 
             </div>
             <div className="flex-1 min-w-0">
                 <div className="text-sm truncate">
+                    <Badge variant="secondary" className={cn("mr-2 font-semibold", styles.iconBg, styles.iconColor)}>{typeText}</Badge>
                     <span className="text-sm truncate">{text}</span>
                 </div>
             </div>
@@ -200,7 +201,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     }
 
     return (
-        <Card className="mb-8 shadow-sm border-t-4 border-t-amber-500">
+        <Card className="mb-8 shadow-sm border-t-4 border-t-amber-500 bg-amber-50/50 dark:bg-amber-900/10">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
                     <AlertCircle />
@@ -404,6 +405,21 @@ export default function BrandDashboard() {
   }, [campaigns, firestore, user, isLoadingCampaigns]);
 
   
+  const { toFundCount, hiringCount, inProgressCount, archivedCount } = useMemo(() => {
+    if (!campaigns || !conversations) return { toFundCount: 0, hiringCount: 0, inProgressCount: 0, archivedCount: 0 };
+    
+    const campaignsAwaitingPayment = new Set(
+        conversations.filter(c => c.status === 'OFFER_ACCEPTED').map(c => c.campaign_id)
+    );
+    
+    return {
+      toFundCount: campaigns.filter(c => campaignsAwaitingPayment.has(c.id) || c.status === 'PENDING_PAYMENT').length,
+      hiringCount: campaigns.filter(c => c.status === 'OPEN_FOR_APPLICATIONS' && (c.creatorIds?.length || 0) < (c.numberOfCreators || 1)).length,
+      inProgressCount: campaigns.filter(c => ['IN_PROGRESS', 'DELIVERED', 'PENDING_CREATOR_ACCEPTANCE'].includes(c.status) || (c.status === 'OPEN_FOR_APPLICATIONS' && (c.creatorIds?.length || 0) >= (c.numberOfCreators || 1))).length,
+      archivedCount: campaigns.filter(c => ['COMPLETED', 'REJECTED_BY_CREATOR'].includes(c.status)).length,
+    }
+  }, [campaigns, conversations]);
+  
   const filteredCampaigns = useMemo(() => {
     if (!campaigns || !conversations) return [];
     
@@ -542,12 +558,12 @@ export default function BrandDashboard() {
       </div>
 
        <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
-            <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-5">
+            <TabsList className="p-1 h-auto bg-muted rounded-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
                 <TabsTrigger value="all">{t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{campaigns?.length || 0}</Badge></TabsTrigger>
-                <TabsTrigger value="to_fund" className="text-blue-600">{t('brandDashboard.filters.toFund')}</TabsTrigger>
-                <TabsTrigger value="hiring" className="text-green-600">{t('brandDashboard.filters.hiring')}</TabsTrigger>
-                <TabsTrigger value="in_progress">{t('brandDashboard.filters.inProgress')}</TabsTrigger>
-                <TabsTrigger value="archived">{t('brandDashboard.filters.archived')}</TabsTrigger>
+                <TabsTrigger value="to_fund" className="data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300">{t('brandDashboard.filters.toFund')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{toFundCount}</Badge></TabsTrigger>
+                <TabsTrigger value="hiring" className="data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300">{t('brandDashboard.filters.hiring')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{hiringCount}</Badge></TabsTrigger>
+                <TabsTrigger value="in_progress">{t('brandDashboard.filters.inProgress')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCount}</Badge></TabsTrigger>
+                <TabsTrigger value="archived">{t('brandDashboard.filters.archived')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{archivedCount}</Badge></TabsTrigger>
             </TabsList>
         </Tabs>
 
