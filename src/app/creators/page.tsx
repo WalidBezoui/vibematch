@@ -62,7 +62,7 @@ const CreatorCard = ({ creator, activeCampaigns, onViewProfile }: { creator: Cre
                     <Avatar className="w-full h-full rounded-none">
                         <AvatarImage src={creator.photoURL} alt={creator.displayName || creator.name} className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" />
                         <AvatarFallback className="text-6xl bg-muted rounded-none">
-                            {creator.displayName?.[0]?.toUpperCase() || creator.name?.[0]?.toUpperCase()}
+                            {creator.displayName?.[0]?.toUpperCase() || creator.name?.[0].toUpperCase()}
                         </AvatarFallback>
                     </Avatar>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
