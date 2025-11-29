@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
 import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId, getDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -84,7 +84,7 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
     </Card>
 );
 
-const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, campaignTitle, metric }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, type: string, typeText: string, campaignTitle: string, metric: string | number }) => {
+const ActionRequiredItem = ({ icon, text, buttonText, href, typeText, campaignTitle, metric }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, typeText: string, campaignTitle: string, metric: string | number }) => {
   const { dir } = useLanguage();
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
@@ -105,7 +105,7 @@ const ActionRequiredItem = ({ icon, text, buttonText, href, type, typeText, camp
       metricColor: 'text-amber-600 dark:text-amber-300',
     }
   };
-  const styles = typeStyles[type as keyof typeof typeStyles];
+  const styles = typeStyles[typeText.toLowerCase() as keyof typeof typeStyles];
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
@@ -142,22 +142,17 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         const items = [];
 
         // 1. Awaiting Payment
-        const paymentNeededCampaigns = campaigns.filter(c => c.status === 'PENDING_PAYMENT');
         const paymentNeededFromConvo = conversations.filter(c => c.status === 'OFFER_ACCEPTED');
-
-        const campaignsAwaitingPayment = new Set([...paymentNeededCampaigns.map(c=>c.id), ...paymentNeededFromConvo.map(c => c.campaign_id)]);
-        
-        campaignsAwaitingPayment.forEach(campaignId => {
-            const campaign = campaigns.find(c => c.id === campaignId);
+        paymentNeededFromConvo.forEach(convo => {
+            const campaign = campaigns.find(c => c.id === convo.campaign_id);
             if(campaign){
-                const convo = paymentNeededFromConvo.find(c=>c.campaign_id === campaignId);
-                const creatorName = convo?.otherUser?.name || t('brandDashboard.actions.aCreator');
+                const creatorName = convo.otherUser?.name || t('brandDashboard.actions.aCreator');
                 items.push({
                     type: 'payment',
                     typeText: t('brandDashboard.actions.payment'),
                     id: `payment-${campaign.id}`,
                     icon: <Wallet className="h-6 w-6" />,
-                    metric: `${convo?.agreed_budget || campaign.budget} DH`,
+                    metric: `${convo.agreed_budget || campaign.budget} DH`,
                     campaignTitle: campaign.title,
                     text: <>{t('brandDashboard.actions.fundCreator', {name: creatorName})}</>,
                     buttonText: t('brandDashboard.actions.pay'),
@@ -224,9 +219,8 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     }
 
     return (
-        <Card className="mb-8 shadow-sm bg-card border-t-4 border-amber-400">
+        <Card className="mb-8 shadow-sm border-t-4 border-amber-400">
             <CardHeader className="flex flex-row items-center gap-3">
-                <AlertCircle className="text-amber-500 h-6 w-6" />
                 <CardTitle>
                     {t('brandDashboard.actions.title')}
                 </CardTitle>
@@ -644,3 +638,5 @@ export default function BrandDashboard() {
     </div>
   );
 }
+
+    
