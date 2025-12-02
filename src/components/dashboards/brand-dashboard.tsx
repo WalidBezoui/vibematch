@@ -85,42 +85,45 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
     </Card>
 );
 
-const ActionRequiredItem = ({ icon, text, buttonText, href, typeText, campaignTitle, metric }: { icon: React.ReactNode, text: React.ReactNode, buttonText: string, href: string, typeText: string, campaignTitle: string, metric: string | number }) => {
+const ActionRequiredItem = ({ type, text, metric, buttonText, href, campaignTitle }: { type: 'payment' | 'applicants' | 'message', text: React.ReactNode, metric: string | number, buttonText: string, href: string, campaignTitle: string }) => {
   const { dir } = useLanguage();
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   const typeStyles = {
     payment: {
-      iconBg: 'bg-blue-100 dark:bg-blue-900/20',
-      iconColor: 'text-blue-600 dark:text-blue-300',
-      metricColor: 'text-blue-600 dark:text-blue-300',
+      icon: Wallet,
+      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+      iconColor: 'text-blue-600 dark:text-blue-400',
+      metricColor: 'text-blue-600 dark:text-blue-400',
     },
     applicants: {
-      iconBg: 'bg-green-100 dark:bg-green-900/20',
-      iconColor: 'text-green-600 dark:text-green-300',
-      metricColor: 'text-green-600 dark:text-green-300',
+      icon: Users,
+      iconBg: 'bg-green-100 dark:bg-green-900/30',
+      iconColor: 'text-green-600 dark:text-green-400',
+      metricColor: 'text-green-600 dark:text-green-400',
     },
     message: {
-      iconBg: 'bg-amber-100 dark:bg-amber-900/20',
-      iconColor: 'text-amber-600 dark:text-amber-300',
-      metricColor: 'text-amber-600 dark:text-amber-300',
+      icon: MessageSquare,
+      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+      iconColor: 'text-amber-600 dark:text-amber-400',
+      metricColor: 'text-amber-600 dark:text-amber-400',
     }
   };
-  const styles = typeStyles[typeText.toLowerCase() as keyof typeof typeStyles];
+  const styles = typeStyles[type];
+  const Icon = styles.icon;
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className={cn("w-16 h-16 flex-shrink-0 flex flex-col items-center justify-center rounded-full text-center", styles.iconBg)}>
-                <div className={cn("w-8 h-8 flex items-center justify-center", styles.iconColor)}>
-                  {icon}
+            <div className={cn("w-16 h-16 flex-shrink-0 flex flex-col items-center justify-center rounded-2xl text-center", styles.iconBg)}>
+                <div className="flex-1 flex items-center justify-center">
+                    <Icon className={cn("h-6 w-6", styles.iconColor)} />
+                </div>
+                <div className={cn("font-bold text-lg w-full rounded-b-xl py-0.5", styles.metricColor, "bg-black/5 dark:bg-black/20")}>
+                    {metric}
                 </div>
             </div>
             <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge variant="secondary" className={cn("font-semibold text-xs", styles.iconBg, styles.iconColor)}>{typeText}</Badge>
-                  <div className={cn("text-lg font-bold", styles.metricColor)}>{metric}</div>
-                </div>
                 <div className="font-semibold text-foreground truncate">{campaignTitle}</div>
                 <div className="text-sm text-muted-foreground truncate">{text}</div>
             </div>
@@ -149,10 +152,8 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
             if(campaign){
                 const creatorName = convo.otherUser?.name || t('brandDashboard.actions.aCreator');
                 items.push({
-                    type: 'payment',
-                    typeText: t('brandDashboard.actions.payment'),
+                    type: 'payment' as const,
                     id: `payment-${campaign.id}`,
-                    icon: <Wallet className="h-6 w-6" />,
                     metric: `${convo.agreed_budget || campaign.budget} DH`,
                     campaignTitle: campaign.title,
                     text: t('brandDashboard.actions.fundCreator', {name: creatorName}),
@@ -167,10 +168,8 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
         applicantNeeded.forEach(c => {
             const count = applicationCounts[c.id];
             items.push({
-                type: 'applicants',
-                typeText: t('brandDashboard.actions.applicants'),
+                type: 'applicants' as const,
                 id: `applicants-${c.id}`,
-                icon: <Users className="h-6 w-6" />,
                 metric: count,
                 campaignTitle: c.title,
                 text: t('brandDashboard.actions.newApplicants', { count }),
@@ -185,10 +184,8 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
             const campaignTitle = campaigns.find(camp => camp.id === c.campaign_id)?.title || "a campaign";
             const creatorName = c.otherUser?.name || 'A creator';
             items.push({
-                type: 'message',
-                typeText: t('brandDashboard.actions.message'),
+                type: 'message' as const,
                 id: `message-${c.id}`,
-                icon: <MessageSquare className="h-6 w-6" />,
                 metric: '1',
                 campaignTitle: campaignTitle,
                 text: t('brandDashboard.actions.newMessage', { name: creatorName }),
@@ -598,20 +595,20 @@ export default function BrandDashboard() {
       </div>
 
        <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
-            <TabsList className="p-1 h-auto bg-muted rounded-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
-                <TabsTrigger value="all" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+            <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
                     {t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{campaigns?.length || 0}</Badge>
                 </TabsTrigger>
-                <TabsTrigger value="to_fund" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300">
-                    {t('brandDashboard.filters.toFund')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{toFundCount}</Badge>
+                <TabsTrigger value="to_fund" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                    {t('brandDashboard.filters.toFund')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5 bg-blue-100 text-blue-800">{toFundCount}</Badge>
                 </TabsTrigger>
-                <TabsTrigger value="hiring" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300">
-                    {t('brandDashboard.filters.hiring')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{hiringCount}</Badge>
+                <TabsTrigger value="hiring" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                    {t('brandDashboard.filters.hiring')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5 bg-green-100 text-green-800">{hiringCount}</Badge>
                 </TabsTrigger>
-                <TabsTrigger value="in_progress" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+                <TabsTrigger value="in_progress" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
                     {t('brandDashboard.filters.inProgress')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCount}</Badge>
                 </TabsTrigger>
-                <TabsTrigger value="archived" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+                <TabsTrigger value="archived" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
                     {t('brandDashboard.filters.archived')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{archivedCount}</Badge>
                 </TabsTrigger>
             </TabsList>
