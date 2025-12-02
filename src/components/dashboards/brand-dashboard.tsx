@@ -155,7 +155,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                     icon: <Wallet className="h-6 w-6" />,
                     metric: `${convo.agreed_budget || campaign.budget} DH`,
                     campaignTitle: campaign.title,
-                    text: <>{t('brandDashboard.actions.fundCreator', {name: creatorName})}</>,
+                    text: t('brandDashboard.actions.fundCreator', {name: creatorName}),
                     buttonText: t('brandDashboard.actions.pay'),
                     href: `/campaigns/${campaign.id}/pay`
                 });
@@ -191,7 +191,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 icon: <MessageSquare className="h-6 w-6" />,
                 metric: '1',
                 campaignTitle: campaignTitle,
-                text: <>{t('brandDashboard.actions.newMessage', { name: creatorName })}</>,
+                text: t('brandDashboard.actions.newMessage', { name: creatorName }),
                 buttonText: t('brandDashboard.actions.reply'),
                 href: `/chat?id=${c.id}`
             });
@@ -599,11 +599,21 @@ export default function BrandDashboard() {
 
        <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
             <TabsList className="p-1 h-auto bg-muted rounded-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
-                <TabsTrigger value="all">{t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{campaigns?.length || 0}</Badge></TabsTrigger>
-                <TabsTrigger value="to_fund" className="data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300">{t('brandDashboard.filters.toFund')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{toFundCount}</Badge></TabsTrigger>
-                <TabsTrigger value="hiring" className="data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300">{t('brandDashboard.filters.hiring')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{hiringCount}</Badge></TabsTrigger>
-                <TabsTrigger value="in_progress">{t('brandDashboard.filters.inProgress')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCount}</Badge></TabsTrigger>
-                <TabsTrigger value="archived">{t('brandDashboard.filters.archived')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{archivedCount}</Badge></TabsTrigger>
+                <TabsTrigger value="all" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+                    {t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{campaigns?.length || 0}</Badge>
+                </TabsTrigger>
+                <TabsTrigger value="to_fund" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300">
+                    {t('brandDashboard.filters.toFund')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{toFundCount}</Badge>
+                </TabsTrigger>
+                <TabsTrigger value="hiring" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300">
+                    {t('brandDashboard.filters.hiring')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{hiringCount}</Badge>
+                </TabsTrigger>
+                <TabsTrigger value="in_progress" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+                    {t('brandDashboard.filters.inProgress')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCount}</Badge>
+                </TabsTrigger>
+                <TabsTrigger value="archived" className="flex-1 py-1.5 text-xs rounded-full data-[state=active]:gradient-bg data-[state=active]:text-black data-[state=active]:shadow-sm">
+                    {t('brandDashboard.filters.archived')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{archivedCount}</Badge>
+                </TabsTrigger>
             </TabsList>
         </Tabs>
 
@@ -641,5 +651,3 @@ export default function BrandDashboard() {
     </div>
   );
 }
-
-    
