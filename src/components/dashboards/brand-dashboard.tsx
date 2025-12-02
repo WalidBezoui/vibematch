@@ -221,11 +221,13 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
 
     return (
         <Card className="mb-8 shadow-sm border-t-4 border-amber-400">
-            <CardHeader className="flex flex-row items-center justify-between gap-3">
-                <CardTitle>
-                    {t('brandDashboard.actions.title')}
-                </CardTitle>
-                <Badge variant="destructive" className="rounded-full">{actionItems.length}</Badge>
+            <CardHeader className="flex flex-row items-center gap-3">
+                <div className="flex items-center gap-3">
+                    <CardTitle>
+                        {t('brandDashboard.actions.title')}
+                    </CardTitle>
+                    <Badge variant="destructive" className="rounded-full">{actionItems.length}</Badge>
+                </div>
             </CardHeader>
             <CardContent className="p-2">
                 <div className="space-y-1">
