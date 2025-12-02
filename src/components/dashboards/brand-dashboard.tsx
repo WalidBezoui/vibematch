@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
 import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { collection, query, where, getDocs, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDoc, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId, getDocs } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -54,6 +54,7 @@ const CampaignCardSkeleton = () => (
             <Skeleton className="h-4 w-1/4 mt-2" />
         </CardHeader>
         <CardContent>
+            <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-2/3 mt-2" />
         </CardContent>
         <CardFooter>
@@ -220,7 +221,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
 
     return (
         <Card className="mb-8 shadow-sm border-t-4 border-amber-400">
-            <CardHeader className="flex flex-row items-center gap-3">
+            <CardHeader className="flex flex-row items-center justify-between gap-3">
                 <CardTitle>
                     {t('brandDashboard.actions.title')}
                 </CardTitle>
