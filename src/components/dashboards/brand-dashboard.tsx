@@ -85,29 +85,14 @@ const StatCard = ({ title, value, icon, isLoading, subtitle, color = 'text-foreg
     </Card>
 );
 
-const ActionRequiredItem = ({ type, text, metric, buttonText, href, campaignTitle }: { type: 'payment' | 'applicants' | 'message', text: React.ReactNode, metric: string | number, buttonText: string, href: string, campaignTitle: string }) => {
+const ActionRequiredItem = ({ type, typeText, text, metric, buttonText, href, campaignTitle }: { type: 'payment' | 'applicants' | 'message', typeText: string, text: React.ReactNode, metric: string | number, buttonText: string, href: string, campaignTitle: string }) => {
   const { dir } = useLanguage();
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   const typeStyles = {
-    payment: {
-      icon: Wallet,
-      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
-      iconColor: 'text-blue-600 dark:text-blue-400',
-      metricColor: 'text-blue-600 dark:text-blue-400',
-    },
-    applicants: {
-      icon: Users,
-      iconBg: 'bg-green-100 dark:bg-green-900/30',
-      iconColor: 'text-green-600 dark:text-green-400',
-      metricColor: 'text-green-600 dark:text-green-400',
-    },
-    message: {
-      icon: MessageSquare,
-      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
-      iconColor: 'text-amber-600 dark:text-amber-400',
-      metricColor: 'text-amber-600 dark:text-amber-400',
-    }
+    payment: { icon: Wallet, iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconColor: 'text-blue-600 dark:text-blue-400' },
+    applicants: { icon: Users, iconBg: 'bg-green-100 dark:bg-green-900/30', iconColor: 'text-green-600 dark:text-green-400' },
+    message: { icon: MessageSquare, iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400' }
   };
   const styles = typeStyles[type];
   const Icon = styles.icon;
@@ -115,16 +100,17 @@ const ActionRequiredItem = ({ type, text, metric, buttonText, href, campaignTitl
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className={cn("w-16 h-16 flex-shrink-0 flex flex-col items-center justify-center rounded-2xl text-center", styles.iconBg)}>
-                <div className="flex-1 flex items-center justify-center">
+            <div className={cn("w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-2xl", styles.iconBg)}>
+                 <div className="flex flex-col items-center justify-center text-center">
                     <Icon className={cn("h-6 w-6", styles.iconColor)} />
-                </div>
-                <div className={cn("font-bold text-lg w-full rounded-b-xl py-0.5", styles.metricColor, "bg-black/5 dark:bg-black/20")}>
-                    {metric}
+                    <div className={cn("font-bold text-lg mt-1", styles.iconColor)}>
+                        {metric}
+                    </div>
                 </div>
             </div>
             <div className="flex-1 min-w-0">
-                <div className="font-semibold text-foreground truncate">{campaignTitle}</div>
+                <Badge variant="secondary" className={styles.iconBg + ' ' + styles.iconColor}>{typeText}</Badge>
+                <div className="font-semibold text-foreground truncate mt-1">{campaignTitle}</div>
                 <div className="text-sm text-muted-foreground truncate">{text}</div>
             </div>
         </div>
@@ -155,6 +141,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                     type: 'payment' as const,
                     id: `payment-${campaign.id}`,
                     metric: `${convo.agreed_budget || campaign.budget} DH`,
+                    typeText: t('brandDashboard.actions.payment'),
                     campaignTitle: campaign.title,
                     text: t('brandDashboard.actions.fundCreator', {name: creatorName}),
                     buttonText: t('brandDashboard.actions.pay'),
@@ -171,6 +158,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 type: 'applicants' as const,
                 id: `applicants-${c.id}`,
                 metric: count,
+                typeText: t('brandDashboard.actions.applicants'),
                 campaignTitle: c.title,
                 text: t('brandDashboard.actions.newApplicants', { count }),
                 buttonText: t('brandDashboard.actions.review'),
@@ -187,6 +175,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                 type: 'message' as const,
                 id: `message-${c.id}`,
                 metric: '1',
+                typeText: t('brandDashboard.actions.message'),
                 campaignTitle: campaignTitle,
                 text: t('brandDashboard.actions.newMessage', { name: creatorName }),
                 buttonText: t('brandDashboard.actions.reply'),
@@ -205,8 +194,8 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
                      <Skeleton className="h-6 w-48" />
                 </CardHeader>
                 <CardContent className="space-y-2">
-                    <Skeleton className="h-16 w-full" />
-                    <Skeleton className="h-16 w-full" />
+                    <Skeleton className="h-20 w-full" />
+                    <Skeleton className="h-20 w-full" />
                 </CardContent>
             </Card>
         )
@@ -219,7 +208,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     return (
         <Card className="mb-8 shadow-sm border-t-4 border-amber-400">
             <CardHeader className="flex flex-row items-center gap-3">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                     <CardTitle>
                         {t('brandDashboard.actions.title')}
                     </CardTitle>
@@ -595,23 +584,26 @@ export default function BrandDashboard() {
       </div>
 
        <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
-            <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-                    {t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{campaigns?.length || 0}</Badge>
-                </TabsTrigger>
-                <TabsTrigger value="to_fund" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-                    {t('brandDashboard.filters.toFund')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5 bg-blue-100 text-blue-800">{toFundCount}</Badge>
-                </TabsTrigger>
-                <TabsTrigger value="hiring" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-                    {t('brandDashboard.filters.hiring')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5 bg-green-100 text-green-800">{hiringCount}</Badge>
-                </TabsTrigger>
-                <TabsTrigger value="in_progress" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-                    {t('brandDashboard.filters.inProgress')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCount}</Badge>
-                </TabsTrigger>
-                <TabsTrigger value="archived" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-                    {t('brandDashboard.filters.archived')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{archivedCount}</Badge>
-                </TabsTrigger>
-            </TabsList>
+            <div className="relative">
+                <div className="md:hidden absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
+                <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                    <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                        {t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{campaigns?.length || 0}</Badge>
+                    </TabsTrigger>
+                    <TabsTrigger value="to_fund" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                        {t('brandDashboard.filters.toFund')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5 bg-blue-100 text-blue-800">{toFundCount}</Badge>
+                    </TabsTrigger>
+                    <TabsTrigger value="hiring" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                        {t('brandDashboard.filters.hiring')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5 bg-green-100 text-green-800">{hiringCount}</Badge>
+                    </TabsTrigger>
+                    <TabsTrigger value="in_progress" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                        {t('brandDashboard.filters.inProgress')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCount}</Badge>
+                    </TabsTrigger>
+                    <TabsTrigger value="archived" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                        {t('brandDashboard.filters.archived')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{archivedCount}</Badge>
+                    </TabsTrigger>
+                </TabsList>
+            </div>
         </Tabs>
 
       {isLoading && (
