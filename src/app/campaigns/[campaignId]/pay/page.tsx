@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useDoc, useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
+import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, where, getDoc } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
@@ -10,13 +10,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertTriangle, Lock, ArrowRight } from 'lucide-react';
+import { AlertTriangle, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { CheckoutDialog } from '@/components/checkout-dialog';
 import { useLanguage } from '@/context/language-context';
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
 
 const PaymentPageSkeleton = () => (
     <Card className="max-w-2xl mx-auto">
@@ -43,7 +44,8 @@ export default function PaymentPage() {
     const [potentialItems, setPotentialItems] = useState<any[]>([]);
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { t } = useLanguage();
+    const { t, dir } = useLanguage();
+    const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
     const campaignRef = useMemoFirebase(
         () => firestore ? doc(firestore, 'campaigns', campaignId as string) : null,
@@ -226,7 +228,7 @@ export default function PaymentPage() {
                         <CardFooter>
                             <CheckoutDialog items={itemsToProcess}>
                                 <Button className="w-full" size="lg" disabled={itemsToProcess.length === 0}>
-                                    {t('checkout.proceedButton')} <ArrowRight className="ml-2 h-4 w-4"/>
+                                    {t('checkout.proceedButton')} <Arrow className={cn("h-4 w-4", dir === 'rtl' ? 'mr-2' : 'ml-2')} />
                                 </Button>
                             </CheckoutDialog>
                         </CardFooter>
