@@ -1028,7 +1028,7 @@
                     "title": "3. OBLIGATIONS DE LA MARQUE",
                     "li1": "Fournir un brief clair et complet pour chaque campagne.",
                     "li2": "Financer le compte séquestre avant le début de la collaboration.",
-                    "li3": "Ne pas contourner VibeMatch en contractant directement avec un créateur présenté via la plateforme pendant une durée de 12 mois. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20 % du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts.",
+                    "li3": "Ne pas contourner VibeMatch en contractant directement avec un créateur présenté via la plateforme pour une durée de 12 mois. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20 % du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts.",
                     "li4": "Valider ou demander des révisions des livrables en temps opportun. IMPORTANT : En l'absence de validation ou de demande de révision dans les cinq (5) jours calendaires suivant la livraison, les livrables seront réputés automatiquement validés ('Validation Tacite'), déclenchant la libération des fonds au Créateur."
                 },
                 "payments": {
@@ -1070,7 +1070,7 @@
                 },
                 "mandate": {
                     "title": "2. MANDAT DE FACTURATION ET D'ENCAISSEMENT",
-                    "p1": "Pour simplifier la gestion administrative, le Créateur donne un Mandat de Facturation à VibeMatch. Par conséquent :",
+                    "p1": "Pour simplifier la gestion administrative, le Créateur confère à VibeMatch un Mandat de Facturation. En conséquence :",
                     "li1": "VibeMatch est autorisé à générer et émettre des factures au nom et pour le compte du Créateur à destination des Clients.",
                     "li2": "Le Créateur conserve l'entière responsabilité fiscale de ces factures et doit les intégrer dans sa propre déclaration fiscale (Auto-Entrepreneur, etc.).",
                     "li3": "VibeMatch est autorisé à encaisser les fonds sur un compte séquestre et à déduire la Commission de la Plateforme avant de transférer le solde net."
@@ -1079,7 +1079,8 @@
                     "title": "3. OBLIGATIONS DU CRÉATEUR",
                     "li1": "Fournir des statistiques d'audience réelles et vérifiables (Interdiction d'achat de \"Fake Followers\").",
                     "li2": "Respecter les délais de livraison (Livrables) convenus dans l'offre.",
-                    "li3": "Ne pas publier de contenu diffamatoire, illégal ou contraire aux bonnes mœurs marocaines."
+                    "li3": "Ne pas publier de contenu diffamatoire, illégal ou contraire aux bonnes mœurs marocaines.",
+                    "li4": "3.4. CONFIDENTIALITÉ Le Créateur s'engage à garder strictement confidentielles toutes les informations fournies par la Marque (Briefs, lancements de produits, stratégie marketing) jusqu'à la date de lancement officielle de la campagne. Toute \"fuite\" ou publication prématurée sera considérée comme une violation substantielle passible de dommages et intérêts."
                 },
                 "payments": {
                     "title": "4. PAIEMENT ET COMMISSION",
@@ -1096,7 +1097,7 @@
                 },
                 "rights": {
                     "title": "6. PROPRIÉTÉ INTELLECTUELLE & CESSION DE DROITS",
-                    "p1": "6.1. Cession : En acceptant une mission et en recevant le paiement, le Créateur cède au Client, de manière irrévocable, les droits patrimoniaux sur le contenu créé, spécifiquement :\n- Droit de Reproduction & de Représentation : Sur internet, les réseaux sociaux et les plateformes numériques.\n- Territoire : Monde entier.\n- Durée : Pour la durée légale de protection des droits d'auteur (sauf durée plus courte spécifiée dans le Brief de Mission).\n- Finalité : Usage commercial, publicitaire et promotionnel.",
+                    "p1": "6.1. Cession : En acceptant une mission et en recevant le paiement, le Créateur cède au Client, de manière irrévocable, les droits patrimoniaux sur le contenu créé, spécifiquement :\n- Droit de Reproduction & de Représentation : Sur internet, les réseaux sociaux et les plateformes numériques.\n- Territoire : Monde entier.\n- Durée : Pour la durée légale de protection des droits d'auteur (sauf durée plus courte spécifiée dans le Brief de Mission).\n- Finalité : Usage commercial, publicitaire et promotionnel. Droits d'Adaptation : Le Créateur autorise expressément le Client à redimensionner, recadrer, sous-titrer ou éditer le contenu strictement à des fins de formatage pour différents canaux de médias sociaux.",
                     "p2": "6.2. Garantie & Indemnisation : Le Créateur garantit que le contenu est original et ne porte pas atteinte aux droits de tiers (musiques, droit à l'image d'autrui, marques). Le Créateur s'engage à indemniser et à garantir VibeMatch et le Client contre toute réclamation, dommage ou frais de justice découlant d'une violation de cette garantie."
                 }
             }
