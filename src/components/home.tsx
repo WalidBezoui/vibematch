@@ -127,6 +127,47 @@ export function HomeComponent() {
           </div>
         </div>
       </div>
+      <div className="py-24 md:py-32 scroll-mt-16" id="creators-main">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
+           <div className="relative w-full aspect-square p-8 bg-gradient-to-bl from-accent/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-accent/10 overflow-hidden order-last md:order-first">
+             {guaranteedPaymentsImg && (
+                <Image
+                    src={guaranteedPaymentsImg.imageUrl}
+                    alt={guaranteedPaymentsImg.description}
+                    data-ai-hint={guaranteedPaymentsImg.imageHint}
+                    fill
+                    className="object-contain"
+                />
+            )}
+          </div>
+          <div className="flex flex-col gap-6">
+            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
+              {t('homePage.creators.title1')}{' '}
+              <span className="gradient-text text-glow">
+                {t('homePage.creators.title2')}
+              </span>
+            </h2>
+            <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
+              {t('homePage.creators.description')}
+            </p>
+             <div className="mt-4 flex flex-col items-start gap-4">
+               {creatorCta ? (
+                 <div className="flex items-center justify-start gap-3 text-sm font-medium text-accent/90 dark:text-accent/80 transition-all duration-500 animate-fade-in-up">
+                    <DynamicIcon name={creatorCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
+                    <p>{creatorCta.text}</p>
+                 </div>
+               ) : <div className="h-[20px]" /> }
+              <Button
+                asChild
+                className="w-full md:w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
+                onClick={() => setUserInterest('creator')}
+              >
+                <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div
         className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-16"
         id="creators"
