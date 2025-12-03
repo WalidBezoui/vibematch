@@ -1021,7 +1021,6 @@
             },
             "mandate": {
               "title": "2. MANDAT DE PAIEMENT ET SÉQUESTRE",
-              "p1": "En finançant une campagne, la Marque donne expressément MANDAT à VibeMatch pour :",
               "li1": "Séquestrer le montant total (honoraires du Créateur + commission VibeMatch) sur un compte de cantonnement dédié.",
               "li2": "Libérer les fonds au Créateur uniquement après que la Marque a validé les livrables sur la plateforme."
             },
@@ -1038,18 +1037,18 @@
               "p2": "Effet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch."
             },
             "chargebacks": {
-              "title": "4.1. RÉTROFACTURATIONS (CHARGEBACKS) & LITIGES DE PAIEMENT",
-              "p1": "La Marque s'engage à ne pas initier de rétrofacturation via sa banque ou son fournisseur de carte de crédit pour quelque raison que ce soit si les livrables ont été validés (explicitement ou tacitement). Toute rétrofacturation injustifiée sera considérée comme une action frauduleuse. Elle entraînera la suspension immédiate du compte, et la créance sera confiée à une agence de recouvrement avec une pénalité supplémentaire de 20 % pour couvrir les frais de recouvrement administratifs et juridiques."
+                "title": "4.1. RÉTROFACTURATIONS (CHARGEBACKS) & LITIGES DE PAIEMENT",
+                "p1": "La Marque s'engage à ne pas initier de rétrofacturation via sa banque ou son fournisseur de carte de crédit pour quelque raison que ce soit si les livrables ont été validés (explicitement ou tacitement). Toute rétrofacturation injustifiée sera considérée comme une action frauduleuse. Elle entraînera la suspension immédiate du compte, et la créance sera confiée à une agence de recouvrement avec une pénalité supplémentaire de 20 % pour couvrir les frais de recouvrement administratifs et juridiques."
             },
             "cancellation": {
-              "title": "4.2. ANNULATION & REMBOURSEMENTS",
-              "li1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15% (Hors Taxe). Une fois le travail commencé, le montant total est dû.",
-              "li2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés.",
-              "li3": "Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
+                "title": "4.2. ANNULATION & REMBOURSEMENTS",
+                "li1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15% (Hors Taxe). Une fois le travail commencé, le montant total est dû.",
+                "li2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés.",
+                "li3": "Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
             },
             "forceMajeure": {
-              "title": "5. FORCE MAJEURE",
-              "p1": "Aucune des parties ne sera tenue responsable de l'inexécution de ses obligations si cette inexécution résulte d'un cas de Force Majeure (y compris incendie, inondation, séisme), de restrictions gouvernementales (interdictions) ou de pannes majeures des fournisseurs d'accès à Internet. Dans de tels cas, la mission est suspendue ou annulée sans pénalité."
+                "title": "5. FORCE MAJEURE",
+                "p1": "Aucune des parties ne sera tenue responsable de l'inexécution de ses obligations si cette inexécution résulte d'un cas de Force Majeure (y compris incendie, inondation, séisme), de restrictions gouvernementales (interdictions) ou de pannes majeures des fournisseurs d'accès à Internet. Dans de tels cas, la mission est suspendue ou annulée sans pénalité."
             },
             "termination": {
               "title": "6. RÉSILIATION",
@@ -1102,22 +1101,27 @@
             },
             "circumvention": {
               "title": "5. NON-CONTOURNEMENT (ANTI-CIRCUMVENTION)",
-              "p1": "Le Créateur s'interdit formellement de démarcher, contracter ou accepter des paiements directs d'un Client présenté par VibeMatch, pour une durée de 12 mois suivant la mise en relation initiale. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20 % du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts."
+              "p1": "Le Créateur s'interdit formellement de démarcher, contracter ou accepter des paiements directs d'un Client présenté par VibeMatch, pour une durée de 12 mois suivant la mise en relation initiale. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20% du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts."
             },
             "rights": {
               "title": "6. PROPRIÉTÉ INTELLECTUELLE & CESSION DE DROITS",
-              "p1": "6.1. Cession : En acceptant une mission et en recevant le paiement, le Créateur cède au Client, de manière irrévocable, les droits patrimoniaux sur le contenu créé, spécifiquement :",
-              "li1": "Droit de Reproduction & de Représentation : Sur internet, les réseaux sociaux et les plateformes numériques.",
-              "li2": "Territoire : Monde entier.",
-              "li3": "Durée : Pour la durée légale de protection des droits d'auteur (sauf durée plus courte spécifiée dans le Brief de Mission).",
-              "li4": "Finalité : Usage commercial, publicitaire et promotionnel.",
-              "li5": "Droits d'Adaptation : Le Créateur autorise expressément le Client à redimensionner, recadrer, sous-titrer ou éditer le contenu strictement à des fins de formatage pour différents canaux de médias sociaux.",
-              "li6": "Droits de la Personnalité : Le Créateur autorise expressément le Client à utiliser son nom, son image, sa voix et son apparence contenus dans les livrables aux fins définies aux présentes.",
-              "p2": "6.2. Garantie & Indemnisation : Le Créateur garantit que le contenu est original et ne porte pas atteinte aux droits de tiers (musiques, droit à l'image d'autrui, marques). Le Créateur s'engage à indemniser et à garantir VibeMatch et le Client contre toute réclamation, dommage ou frais de justice découlant d'une violation de cette garantie."
+              "assignment": {
+                  "title": "6.1. Cession : En acceptant une mission et en recevant le paiement, le Créateur cède au Client, de manière irrévocable, les droits patrimoniaux sur le contenu créé, spécifiquement :",
+                  "li1": "Droit de Reproduction & de Représentation : Sur internet, les réseaux sociaux et les plateformes numériques.",
+                  "li2": "Territoire : Monde entier.",
+                  "li3": "Durée : Pour la durée légale de protection des droits d'auteur (sauf durée plus courte spécifiée dans le Brief de Mission).",
+                  "li4": "Finalité : Usage commercial, publicitaire et promotionnel.",
+                  "li5": "Droits d'Adaptation : Le Créateur autorise expressément le Client à redimensionner, recadrer, sous-titrer ou éditer le contenu strictement à des fins de formatage pour différents canaux de médias sociaux.",
+                  "li6": "Droits de la Personnalité : Le Créateur autorise expressément le Client à utiliser son nom, son image, sa voix et son apparence contenus dans les livrables aux fins définies aux présentes."
+              },
+              "warranty": {
+                  "title": "6.2. Garantie & Indemnisation :",
+                  "p1": "Le Créateur garantit que le contenu est original et ne porte pas atteinte aux droits de tiers (musiques, droit à l'image d'autrui, marques). Le Créateur s'engage à indemniser et à garantir VibeMatch et le Client contre toute réclamation, dommage ou frais de justice découlant d'une violation de cette garantie."
+              }
             },
             "forceMajeure": {
-              "title": "7. FORCE MAJEURE",
-              "p1": "Aucune des parties ne sera tenue responsable de l'inexécution de ses obligations si cette inexécution résulte d'un cas de Force Majeure (y compris incendie, inondation, séisme), de restrictions gouvernementales (interdictions) ou de pannes majeures des fournisseurs d'accès à Internet. Dans de tels cas, la mission est suspendue ou annulée sans pénalité."
+                "title": "7. FORCE MAJEURE",
+                "p1": "Aucune des parties ne sera tenue responsable de l'inexécution de ses obligations si cette inexécution résulte d'un cas de Force Majeure (y compris incendie, inondation, séisme), de restrictions gouvernementales (interdictions) ou de pannes majeures des fournisseurs d'accès à Internet. Dans de tels cas, la mission est suspendue ou annulée sans pénalité."
             }
           }
         }
@@ -1198,3 +1202,6 @@
 }
     
     
+
+
+  

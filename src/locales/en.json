@@ -1020,7 +1020,6 @@
             },
             "mandate": {
               "title": "2. PAYMENT MANDATE AND ESCROW",
-              "p1": "By funding a campaign, the Brand expressly gives MANDATE to VibeMatch to:",
               "li1": "Secure the total amount (Creator fees + VibeMatch commission) in a dedicated escrow account.",
               "li2": "Release the funds to the Creator only after the Brand has validated the deliverables on the platform."
             },
@@ -1037,18 +1036,18 @@
               "p2": "Liberatory Effect: The Brand acknowledges that payment made to VibeMatch's escrow account constitutes a valid discharge of its debt towards the Creator. The Creator cannot claim payment directly from the Brand once VibeMatch has received the funds."
             },
             "chargebacks": {
-              "title": "4.1. CHARGEBACKS & PAYMENT DISPUTES",
-              "p1": "The Brand agrees not to issue a chargeback via their bank or credit card provider for any reason if the deliverables have been validated (explicitly or tacitly). Any unjustified chargeback will be considered a fraudulent action. It will result in the immediate suspension of the account, and the debt will be handed over to a collections agency with an additional 20% penalty to cover administrative and legal recovery costs."
+                "title": "4.1. CHARGEBACKS & PAYMENT DISPUTES",
+                "p1": "The Brand agrees not to issue a chargeback via their bank or credit card provider for any reason if the deliverables have been validated (explicitly or tacitly). Any unjustified chargeback will be considered a fraudulent action. It will result in the immediate suspension of the account, and the debt will be handed over to a collections agency with an additional 20% penalty to cover administrative and legal recovery costs."
             },
             "cancellation": {
-              "title": "4.2. CANCELLATION & REFUNDS",
-              "li1": "Cancellation by Brand: If the Brand cancels a mission before the Creator has started work, funds are refunded minus a 15% (Excluding VAT / Hors Taxe) administrative fee. Once work has commenced, the full amount is due.",
-              "li2": "Non-Delivery: If a Creator fails to deliver within the agreed timeframe, the Brand is entitled to a full refund of the escrowed funds.",
-              "li3": "Disputes: In case of disagreement on quality, VibeMatch acts as a mediator. VibeMatch's decision on fund distribution is final."
+                "title": "4.2. CANCELLATION & REFUNDS",
+                "li1": "Cancellation by Brand: If the Brand cancels a mission before the Creator has started work, funds are refunded minus a 15% (Excluding VAT / Hors Taxe) administrative fee. Once work has commenced, the full amount is due.",
+                "li2": "Non-Delivery: If a Creator fails to deliver within the agreed timeframe, the Brand is entitled to a full refund of the escrowed funds.",
+                "li3": "Disputes: In case of disagreement on quality, VibeMatch acts as a mediator. VibeMatch's decision on fund distribution is final."
             },
             "forceMajeure": {
-              "title": "5. FORCE MAJEURE",
-              "p1": "Neither party shall be liable for failure to perform its obligations if such failure is a result of Acts of God (including fire, flood, earthquake), government restrictions (bans), or major internet service provider failures. In such cases, the mission is suspended or cancelled without penalty."
+                "title": "5. FORCE MAJEURE",
+                "p1": "Neither party shall be liable for failure to perform its obligations if such failure is a result of Acts of God (including fire, flood, earthquake), government restrictions (bans), or major internet service provider failures. In such cases, the mission is suspended or cancelled without penalty."
             },
             "termination": {
               "title": "6. TERMINATION",
@@ -1105,18 +1104,23 @@
             },
             "rights": {
               "title": "6. INTELLECTUAL PROPERTY & ASSIGNMENT OF RIGHTS",
-              "p1": "6.1. Assignment: By accepting a mission and receiving payment, the Creator irrevocably assigns to the Client the economic rights (droits patrimoniaux) to the content created, specifically:",
-              "li1": "Right of Reproduction & Representation: On the internet, social media, and digital platforms.",
-              "li2": "Territory: Worldwide (Monde entier).",
-              "li3": "Duration: For the legal duration of copyright protection (unless a specific shorter duration is defined in the Mission Brief).",
-              "li4": "Purpose: Commercial, advertising, and promotional use.",
-              "li5": "Adaptation Rights: The Creator expressly authorizes the Client to resize, crop, subtitle, or edit the content strictly for formatting purposes on different social media channels.",
-              "li6": "Personality Rights: The Creator expressly authorizes the Client to use their name, image, voice, and likeness contained in the deliverables for the purposes defined herein.",
-              "p2": "6.2. Warranty & Indemnification: The Creator guarantees that the content is original and does not infringe on the rights of third parties (music, image rights of others, trademarks). The Creator agrees to indemnify and hold harmless VibeMatch and the Client against any claims, damages, or legal fees arising from a breach of this warranty."
+              "assignment": {
+                  "title": "6.1. Assignment: By accepting a mission and receiving payment, the Creator irrevocably assigns to the Client the economic rights (droits patrimoniaux) to the content created, specifically:",
+                  "li1": "Right of Reproduction & Representation: On the internet, social media, and digital platforms.",
+                  "li2": "Territory: Worldwide (Monde entier).",
+                  "li3": "Duration: For the legal duration of copyright protection (unless a specific shorter duration is defined in the Mission Brief).",
+                  "li4": "Purpose: Commercial, advertising, and promotional use.",
+                  "li5": "Adaptation Rights: The Creator expressly authorizes the Client to resize, crop, subtitle, or edit the content strictly for formatting purposes on different social media channels.",
+                  "li6": "Personality Rights: The Creator expressly authorizes the Client to use their name, image, voice, and likeness contained in the deliverables for the purposes defined herein."
+              },
+              "warranty": {
+                  "title": "6.2. Warranty & Indemnification:",
+                  "p1": "The Creator guarantees that the content is original and does not infringe on the rights of third parties (music, image rights of others, trademarks). The Creator agrees to indemnify and hold harmless VibeMatch and the Client against any claims, damages, or legal fees arising from a breach of this warranty."
+              }
             },
             "forceMajeure": {
-              "title": "7. FORCE MAJEURE",
-              "p1": "Neither party shall be liable for failure to perform its obligations if such failure is a result of Acts of God (including fire, flood, earthquake), government restrictions (bans), or major internet service provider failures. In such cases, the mission is suspended or cancelled without penalty."
+                "title": "7. FORCE MAJEURE",
+                "p1": "Neither party shall be liable for failure to perform its obligations if such failure is a result of Acts of God (including fire, flood, earthquake), government restrictions (bans), or major internet service provider failures. In such cases, the mission is suspended or cancelled without penalty."
             }
           }
         }
@@ -1197,3 +1201,6 @@
 }
     
     
+
+
+  
