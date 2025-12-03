@@ -638,7 +638,7 @@
             "header": "Notre Engagement Qualité",
             "description": "Pour que VibeMatch reste une plateforme de confiance, nous demandons à tous les créateurs de s'engager à un haut niveau de professionnalisme. C'est notre garantie collective.",
             "pledge": "Je m'engage à respecter les délais et à ne jamais utiliser de faux engagement.",
-            "creatorMandate": "I accept the Terms of Use and I grant VibeMatch an exclusive mandate to invoice and collect payments on my behalf (Mandat d'Encaissement). I agree that VibeMatch deducts its commission before transferring the net balance."
+            "creatorMandate": "J'accepte les Conditions d'Utilisation et je confère à VibeMatch un mandat exclusif pour facturer et encaisser les paiements en mon nom (Mandat d'Encaissement). J'accepte que VibeMatch déduise sa commission avant de me transférer le solde net."
         },
         "finalStep": {
             "title": "Merci pour votre candidature.",
@@ -1028,16 +1028,19 @@
                     "title": "3. OBLIGATIONS DE LA MARQUE",
                     "li1": "Fournir un brief clair et complet pour chaque campagne.",
                     "li2": "Financer le compte séquestre avant le début de la collaboration.",
-                    "li3": "Ne pas contourner VibeMatch en contractant directement avec un créateur présenté via la plateforme pour une durée de 12 mois. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20 % du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts.",
-                    "li4": "Valider ou demander des révisions des livrables en temps opportun. IMPORTANT : En l'absence de validation ou de demande de révision dans les cinq (5) jours calendaires suivant la livraison, les livrables seront réputés automatiquement validés ('Validation Tacite'), déclenchant la libération des fonds au Créateur."
+                    "li3": "Non-Contournement : Ne pas contourner VibeMatch en contractant directement avec un créateur présenté via la plateforme pour une durée de 12 mois. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20 % du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts.",
+                    "li4": "Validation : Valider ou demander des révisions des livrables en temps opportun. IMPORTANT : En l'absence de validation ou de demande de révision dans les cinq (5) jours calendaires suivant la livraison, les livrables seront réputés automatiquement validés ('Validation Tacite'), déclenchant la libération des fonds au Créateur."
                 },
                 "payments": {
                     "title": "4. PAIEMENTS",
-                    "p1": "Le paiement est dû lors du recrutement du ou des créateurs. Effet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch.",
-                    "p2": "La Marque s'engage à ne pas initier de rétrofacturation (chargeback) via sa banque ou son fournisseur de carte de crédit pour quelque raison que ce soit si les livrables ont été validés (explicitement ou tacitement). Toute rétrofacturation injustifiée sera considérée comme une action frauduleuse. Elle entraînera la suspension immédiate du compte, et la créance sera confiée à une agence de recouvrement avec une pénalité supplémentaire de 20 % pour couvrir les frais de recouvrement administratifs et juridiques."
+                    "p1": "Le paiement est dû lors du recrutement du ou des créateurs. Effet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch."
+                },
+                "chargebacks": {
+                    "title": "4.1. RÉTROFACTURATIONS (CHARGEBACKS) & LITIGES DE PAIEMENT",
+                    "p1": "La Marque s'engage à ne pas initier de rétrofacturation via sa banque ou son fournisseur de carte de crédit pour quelque raison que ce soit si les livrables ont été validés (explicitement ou tacitement). Toute rétrofacturation injustifiée sera considérée comme une action frauduleuse. Elle entraînera la suspension immédiate du compte, et la créance sera confiée à une agence de recouvrement avec une pénalité supplémentaire de 20 % pour couvrir les frais de recouvrement administratifs et juridiques."
                 },
                 "cancellation": {
-                    "title": "4.1. ANNULATION & REMBOURSEMENTS",
+                    "title": "4.2. ANNULATION & REMBOURSEMENTS",
                     "p1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15% (Hors Taxe). Une fois le travail commencé, le montant total est dû.",
                     "p2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés. Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
                 },
@@ -1080,9 +1083,10 @@
                 "obligations": {
                     "title": "3. OBLIGATIONS DU CRÉATEUR",
                     "li1": "Fournir des statistiques d'audience réelles et vérifiables (Interdiction d'achat de 'Fake Followers').",
-                    "li2": "Respecter les délais de livraison (Livrables) convenus dans l'offre. Période de Maintien : Le Créateur s'engage à maintenir le contenu sponsorisé visible sur son fil d'actualité (Feed principal) pour une durée minimale de 30 jours (ou 24 heures pour les Stories) après publication. L'archivage ou la suppression avant ce délai est considéré comme une rupture de contrat.",
-                    "li3": "Ne pas publier de contenu diffamatoire, illégal ou contraire aux bonnes mœurs marocaines.",
-                    "li4": "CONFIDENTIALITÉ Le Créateur s'engage à garder strictement confidentielles toutes les informations fournies par la Marque (Briefs, lancements de produits, stratégie marketing) jusqu'à la date de lancement officielle de la campagne. Toute \"fuite\" ou publication prématurée sera considérée comme une violation substantielle passible de dommages et intérêts."
+                    "li2": "Respecter les délais de livraison (Livrables) convenus dans l'offre.",
+                    "li3": "Période de Maintien : Le Créateur s'engage à maintenir le contenu sponsorisé visible sur son fil d'actualité (Feed principal) pour une durée minimale de 30 jours (ou 24 heures pour les Stories) après publication. L'archivage ou la suppression avant ce délai est considéré comme une rupture de contrat.",
+                    "li4": "Ne pas publier de contenu diffamatoire, illégal ou contraire aux bonnes mœurs marocaines.",
+                    "li5": "Confidentialité : Le Créateur s'engage à garder strictement confidentielles toutes les informations fournies par la Marque (Briefs, lancements de produits, stratégie marketing) jusqu'à la date de lancement officielle de la campagne. Toute \"fuite\" ou publication prématurée sera considérée comme une violation substantielle passible de dommages et intérêts."
                 },
                 "payments": {
                     "title": "4. PAIEMENT ET COMMISSION",
@@ -1103,11 +1107,12 @@
                     "li1": "Droit de Reproduction & de Représentation : Sur internet, les réseaux sociaux et les plateformes numériques.",
                     "li2": "Territoire : Monde entier.",
                     "li3": "Durée : Pour la durée légale de protection des droits d'auteur (sauf durée plus courte spécifiée dans le Brief de Mission).",
-                    "li4": "Finalité : Usage commercial, publicitaire et promotionnel. Droits d'Adaptation : Le Créateur autorise expressément le Client à redimensionner, recadrer, sous-titrer ou éditer le contenu strictement à des fins de formatage pour différents canaux de médias sociaux.",
-                    "li5": "Droits de la Personnalité : Le Créateur autorise expressément le Client à utiliser son nom, son image, sa voix et son apparence contenus dans les livrables aux fins définies aux présentes.",
+                    "li4": "Finalité : Usage commercial, publicitaire et promotionnel.",
+                    "li5": "Droits d'Adaptation : Le Créateur autorise expressément le Client à redimensionner, recadrer, sous-titrer ou éditer le contenu strictement à des fins de formatage pour différents canaux de médias sociaux.",
+                    "li6": "Droits de la Personnalité : Le Créateur autorise expressément le Client à utiliser son nom, son image, sa voix et son apparence contenus dans les livrables aux fins définies aux présentes.",
                     "p2": "6.2. Garantie & Indemnisation : Le Créateur garantit que le contenu est original et ne porte pas atteinte aux droits de tiers (musiques, droit à l'image d'autrui, marques). Le Créateur s'engage à indemniser et à garantir VibeMatch et le Client contre toute réclamation, dommage ou frais de justice découlant d'une violation de cette garantie."
                 },
-                 "forceMajeure": {
+                "forceMajeure": {
                     "title": "7. FORCE MAJEURE",
                     "p1": "Aucune des parties ne sera tenue responsable de l'inexécution de ses obligations si cette inexécution résulte d'un cas de Force Majeure (y compris incendie, inondation, séisme), de restrictions gouvernementales (interdictions) ou de pannes majeures des fournisseurs d'accès à Internet. Dans de tels cas, la mission est suspendue ou annulée sans pénalité."
                 }
