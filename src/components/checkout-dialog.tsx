@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,7 +17,7 @@ import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/context/language-context';
 import { useUser, useFirebase } from '@/firebase';
 import { cn } from '@/lib/utils';
-import { Shield, Lock, Loader2 } from 'lucide-react';
+import { Shield, Lock, Loader2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -47,32 +47,14 @@ export function CheckoutDialog({
   const [open, setOpen] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  useEffect(() => {
-    // When the dialog opens, pre-select all items.
-    if (open) {
-      setSelectedItems(items.map(item => item.id));
-    }
-  }, [open, items]);
-
-  const handleItemSelect = (itemId: string) => {
-    setSelectedItems(prev => 
-      prev.includes(itemId) 
-        ? prev.filter(id => id !== itemId)
-        : [...prev, itemId]
-    );
-  };
-  
-  const itemsToProcess = useMemo(() => items.filter(item => selectedItems.includes(item.id)), [items, selectedItems]);
-
-  const subTotal = useMemo(() => itemsToProcess.reduce((acc, item) => acc + item.amount, 0), [itemsToProcess]);
+  const subTotal = useMemo(() => items.reduce((acc, item) => acc + item.amount, 0), [items]);
   const serviceFee = subTotal * 0.10;
   const vat = serviceFee * 0.20;
   const total = subTotal + serviceFee + vat;
   
   const handlePayment = async () => {
-      if (!isTermsChecked || !firestore || !user || itemsToProcess.length === 0) return;
+      if (!isTermsChecked || !firestore || !user || items.length === 0) return;
       setIsProcessing(true);
       toast({ title: t('checkout.processing'), description: t('checkout.processingDescription') });
 
@@ -80,7 +62,7 @@ export function CheckoutDialog({
       console.log('--- LEGAL AUDIT TRAIL (SIMULATED) ---');
       console.log({
           user_id: user.uid,
-          campaign_ids: itemsToProcess.map(item => item.campaignId),
+          campaign_ids: items.map(item => item.campaignId),
           ip_address: '127.0.0.1', // This would be retrieved via headers on the server
           timestamp: new Date().toISOString(),
           document_version: "CGU_CLIENT_V1.0",
@@ -95,7 +77,7 @@ export function CheckoutDialog({
       try {
         const batch = writeBatch(firestore);
 
-        itemsToProcess.forEach(item => {
+        items.forEach(item => {
             const campaignRef = doc(firestore, 'campaigns', item.campaignId);
             const conversationRef = doc(firestore, 'conversations', item.id);
             
@@ -118,7 +100,7 @@ export function CheckoutDialog({
             description: t('paymentSuccess.description'),
         });
         
-        router.push(`/campaigns/${itemsToProcess[0].campaignId}/success`);
+        router.push(`/campaigns/${items[0].campaignId}/success`);
         setOpen(false);
 
       } catch (error: any) {
@@ -145,24 +127,8 @@ export function CheckoutDialog({
         </DialogHeader>
         <div className="py-4 space-y-6">
             <p className="font-semibold">{t('checkout.summary')}</p>
-            <div className="space-y-4 max-h-48 overflow-y-auto pr-2">
-                {items.map(item => (
-                    <div key={item.id} className="flex items-start gap-3 text-sm">
-                        <Checkbox 
-                            id={`item-${item.id}`}
-                            checked={selectedItems.includes(item.id)}
-                            onCheckedChange={() => handleItemSelect(item.id)}
-                            className="mt-1"
-                        />
-                        <div className="grid gap-1.5 leading-none flex-1">
-                          <label htmlFor={`item-${item.id}`} className="font-medium cursor-pointer">{item.creatorName} ({item.campaignTitle})</label>
-                          <div className="flex justify-between items-center text-muted-foreground">
-                              <p className="truncate pr-2">{item.deliverables.join(', ')}</p>
-                              <p className="font-mono whitespace-nowrap">{item.amount.toFixed(2)} {t('currency')}</p>
-                          </div>
-                        </div>
-                    </div>
-                ))}
+            <div className="space-y-2 text-sm">
+              <p className="text-muted-foreground">{t('checkout.paymentTo')}: {items.map(i => i.creatorName).join(', ')}</p>
             </div>
             <Separator />
              <div className="space-y-2 text-sm">
@@ -200,7 +166,7 @@ export function CheckoutDialog({
         </div>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => setOpen(false)}>{t('checkout.cancel')}</Button>
-          <Button type="button" onClick={handlePayment} disabled={!isTermsChecked || isProcessing || itemsToProcess.length === 0}>
+          <Button type="button" onClick={handlePayment} disabled={!isTermsChecked || isProcessing || items.length === 0}>
             {isProcessing ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
