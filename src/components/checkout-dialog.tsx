@@ -203,7 +203,9 @@ export function CheckoutDialog({
           <Button type="button" onClick={handlePayment} disabled={!isTermsChecked || isProcessing || itemsToProcess.length === 0}>
             {isProcessing ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : null}
+            ) : (
+                <Lock className="mr-2 h-4 w-4" />
+            )}
             {isProcessing ? t('checkout.processing') : t('checkout.pay', { total: total.toFixed(2) })}
           </Button>
         </DialogFooter>

@@ -467,7 +467,7 @@
         "brandsFaq": [
             {
                 "question": "What is VibeMatch's Trust Engine?",
-                "answer": "Our Trust Engine is a proprietary system that analyzes over 50 data points to vet influencers. It checks for fake followers, bot activity, and engagement authenticity to ensure you connect with creators who have a genuine and engaged audience, maximizing your campaign's ROI."
+                "answer": "Our Trust Engine is a proprietary system that analyzes over 50 data points to vet influencers. It checks for fake followers, bot activity, and engagement authenticity to ensure you connect with creators who have a genuine, engaged audience, maximizing your campaign's ROI."
             },
             {
                 "question": "How do I find influencers for my campaign?",
@@ -986,6 +986,8 @@
     "checkout": {
       "title": "Secure Funds (Escrow)",
       "summary": "Order Summary",
+      "proceedButton": "Proceed to Checkout",
+      "paymentTo": "Payment to",
       "subtotal": "Sub-total (Paid to creators)",
       "serviceFee": "VibeMatch Service Fee (10%)",
       "vat": "VAT on Fees (20%)",
@@ -1081,7 +1083,7 @@
                     "commission_t": "In consideration for the services of the Platform, a commission of [X]% is deducted from the total campaign amount."
                 },
                 "circumvention": {
-                    "title": "5. NON-CIRCUMVENTION",
+                    "title": "5. NON-CIRCUMVENTION (ANTI-CIRCUMVENTION)",
                     "p1": "The Creator is strictly prohibited from soliciting, contracting with, or accepting direct payments from a Client introduced by VibeMatch, for a period of 12 months following the initial introduction. Any violation will result in the immediate suspension of the account and legal action for damages."
                 },
                 "rights": {
@@ -1168,3 +1170,4 @@
     
 
     
+
