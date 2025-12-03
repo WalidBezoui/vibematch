@@ -100,21 +100,17 @@ const ActionRequiredItem = ({ type, typeText, text, metric, buttonText, href, ca
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 hover:bg-muted/50 rounded-lg transition-colors">
         <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className={cn("w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-2xl", styles.iconBg)}>
-                 <div className="flex flex-col items-center justify-center text-center">
-                    <Icon className={cn("h-6 w-6", styles.iconColor)} />
-                    <div className={cn("font-bold text-lg mt-1", styles.iconColor)}>
-                        {metric}
-                    </div>
-                </div>
+            <div className={cn("w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl", styles.iconBg)}>
+                 <Icon className={cn("h-6 w-6", styles.iconColor)} />
             </div>
             <div className="flex-1 min-w-0">
-                <Badge variant="secondary" className={styles.iconBg + ' ' + styles.iconColor}>{typeText}</Badge>
+                <Badge variant="secondary" className={cn("font-semibold", styles.iconBg, styles.iconColor)}>{typeText}</Badge>
                 <div className="font-semibold text-foreground truncate mt-1">{campaignTitle}</div>
                 <div className="text-sm text-muted-foreground truncate">{text}</div>
             </div>
         </div>
-        <div className="w-full sm:w-auto flex flex-col sm:items-end gap-2 pl-0 sm:pl-4 mt-2 sm:mt-0">
+        <div className="w-full sm:w-auto flex flex-col sm:items-end gap-2 pl-0 sm:pl-16 mt-2 sm:mt-0">
+            {type === 'payment' && <div className="text-lg font-bold text-right sm:text-left">{metric}</div>}
             <Button asChild size="sm" className="w-full sm:w-auto">
                 <Link href={href}>{buttonText} <Arrow className="h-4 w-4 ml-2" /></Link>
             </Button>
@@ -207,7 +203,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
 
     return (
         <Card className="mb-8 shadow-sm border-t-4 border-amber-400">
-            <CardHeader className="flex flex-row items-center gap-3">
+            <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex items-center gap-2">
                     <CardTitle>
                         {t('brandDashboard.actions.title')}
@@ -585,7 +581,6 @@ export default function BrandDashboard() {
 
        <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
             <div className="relative">
-                <div className="md:hidden absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none z-10"></div>
                 <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
                         {t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{campaigns?.length || 0}</Badge>
@@ -603,6 +598,7 @@ export default function BrandDashboard() {
                         {t('brandDashboard.filters.archived')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{archivedCount}</Badge>
                     </TabsTrigger>
                 </TabsList>
+                 <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none md:hidden z-10"></div>
             </div>
         </Tabs>
 
