@@ -314,27 +314,40 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
                                 <FormItem>
                                 <FormLabel>{t('creatorProfile.edit.tagsLabel')}</FormLabel>
                                 <FormControl>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                     {niches.map((niche) => (
-                                        <Button
-                                        key={niche.id}
-                                        type="button"
-                                        variant="outline"
-                                        className={cn(
-                                            "rounded-full",
-                                            field.value?.includes(niche.id) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
-                                        )}
-                                        onClick={() => {
-                                            const currentTags = field.value || [];
-                                            const newTags = currentTags.includes(niche.id)
-                                            ? currentTags.filter(t => t !== niche.id)
-                                            : [...currentTags, niche.id];
-                                            field.onChange(newTags);
-                                        }}
-                                        >
-                                        {niche.label}
-                                        </Button>
-                                    ))}
+                                        <FormItem key={niche.id} className="flex-1">
+                                          <FormControl>
+                                            <button 
+                                              type="button"
+                                              onClick={() => {
+                                                const currentTags = field.value || [];
+                                                const newTags = currentTags.includes(niche.id)
+                                                  ? currentTags.filter(t => t !== niche.id)
+                                                  : [...currentTags, niche.id];
+                                                field.onChange(newTags);
+                                              }}
+                                              className={cn(
+                                                "group flex flex-col items-center justify-center w-full h-full p-4 rounded-lg border-2 text-center transition-all duration-300",
+                                                field.value.includes(niche.id)
+                                                  ? 'border-primary bg-primary/10' 
+                                                  : 'border-border hover:border-primary/50'
+                                              )}
+                                            >
+                                              <span className="material-symbols-outlined !text-4xl mb-2 transition-colors duration-300 group-hover:text-primary"
+                                                style={{fontVariationSettings: "'FILL' 0, 'wght' 300"}}>
+                                                {niche.icon}
+                                              </span>
+                                              <span className={cn(
+                                                "font-semibold text-sm",
+                                                field.value.includes(niche.id) ? 'text-primary' : 'text-foreground/80'
+                                              )}>
+                                                {niche.label}
+                                              </span>
+                                            </button>
+                                          </FormControl>
+                                        </FormItem>
+                                      ))}
                                     </div>
                                 </FormControl>
                                 <FormMessage />
@@ -370,5 +383,7 @@ export default function CreatorProfileEditor({ profile }: { profile: any }) {
     </Form>
   );
 }
+
+    
 
     
