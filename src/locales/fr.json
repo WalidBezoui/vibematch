@@ -994,7 +994,7 @@
       "total": "TOTAL À DÉBITER",
       "consent": {
         "title": "Consentement Légal (Obligatoire)",
-        "brandMandate": "I accept the Terms of Service and I authorize VibeMatch to secure these funds in Escrow until validation of the deliverables. I acknowledge that this payment discharges my debt towards the Creator."
+        "brandMandate": "J'accepte les Conditions d'Utilisation et je confère à VibeMatch un mandat exclusif pour facturer et encaisser les paiements en mon nom (Mandat d'Encaissement). J'accepte que VibeMatch déduise sa commission avant de me transférer le solde net."
       },
       "cancel": "Annuler",
       "pay": "Payer {{total}} MAD",
@@ -1009,7 +1009,7 @@
     },
     "termsPage": {
         "title": "Conditions Générales d'Utilisation",
-        "lastUpdated": "Dernière mise à jour : {{date}}",
+        "lastUpdated": "Dernière mise à jour : 03/12/2025",
         "discrepancyNotice": "En cas de divergence, la version française prévaut.",
         "brand": {
             "title": "CONDITIONS D'UTILISATION (CÔTÉ MARQUES)",
@@ -1033,7 +1033,8 @@
                 },
                 "payments": {
                     "title": "4. PAIEMENTS",
-                    "p1": "Le paiement est dû lors du recrutement du ou des créateurs. Effet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch."
+                    "p1": "Le paiement est dû lors du recrutement du ou des créateurs.",
+                    "p2": "Effet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch."
                 },
                 "chargebacks": {
                     "title": "4.1. RÉTROFACTURATIONS (CHARGEBACKS) & LITIGES DE PAIEMENT",
@@ -1071,7 +1072,7 @@
             "sections": {
                 "object": {
                     "title": "1. OBJET ET INDÉPENDANCE",
-                    "p1": "Les présentes Conditions (CGU) régissent l'utilisation de la plateforme VibeMatch par les Créateurs de contenu / Influenceurs (ci-après \"le Créateur\"). IMPORTANT - ABSENCE DE LIEN DE SUBORDINATION : Le Créateur agit en tant que prestataire de services indépendant (Auto-Entrepreneur, Société, ou Patenté). Les présentes CGU ne créent aucun lien de subordination, contrat de travail, ou agence exclusive entre VibeMatch et le Créateur. Le Créateur reste libre de son emploi du temps et de ses moyens de production."
+                    "p1": "Les présentes Conditions (CGU) gouvernent l'utilisation de la plateforme VibeMatch par les Créateurs de contenu / Influenceurs (ci-après 'le Créateur'). IMPORTANT - ABSENCE DE LIEN DE SUBORDINATION : Le Créateur agit en tant que prestataire de services indépendant (Auto-Entrepreneur, Société, ou Patenté). Les présentes CGU ne créent aucun lien de subordination, contrat de travail, ou agence exclusive entre VibeMatch et le Créateur. Le Créateur reste libre de son emploi du temps et de ses moyens de production."
                 },
                 "mandate": {
                     "title": "2. MANDAT DE FACTURATION ET D'ENCAISSEMENT",
@@ -1090,12 +1091,10 @@
                 },
                 "payments": {
                     "title": "4. PAIEMENT ET COMMISSION",
-                    "trigger_b": "Déclenchement : ",
-                    "trigger_t": "Le paiement est débloqué uniquement après la validation des livrables par le Client sur la Plateforme.",
-                    "delay_b": "Délai : ",
-                    "delay_t": "VibeMatch s'engage à initier le virement sous 5 jours ouvrés après validation.",
-                    "commission_b": "Commission : ",
-                    "commission_t": "En contrepartie des services de la Plateforme, une commission de 15% (Hors Taxe) est déduite du montant total de la campagne."
+                    "p1": "",
+                    "li1": "Déclenchement : Le paiement est débloqué uniquement après la validation des livrables par le Client sur la Plateforme.",
+                    "li2": "Délai : VibeMatch s'engage à initier le virement sous 5 jours ouvrés après validation.",
+                    "li3": "Commission : En contrepartie des services de la Plateforme, une commission de 15% (Hors Taxe) est déduite du montant total de la campagne."
                 },
                 "circumvention": {
                     "title": "5. NON-CONTOURNEMENT (ANTI-CIRCUMVENTION)",
@@ -1199,3 +1198,4 @@
 
 
     
+

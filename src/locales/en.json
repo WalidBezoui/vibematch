@@ -488,7 +488,7 @@
                   "answer": "We look for creators with an authentic connection to their audience, regardless of follower size. We evaluate engagement quality, content creativity, and niche relevance. If you create high-quality content and have a loyal community, we encourage you to apply."
               },
               {
-                  "question": "Is there a fee to use VibeMatch?",
+                  "question": "Is there a fee for creators?",
                   "answer": "It is free for creators to join VibeMatch and create a profile. We take a small platform fee from your earnings on each completed campaign. This fee helps us cover payment processing, platform maintenance, and provide you with support and resources to grow your career."
               }
           ],
@@ -1009,7 +1009,7 @@
     },
     "termsPage": {
         "title": "Terms of Service",
-        "lastUpdated": "Last updated: {{date}}",
+        "lastUpdated": "Last updated: 03/12/2025",
         "discrepancyNotice": "In case of discrepancy, the French version governs.",
         "brand": {
             "title": "TERMS OF USE (BRAND SIDE)",
@@ -1033,7 +1033,8 @@
                 },
                 "payments": {
                     "title": "4. PAYMENTS",
-                    "p1": "Payment is due upon hiring the creator(s). Liberatory Effect: The Brand acknowledges that payment made to VibeMatch's escrow account constitutes a valid discharge of its debt towards the Creator. The Creator cannot claim payment directly from the Brand once VibeMatch has received the funds."
+                    "p1": "Payment is due upon hiring the creator(s).",
+                    "p2": "Liberatory Effect: The Brand acknowledges that payment made to VibeMatch's escrow account constitutes a valid discharge of its debt towards the Creator. The Creator cannot claim payment directly from the Brand once VibeMatch has received the funds."
                 },
                 "chargebacks": {
                     "title": "4.1. CHARGEBACKS & PAYMENT DISPUTES",
@@ -1090,12 +1091,9 @@
                 },
                 "payments": {
                     "title": "4. PAYMENT AND COMMISSION",
-                    "trigger_b": "Trigger: ",
-                    "trigger_t": "Payment is only released after validation of the deliverables by the Client on the Platform.",
-                    "delay_b": "Delay: ",
-                    "delay_t": "VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
-                    "commission_b": "Commission: ",
-                    "commission_t": "In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
+                    "li1": "Trigger: Payment is only released after validation of the deliverables by the Client on the Platform.",
+                    "li2": "Delay: VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
+                    "li3": "Commission: In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
                 },
                 "circumvention": {
                     "title": "5. NON-CIRCUMVENTION (ANTI-CIRCUMVENTION)",
@@ -1199,3 +1197,4 @@
 
 
     
+
