@@ -1027,12 +1027,17 @@
                     "title": "3. BRAND'S OBLIGATIONS",
                     "li1": "Provide a clear and complete brief for each campaign.",
                     "li2": "Fund the escrow account before the start of the collaboration.",
-                    "li3": "Validate or request revisions of the deliverables in a timely manner.",
-                    "li4": "Not to circumvent VibeMatch by contracting directly with a creator introduced via the platform for a period of 12 months."
+                    "li3": "Not to circumvent VibeMatch by contracting directly with a creator introduced via the platform for a period of 12 months. Any violation will result in the immediate suspension of the account and a fixed penalty fee of 10,000 MAD (or 20% of the circumvented budget, whichever is higher) as damages.",
+                    "li4": "Validate or request revisions of the deliverables in a timely manner. IMPORTANT: In the absence of validation or a revision request within five (5) calendar days following delivery, the deliverables will be deemed automatically validated ('Validation Tacite'), triggering the release of funds to the Creator."
                 },
                 "payments": {
                     "title": "4. PAYMENTS",
-                    "p1": "The Brand agrees to pay the total amount including the Creator's budget and VibeMatch's service fees. Payment is due upon hiring the creator(s) to activate the escrow."
+                    "p1": "The Brand agrees to pay the total amount including the Creator's budget and VibeMatch's service fees. Payment is due upon hiring the creator(s). Liberatory Effect: The Brand acknowledges that payment made to VibeMatch's escrow account constitutes a valid discharge of its debt towards the Creator. The Creator cannot claim payment directly from the Brand once VibeMatch has received the funds."
+                },
+                "cancellation": {
+                    "title": "4.1 CANCELLATION & REFUNDS",
+                    "p1": "Cancellation by Brand: If the Brand cancels a mission before the Creator has started work, funds are refunded minus a 15% administrative fee. Once work has commenced, the full amount is due.",
+                    "p2": "Non-Delivery: If a Creator fails to deliver within the agreed timeframe, the Brand is entitled to a full refund of the escrowed funds. Disputes: In case of disagreement on quality, VibeMatch acts as a mediator. VibeMatch's decision on fund distribution is final."
                 },
                 "termination": {
                     "title": "5. TERMINATION",
@@ -1078,13 +1083,13 @@
                     "trigger_b": "Trigger: ",
                     "trigger_t": "Payment is only released after validation of the deliverables by the Client on the Platform.",
                     "delay_b": "Delay: ",
-                    "delay_t": "VibeMatch undertakes to initiate the transfer within [X] working days after validation.",
+                    "delay_t": "VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
                     "commission_b": "Commission: ",
-                    "commission_t": "In consideration for the services of the Platform, a commission of [X]% is deducted from the total campaign amount."
+                    "commission_t": "In consideration for the services of the Platform, a commission of 15% is deducted from the total campaign amount."
                 },
                 "circumvention": {
                     "title": "5. NON-CIRCUMVENTION (ANTI-CIRCUMVENTION)",
-                    "p1": "The Creator is strictly prohibited from soliciting, contracting with, or accepting direct payments from a Client introduced by VibeMatch, for a period of 12 months following the initial introduction. Any violation will result in the immediate suspension of the account and legal action for damages."
+                    "p1": "The Creator is strictly prohibited from soliciting, contracting with, or accepting direct payments from a Client introduced by VibeMatch, for a period of 12 months following the initial introduction. Any violation will result in the immediate suspension of the account and a fixed penalty fee of 10,000 MAD (or 20% of the circumvented budget, whichever is higher) as damages."
                 },
                 "rights": {
                     "title": "6. ASSIGNMENT OF RIGHTS",
@@ -1170,4 +1175,5 @@
     
 
     
+
 
