@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useDoc, useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -41,8 +42,8 @@ export default function PaymentPage() {
     const { data: campaign, isLoading: isCampaignLoading, error } = useDoc(campaignRef);
     
     const conversationsQuery = useMemoFirebase(
-        () => (firestore && campaignId) ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId as string), where('status', '==', 'OFFER_ACCEPTED')) : null,
-        [firestore, campaignId]
+        () => (firestore && campaignId && user) ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId as string), where('status', '==', 'OFFER_ACCEPTED'), where('brand_id', '==', user.uid)) : null,
+        [firestore, campaignId, user]
     );
     const { data: conversations, isLoading: areConversationsLoading } = useCollection(conversationsQuery);
     
