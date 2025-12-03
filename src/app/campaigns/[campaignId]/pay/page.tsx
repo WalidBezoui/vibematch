@@ -1,17 +1,17 @@
 'use client';
 
-import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { useDoc, useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
+import { doc, collection, query, where } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { CreditCard, AlertTriangle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { AlertTriangle } from 'lucide-react';
+import { useMemo, useState, useEffect } from 'react';
+import { CheckoutDialog } from '@/components/checkout-dialog';
 
 const PaymentPageSkeleton = () => (
     <Card className="max-w-xl mx-auto">
@@ -24,9 +24,6 @@ const PaymentPageSkeleton = () => (
             <Skeleton className="h-4 w-2/3 mt-2" />
             <Skeleton className="h-24 w-full mt-4" />
         </CardContent>
-        <CardFooter>
-            <Skeleton className="h-12 w-full" />
-        </CardFooter>
     </Card>
 )
 
@@ -35,38 +32,36 @@ export default function PaymentPage() {
     const firestore = useFirestore();
     const router = useRouter();
     const { user, isUserLoading } = useUser();
-    const { toast } = useToast();
-    const [isPaying, setIsPaying] = useState(false);
+    const [checkoutItems, setCheckoutItems] = useState<any[]>([]);
 
     const campaignRef = useMemoFirebase(
         () => firestore ? doc(firestore, 'campaigns', campaignId as string) : null,
         [firestore, campaignId]
     );
     const { data: campaign, isLoading: isCampaignLoading, error } = useDoc(campaignRef);
-
-    const handlePayment = async () => {
-        if (!campaignRef) return;
-        setIsPaying(true);
-        toast({ title: "Processing Payment...", description: "This is a simulation."});
-        
-        // Simulate payment processing
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        try {
-            await updateDoc(campaignRef, {
-                status: 'IN_PROGRESS',
-                updatedAt: serverTimestamp(),
-            });
-            toast({ title: "Payment Successful!", description: "The campaign has started. The creator has been notified."});
-            router.push(`/campaigns/${campaignId}`);
-        } catch (e: any) {
-            toast({ variant: 'destructive', title: 'Payment Failed', description: e.message });
-            setIsPaying(false);
+    
+    const conversationsQuery = useMemoFirebase(
+        () => (firestore && campaignId) ? query(collection(firestore, 'conversations'), where('campaign_id', '==', campaignId as string), where('status', '==', 'OFFER_ACCEPTED')) : null,
+        [firestore, campaignId]
+    );
+    const { data: conversations, isLoading: areConversationsLoading } = useCollection(conversationsQuery);
+    
+    useEffect(() => {
+        if (conversations && campaign) {
+            const items = conversations.map(c => ({
+                id: c.id, // conversationId
+                campaignId: campaign.id,
+                campaignTitle: campaign.title,
+                creatorName: c.otherUser?.name || 'Creator', // Assuming enriched conversations
+                deliverables: campaign.deliverables,
+                amount: c.agreed_budget,
+            }));
+            setCheckoutItems(items);
         }
-    }
+    }, [conversations, campaign]);
 
 
-    if (isUserLoading || isCampaignLoading) {
+    if (isUserLoading || isCampaignLoading || areConversationsLoading) {
         return (
              <>
                 <AppHeader />
@@ -105,7 +100,7 @@ export default function PaymentPage() {
         )
     }
     
-    if (campaign.status !== 'PENDING_PAYMENT') {
+    if (checkoutItems.length === 0) {
         return (
              <>
                 <AppHeader />
@@ -114,7 +109,7 @@ export default function PaymentPage() {
                         <AlertTriangle className="h-4 w-4" />
                         <AlertTitle>Payment Not Required</AlertTitle>
                         <AlertDescription>
-                            This campaign is not currently awaiting payment. Its status is: {campaign.status.replace(/_/g, ' ')}.
+                            This campaign does not currently have any accepted offers awaiting payment.
                             <Button asChild variant="link" className="p-0 h-auto ml-2"><Link href={`/campaigns/${campaignId}`}>View Campaign</Link></Button>
                         </AlertDescription>
                     </Alert>
@@ -128,31 +123,9 @@ export default function PaymentPage() {
         <>
             <AppHeader />
             <main className="max-w-xl mx-auto p-4 sm:p-6 lg:p-8">
-                <Card>
-                    <CardHeader className="text-center">
-                        <CardTitle className="text-3xl">Secure Payment</CardTitle>
-                        <CardDescription>You are about to fund the campaign: <strong>{campaign.title}</strong></CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        <div className="flex justify-between items-center text-xl p-4 bg-muted rounded-lg">
-                            <span>Total Amount</span>
-                            <span className="font-bold text-2xl gradient-text">{campaign.budget} DH</span>
-                        </div>
-                        <div className="text-center text-sm text-muted-foreground">
-                            <p>Your payment will be held securely by VibeMatch and only released to the creator upon your approval of the final deliverables.</p>
-                        </div>
-                        {/* Placeholder for CMI/Stripe integration */}
-                        <div className="p-8 border-2 border-dashed rounded-lg text-center">
-                            <CreditCard className="mx-auto h-12 w-12 text-muted-foreground" />
-                            <p className="mt-4 text-muted-foreground">Payment Gateway Integration Placeholder</p>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <Button onClick={handlePayment} disabled={isPaying} className="w-full" size="lg">
-                            {isPaying ? 'Processing...' : `Pay ${campaign.budget} DH and Start Campaign`}
-                        </Button>
-                    </CardFooter>
-                </Card>
+                 <CheckoutDialog items={checkoutItems}>
+                    <Button className="w-full" size="lg">Proceed to Checkout</Button>
+                </CheckoutDialog>
             </main>
         </>
     )

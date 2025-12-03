@@ -1,9 +1,9 @@
+
 'use client';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
-import { Download } from 'lucide-react';
-import { PartyPopper } from 'lucide-react';
+import { Download, PartyPopper } from 'lucide-react';
 
 export default function PaymentSuccessPage() {
   const { t } = useLanguage();
@@ -63,5 +63,3 @@ export default function PaymentSuccessPage() {
     </div>
   );
 }
-
-```

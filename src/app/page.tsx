@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -70,9 +71,15 @@ export default function Home() {
               </Link>
               <Link
                 className="text-sm text-foreground/60 hover:text-primary"
-                href="#"
+                href="/privacy"
               >
                 {t('footer.privacy')}
+              </Link>
+              <Link
+                className="text-sm text-foreground/60 hover:text-primary"
+                href="/legal-notice"
+              >
+                {t('footer.legal')}
               </Link>
             </div>
           </div>
