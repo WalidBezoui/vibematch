@@ -168,7 +168,9 @@ export function CheckoutDialog({
                         htmlFor="terms"
                         className="text-sm text-muted-foreground"
                     >
-                        {t('checkout.consent.line1')} <Link href="/terms" target="_blank" className="underline hover:text-primary">{t('checkout.consent.termsLink')}</Link> {t('checkout.consent.line2')}
+                        {t('checkout.consent.line1')}{' '}
+                        <Link href="/terms" target="_blank" className="underline hover:text-primary">{t('checkout.consent.termsLink')}</Link>{' '}
+                        {t('checkout.consent.line2')}
                     </label>
                 </div>
              </div>
