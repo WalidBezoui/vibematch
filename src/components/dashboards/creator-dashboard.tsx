@@ -122,8 +122,8 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
         
         const percentage = 30 + Math.round((completedFields / totalFields) * 70);
 
-        const firstIncomplete = fields.find(f => !f.present);
-        const nextStep = firstIncomplete || { text: t('creatorProfile.steps.complete'), icon: User };
+        const firstIncompleteStep = fields.find(f => !f.present);
+        const nextStep = firstIncompleteStep || { text: t('creatorProfile.steps.complete'), icon: User };
 
         return { percentage, nextStep };
 
@@ -191,6 +191,117 @@ const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: an
     );
 }
 
+const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], onWithdraw: (id: string) => void, listType: 'pending' | 'active' | 'discussion' | 'payment'}) => {
+    const { t } = useLanguage();
+    if (campaigns.length === 0) {
+        let emptyStateProps;
+        switch (listType) {
+            case 'active':
+                emptyStateProps = {
+                    title: t('creatorDashboard.emptyStates.active.title'),
+                    description: t('creatorDashboard.emptyStates.active.description'),
+                    icon: Activity
+                };
+                break;
+            case 'payment':
+                 emptyStateProps = {
+                    title: t('creatorDashboard.emptyStates.payment.title'),
+                    description: t('creatorDashboard.emptyStates.payment.description'),
+                    icon: Wallet
+                };
+                break;
+            case 'discussion':
+                 emptyStateProps = {
+                    title: t('creatorDashboard.emptyStates.discussion.title'),
+                    description: t('creatorDashboard.emptyStates.discussion.description'),
+                    icon: MessageSquare
+                };
+                break;
+            case 'pending':
+                 emptyStateProps = {
+                    title: t('creatorDashboard.emptyStates.pending.title'),
+                    description: t('creatorDashboard.emptyStates.pending.description'),
+                    icon: Compass
+                };
+                break;
+        }
+        return (
+            <EmptyState 
+                {...emptyStateProps}
+                buttonText={t('creatorDashboard.discoverButton')}
+                buttonLink="/discover"
+            />
+        )
+    }
+
+    return (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+            {campaigns.map(campaign => {
+                let badgeStatus = campaign.status;
+                let badgeText = t(`status.${badgeStatus}`, { default: badgeStatus.replace(/_/g, ' ') });
+                 if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
+                    badgeStatus = 'YOUR_ACCEPTANCE';
+                    badgeText = t('status.YOUR_ACCEPTANCE');
+                }
+                const isActionRequired = badgeStatus === 'YOUR_ACCEPTANCE' || listType === 'discussion';
+
+                return (
+                    <Card key={campaign.id} className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isActionRequired && "border-primary/30")}>
+                        <CardHeader>
+                            <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
+                            <div className="flex items-center justify-between pt-2">
+                                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
+                                <Badge className={cn('whitespace-nowrap text-xs', statusStyles[badgeStatus])}>
+                                    {badgeText}
+                                </Badge>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                            <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
+                        </CardContent>
+                        <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
+                            {listType === 'discussion' && campaign.conversationId && (
+                                <Button asChild className="w-full">
+                                    <Link href={`/chat?id=${campaign.conversationId}`}>{t('creatorDashboard.actions.chat')}</Link>
+                                </Button>
+                            )}
+                            {(listType === 'active' || listType === 'payment') && (
+                                 <Button asChild className="w-full" variant={isActionRequired ? "default" : "secondary"}>
+                                    <Link href={`/campaigns/${campaign.id}`}>{isActionRequired ? t('creatorDashboard.actions.review') : t('creatorDashboard.actions.view')}</Link>
+                                </Button>
+                            )}
+                            {listType === 'pending' && (
+                                <>
+                                    <Button asChild className="w-full" variant="secondary">
+                                        <Link href={`/campaigns/${campaign.id}`}>{t('creatorDashboard.actions.view')}</Link>
+                                    </Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10">
+                                                <Trash2 className="mr-1 h-3 w-3" /> {t('creatorDashboard.actions.withdraw')}
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>{t('creatorDashboard.deleteDialog.title')}</AlertDialogTitle>
+                                                <AlertDialogDescription>{t('creatorDashboard.deleteDialog.description', { campaignTitle: campaign.title })}</AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>{t('brandDashboard.deleteDialog.cancel')}</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => onWithdraw(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{t('creatorDashboard.deleteDialog.confirm')}</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </>
+                            )}
+                        </CardFooter>
+                    </Card>
+                )
+            })}
+        </div>
+    )
+}
+
 export default function CreatorDashboard() {
   const { userProfile } = useUserProfile();
   const { user } = useUser();
@@ -198,7 +309,6 @@ export default function CreatorDashboard() {
   const { toast } = useToast();
   const { t, dir } = useLanguage();
   const { getNicheLabel } = useNicheTranslation();
-  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
   const [inDiscussionCampaigns, setInDiscussionCampaigns] = useState<any[]>([]);
@@ -209,6 +319,8 @@ export default function CreatorDashboard() {
   const [stats, setStats] = useState({ escrow: 0 });
   const [userApplications, setUserApplications] = useState<Map<string, string>>(new Map());
   const [greeting, setGreeting] = useState('Welcome');
+  const [activeFilter, setActiveFilter] = useState('active');
+
 
   useEffect(() => {
     const now = new Date();
@@ -362,6 +474,26 @@ export default function CreatorDashboard() {
   const hasActiveContracts = activeCampaigns && activeCampaigns.some(c => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED');
   
   const inProgressCampaigns = useMemo(() => activeCampaigns?.filter(c => ['IN_PROGRESS', 'DELIVERED', 'PENDING_CREATOR_ACCEPTANCE'].includes(c.status)) || [], [activeCampaigns]);
+  const allCampaigns = useMemo(() => [...inProgressCampaigns, ...awaitingPaymentCampaigns, ...inDiscussionCampaigns, ...pendingCampaigns], [inProgressCampaigns, awaitingPaymentCampaigns, inDiscussionCampaigns, pendingCampaigns]);
+
+  const filteredCampaigns = useMemo(() => {
+    switch(activeFilter) {
+      case 'active': return inProgressCampaigns;
+      case 'payment': return awaitingPaymentCampaigns;
+      case 'discussion': return inDiscussionCampaigns;
+      case 'pending': return pendingCampaigns;
+      case 'all': 
+      default:
+        // Create a Set of unique campaigns based on ID
+        const uniqueCampaigns = new Map();
+        [...inProgressCampaigns, ...awaitingPaymentCampaigns, ...inDiscussionCampaigns, ...pendingCampaigns].forEach(c => {
+            if (!uniqueCampaigns.has(c.id)) {
+                uniqueCampaigns.set(c.id, c);
+            }
+        });
+        return Array.from(uniqueCampaigns.values());
+    }
+  }, [activeFilter, inProgressCampaigns, awaitingPaymentCampaigns, inDiscussionCampaigns, pendingCampaigns]);
 
   return (
     <div>
@@ -385,9 +517,12 @@ export default function CreatorDashboard() {
             <StatCard isLoading={isLoading} title={t('creatorDashboard.stats.views')} value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={t('creatorDashboard.stats.viewsSubtitle', { value: profileViews })} />
         </div>
 
-      <Tabs defaultValue="active" className="w-full">
+      <Tabs value={activeFilter} onValueChange={setActiveFilter} className="w-full mb-8">
         <div className="relative">
-            <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                    {t('brandDashboard.filters.all')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{allCampaigns.length}</Badge>
+                </TabsTrigger>
                 <TabsTrigger value="active" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
                   {t('creatorDashboard.tabs.active')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCampaigns.length}</Badge>
                 </TabsTrigger>
@@ -403,214 +538,22 @@ export default function CreatorDashboard() {
             </TabsList>
             <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none md:hidden z-10"></div>
         </div>
+        <TabsContent value="all">
+          <CampaignList campaigns={filteredCampaigns} onWithdraw={handleWithdrawApplication} listType="pending" />
+        </TabsContent>
         <TabsContent value="active">
-            {isLoadingActive ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                    <CampaignCardSkeleton />
-                    <CampaignCardSkeleton />
-                </div>
-            ) : inProgressCampaigns && inProgressCampaigns.length > 0 ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                {inProgressCampaigns.map((campaign) => {
-                        let badgeStatus = campaign.status;
-                        let badgeText = t(`status.${badgeStatus}`, { default: badgeStatus.replace(/_/g, ' ') });
-                        if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
-                            badgeStatus = 'YOUR_ACCEPTANCE';
-                            badgeText = t('status.YOUR_ACCEPTANCE');
-                        }
-                        const isActionRequired = badgeStatus === 'YOUR_ACCEPTANCE';
-                    
-                    return (
-                        <Card key={campaign.id} className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isActionRequired && "border-blue-500 shadow-blue-500/10")}>
-                            <CardHeader>
-                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
-                                <div className="flex items-center justify-between pt-2">
-                                    <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
-                                    {campaign.status && (
-                                        <Badge className={cn('whitespace-nowrap text-xs', statusStyles[badgeStatus])}>
-                                            {badgeText}
-                                        </Badge>
-                                     )}
-                                </div>
-                            </CardHeader>
-                            <CardContent className="flex-grow">
-                                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
-                            </CardContent>
-                            <CardFooter className="bg-muted/50 p-4">
-                                <Button asChild className="w-full" variant={isActionRequired ? 'default' : 'secondary'}>
-                                  <Link href={`/campaigns/${campaign.id}`}>
-                                    {isActionRequired ? t('creatorDashboard.actions.review') : t('creatorDashboard.actions.view')}
-                                    {isActionRequired && <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />}
-                                  </Link>
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    )
-                  })}
-                </div>
-            ) : (
-                <EmptyState 
-                    title={t('creatorDashboard.emptyStates.active.title')}
-                    description={t('creatorDashboard.emptyStates.active.description')}
-                    buttonText={t('creatorDashboard.discoverButton')}
-                    buttonLink="/discover"
-                    icon={Activity}
-                />
-            )}
+          <CampaignList campaigns={inProgressCampaigns} onWithdraw={handleWithdrawApplication} listType="active" />
         </TabsContent>
         <TabsContent value="payment">
-            {isLoadingPending ? (
-                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                    <CampaignCardSkeleton />
-                </div>
-            ) : awaitingPaymentCampaigns.length > 0 ? (
-                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                    {awaitingPaymentCampaigns.map((campaign) => (
-                        <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
-                            <CardHeader>
-                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
-                                <div className="flex items-center justify-between pt-2">
-                                    <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
-                                    <Badge className={cn('whitespace-nowrap text-xs', statusStyles.PENDING_PAYMENT)}>
-                                        {t('status.AWAITING_PAYMENT')}
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                             <CardContent className="flex-grow">
-                                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
-                            </CardContent>
-                            <CardFooter className="bg-muted/50 p-4">
-                                <Button asChild className="w-full" variant="secondary">
-                                  <Link href={`/campaigns/${campaign.id}`}>
-                                    {t('creatorDashboard.actions.view')}
-                                  </Link>
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
-            ) : (
-                 <EmptyState 
-                    title={t('creatorDashboard.emptyStates.payment.title')}
-                    description={t('creatorDashboard.emptyStates.payment.description')}
-                    buttonText={t('creatorDashboard.discoverButton')}
-                    buttonLink="/discover"
-                    icon={Wallet}
-                />
-            )}
+            <CampaignList campaigns={awaitingPaymentCampaigns} onWithdraw={handleWithdrawApplication} listType="payment" />
         </TabsContent>
         <TabsContent value="discussion">
-             {isLoadingPending ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                    <CampaignCardSkeleton />
-                </div>
-            ) : inDiscussionCampaigns && inDiscussionCampaigns.length > 0 ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                {inDiscussionCampaigns.map((campaign) => (
-                        <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card border-primary/30">
-                            <CardHeader>
-                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
-                                <div className="flex items-center justify-between pt-2">
-                                  <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
-                                  <Badge variant="secondary" className="border-blue-200 bg-blue-100 text-blue-800">
-                                      <MessageSquare className="mr-1 h-3 w-3" />
-                                      {t('creatorDashboard.tabs.discussion')}
-                                  </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="flex-grow">
-                                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
-                            </CardContent>
-                            <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
-                                <Button asChild className="w-full">
-                                  <Link href={`/chat?id=${campaign.conversationId}`}>
-                                    {t('creatorDashboard.actions.chat')}
-                                    <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />
-                                  </Link>
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    )
-                  )}
-                </div>
-            ) : (
-                <EmptyState 
-                    title={t('creatorDashboard.emptyStates.discussion.title')}
-                    description={t('creatorDashboard.emptyStates.discussion.description')}
-                    buttonText={t('creatorDashboard.discoverButton')}
-                    buttonLink="/discover"
-                    icon={MessageSquare}
-                />
-            )}
+             <CampaignList campaigns={inDiscussionCampaigns} onWithdraw={handleWithdrawApplication} listType="discussion" />
         </TabsContent>
         <TabsContent value="pending">
-             {isLoadingPending ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                    <CampaignCardSkeleton />
-                    <CampaignCardSkeleton />
-                </div>
-            ) : pendingCampaigns && pendingCampaigns.length > 0 ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                {pendingCampaigns.map((campaign) => (
-                        <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card">
-                           <CardHeader>
-                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
-                                <div className="flex items-center justify-between pt-2">
-                                    <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
-                                    <Badge variant="secondary" className="border-yellow-200 bg-yellow-100 text-yellow-800">
-                                        <Hourglass className="mr-1 h-3 w-3" />
-                                        {t('creatorDashboard.tabs.pending')}
-                                    </Badge>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="flex-grow">
-                                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
-                            </CardContent>
-                            <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
-                                <Button asChild className="w-full" variant="outline">
-                                  <Link href={`/campaigns/${campaign.id}`}>
-                                    {t('creatorDashboard.actions.view')}
-                                  </Link>
-                                </Button>
-                                <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
-                                            <Trash2 className="mr-2 h-3 w-3" />
-                                            {t('creatorDashboard.actions.withdraw')}
-                                        </Button>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>{t('creatorDashboard.deleteDialog.title')}</AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                                {t('creatorDashboard.deleteDialog.description', { campaignTitle: campaign.title })}
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel>{t('brandDashboard.deleteDialog.cancel')}</AlertDialogCancel>
-                                            <AlertDialogAction onClick={() => handleWithdrawApplication(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                                                {t('creatorDashboard.deleteDialog.confirm')}
-                                            </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                            </CardFooter>
-                        </Card>
-                    )
-                  )}
-                </div>
-            ) : (
-                <EmptyState 
-                    title={t('creatorDashboard.emptyStates.pending.title')}
-                    description={t('creatorDashboard.emptyStates.pending.description')}
-                    buttonText={t('creatorDashboard.discoverButton')}
-                    buttonLink="/discover"
-                    icon={Compass}
-                />
-            )}
+             <CampaignList campaigns={pendingCampaigns} onWithdraw={handleWithdrawApplication} listType="pending" />
         </TabsContent>
       </Tabs>
     </div>
   );
 }
-
