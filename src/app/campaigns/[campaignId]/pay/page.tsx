@@ -2,7 +2,7 @@
 'use client';
 
 import { useDoc, useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { doc, collection, query, where } from 'firebase/firestore';
+import { doc, collection, query, where, getDoc } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CheckoutDialog } from '@/components/checkout-dialog';
 
 const PaymentPageSkeleton = () => (
@@ -34,6 +34,7 @@ export default function PaymentPage() {
     const router = useRouter();
     const { user, isUserLoading } = useUser();
     const [checkoutItems, setCheckoutItems] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const campaignRef = useMemoFirebase(
         () => firestore ? doc(firestore, 'campaigns', campaignId as string) : null,
@@ -48,21 +49,31 @@ export default function PaymentPage() {
     const { data: conversations, isLoading: areConversationsLoading } = useCollection(conversationsQuery);
     
     useEffect(() => {
-        if (conversations && campaign) {
-            const items = conversations.map(c => ({
-                id: c.id, // conversationId
-                campaignId: campaign.id,
-                campaignTitle: campaign.title,
-                creatorName: c.otherUser?.name || 'Creator', // Assuming enriched conversations
-                deliverables: campaign.deliverables,
-                amount: c.agreed_budget,
-            }));
-            setCheckoutItems(items);
-        }
-    }, [conversations, campaign]);
+        const enrichItems = async () => {
+            if (conversations && campaign && firestore) {
+                const items = await Promise.all(conversations.map(async (c) => {
+                    const creatorRef = doc(firestore, 'users', c.creator_id);
+                    const creatorSnap = await getDoc(creatorRef);
+                    return {
+                        id: c.id, // conversationId
+                        campaignId: campaign.id,
+                        campaignTitle: campaign.title,
+                        creatorName: creatorSnap.exists() ? (creatorSnap.data().displayName || creatorSnap.data().name) : 'Creator',
+                        deliverables: campaign.deliverables,
+                        amount: c.agreed_budget,
+                    };
+                }));
+                setCheckoutItems(items);
+                setIsLoading(false);
+            } else if (!areConversationsLoading && !isCampaignLoading) {
+                 setIsLoading(false);
+            }
+        };
+        enrichItems();
+    }, [conversations, campaign, firestore, areConversationsLoading, isCampaignLoading]);
 
 
-    if (isUserLoading || isCampaignLoading || areConversationsLoading) {
+    if (isUserLoading || isLoading) {
         return (
              <>
                 <AppHeader />
@@ -123,7 +134,7 @@ export default function PaymentPage() {
     return (
         <>
             <AppHeader />
-            <main className="max-w-xl mx-auto p-4 sm:p-6 lg:p-8">
+            <main className="max-w-xl mx-auto p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-[calc(100vh-80px)]">
                  <CheckoutDialog items={checkoutItems}>
                     <Button className="w-full" size="lg">Proceed to Checkout</Button>
                 </CheckoutDialog>

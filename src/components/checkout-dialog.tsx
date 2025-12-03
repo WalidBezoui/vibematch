@@ -17,7 +17,7 @@ import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/context/language-context';
 import { useUser, useFirebase } from '@/firebase';
 import { cn } from '@/lib/utils';
-import { Shield, Lock } from 'lucide-react';
+import { Shield, Lock, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -47,22 +47,40 @@ export function CheckoutDialog({
   const [open, setOpen] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const subTotal = useMemo(() => items.reduce((acc, item) => acc + item.amount, 0), [items]);
+  useEffect(() => {
+    // When the dialog opens, pre-select all items.
+    if (open) {
+      setSelectedItems(items.map(item => item.id));
+    }
+  }, [open, items]);
+
+  const handleItemSelect = (itemId: string) => {
+    setSelectedItems(prev => 
+      prev.includes(itemId) 
+        ? prev.filter(id => id !== itemId)
+        : [...prev, itemId]
+    );
+  };
+  
+  const itemsToProcess = useMemo(() => items.filter(item => selectedItems.includes(item.id)), [items, selectedItems]);
+
+  const subTotal = useMemo(() => itemsToProcess.reduce((acc, item) => acc + item.amount, 0), [itemsToProcess]);
   const serviceFee = subTotal * 0.10;
   const vat = serviceFee * 0.20;
   const total = subTotal + serviceFee + vat;
   
   const handlePayment = async () => {
-      if (!isTermsChecked || !firestore || !user) return;
+      if (!isTermsChecked || !firestore || !user || itemsToProcess.length === 0) return;
       setIsProcessing(true);
-      toast({ title: "Processing Payment...", description: "Simulating secure transaction." });
+      toast({ title: t('checkout.processing'), description: t('checkout.processingDescription') });
 
       // 1. Simulate and log consent (The Legal Proof)
       console.log('--- LEGAL AUDIT TRAIL (SIMULATED) ---');
       console.log({
           user_id: user.uid,
-          campaign_ids: items.map(item => item.campaignId),
+          campaign_ids: itemsToProcess.map(item => item.campaignId),
           ip_address: '127.0.0.1', // This would be retrieved via headers on the server
           timestamp: new Date().toISOString(),
           document_version: "CGU_CLIENT_V1.0",
@@ -77,7 +95,7 @@ export function CheckoutDialog({
       try {
         const batch = writeBatch(firestore);
 
-        items.forEach(item => {
+        itemsToProcess.forEach(item => {
             const campaignRef = doc(firestore, 'campaigns', item.campaignId);
             const conversationRef = doc(firestore, 'conversations', item.id);
             
@@ -96,19 +114,18 @@ export function CheckoutDialog({
         await batch.commit();
 
         toast({
-            title: "Payment Successful!",
-            description: "Funds are now secured in Escrow. Creators have been notified.",
+            title: t('paymentSuccess.title'),
+            description: t('paymentSuccess.description'),
         });
         
-        // Assuming the first campaignId is sufficient for the success page
-        router.push(`/campaigns/${items[0].campaignId}/success`);
+        router.push(`/campaigns/${itemsToProcess[0].campaignId}/success`);
         setOpen(false);
 
       } catch (error: any) {
         toast({
             variant: "destructive",
-            title: "Payment Failed",
-            description: error.message || "An unexpected error occurred.",
+            title: t('checkout.toast.error.title'),
+            description: error.message || t('checkout.toast.error.description'),
         });
       } finally {
         setIsProcessing(false);
@@ -130,11 +147,19 @@ export function CheckoutDialog({
             <p className="font-semibold">{t('checkout.summary')}</p>
             <div className="space-y-4 max-h-48 overflow-y-auto pr-2">
                 {items.map(item => (
-                    <div key={item.id} className="text-sm">
-                        <div className="font-medium">{item.creatorName} ({item.campaignTitle})</div>
-                        <div className="flex justify-between items-center text-muted-foreground">
-                            <p className="truncate pr-2">{item.deliverables.join(', ')}</p>
-                            <p className="font-mono whitespace-nowrap">{item.amount.toFixed(2)} DH</p>
+                    <div key={item.id} className="flex items-start gap-3 text-sm">
+                        <Checkbox 
+                            id={`item-${item.id}`}
+                            checked={selectedItems.includes(item.id)}
+                            onCheckedChange={() => handleItemSelect(item.id)}
+                            className="mt-1"
+                        />
+                        <div className="grid gap-1.5 leading-none flex-1">
+                          <label htmlFor={`item-${item.id}`} className="font-medium cursor-pointer">{item.creatorName} ({item.campaignTitle})</label>
+                          <div className="flex justify-between items-center text-muted-foreground">
+                              <p className="truncate pr-2">{item.deliverables.join(', ')}</p>
+                              <p className="font-mono whitespace-nowrap">{item.amount.toFixed(2)} {t('currency')}</p>
+                          </div>
                         </div>
                     </div>
                 ))}
@@ -143,21 +168,21 @@ export function CheckoutDialog({
              <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                     <p className="text-muted-foreground">{t('checkout.subtotal')}</p>
-                    <p className="font-medium">{subTotal.toFixed(2)} DH</p>
+                    <p className="font-medium">{subTotal.toFixed(2)} {t('currency')}</p>
                 </div>
                  <div className="flex justify-between">
                     <p className="text-muted-foreground">{t('checkout.serviceFee')}</p>
-                    <p className="font-medium">{serviceFee.toFixed(2)} DH</p>
+                    <p className="font-medium">{serviceFee.toFixed(2)} {t('currency')}</p>
                 </div>
                  <div className="flex justify-between">
                     <p className="text-muted-foreground">{t('checkout.vat')}</p>
-                    <p className="font-medium">{vat.toFixed(2)} DH</p>
+                    <p className="font-medium">{vat.toFixed(2)} {t('currency')}</p>
                 </div>
             </div>
              <Separator />
             <div className="flex justify-between items-center text-lg font-bold">
                 <p>{t('checkout.total')}</p>
-                <p className="gradient-text">{total.toFixed(2)} DH</p>
+                <p className="gradient-text">{total.toFixed(2)} {t('currency')}</p>
             </div>
              <Separator />
              <div className="space-y-3">
@@ -177,8 +202,12 @@ export function CheckoutDialog({
         </div>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => setOpen(false)}>{t('checkout.cancel')}</Button>
-          <Button type="button" onClick={handlePayment} disabled={!isTermsChecked || isProcessing}>
-            <Lock className="mr-2 h-4 w-4" />
+          <Button type="button" onClick={handlePayment} disabled={!isTermsChecked || isProcessing || itemsToProcess.length === 0}>
+            {isProcessing ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+                <Lock className="mr-2 h-4 w-4" />
+            )}
             {isProcessing ? t('checkout.processing') : t('checkout.pay', { total: total.toFixed(2) })}
           </Button>
         </DialogFooter>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import './globals.css';
@@ -14,6 +15,7 @@ const AppContent = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
+      {showCompletionBanner && <ProfileCompletionBanner />}
       {children}
     </>
   )

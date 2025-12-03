@@ -969,13 +969,46 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{{count, plural, one {Instagram Post} other {{{count}} Instagram Posts}}}",
-        "Story": "{{count, plural, one {Instagram Story} other {{{count}} Instagram Stories}}}",
-        "Reel": "{{count, plural, one {Instagram Reel} other {{{count}} Instagram Reels}}}",
-        "Video": "{{count, plural, one {TikTok Video} other {{{count}} TikTok Videos}}}",
+        "Post": "{{count}} Instagram Post",
+        "Story": "{{count}} Instagram Story",
+        "Reel": "{{count}} Instagram Reel",
+        "Video": "{{count}} TikTok Video",
         "UGC_Video_Vertical": "UGC Video (Vertical)",
         "UGC_Video_Horizontal": "UGC Video (Horizontal)",
         "UGC_Photo_Pack": "UGC Photo Pack"
+    },
+    "paymentSuccess": {
+      "title": "Payment Successful!",
+      "description": "Funds are now secured in Escrow. The creators have been notified to begin their work.",
+      "documentsTitle": "Accounting Documents",
+      "invoiceButton": "Download Fee Invoice",
+      "receiptButton": "Download Mandate Receipt",
+      "backButton": "Back to Dashboard"
+    },
+    "checkout": {
+      "title": "Secure Funds (Escrow)",
+      "summary": "Order Summary",
+      "subtotal": "Sub-total (Paid to creators)",
+      "serviceFee": "VibeMatch Service Fee (10%)",
+      "vat": "VAT on Fees (20%)",
+      "total": "TOTAL TO BE CHARGED",
+      "consent": {
+        "title": "Legal Consent (Required)",
+        "line1": "I have read and agree to the",
+        "termsLink": "General Terms of Use",
+        "line2": "and I give express mandate to VibeMatch to collect and secure the funds on my behalf."
+      },
+      "cancel": "Cancel",
+      "pay": "🔒 Pay {{total}} MAD",
+      "processing": "Processing...",
+      "processingDescription": "Simulating secure transaction.",
+      "toast": {
+        "error": {
+          "title": "Payment Failed",
+          "description": "An unexpected error occurred."
+        }
+      }
     }
 }
     
+

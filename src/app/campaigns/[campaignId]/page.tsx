@@ -189,7 +189,7 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators, conversations }: 
                                     </div>
                                      {conversationId && (
                                         <Button asChild size="sm" variant="ghost">
-                                            <Link href={`/chat/${conversationId}`}>
+                                            <Link href={`/chat?id=${conversationId}`}>
                                                 <MessageSquare className="h-4 w-4 mr-2" />
                                                 Chat
                                             </Link>

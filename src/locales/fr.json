@@ -976,6 +976,38 @@
         "UGC_Video_Vertical": "Vidéo UGC (Verticale)",
         "UGC_Video_Horizontal": "Vidéo UGC (Horizontale)",
         "UGC_Photo_Pack": "Pack Photos UGC"
+    },
+    "paymentSuccess": {
+      "title": "Paiement Réussi !",
+      "description": "Les fonds sont maintenant sécurisés en Escrow. Les créateurs ont été notifiés pour commencer leur travail.",
+      "documentsTitle": "Documents Comptables",
+      "invoiceButton": "Télécharger la Facture de Frais",
+      "receiptButton": "Télécharger le Reçu de Mandat",
+      "backButton": "Retour au Tableau de Bord"
+    },
+    "checkout": {
+      "title": "Sécuriser les Fonds (Escrow)",
+      "summary": "Résumé de la Commande",
+      "subtotal": "Sous-total (Reversé aux créateurs)",
+      "serviceFee": "Frais de Service VibeMatch (10%)",
+      "vat": "TVA sur Frais (20%)",
+      "total": "TOTAL À DÉBITER",
+      "consent": {
+        "title": "Consentement Légal (Obligatoire)",
+        "line1": "J'ai lu et j'accepte les",
+        "termsLink": "Conditions Générales d'Utilisation",
+        "line2": "et je donne mandat express à VibeMatch pour encaisser et sécuriser les fonds en mon nom."
+      },
+      "cancel": "Annuler",
+      "pay": "🔒 Payer {{total}} MAD",
+      "processing": "Traitement...",
+      "processingDescription": "Simulation d'une transaction sécurisée.",
+      "toast": {
+        "error": {
+          "title": "Échec du Paiement",
+          "description": "Une erreur inattendue est survenue."
+        }
+      }
     }
 }
     

@@ -7,13 +7,14 @@ import { useUserProfile } from '@/firebase';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowRight, Image as ImageIcon, User, MapPin, Tag, Type, Lightbulb } from 'lucide-react';
+import { ArrowRight, Image as ImageIcon, User, MapPin, Tag, Type, Lightbulb, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 
 export function ProfileCompletionBanner() {
   const { userProfile, isLoading: isProfileLoading } = useUserProfile();
-  const { t } = useLanguage();
+  const { t, dir } = useLanguage();
   const [motivationalTip, setMotivationalTip] = useState('');
+  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   useEffect(() => {
     const tips = t('creatorProfile.completionTips', { returnObjects: true }) as string[];
@@ -66,7 +67,7 @@ export function ProfileCompletionBanner() {
         <div className="flex items-center justify-between gap-4">
             <div className="flex-grow flex flex-col gap-1.5">
                 <div className="flex items-center gap-4">
-                    <span className="font-bold text-primary whitespace-nowrap">{percentage}% Complete</span>
+                    <span className="font-bold text-primary whitespace-nowrap">{percentage}% {t('creatorProfile.steps.complete')}</span>
                     <Progress value={percentage} className="h-2 w-full max-w-xs" />
                 </div>
                 <div className="text-xs text-muted-foreground hidden md:flex items-center gap-4">
@@ -84,7 +85,7 @@ export function ProfileCompletionBanner() {
             </div>
           <Button asChild size="sm" className="rounded-full gradient-bg text-black font-semibold h-8 flex-shrink-0">
             <Link href="/profile">
-              {t('creatorProfile.completeProfileButton')} <ArrowRight className="h-4 w-4 ml-2" />
+              {t('creatorProfile.completeProfileButton')} <Arrow className="h-4 w-4 ml-2" />
             </Link>
           </Button>
         </div>
