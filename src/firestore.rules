@@ -150,9 +150,13 @@ service cloud.firestore {
                            request.resource.data.brand_id != null &&
                            request.resource.data.application_id != null;
         
-          // READ & LIST: Users can only read conversations they are a part of.
-          allow read, list: if request.auth != null && (resource.data.brand_id == request.auth.uid || resource.data.creator_id == request.auth.uid);
+          // READ: Users can only read conversations they are a part of.
+          allow read: if request.auth != null && (resource.data.brand_id == request.auth.uid || resource.data.creator_id == request.auth.uid);
           
+          // LIST: Users can list conversations they are part of by filtering by their UID.
+          allow list: if request.auth != null && 
+                         (request.query.where.brand_id == request.auth.uid || request.query.where.creator_id == request.auth.uid);
+
           // WRITE (Create & Update):
           allow write: if 
             // On create, ensure the user is a participant.
