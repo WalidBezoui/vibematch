@@ -637,10 +637,7 @@
             "header": "Notre Engagement Qualité",
             "description": "Pour que VibeMatch reste une plateforme de confiance, nous demandons à tous les créateurs de s'engager à un haut niveau de professionnalisme. C'est notre garantie collective.",
             "pledge": "Je m'engage à respecter les délais et à ne jamais utiliser de faux engagement.",
-            "terms": {
-                "label": "J'accepte les",
-                "link": "Termes et Conditions"
-            }
+            "creatorMandate": "J'accepte les CGU et donne mandat exprès à VibeMatch pour facturer et encaisser les paiements en mon nom et pour mon compte. J'accepte la déduction de la commission de service."
         },
         "finalStep": {
             "title": "Merci pour votre candidature.",
@@ -994,12 +991,10 @@
       "total": "TOTAL À DÉBITER",
       "consent": {
         "title": "Consentement Légal (Obligatoire)",
-        "line1": "J'ai lu et j'accepte les",
-        "termsLink": "Conditions Générales d'Utilisation",
-        "line2": "et je donne mandat express à VibeMatch pour encaisser et sécuriser les fonds en mon nom."
+        "brandMandate": "J'accepte les CGU et j'autorise VibeMatch à séquestrer les fonds jusqu'à validation. Je reconnais que ce paiement est libératoire de ma dette envers le Créateur."
       },
       "cancel": "Annuler",
-      "pay": "🔒 Payer {{total}} MAD",
+      "pay": "Payer {{total}} MAD",
       "processing": "Traitement...",
       "processingDescription": "Simulation d'une transaction sécurisée.",
       "toast": {

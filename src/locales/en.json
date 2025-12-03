@@ -637,10 +637,7 @@
             "header": "Our Pledge for Quality",
             "description": "To ensure VibeMatch remains a high-trust platform, we require all creators to commit to professional standards. This helps us maintain a reliable environment for everyone.",
             "pledge": "I commit to meeting deadlines and not using fake engagement.",
-            "terms": {
-                "label": "I agree to the",
-                "link": "Terms and Agreements"
-            }
+            "creatorMandate": "I accept the Terms of Use and I grant VibeMatch an exclusive mandate to invoice and collect payments on my behalf (Mandat d'Encaissement). I agree that VibeMatch deducts its commission before transferring the net balance."
         },
         "finalStep": {
             "title": "Thank you for your application.",
@@ -994,12 +991,10 @@
       "total": "TOTAL TO BE CHARGED",
       "consent": {
         "title": "Legal Consent (Required)",
-        "line1": "I have read and agree to the",
-        "termsLink": "General Terms of Use",
-        "line2": "and I give express mandate to VibeMatch to collect and secure the funds on my behalf."
+        "brandMandate": "I accept the Terms of Service and I authorize VibeMatch to secure these funds in Escrow (Séquestre) until validation of the deliverables. I acknowledge that this payment discharges my debt towards the Creator."
       },
       "cancel": "Cancel",
-      "pay": "🔒 Pay {{total}} MAD",
+      "pay": "Pay {{total}} MAD",
       "processing": "Processing...",
       "processingDescription": "Simulating secure transaction.",
       "toast": {
@@ -1011,4 +1006,3 @@
     }
 }
     
-

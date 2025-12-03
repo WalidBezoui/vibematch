@@ -6,6 +6,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/context/language-context';
 import { FirebaseClientProvider, useUser, useUserProfile } from '@/firebase';
 import { ProfileCompletionBanner } from '@/components/profile-completion-banner';
+import Link from 'next/link';
+import { useLanguage } from '@/context/language-context';
 
 const AppContent = ({ children }: { children: React.ReactNode }) => {
   const { user, isUserLoading } = useUser();
@@ -19,6 +21,39 @@ const AppContent = ({ children }: { children: React.ReactNode }) => {
       {children}
     </>
   )
+}
+
+const AppFooter = () => {
+    const { t } = useLanguage();
+    return (
+        <footer className="px-4 md:px-10 lg:px-20 py-8 border-t">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-sm text-center md:text-left text-foreground/60">
+              {t('footer.copyright')}
+            </p>
+            <div className="flex gap-6">
+              <Link
+                className="text-sm text-foreground/60 hover:text-primary"
+                href="/terms"
+              >
+                {t('footer.terms')}
+              </Link>
+              <Link
+                className="text-sm text-foreground/60 hover:text-primary"
+                href="/privacy"
+              >
+                {t('footer.privacy')}
+              </Link>
+              <Link
+                className="text-sm text-foreground/60 hover:text-primary"
+                href="/legal-notice"
+              >
+                {t('footer.legal')}
+              </Link>
+            </div>
+          </div>
+        </footer>
+    )
 }
 
 export default function RootLayout({
@@ -39,11 +74,14 @@ export default function RootLayout({
       <LanguageProvider>
         <FirebaseClientProvider>
           <body
-            className={`bg-background text-foreground/90 antialiased selection:bg-primary/20`}
+            className={`bg-background text-foreground/90 antialiased selection:bg-primary/20 flex flex-col min-h-screen`}
           >
-            <AppContent>
-              {children}
-            </AppContent>
+            <div className="flex-grow">
+              <AppContent>
+                {children}
+              </AppContent>
+            </div>
+            <AppFooter />
             <Toaster />
           </body>
         </FirebaseClientProvider>

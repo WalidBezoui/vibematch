@@ -193,9 +193,7 @@ export function CheckoutDialog({
                         htmlFor="terms"
                         className="text-sm text-muted-foreground"
                     >
-                        {t('checkout.consent.line1')}{' '}
-                        <Link href="/terms" target="_blank" className="underline hover:text-primary">{t('checkout.consent.termsLink')}</Link>{' '}
-                        {t('checkout.consent.line2')}
+                        {t('checkout.consent.brandMandate')}
                     </label>
                 </div>
              </div>
@@ -205,9 +203,7 @@ export function CheckoutDialog({
           <Button type="button" onClick={handlePayment} disabled={!isTermsChecked || isProcessing || itemsToProcess.length === 0}>
             {isProcessing ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-                <Lock className="mr-2 h-4 w-4" />
-            )}
+            ) : null}
             {isProcessing ? t('checkout.processing') : t('checkout.pay', { total: total.toFixed(2) })}
           </Button>
         </DialogFooter>
