@@ -1008,43 +1008,86 @@
     "termsPage": {
         "title": "Terms of Service",
         "lastUpdated": "Last updated: {{date}}",
-        "sections": {
-            "object": {
-                "title": "OBJECT AND INDEPENDENCE",
-                "p1": "These Terms govern the use of the VibeMatch platform by Brands. The Brand acts as an independent client. These Terms do not create any employment contract or exclusive agency between VibeMatch and the Brand."
-            },
-            "mandate": {
-                "title": "PAYMENT MANDATE AND ESCROW",
-                "p1": "By funding a campaign, the Brand expressly gives MANDATE to VibeMatch to:",
-                "li1": "Secure the total amount (Creator fees + VibeMatch commission) in a dedicated escrow account.",
-                "li2": "Release the funds to the Creator only after the Brand has validated the deliverables on the platform."
-            },
-            "obligations": {
-                "title": "BRAND'S OBLIGATIONS",
-                "li1": "Provide a clear and complete brief for each campaign.",
-                "li2": "Fund the escrow account before the start of the collaboration.",
-                "li3": "Validate or request revisions of the deliverables in a timely manner.",
-                "li4": "Not to circumvent VibeMatch by contracting directly with a creator introduced via the platform for a period of 12 months."
-            },
-            "payments": {
-                "title": "PAYMENTS",
-                "p1": "The Brand agrees to pay the total amount including the Creator's budget and VibeMatch's service fees. Payment is due upon hiring the creator(s) to activate the escrow."
-            },
-            "termination": {
-                "title": "TERMINATION",
-                "p1": "VibeMatch reserves the right to suspend or terminate an account in case of breach of these terms, fraud, or unethical behavior."
-            },
-            "disclaimer": {
-                "title": "DISCLAIMER OF WARRANTY",
-                "p1": "The VibeMatch platform is provided \"as is\". While we strive to ensure the quality of creators through our Trust Engine, we do not guarantee specific campaign results."
-            },
-            "law": {
-                "title": "GOVERNING LAW",
-                "p1": "These Terms are governed by Moroccan law. Any dispute will be subject to the exclusive jurisdiction of the Commercial Court of Casablanca."
-            },
-            "changes": {
-                "title": "CHANGES TO TERMS",
-                "p1": "VibeMatch reserves the right to modify these terms at any time. Users will be notified of any changes."
+        "brand": {
+            "title": "TERMS OF USE (BRAND SIDE)",
+            "sections": {
+                "object": {
+                    "title": "1. OBJECT AND INDEPENDENCE",
+                    "p1": "These Terms govern the use of the VibeMatch platform by Brands. The Brand acts as an independent client. These Terms do not create any employment contract or exclusive agency between VibeMatch and the Brand."
+                },
+                "mandate": {
+                    "title": "2. PAYMENT MANDATE AND ESCROW",
+                    "p1": "By funding a campaign, the Brand expressly gives MANDATE to VibeMatch to:",
+                    "li1": "Secure the total amount (Creator fees + VibeMatch commission) in a dedicated escrow account.",
+                    "li2": "Release the funds to the Creator only after the Brand has validated the deliverables on the platform."
+                },
+                "obligations": {
+                    "title": "3. BRAND'S OBLIGATIONS",
+                    "li1": "Provide a clear and complete brief for each campaign.",
+                    "li2": "Fund the escrow account before the start of the collaboration.",
+                    "li3": "Validate or request revisions of the deliverables in a timely manner.",
+                    "li4": "Not to circumvent VibeMatch by contracting directly with a creator introduced via the platform for a period of 12 months."
+                },
+                "payments": {
+                    "title": "4. PAYMENTS",
+                    "p1": "The Brand agrees to pay the total amount including the Creator's budget and VibeMatch's service fees. Payment is due upon hiring the creator(s) to activate the escrow."
+                },
+                "termination": {
+                    "title": "5. TERMINATION",
+                    "p1": "VibeMatch reserves the right to suspend or terminate an account in case of breach of these terms, fraud, or unethical behavior."
+                },
+                "disclaimer": {
+                    "title": "6. DISCLAIMER OF WARRANTY",
+                    "p1": "The VibeMatch platform is provided \"as is\". While we strive to ensure the quality of creators through our Trust Engine, we do not guarantee specific campaign results."
+                },
+                "law": {
+                    "title": "7. GOVERNING LAW",
+                    "p1": "These Terms are governed by Moroccan law. Any dispute will be subject to the exclusive jurisdiction of the Commercial Court of Casablanca."
+                },
+                "changes": {
+                    "title": "8. CHANGES TO TERMS",
+                    "p1": "VibeMatch reserves the right to modify these terms at any time. Users will be notified of any changes."
+                }
+            }
+        },
+        "creator": {
+            "title": "TERMS OF USE (CREATOR SIDE)",
+            "sections": {
+                "object": {
+                    "title": "1. OBJECT AND INDEPENDENCE",
+                    "p1": "These Terms (CGU) govern the use of the VibeMatch platform by content Creators / Influencers (hereinafter 'the Creator'). IMPORTANT - ABSENCE OF SUBORDINATION: The Creator acts as an independent service provider (Auto-Entrepreneur, Company, or Patenté). These CGU do not create any subordination link, employment contract, or exclusive agency between VibeMatch and the Creator. The Creator remains free in their schedule and means of production."
+                },
+                "mandate": {
+                    "title": "2. INVOICING AND COLLECTION MANDATE",
+                    "p1": "To simplify administrative management, the Creator expressly gives MANDATE to VibeMatch to:",
+                    "li1": "Issue invoices in the name and on behalf of the Creator to Clients (Brands).",
+                    "li2": "Collect the corresponding funds into a sequestered account (Escrow).",
+                    "li3": "Deduct the Commission due to VibeMatch before transferring the balance.",
+                    "p2": "The Creator agrees to accept the invoices issued in their name and to integrate them into their own tax accounting (Auto-Entrepreneur Declaration, etc.)."
+                },
+                "obligations": {
+                    "title": "3. CREATOR'S OBLIGATIONS",
+                    "li1": "Provide real and verifiable audience statistics (Prohibition of buying 'Fake Followers').",
+                    "li2": "Respect the delivery deadlines (Deliverables) agreed upon in the offer.",
+                    "li3": "Not to publish defamatory, illegal, or content contrary to Moroccan good morals."
+                },
+                "payments": {
+                    "title": "4. PAYMENT AND COMMISSION",
+                    "trigger_b": "Trigger: ",
+                    "trigger_t": "Payment is only released after validation of the deliverables by the Client on the Platform.",
+                    "delay_b": "Delay: ",
+                    "delay_t": "VibeMatch undertakes to initiate the transfer within [X] working days after validation.",
+                    "commission_b": "Commission: ",
+                    "commission_t": "In consideration for the services of the Platform, a commission of [X]% is deducted from the total campaign amount."
+                },
+                "circumvention": {
+                    "title": "5. NON-CIRCUMVENTION",
+                    "p1": "The Creator is strictly prohibited from soliciting, contracting with, or accepting direct payments from a Client introduced by VibeMatch, for a period of 12 months following the initial introduction. Any violation will result in the immediate suspension of the account and legal action for damages."
+                },
+                "rights": {
+                    "title": "6. ASSIGNMENT OF RIGHTS",
+                    "p1": "By accepting a mission, the Creator assigns to the Client the rights of reproduction and representation of the delivered content, for the duration and on the media specified in the mission offer, in exchange for the payment of the agreed price."
+                }
             }
         }
     },
@@ -1053,11 +1096,11 @@
         "intro": "This is a placeholder for your privacy policy. You should replace this with your actual policy.",
         "sections": {
             "processing": {
-                "title": "DATA CONTROLLER",
+                "title": "1. DATA CONTROLLER",
                 "content": "Data is collected by VibeMatch, [Legal Form: e.g., Auto-Entrepreneur Walid Bezoui], with its head office located in Casablanca."
             },
             "data": {
-                "title": "DATA COLLECTED",
+                "title": "2. DATA COLLECTED",
                 "p1": "As part of its matchmaking activity, VibeMatch collects:",
                 "li1_b": "Identity Data:",
                 "li1_t": "Name, First Name, Email, Phone.",
@@ -1067,7 +1110,7 @@
                 "li3_t": "Bank details (for Creator transfers) - Note: Credit card data is managed exclusively by our secure payment provider."
             },
             "purpose": {
-                "title": "PURPOSE OF PROCESSING",
+                "title": "3. PURPOSE OF PROCESSING",
                 "p1": "Data is processed for the following purposes:",
                 "li1": "User account management and authentication.",
                 "li2": "Calculation of the \"Trust Score\" to verify audience authenticity.",
@@ -1075,17 +1118,17 @@
                 "li4": "Fraud prevention."
             },
             "sharing": {
-                "title": "DATA SHARING",
+                "title": "4. DATA SHARING",
                 "p1": "VibeMatch does not sell your data. It is shared only with:",
                 "li1": "Clients (Brands): Only the public profile data and statistics of the Creator necessary for selection.",
                 "li2": "Authorities: Upon judicial or fiscal requisition in accordance with Moroccan law."
             },
             "rights": {
-                "title": "YOUR RIGHTS (LAW 09-08)",
-                "p1": "In accordance with Law 09-08, you have the right to access, rectify, and object to the processing of your personal data. To exercise this right, contact us at: legal@vibematch.ma."
+                "title": "5. YOUR RIGHTS (LAW 09-08)",
+                "p1": "In accordance with Law 09-08, you have the right to access, rectify, and object to the processing of your personal data. To exercise this right, contact us at: [Your Email: legal@vibematch.ma]."
             },
             "cookies": {
-                "title": "COOKIES",
+                "title": "6. COOKIES",
                 "p1": "Our site uses technical cookies necessary for operation (session) and analytical cookies to improve the user experience."
             }
         }
@@ -1094,7 +1137,7 @@
         "title": "Legal Notice",
         "sections": {
             "editor": {
-                "title": "SITE EDITOR",
+                "title": "1. SITE EDITOR",
                 "companyNameLabel": "Company Name / Name:",
                 "companyName": "[Walid Bezoui / VibeMatch]",
                 "legalStatusLabel": "Legal Status:",
@@ -1109,17 +1152,19 @@
                 "tp": "[Your numbers if available]"
             },
             "hosting": {
-                "title": "HOSTING",
+                "title": "2. HOSTING",
                 "hostLabel": "Host:",
                 "host": "[e.g., Vercel / AWS / Hostinger]",
                 "addressLabel": "Address:",
                 "address": "[Host's head office address, e.g., San Francisco, USA]"
             },
             "ip": {
-                "title": "INTELLECTUAL PROPERTY",
+                "title": "3. INTELLECTUAL PROPERTY",
                 "content": "All graphic elements, source codes, logos, and texts of the VibeMatch site are the exclusive property of the editor. Any reproduction without authorization is prohibited."
             }
         }
     }
 }
+    
+
     
