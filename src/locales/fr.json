@@ -312,7 +312,8 @@
     "footer": {
         "copyright": "© 2024 VibeMatch. Conçu à Casablanca pour le Maroc.",
         "terms": "Conditions d'utilisation",
-        "privacy": "Politique de confidentialité"
+        "privacy": "Politique de confidentialité",
+        "legal": "Mentions Légales"
     },
     "homePage": {
         "hero": {
@@ -1003,6 +1004,114 @@
           "description": "Une erreur inattendue est survenue."
         }
       }
+    },
+    "termsPage": {
+        "title": "CONDITIONS GÉNÉRALES D'UTILISATION (CÔTÉ CRÉATEURS)",
+        "lastUpdated": "Dernière mise à jour : {{date}}",
+        "sections": {
+            "object": {
+                "title": "1. OBJET ET INDÉPENDANCE",
+                "p1": "Les présentes Conditions (CGU) régissent l'utilisation de la plateforme VibeMatch par les Créateurs de contenu / Influenceurs (ci-après \"le Créateur\"). IMPORTANT - ABSENCE DE LIEN DE SUBORDINATION : Le Créateur agit en tant que prestataire de services indépendant (Auto-Entrepreneur, Société, ou Patenté). Les présentes CGU ne créent aucun lien de subordination, contrat de travail, ou agence exclusive entre VibeMatch et le Créateur. Le Créateur reste libre de son emploi du temps et de ses moyens de production."
+            },
+            "mandate": {
+                "title": "2. MANDAT DE FACTURATION ET D'ENCAISSEMENT",
+                "p1": "Pour simplifier la gestion administrative, le Créateur donne expressément MANDAT à VibeMatch pour :",
+                "li1": "Émettre les factures au nom et pour le compte du Créateur à destination des Clients (Marques).",
+                "li2": "Encaisser les fonds correspondants sur un compte de cantonnement (Séquestre).",
+                "li3": "Prélever la Commission due à VibeMatch avant le reversement du solde. Le Créateur s'engage à accepter les factures émises en son nom et à les intégrer dans sa propre comptabilité fiscale (Déclaration Auto-Entrepreneur, etc.)."
+            },
+            "obligations": {
+                "title": "3. OBLIGATIONS DU CRÉATEUR",
+                "li1": "Fournir des statistiques d'audience réelles et vérifiables (Interdiction d'achat de \"Fake Followers\").",
+                "li2": "Respecter les délais de livraison (Livrables) convenus dans l'offre.",
+                "li3": "Ne pas publier de contenu diffamatoire, illégal ou contraire aux bonnes mœurs marocaines."
+            },
+            "payments": {
+                "title": "4. PAIEMENT ET COMMISSION",
+                "p1": "Déclenchement : Le paiement est débloqué uniquement après la validation des livrables par le Client sur la Plateforme.\nDélai : VibeMatch s'engage à initier le virement sous [X] jours ouvrés après validation.\nCommission : En contrepartie des services de la Plateforme, une commission de [X]% est déduite du montant total de la campagne."
+            },
+            "circumvention": {
+                "title": "5. NON-CONTOURNEMENT (ANTI-CIRCUMVENTION)",
+                "p1": "Le Créateur s'interdit formellement de démarcher, contracter ou accepter des paiements directs d'un Client présenté par VibeMatch, pour une durée de 12 mois suivant la mise en relation initiale. Toute infraction entraînera la suspension immédiate du compte et des poursuites pour dommages-intérêts."
+            },
+            "rights": {
+                "title": "6. CESSION DE DROITS",
+                "p1": "En acceptant une mission, le Créateur cède au Client les droits de reproduction et de représentation des contenus livrés, pour la durée et les supports spécifiés dans l'offre de mission, moyennant le paiement du prix convenu."
+            }
+        }
+    },
+    "privacyPage": {
+        "title": "Politique de Confidentialité (Loi 09-08)",
+        "intro": "Ceci est un placeholder pour votre politique de confidentialité. Vous devriez le remplacer par votre politique réelle.",
+        "sections": {
+            "processing": {
+                "title": "1. RESPONSABLE DU TRAITEMENT",
+                "content": "Les données sont collectées par VibeMatch, [Forme Juridique: ex. Auto-Entreprise Walid Bezoui], dont le siège est situé à Casablanca."
+            },
+            "data": {
+                "title": "2. DONNÉES COLLECTÉES",
+                "p1": "Dans le cadre de son activité de mise en relation, VibeMatch collecte :",
+                "li1_b": "Données d'Identité :",
+                "li1_t": "Nom, Prénom, Email, Téléphone.",
+                "li2_b": "Données Professionnelles :",
+                "li2_t": "Liens réseaux sociaux, statistiques d'audience (publiques), SIRET/ICE.",
+                "li3_b": "Données Financières :",
+                "li3_t": "RIB (pour les virements Créateurs) - Note : Les données de carte bancaire sont gérées exclusivement par notre prestataire de paiement sécurisé."
+            },
+            "purpose": {
+                "title": "3. FINALITÉ DU TRAITEMENT",
+                "p1": "Les données sont traitées pour les finalités suivantes :",
+                "li1": "Gestion des comptes utilisateurs et authentification.",
+                "li2": "Calcul du \"Trust Score\" (Score de Confiance) pour vérifier l'authenticité des audiences.",
+                "li3": "Mise en relation commerciale (B2B) et facturation.",
+                "li4": "Lutte contre la fraude."
+            },
+            "sharing": {
+                "title": "4. PARTAGE DES DONNÉES",
+                "p1": "VibeMatch ne vend pas vos données. Elles sont partagées uniquement avec :",
+                "li1": "Les Clients (Marques) : Uniquement les données du profil public et statistiques du Créateur nécessaires à la sélection.",
+                "li2": "Les Autorités : Sur réquisition judiciaire ou fiscale conformément à la loi marocaine."
+            },
+            "rights": {
+                "title": "5. VOS DROITS (LOI 09-08)",
+                "p1": "Conformément à la loi 09-08, vous disposez d'un droit d'accès, de rectification et d'opposition au traitement de vos données personnelles. Pour exercer ce droit, contactez-nous à : legal@vibematch.ma."
+            },
+            "cookies": {
+                "title": "6. COOKIES",
+                "p1": "Notre site utilise des cookies techniques nécessaires au fonctionnement (session) et des cookies analytiques pour améliorer l'expérience utilisateur."
+            }
+        }
+    },
+    "legalNotice": {
+        "title": "Mentions Légales",
+        "sections": {
+            "editor": {
+                "title": "1. ÉDITEUR DU SITE",
+                "companyNameLabel": "Raison Sociale / Nom :",
+                "companyName": "[Walid Bezoui / VibeMatch]",
+                "legalStatusLabel": "Statut Juridique :",
+                "legalStatus": "[Ex: Auto-Entrepreneur ou Société en cours de formation]",
+                "hqLabel": "Siège Social :",
+                "hq": "Casablanca, Maroc",
+                "emailLabel": "Email de contact :",
+                "email": "[contact@vibematch.ma]",
+                "iceLabel": "Numéro ICE :",
+                "ice": "[Votre ICE si disponible, sinon \"En cours\"]",
+                "tpLabel": "Identifiant Taxe Pro / RC :",
+                "tp": "[Vos numéros si disponibles]"
+            },
+            "hosting": {
+                "title": "2. HÉBERGEMENT",
+                "hostLabel": "Hébergeur :",
+                "host": "[Ex: Vercel / AWS / Hostinger]",
+                "addressLabel": "Adresse :",
+                "address": "[Adresse du siège de l'hébergeur, ex: San Francisco, USA]"
+            },
+            "ip": {
+                "title": "3. PROPRIÉTÉ INTELLECTUELLE",
+                "content": "L'ensemble des éléments graphiques, codes sources, logos et textes du site VibeMatch sont la propriété exclusive de l'éditeur. Toute reproduction sans autorisation est interdite."
+            }
+        }
     }
 }
     

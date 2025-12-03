@@ -312,7 +312,8 @@
     "footer": {
         "copyright": "© 2024 VibeMatch. Built in Casablanca for Morocco.",
         "terms": "Terms of Service",
-        "privacy": "Privacy Policy"
+        "privacy": "Privacy Policy",
+        "legal": "Legal Notice"
     },
     "homePage": {
         "hero": {
@@ -991,7 +992,7 @@
       "total": "TOTAL TO BE CHARGED",
       "consent": {
         "title": "Legal Consent (Required)",
-        "brandMandate": "I accept the Terms of Service and I authorize VibeMatch to secure these funds in Escrow (Séquestre) until validation of the deliverables. I acknowledge that this payment discharges my debt towards the Creator."
+        "brandMandate": "I accept the Terms of Service and I authorize VibeMatch to secure these funds in Escrow until validation of the deliverables. I acknowledge that this payment discharges my debt towards the Creator."
       },
       "cancel": "Cancel",
       "pay": "Pay {{total}} MAD",
@@ -1003,6 +1004,122 @@
           "description": "An unexpected error occurred."
         }
       }
+    },
+    "termsPage": {
+        "title": "Terms of Service",
+        "lastUpdated": "Last updated: {{date}}",
+        "sections": {
+            "object": {
+                "title": "OBJECT AND INDEPENDENCE",
+                "p1": "These Terms govern the use of the VibeMatch platform by Brands. The Brand acts as an independent client. These Terms do not create any employment contract or exclusive agency between VibeMatch and the Brand."
+            },
+            "mandate": {
+                "title": "PAYMENT MANDATE AND ESCROW",
+                "p1": "By funding a campaign, the Brand expressly gives MANDATE to VibeMatch to:",
+                "li1": "Secure the total amount (Creator fees + VibeMatch commission) in a dedicated escrow account.",
+                "li2": "Release the funds to the Creator only after the Brand has validated the deliverables on the platform."
+            },
+            "obligations": {
+                "title": "BRAND'S OBLIGATIONS",
+                "li1": "Provide a clear and complete brief for each campaign.",
+                "li2": "Fund the escrow account before the start of the collaboration.",
+                "li3": "Validate or request revisions of the deliverables in a timely manner.",
+                "li4": "Not to circumvent VibeMatch by contracting directly with a creator introduced via the platform for a period of 12 months."
+            },
+            "payments": {
+                "title": "PAYMENTS",
+                "p1": "The Brand agrees to pay the total amount including the Creator's budget and VibeMatch's service fees. Payment is due upon hiring the creator(s) to activate the escrow."
+            },
+            "termination": {
+                "title": "TERMINATION",
+                "p1": "VibeMatch reserves the right to suspend or terminate an account in case of breach of these terms, fraud, or unethical behavior."
+            },
+            "disclaimer": {
+                "title": "DISCLAIMER OF WARRANTY",
+                "p1": "The VibeMatch platform is provided \"as is\". While we strive to ensure the quality of creators through our Trust Engine, we do not guarantee specific campaign results."
+            },
+            "law": {
+                "title": "GOVERNING LAW",
+                "p1": "These Terms are governed by Moroccan law. Any dispute will be subject to the exclusive jurisdiction of the Commercial Court of Casablanca."
+            },
+            "changes": {
+                "title": "CHANGES TO TERMS",
+                "p1": "VibeMatch reserves the right to modify these terms at any time. Users will be notified of any changes."
+            }
+        }
+    },
+    "privacyPage": {
+        "title": "Privacy Policy (Law 09-08)",
+        "intro": "This is a placeholder for your privacy policy. You should replace this with your actual policy.",
+        "sections": {
+            "processing": {
+                "title": "DATA CONTROLLER",
+                "content": "Data is collected by VibeMatch, [Legal Form: e.g., Auto-Entrepreneur Walid Bezoui], with its head office located in Casablanca."
+            },
+            "data": {
+                "title": "DATA COLLECTED",
+                "p1": "As part of its matchmaking activity, VibeMatch collects:",
+                "li1_b": "Identity Data:",
+                "li1_t": "Name, First Name, Email, Phone.",
+                "li2_b": "Professional Data:",
+                "li2_t": "Social media links, public audience statistics, SIRET/ICE.",
+                "li3_b": "Financial Data:",
+                "li3_t": "Bank details (for Creator transfers) - Note: Credit card data is managed exclusively by our secure payment provider."
+            },
+            "purpose": {
+                "title": "PURPOSE OF PROCESSING",
+                "p1": "Data is processed for the following purposes:",
+                "li1": "User account management and authentication.",
+                "li2": "Calculation of the \"Trust Score\" to verify audience authenticity.",
+                "li3": "Commercial matchmaking (B2B) and invoicing.",
+                "li4": "Fraud prevention."
+            },
+            "sharing": {
+                "title": "DATA SHARING",
+                "p1": "VibeMatch does not sell your data. It is shared only with:",
+                "li1": "Clients (Brands): Only the public profile data and statistics of the Creator necessary for selection.",
+                "li2": "Authorities: Upon judicial or fiscal requisition in accordance with Moroccan law."
+            },
+            "rights": {
+                "title": "YOUR RIGHTS (LAW 09-08)",
+                "p1": "In accordance with Law 09-08, you have the right to access, rectify, and object to the processing of your personal data. To exercise this right, contact us at: legal@vibematch.ma."
+            },
+            "cookies": {
+                "title": "COOKIES",
+                "p1": "Our site uses technical cookies necessary for operation (session) and analytical cookies to improve the user experience."
+            }
+        }
+    },
+    "legalNotice": {
+        "title": "Legal Notice",
+        "sections": {
+            "editor": {
+                "title": "SITE EDITOR",
+                "companyNameLabel": "Company Name / Name:",
+                "companyName": "[Walid Bezoui / VibeMatch]",
+                "legalStatusLabel": "Legal Status:",
+                "legalStatus": "[e.g., Auto-Entrepreneur or Company in formation]",
+                "hqLabel": "Head Office:",
+                "hq": "Casablanca, Morocco",
+                "emailLabel": "Contact Email:",
+                "email": "[contact@vibematch.ma]",
+                "iceLabel": "ICE Number:",
+                "ice": "[Your ICE if available, otherwise 'Pending']",
+                "tpLabel": "Professional Tax / RC ID:",
+                "tp": "[Your numbers if available]"
+            },
+            "hosting": {
+                "title": "HOSTING",
+                "hostLabel": "Host:",
+                "host": "[e.g., Vercel / AWS / Hostinger]",
+                "addressLabel": "Address:",
+                "address": "[Host's head office address, e.g., San Francisco, USA]"
+            },
+            "ip": {
+                "title": "INTELLECTUAL PROPERTY",
+                "content": "All graphic elements, source codes, logos, and texts of the VibeMatch site are the exclusive property of the editor. Any reproduction without authorization is prohibited."
+            }
+        }
     }
 }
     
