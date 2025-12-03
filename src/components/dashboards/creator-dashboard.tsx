@@ -160,7 +160,7 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
                         </div>
                         {percentage < 100 && motivationalTip && (
                              <div className="flex items-start gap-2 text-xs text-muted-foreground bg-secondary/50 p-2 rounded-lg">
-                                <Lightbulb className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                                <Lightbulb className="h-5 w-5 text-primary flex-shrink-0" />
                                 <span>{motivationalTip}</span>
                             </div>
                         )}
@@ -199,6 +199,7 @@ export default function CreatorDashboard() {
   const firestore = useFirestore();
   const { toast } = useToast();
   const { t, dir } = useLanguage();
+  const { getNicheLabel } = useNicheTranslation();
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
 
   const [pendingCampaigns, setPendingCampaigns] = useState<any[]>([]);
@@ -253,7 +254,7 @@ export default function CreatorDashboard() {
                 
                 const [appsSnapshot, openCampaignsSnapshot] = await Promise.all([
                     getDocs(appQuery),
-                    getDocs(openCampaignsSnapshot)
+                    getDocs(allOpenCampaignsQuery)
                 ]);
                 
                 const appMap = new Map<string, string>();
