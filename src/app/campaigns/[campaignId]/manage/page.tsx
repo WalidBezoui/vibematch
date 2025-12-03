@@ -462,12 +462,15 @@ export default function ManageApplicationsPage() {
                     <div className="max-w-4xl mx-auto">
                         {applicants.length > 0 ? (
                             <Tabs defaultValue="new" className="w-full">
-                            <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto grid grid-cols-2 md:grid-cols-4">
-                                <TabsTrigger value="new">{t('manageApplicationsPage.tabs.new')}<Badge variant="secondary" className="ml-2">{newApplicants.length}</Badge></TabsTrigger>
-                                <TabsTrigger value="discussion">{t('manageApplicationsPage.tabs.discussion')}<Badge variant="secondary" className="ml-2">{negotiatingApplicants.length}</Badge></TabsTrigger>
-                                <TabsTrigger value="payment">Awaiting Payment<Badge variant="secondary" className="ml-2">{awaitingPaymentApplicants.length}</Badge></TabsTrigger>
-                                <TabsTrigger value="hired">{t('manageApplicationsPage.tabs.hired')}<Badge variant="secondary" className="ml-2">{hiredCreators.length}</Badge></TabsTrigger>
-                            </TabsList>
+                                <div className="relative">
+                                    <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                                        <TabsTrigger value="new" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">{t('manageApplicationsPage.tabs.new')}<Badge variant="secondary" className="ml-2">{newApplicants.length}</Badge></TabsTrigger>
+                                        <TabsTrigger value="discussion" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">{t('manageApplicationsPage.tabs.discussion')}<Badge variant="secondary" className="ml-2">{negotiatingApplicants.length}</Badge></TabsTrigger>
+                                        <TabsTrigger value="payment" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">Awaiting Payment<Badge variant="secondary" className="ml-2">{awaitingPaymentApplicants.length}</Badge></TabsTrigger>
+                                        <TabsTrigger value="hired" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">{t('manageApplicationsPage.tabs.hired')}<Badge variant="secondary" className="ml-2">{hiredCreators.length}</Badge></TabsTrigger>
+                                    </TabsList>
+                                    <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none md:hidden z-10"></div>
+                                </div>
                             <TabsContent value="new" className="mt-6">
                                 {newApplicants.length > 0 ? (
                                 <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
