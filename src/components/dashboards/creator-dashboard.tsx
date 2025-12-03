@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -26,7 +25,7 @@ import {
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/language-context';
-
+import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
 const statusStyles: { [key: string]: string } = {
     YOUR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
@@ -111,17 +110,17 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
         if (!userProfile) return { percentage: 0, nextStepText: "Complete your profile" };
         
         const fields = [
-            { key: 'photoURL', present: !!userProfile.photoURL, text: "Add a profile picture", icon: ImageIcon },
-            { key: 'displayName', present: !!userProfile.displayName, text: "Add your display name", icon: User },
-            { key: 'location', present: !!userProfile.location, text: "Add your location", icon: MapPin },
-            { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: "Choose at least one tag", icon: Tag },
-            { key: 'bio', present: !!userProfile.bio, text: "Write a bio to tell your story", icon: Type },
+            { key: 'photoURL', present: !!userProfile.photoURL, text: t('creatorProfile.steps.addPicture'), icon: ImageIcon },
+            { key: 'displayName', present: !!userProfile.displayName, text: t('creatorProfile.steps.addName'), icon: User },
+            { key: 'location', present: !!userProfile.location, text: t('creatorProfile.steps.addLocation'), icon: MapPin },
+            { key: 'tags', present: userProfile.tags && userProfile.tags.length > 0, text: t('creatorProfile.steps.addTag'), icon: Tag },
+            { key: 'bio', present: !!userProfile.bio, text: t('creatorProfile.steps.addBio'), icon: Type },
         ];
 
         const completedFields = fields.filter(f => f.present).length;
         const totalFields = fields.length;
         
-        const percentage = Math.round((completedFields / totalFields) * 100);
+        const percentage = 30 + Math.round((completedFields / totalFields) * 70);
 
         const firstIncomplete = fields.find(f => !f.present);
         if(firstIncomplete) {
@@ -130,7 +129,7 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
         
         return { percentage, nextStepText: "Profile is complete!" };
 
-    }, [userProfile]);
+    }, [userProfile, t]);
 
     const circumference = 2 * Math.PI * 18;
     const strokeDashoffset = circumference - (percentage / 100) * circumference;
@@ -254,7 +253,7 @@ export default function CreatorDashboard() {
                 
                 const [appsSnapshot, openCampaignsSnapshot] = await Promise.all([
                     getDocs(appQuery),
-                    getDocs(allOpenCampaignsQuery)
+                    getDocs(openCampaignsSnapshot)
                 ]);
                 
                 const appMap = new Map<string, string>();
@@ -383,16 +382,24 @@ export default function CreatorDashboard() {
             ) : (
                 <ProfileImpactCard isLoading={isLoading} />
             )}
-            <StatCard isLoading={isLoading} title={t('creatorDashboard.stats.matching')} value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={t('creatorDashboard.stats.matchingSubtitle')} cta={{ text: t('creatorDashboard.discoverButton'), href: '/discover' }} />
-            <StatCard isLoading={isLoading} title={t('creatorDashboard.stats.views')} value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={t('creatorDashboard.stats.viewsSubtitle')} />
+            <StatCard isLoading={isLoading} title={t('creatorDashboard.stats.matching')} value={matchingJobsCount} icon={<Briefcase className="h-4 w-4 text-muted-foreground" />} subtitle={t('creatorDashboard.stats.matchingSubtitle', { value: matchingJobsCount })} cta={{ text: t('creatorDashboard.discoverButton'), href: '/discover' }} />
+            <StatCard isLoading={isLoading} title={t('creatorDashboard.stats.views')} value={profileViews} icon={<Eye className="h-4 w-4 text-muted-foreground" />} subtitle={t('creatorDashboard.stats.viewsSubtitle', { value: profileViews })} />
         </div>
 
-      <Tabs defaultValue="active">
-        <TabsList className="w-full justify-start overflow-x-auto p-1 h-auto lg:grid lg:grid-cols-4">
-            <TabsTrigger value="active">{t('creatorDashboard.tabs.active')} <Badge variant="secondary" className="ml-2">{inProgressCampaigns.length}</Badge></TabsTrigger>
-            <TabsTrigger value="payment">{t('creatorDashboard.tabs.payment')} <Badge variant="secondary" className="ml-2">{awaitingPaymentCampaigns.length}</Badge></TabsTrigger>
-            <TabsTrigger value="discussion">{t('creatorDashboard.tabs.discussion')} <Badge variant="secondary" className="ml-2">{inDiscussionCampaigns.length}</Badge></TabsTrigger>
-            <TabsTrigger value="pending">{t('creatorDashboard.tabs.pending')} <Badge variant="secondary" className="ml-2">{pendingCampaigns.length}</Badge></TabsTrigger>
+      <Tabs defaultValue="active" className="w-full">
+        <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <TabsTrigger value="active" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+              {t('creatorDashboard.tabs.active')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCampaigns.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="payment" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+              {t('creatorDashboard.tabs.payment')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{awaitingPaymentCampaigns.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="discussion" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+              {t('creatorDashboard.tabs.discussion')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inDiscussionCampaigns.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="pending" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+              {t('creatorDashboard.tabs.pending')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{pendingCampaigns.length}</Badge>
+            </TabsTrigger>
         </TabsList>
         <TabsContent value="active">
             {isLoadingActive ? (
