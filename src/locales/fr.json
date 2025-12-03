@@ -1042,8 +1042,9 @@
                 },
                 "cancellation": {
                     "title": "4.2. ANNULATION & REMBOURSEMENTS",
-                    "p1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15% (Hors Taxe). Une fois le travail commencé, le montant total est dû.",
-                    "p2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés. Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
+                    "li1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15% (Hors Taxe). Une fois le travail commencé, le montant total est dû.",
+                    "li2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés.",
+                    "li3": "Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
                 },
                 "forceMajeure": {
                     "title": "5. FORCE MAJEURE",
@@ -1091,7 +1092,6 @@
                 },
                 "payments": {
                     "title": "4. PAIEMENT ET COMMISSION",
-                    "p1": "",
                     "li1": "Déclenchement : Le paiement est débloqué uniquement après la validation des livrables par le Client sur la Plateforme.",
                     "li2": "Délai : VibeMatch s'engage à initier le virement sous 5 jours ouvrés après validation.",
                     "li3": "Commission : En contrepartie des services de la Plateforme, une commission de 15% (Hors Taxe) est déduite du montant total de la campagne."
@@ -1195,7 +1195,6 @@
     
 
     
-
 
     
 

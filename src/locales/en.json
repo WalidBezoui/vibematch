@@ -1042,8 +1042,9 @@
                 },
                 "cancellation": {
                     "title": "4.2. CANCELLATION & REFUNDS",
-                    "p1": "Cancellation by Brand: If the Brand cancels a mission before the Creator has started work, funds are refunded minus a 15% (Excluding VAT / Hors Taxe) administrative fee. Once work has commenced, the full amount is due.",
-                    "p2": "Non-Delivery: If a Creator fails to deliver within the agreed timeframe, the Brand is entitled to a full refund of the escrowed funds. Disputes: In case of disagreement on quality, VibeMatch acts as a mediator. VibeMatch's decision on fund distribution is final."
+                    "li1": "Cancellation by Brand: If the Brand cancels a mission before the Creator has started work, funds are refunded minus a 15% (Excluding VAT / Hors Taxe) administrative fee. Once work has commenced, the full amount is due.",
+                    "li2": "Non-Delivery: If a Creator fails to deliver within the agreed timeframe, the Brand is entitled to a full refund of the escrowed funds.",
+                    "li3": "Disputes: In case of disagreement on quality, VibeMatch acts as a mediator. VibeMatch's decision on fund distribution is final."
                 },
                 "forceMajeure": {
                     "title": "5. FORCE MAJEURE",
@@ -1197,4 +1198,5 @@
 
 
     
+
 
