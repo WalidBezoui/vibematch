@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
+import { useDoc, useFirestore, useUser, useMemoFirebase, useCollection } from '@/firebase';
 import { doc, collection, query, where, getDoc } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
@@ -210,11 +210,11 @@ export default function PaymentPage() {
                                     <p className="text-muted-foreground">{t('checkout.subtotal')}</p>
                                     <p className="font-medium">{subTotal.toFixed(2)} {t('currency')}</p>
                                 </div>
-                                <div className="flex justify-between">
+                                 <div className="flex justify-between">
                                     <p className="text-muted-foreground">{t('checkout.serviceFee')}</p>
                                     <p className="font-medium">{serviceFee.toFixed(2)} {t('currency')}</p>
                                 </div>
-                                <div className="flex justify-between">
+                                 <div className="flex justify-between">
                                     <p className="text-muted-foreground">{t('checkout.vat')}</p>
                                     <p className="font-medium">{vat.toFixed(2)} {t('currency')}</p>
                                 </div>
