@@ -106,8 +106,8 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
     }, [t]);
 
 
-    const { percentage, nextStepText } = useMemo(() => {
-        if (!userProfile) return { percentage: 0, nextStepText: "Complete your profile" };
+    const { percentage, nextStep } = useMemo(() => {
+        if (!userProfile) return { percentage: 0, nextStep: { text: t('creatorProfile.steps.completeProfile'), icon: User } };
         
         const fields = [
             { key: 'photoURL', present: !!userProfile.photoURL, text: t('creatorProfile.steps.addPicture'), icon: ImageIcon },
@@ -123,11 +123,9 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
         const percentage = 30 + Math.round((completedFields / totalFields) * 70);
 
         const firstIncomplete = fields.find(f => !f.present);
-        if(firstIncomplete) {
-            return { percentage, nextStepText: firstIncomplete.text };
-        }
-        
-        return { percentage, nextStepText: "Profile is complete!" };
+        const nextStep = firstIncomplete || { text: t('creatorProfile.steps.complete'), icon: User };
+
+        return { percentage, nextStep };
 
     }, [userProfile, t]);
 
@@ -155,7 +153,7 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
                             </div>
                             <div className="flex-1">
                                 <div className="font-bold text-lg">{percentage}% Complete</div>
-                                <p className="text-xs text-muted-foreground hover:text-primary"><Link href="/profile">{nextStepText} &rarr;</Link></p>
+                                <p className="text-xs text-muted-foreground hover:text-primary"><Link href="/profile">{nextStep.text} &rarr;</Link></p>
                             </div>
                         </div>
                         {percentage < 100 && motivationalTip && (
@@ -388,20 +386,23 @@ export default function CreatorDashboard() {
         </div>
 
       <Tabs defaultValue="active" className="w-full">
-        <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            <TabsTrigger value="active" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-              {t('creatorDashboard.tabs.active')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCampaigns.length}</Badge>
-            </TabsTrigger>
-            <TabsTrigger value="payment" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-              {t('creatorDashboard.tabs.payment')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{awaitingPaymentCampaigns.length}</Badge>
-            </TabsTrigger>
-            <TabsTrigger value="discussion" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-              {t('creatorDashboard.tabs.discussion')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inDiscussionCampaigns.length}</Badge>
-            </TabsTrigger>
-            <TabsTrigger value="pending" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-              {t('creatorDashboard.tabs.pending')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{pendingCampaigns.length}</Badge>
-            </TabsTrigger>
-        </TabsList>
+        <div className="relative">
+            <TabsList className="p-1 h-auto bg-muted rounded-full w-full overflow-x-auto justify-start md:grid md:grid-cols-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <TabsTrigger value="active" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                  {t('creatorDashboard.tabs.active')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCampaigns.length}</Badge>
+                </TabsTrigger>
+                <TabsTrigger value="payment" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                  {t('creatorDashboard.tabs.payment')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{awaitingPaymentCampaigns.length}</Badge>
+                </TabsTrigger>
+                <TabsTrigger value="discussion" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                  {t('creatorDashboard.tabs.discussion')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inDiscussionCampaigns.length}</Badge>
+                </TabsTrigger>
+                <TabsTrigger value="pending" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
+                  {t('creatorDashboard.tabs.pending')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{pendingCampaigns.length}</Badge>
+                </TabsTrigger>
+            </TabsList>
+            <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none md:hidden z-10"></div>
+        </div>
         <TabsContent value="active">
             {isLoadingActive ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
@@ -612,3 +613,4 @@ export default function CreatorDashboard() {
     </div>
   );
 }
+
