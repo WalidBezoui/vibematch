@@ -1020,7 +1020,6 @@
                 },
                 "mandate": {
                     "title": "2. PAYMENT MANDATE AND ESCROW",
-                    "p1": "By funding a campaign, the Brand expressly gives MANDATE to VibeMatch to:",
                     "li1": "Secure the total amount (Creator fees + VibeMatch commission) in a dedicated escrow account.",
                     "li2": "Release the funds to the Creator only after the Brand has validated the deliverables on the platform."
                 },
@@ -1033,8 +1032,7 @@
                 },
                 "payments": {
                     "title": "4. PAYMENTS",
-                    "p1": "Payment is due upon hiring the creator(s).",
-                    "p2": "Liberatory Effect: The Brand acknowledges that payment made to VibeMatch's escrow account constitutes a valid discharge of its debt towards the Creator. The Creator cannot claim payment directly from the Brand once VibeMatch has received the funds."
+                    "p1": "Payment is due upon hiring the creator(s).\n\nLiberatory Effect: The Brand acknowledges that payment made to VibeMatch's escrow account constitutes a valid discharge of its debt towards the Creator. The Creator cannot claim payment directly from the Brand once VibeMatch has received the funds."
                 },
                 "chargebacks": {
                     "title": "4.1. CHARGEBACKS & PAYMENT DISPUTES",
@@ -1092,9 +1090,12 @@
                 },
                 "payments": {
                     "title": "4. PAYMENT AND COMMISSION",
-                    "li1": "Trigger: Payment is only released after validation of the deliverables by the Client on the Platform.",
-                    "li2": "Delay: VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
-                    "li3": "Commission: In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
+                    "trigger_b": "Trigger:",
+                    "trigger_t": " Payment is only released after validation of the deliverables by the Client on the Platform.",
+                    "delay_b": "Delay:",
+                    "delay_t": " VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
+                    "commission_b": "Commission:",
+                    "commission_t": " In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
                 },
                 "circumvention": {
                     "title": "5. NON-CIRCUMVENTION (ANTI-CIRCUMVENTION)",
@@ -1193,10 +1194,4 @@
     }
 }
     
-
     
-
-
-    
-
-

@@ -343,7 +343,8 @@
             "ctas": [
                 { "text": "Pour le top 1% des créateurs qui valorisent leur temps.", "icon": "Gem" },
                 { "text": "Fatigué de courir après les paiements ? Nous les automatisons.", "icon": "DollarSign" },
-                { "text": "Places limitées pour les Créateurs Fondateurs.", "icon": "PenTool" },
+                { "text": "Places limitées pour les Créateurs Fondateurs.",
+                "icon": "PenTool" },
                 { "text": "Débloquez des partenariats avec les meilleures marques marocaines.", "icon": "Briefcase" }
             ]
         },
@@ -1033,8 +1034,7 @@
                 },
                 "payments": {
                     "title": "4. PAIEMENTS",
-                    "p1": "Le paiement est dû lors du recrutement du ou des créateurs.",
-                    "p2": "Effet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch."
+                    "p1": "Le paiement est dû lors du recrutement du ou des créateurs.\n\nEffet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch."
                 },
                 "chargebacks": {
                     "title": "4.1. RÉTROFACTURATIONS (CHARGEBACKS) & LITIGES DE PAIEMENT",
@@ -1092,9 +1092,12 @@
                 },
                 "payments": {
                     "title": "4. PAIEMENT ET COMMISSION",
-                    "li1": "Déclenchement : Le paiement est débloqué uniquement après la validation des livrables par le Client sur la Plateforme.",
-                    "li2": "Délai : VibeMatch s'engage à initier le virement sous 5 jours ouvrés après validation.",
-                    "li3": "Commission : En contrepartie des services de la Plateforme, une commission de 15% (Hors Taxe) est déduite du montant total de la campagne."
+                    "trigger_b": "Déclenchement :",
+                    "trigger_t": " Le paiement est débloqué uniquement après la validation des livrables par le Client sur la Plateforme.",
+                    "delay_b": "Délai :",
+                    "delay_t": " VibeMatch s'engage à initier le virement sous 5 jours ouvrés après validation.",
+                    "commission_b": "Commission :",
+                    "commission_t": " En contrepartie des services de la Plateforme, une commission de 15% (Hors Taxe) est déduite du montant total de la campagne."
                 },
                 "circumvention": {
                     "title": "5. NON-CONTOURNEMENT (ANTI-CIRCUMVENTION)",
@@ -1193,8 +1196,4 @@
     }
 }
     
-
     
-
-    
-
