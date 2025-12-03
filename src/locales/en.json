@@ -1010,6 +1010,7 @@
     "termsPage": {
         "title": "Terms of Service",
         "lastUpdated": "Last updated: {{date}}",
+        "discrepancyNotice": "In case of discrepancy, the French version governs.",
         "brand": {
             "title": "TERMS OF USE (BRAND SIDE)",
             "sections": {
@@ -1032,12 +1033,15 @@
                 },
                 "payments": {
                     "title": "4. PAYMENTS",
-                    "p1": "The Brand agrees to pay the total amount including the Creator's budget and VibeMatch's service fees. Payment is due upon hiring the creator(s). Liberatory Effect: The Brand acknowledges that payment made to VibeMatch's escrow account constitutes a valid discharge of its debt towards the Creator. The Creator cannot claim payment directly from the Brand once VibeMatch has received the funds."
+                    "p1": "Payment is due upon hiring the creator(s). Liberatory Effect: The Brand acknowledges that payment made to VibeMatch's escrow account constitutes a valid discharge of its debt towards the Creator. The Creator cannot claim payment directly from the Brand once VibeMatch has received the funds."
                 },
                 "cancellation": {
-                    "title": "4.1 CANCELLATION & REFUNDS",
-                    "p1": "Cancellation by Brand: If the Brand cancels a mission before the Creator has started work, funds are refunded minus a 15% administrative fee. Once work has commenced, the full amount is due.",
-                    "p2": "Non-Delivery: If a Creator fails to deliver within the agreed timeframe, the Brand is entitled to a full refund of the escrowed funds. Disputes: In case of disagreement on quality, VibeMatch acts as a mediator. VibeMatch's decision on fund distribution is final."
+                    "title": "4.1. CANCELLATION & REFUNDS",
+                    "p1": "Cancellation by Brand: If the Brand cancels a mission before the Creator has started work, funds are refunded minus a 15% administrative fee. Once work has commenced, the full amount is due. Non-Delivery: If a Creator fails to deliver within the agreed timeframe, the Brand is entitled to a full refund of the escrowed funds. Disputes: In case of disagreement on quality, VibeMatch acts as a mediator. VibeMatch's decision on fund distribution is final."
+                },
+                "chargebacks": {
+                    "title": "4.2. CHARGEBACKS & PAYMENT DISPUTES",
+                    "p1": "The Brand agrees not to issue a chargeback via their bank or credit card provider for any reason if the deliverables have been validated (explicitly or tacitly). Any unjustified chargeback will be considered a fraudulent action. It will result in the immediate suspension of the account, and the debt will be handed over to a collections agency with an additional 20% penalty to cover administrative and legal recovery costs."
                 },
                 "termination": {
                     "title": "5. TERMINATION",
@@ -1066,11 +1070,10 @@
                 },
                 "mandate": {
                     "title": "2. INVOICING AND COLLECTION MANDATE",
-                    "p1": "To simplify administrative management, the Creator expressly gives MANDATE to VibeMatch to:",
-                    "li1": "Issue invoices in the name and on behalf of the Creator to Clients (Brands).",
-                    "li2": "Collect the corresponding funds into a sequestered account (Escrow).",
-                    "li3": "Deduct the Commission due to VibeMatch before transferring the balance.",
-                    "p2": "The Creator agrees to accept the invoices issued in their name and to integrate them into their own tax accounting (Auto-Entrepreneur Declaration, etc.)."
+                    "p1": "To simplify administrative management, the Creator grants a Billing Mandate (Mandat de Facturation) to VibeMatch. Consequently:",
+                    "li1": "VibeMatch is authorized to generate and issue invoices in the name of and on behalf of the Creator addressed to the Clients.",
+                    "li2": "The Creator retains full tax liability for these invoices and must include them in their own tax declarations (Auto-Entrepreneur, etc.).",
+                    "li3": "VibeMatch is authorized to collect the funds into a sequestered account and deduct the Platform Commission before transferring the net balance."
                 },
                 "obligations": {
                     "title": "3. CREATOR'S OBLIGATIONS",
@@ -1092,8 +1095,9 @@
                     "p1": "The Creator is strictly prohibited from soliciting, contracting with, or accepting direct payments from a Client introduced by VibeMatch, for a period of 12 months following the initial introduction. Any violation will result in the immediate suspension of the account and a fixed penalty fee of 10,000 MAD (or 20% of the circumvented budget, whichever is higher) as damages."
                 },
                 "rights": {
-                    "title": "6. ASSIGNMENT OF RIGHTS",
-                    "p1": "By accepting a mission, the Creator assigns to the Client the rights of reproduction and representation of the delivered content, for the duration and on the media specified in the mission offer, in exchange for the payment of the agreed price."
+                    "title": "6. INTELLECTUAL PROPERTY & ASSIGNMENT OF RIGHTS",
+                    "p1": "6.1. Assignment: By accepting a mission and receiving payment, the Creator irrevocably assigns to the Client the economic rights (droits patrimoniaux) to the content created, specifically:\n- Right of Reproduction & Representation: On the internet, social media, and digital platforms.\n- Territory: Worldwide (Monde entier).\n- Duration: For the legal duration of copyright protection (unless a specific shorter duration is defined in the Mission Brief).\n- Purpose: Commercial, advertising, and promotional use.",
+                    "p2": "6.2. Warranty & Indemnification: The Creator guarantees that the content is original and does not infringe on the rights of third parties (music, image rights of others, trademarks). The Creator agrees to indemnify and hold harmless VibeMatch and the Client against any claims, damages, or legal fees arising from a breach of this warranty."
                 }
             }
         }
@@ -1175,5 +1179,3 @@
     
 
     
-
-

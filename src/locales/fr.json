@@ -638,7 +638,7 @@
             "header": "Notre Engagement Qualité",
             "description": "Pour que VibeMatch reste une plateforme de confiance, nous demandons à tous les créateurs de s'engager à un haut niveau de professionnalisme. C'est notre garantie collective.",
             "pledge": "Je m'engage à respecter les délais et à ne jamais utiliser de faux engagement.",
-            "creatorMandate": "J'accepte les CGU et donne mandat exprès à VibeMatch pour facturer et encaisser les paiements en mon nom et pour mon compte. J'accepte la déduction de la commission de service."
+            "creatorMandate": "I accept the Terms of Use and I grant VibeMatch an exclusive mandate to invoice and collect payments on my behalf (Mandat d'Encaissement). I agree that VibeMatch deducts its commission before transferring the net balance."
         },
         "finalStep": {
             "title": "Merci pour votre candidature.",
@@ -994,7 +994,7 @@
       "total": "TOTAL À DÉBITER",
       "consent": {
         "title": "Consentement Légal (Obligatoire)",
-        "brandMandate": "J'accepte les CGU et j'autorise VibeMatch à séquestrer les fonds jusqu'à validation des livrables. Je reconnais que ce paiement est libératoire de ma dette envers le Créateur."
+        "brandMandate": "I accept the Terms of Service and I authorize VibeMatch to secure these funds in Escrow until validation of the deliverables. I acknowledge that this payment discharges my debt towards the Creator."
       },
       "cancel": "Annuler",
       "pay": "Payer {{total}} MAD",
@@ -1010,6 +1010,7 @@
     "termsPage": {
         "title": "Conditions Générales d'Utilisation",
         "lastUpdated": "Dernière mise à jour : {{date}}",
+        "discrepancyNotice": "En cas de divergence, la version française prévaut.",
         "brand": {
             "title": "CONDITIONS D'UTILISATION (CÔTÉ MARQUES)",
             "sections": {
@@ -1032,12 +1033,15 @@
                 },
                 "payments": {
                     "title": "4. PAIEMENTS",
-                    "p1": "La Marque s'engage à payer le montant total incluant le budget du Créateur et les frais de service de VibeMatch. Le paiement est dû lors du recrutement du ou des créateurs. Effet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch."
+                    "p1": "Le paiement est dû lors du recrutement du ou des créateurs. Effet Libératoire : La Marque reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut libération de sa dette envers le Créateur. Le Créateur ne pourra exiger de paiement directement de la Marque une fois les fonds reçus par VibeMatch."
                 },
                 "cancellation": {
-                    "title": "4.1 ANNULATION & REMBOURSEMENTS",
-                    "p1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15%. Une fois le travail commencé, le montant total est dû.",
-                    "p2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés. Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
+                    "title": "4.1. ANNULATION & REMBOURSEMENTS",
+                    "p1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15%. Une fois le travail commencé, le montant total est dû. Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés. Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
+                },
+                "chargebacks": {
+                    "title": "4.2. RÉTROFACTURATIONS & LITIGES DE PAIEMENT",
+                    "p1": "La Marque s'engage à ne pas initier de rétrofacturation (chargeback) via sa banque ou son fournisseur de carte de crédit pour quelque raison que ce soit si les livrables ont été validés (explicitement ou tacitement). Toute rétrofacturation injustifiée sera considérée comme une action frauduleuse. Elle entraînera la suspension immédiate du compte, et la créance sera confiée à une agence de recouvrement avec une pénalité supplémentaire de 20 % pour couvrir les frais de recouvrement administratifs et juridiques."
                 },
                 "termination": {
                     "title": "5. RÉSILIATION",
@@ -1066,11 +1070,10 @@
                 },
                 "mandate": {
                     "title": "2. MANDAT DE FACTURATION ET D'ENCAISSEMENT",
-                    "p1": "Pour simplifier la gestion administrative, le Créateur donne expressément MANDAT à VibeMatch pour :",
-                    "li1": "Émettre les factures au nom et pour le compte du Créateur à destination des Clients (Marques).",
-                    "li2": "Encaisser les fonds correspondants sur un compte de cantonnement (Séquestre).",
-                    "li3": "Prélever la Commission due à VibeMatch avant le reversement du solde.",
-                    "p2": "Le Créateur s'engage à accepter les factures émises en son nom et à les intégrer dans sa propre comptabilité fiscale (Déclaration Auto-Entrepreneur, etc.)."
+                    "p1": "Pour simplifier la gestion administrative, le Créateur donne un Mandat de Facturation à VibeMatch. Par conséquent :",
+                    "li1": "VibeMatch est autorisé à générer et émettre des factures au nom et pour le compte du Créateur à destination des Clients.",
+                    "li2": "Le Créateur conserve l'entière responsabilité fiscale de ces factures et doit les intégrer dans sa propre déclaration fiscale (Auto-Entrepreneur, etc.).",
+                    "li3": "VibeMatch est autorisé à encaisser les fonds sur un compte séquestre et à déduire la Commission de la Plateforme avant de transférer le solde net."
                 },
                 "obligations": {
                     "title": "3. OBLIGATIONS DU CRÉATEUR",
@@ -1092,8 +1095,9 @@
                     "p1": "Le Créateur s'interdit formellement de démarcher, contracter ou accepter des paiements directs d'un Client présenté par VibeMatch, pour une durée de 12 mois suivant la mise en relation initiale. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20 % du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts."
                 },
                 "rights": {
-                    "title": "6. CESSION DE DROITS",
-                    "p1": "En acceptant une mission, le Créateur cède au Client les droits de reproduction et de représentation des contenus livrés, pour la durée et les supports spécifiés dans l'offre de mission, moyennant le paiement du prix convenu."
+                    "title": "6. PROPRIÉTÉ INTELLECTUELLE & CESSION DE DROITS",
+                    "p1": "6.1. Cession : En acceptant une mission et en recevant le paiement, le Créateur cède au Client, de manière irrévocable, les droits patrimoniaux sur le contenu créé, spécifiquement :\n- Droit de Reproduction & de Représentation : Sur internet, les réseaux sociaux et les plateformes numériques.\n- Territoire : Monde entier.\n- Durée : Pour la durée légale de protection des droits d'auteur (sauf durée plus courte spécifiée dans le Brief de Mission).\n- Finalité : Usage commercial, publicitaire et promotionnel.",
+                    "p2": "6.2. Garantie & Indemnisation : Le Créateur garantit que le contenu est original et ne porte pas atteinte aux droits de tiers (musiques, droit à l'image d'autrui, marques). Le Créateur s'engage à indemniser et à garantir VibeMatch et le Client contre toute réclamation, dommage ou frais de justice découlant d'une violation de cette garantie."
                 }
             }
         }
@@ -1175,5 +1179,3 @@
     
 
     
-
-

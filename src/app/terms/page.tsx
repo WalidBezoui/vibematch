@@ -56,6 +56,7 @@ export default function TermsPage() {
                             {t('termsPage.title')}
                         </h1>
                         <p className="mt-2 text-md text-foreground/60">{t('termsPage.lastUpdated', { date: '03/12/2025' })}</p>
+                        <p className="mt-4 text-sm text-foreground/60 italic">{t('termsPage.discrepancyNotice')}</p>
                     </div>
 
                     <div className="prose dark:prose-invert max-w-none space-y-6 text-foreground/80">
