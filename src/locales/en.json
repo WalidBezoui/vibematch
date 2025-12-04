@@ -978,10 +978,10 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{{count, plural, one {Instagram Post} other {{{count}} Instagram Posts}}}",
-        "Instagram_Stories": "{{count, plural, one {Instagram Story} other {{{count}} Instagram Stories}}}",
-        "Instagram_Reel": "{{count, plural, one {Instagram Reel} other {{{count}} Instagram Reels}}}",
-        "Video": "{{count, plural, one {TikTok Video} other {{{count}} TikTok Videos}}}",
+        "Post": "{count, plural, one {Instagram Post} other {# Instagram Posts}}",
+        "Story": "{count, plural, one {Instagram Story} other {# Instagram Stories}}",
+        "Reel": "{count, plural, one {Instagram Reel} other {# Instagram Reels}}",
+        "Video": "{count, plural, one {TikTok Video} other {# TikTok Videos}}",
         "UGC_Video_Vertical": "UGC Video (Vertical)",
         "UGC_Video_Horizontal": "UGC Video (Horizontal)",
         "UGC_Photo_Pack": "UGC Photo Pack"
@@ -1103,9 +1103,12 @@
                 },
                 "payments": {
                     "title": "4. PAYMENT AND COMMISSION",
-                    "li1": "Trigger: Payment is only released after validation of the deliverables by the Client on the Platform.",
-                    "li2": "Delay: VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
-                    "li3": "Commission: In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
+                    "li1_b": "Trigger:",
+                    "li1_t": "Payment is only released after validation of the deliverables by the Client on the Platform.",
+                    "li2_b": "Delay:",
+                    "li2_t": "VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
+                    "li3_b": "Commission:",
+                    "li3_t": "In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
                 },
                 "circumvention": {
                     "title": "5. NON-CIRCUMVENTION (ANTI-CIRCUMVENTION)",
