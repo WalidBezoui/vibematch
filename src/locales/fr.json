@@ -979,7 +979,7 @@
     },
     "deliverableTypes": {
         "Post": "{{count, plural, one {Post Instagram} other {{{count}} Posts Instagram}}}",
-        "Instagram_Story": "{{count, plural, one {Story Instagram} other {{{count}} Stories Instagram}}}",
+        "Instagram_Stories": "{{count, plural, one {Story Instagram} other {{{count}} Stories Instagram}}}",
         "Instagram_Reel": "{{count, plural, one {Reel Instagram} other {{{count}} Reels Instagram}}}",
         "Video": "{{count, plural, one {Vidéo TikTok} other {{{count}} Vidéos TikTok}}}",
         "UGC_Video_Vertical": "Vidéo UGC (Verticale)",
@@ -1031,6 +1031,7 @@
                 },
                 "mandate": {
                     "title": "2. PAYMENT MANDATE AND ESCROW",
+                    "p1": "By funding a campaign, the Brand expressly gives MANDATE to VibeMatch to:",
                     "li1": "Secure the total amount (Creator fees + VibeMatch commission) in a dedicated escrow account.",
                     "li2": "Release the funds to the Creator only after the Brand has validated the deliverables on the platform."
                 },
@@ -1102,9 +1103,9 @@
                 },
                 "payments": {
                     "title": "4. PAYMENT AND COMMISSION",
-                    "p1": "Trigger: Payment is only released after validation of the deliverables by the Client on the Platform.",
-                    "p2": "Delay: VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
-                    "p3": "Commission: In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
+                    "li1": "Trigger: Payment is only released after validation of the deliverables by the Client on the Platform.",
+                    "li2": "Delay: VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
+                    "li3": "Commission: In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
                 },
                 "circumvention": {
                     "title": "5. NON-CIRCUMVENTION (ANTI-CIRCUMVENTION)",
@@ -1212,6 +1213,8 @@
     
 
   
+
+    
 
     
 

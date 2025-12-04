@@ -979,7 +979,7 @@
     },
     "deliverableTypes": {
         "Post": "{{count, plural, one {Instagram Post} other {{{count}} Instagram Posts}}}",
-        "Instagram_Story": "{{count, plural, one {Instagram Story} other {{{count}} Instagram Stories}}}",
+        "Instagram_Stories": "{{count, plural, one {Instagram Story} other {{{count}} Instagram Stories}}}",
         "Instagram_Reel": "{{count, plural, one {Instagram Reel} other {{{count}} Instagram Reels}}}",
         "Video": "{{count, plural, one {TikTok Video} other {{{count}} TikTok Videos}}}",
         "UGC_Video_Vertical": "UGC Video (Vertical)",
@@ -1031,6 +1031,7 @@
                 },
                 "mandate": {
                     "title": "2. PAYMENT MANDATE AND ESCROW",
+                    "p1": "By funding a campaign, the Brand expressly gives MANDATE to VibeMatch to:",
                     "li1": "Secure the total amount (Creator fees + VibeMatch commission) in a dedicated escrow account.",
                     "li2": "Release the funds to the Creator only after the Brand has validated the deliverables on the platform."
                 },
@@ -1102,9 +1103,9 @@
                 },
                 "payments": {
                     "title": "4. PAYMENT AND COMMISSION",
-                    "p1": "Trigger: Payment is only released after validation of the deliverables by the Client on the Platform.",
-                    "p2": "Delay: VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
-                    "p3": "Commission: In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
+                    "li1": "Trigger: Payment is only released after validation of the deliverables by the Client on the Platform.",
+                    "li2": "Delay: VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
+                    "li3": "Commission: In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
                 },
                 "circumvention": {
                     "title": "5. NON-CIRCUMVENTION (ANTI-CIRCUMVENTION)",
@@ -1140,7 +1141,7 @@
         "sections": {
             "processing": {
                 "title": "1. DATA CONTROLLER",
-                "content": "Data is collected by VibeMatch, [Legal Form: e.g., Auto-Entrepreneur Walid Bezoui], with its head office located in Casablanca."
+                "content": "Data is collected by VibeMatch, [Legal Form: e.g., Auto-Entreprise Walid Bezoui], with its head office located in Casablanca."
             },
             "data": {
                 "title": "2. DATA COLLECTED",
@@ -1212,6 +1213,8 @@
     
 
   
+
+    
 
     
 
