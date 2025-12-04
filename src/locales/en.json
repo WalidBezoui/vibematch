@@ -437,6 +437,16 @@
                 "answer": "We look for creators with an authentic connection to their audience, regardless of follower size. We evaluate engagement quality, content creativity, and niche relevance. If you create high-quality content and have a loyal community, we encourage you to apply."
             }
         ],
+        "generalFaq": [
+            {
+                "question": "What makes VibeMatch different from other platforms?",
+                "answer": "VibeMatch is built on the pillars of Trust and Efficiency. Our unique Trust Engine ensures authentic collaborations, while our automated payment system protects creators. We are specifically focused on the Moroccan market, understanding its unique dynamics and fostering a community of top-tier local talent and brands."
+            },
+            {
+                "question": "What if I have a dispute?",
+                "answer": "In the rare case of a disagreement between a brand and a creator, VibeMatch provides a dedicated dispute resolution process. Our support team will mediate the situation, review the campaign agreement and communication, and work towards a fair and timely resolution for both parties."
+            }
+        ],
         "connect": {
             "title": "Where Great Brands and Great Creators Connect."
         },
@@ -968,10 +978,10 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{{count}} Instagram Post",
-        "Story": "{{count}} Instagram Story",
-        "Reel": "{{count}} Instagram Reel",
-        "Video": "{{count}} TikTok Video",
+        "Post": "{{count, plural, one {Instagram Post} other {{{count}} Instagram Posts}}}",
+        "Instagram_Story": "{{count, plural, one {Instagram Story} other {{{count}} Instagram Stories}}}",
+        "Instagram_Reel": "{{count, plural, one {Instagram Reel} other {{{count}} Instagram Reels}}}",
+        "Video": "{{count, plural, one {TikTok Video} other {{{count}} TikTok Videos}}}",
         "UGC_Video_Vertical": "UGC Video (Vertical)",
         "UGC_Video_Horizontal": "UGC Video (Horizontal)",
         "UGC_Photo_Pack": "UGC Photo Pack"
@@ -1021,7 +1031,6 @@
                 },
                 "mandate": {
                     "title": "2. PAYMENT MANDATE AND ESCROW",
-                    "p1": "By funding a campaign, the Brand expressly gives MANDATE to VibeMatch to:",
                     "li1": "Secure the total amount (Creator fees + VibeMatch commission) in a dedicated escrow account.",
                     "li2": "Release the funds to the Creator only after the Brand has validated the deliverables on the platform."
                 },
@@ -1093,12 +1102,9 @@
                 },
                 "payments": {
                     "title": "4. PAYMENT AND COMMISSION",
-                    "li1_b": "Trigger: ",
-                    "li1_t": "Payment is only released after validation of the deliverables by the Client on the Platform.",
-                    "li2_b": "Delay: ",
-                    "li2_t": "VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
-                    "li3_b": "Commission: ",
-                    "li3_t": "In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
+                    "p1": "Trigger: Payment is only released after validation of the deliverables by the Client on the Platform.",
+                    "p2": "Delay: VibeMatch undertakes to initiate the transfer within 5 working days after validation.",
+                    "p3": "Commission: In consideration for the services of the Platform, a commission of 15% (Excluding VAT / Hors Taxe) is deducted from the total campaign amount."
                 },
                 "circumvention": {
                     "title": "5. NON-CIRCUMVENTION (ANTI-CIRCUMVENTION)",
@@ -1206,6 +1212,8 @@
     
 
   
+
+    
 
     
 
