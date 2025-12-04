@@ -1160,7 +1160,7 @@
                 "title": "3. FINALITÉ DU TRAITEMENT",
                 "p1": "Les données sont traitées pour les finalités suivantes :",
                 "li1": "Gestion des comptes utilisateurs et authentification.",
-                "li2": "Calcul du \"Trust Score\" (Score de Confiance) pour vérifier l'authenticité des audiences.",
+                "li2": "Calcul du \"Trust Score\" pour vérifier l'authenticité des audiences.",
                 "li3": "Mise en relation commerciale (B2B) et facturation.",
                 "li4": "Lutte contre la fraude."
             },
@@ -1224,3 +1224,4 @@
     
 
     
+

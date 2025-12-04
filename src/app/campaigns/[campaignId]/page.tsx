@@ -401,7 +401,7 @@ export default function CampaignPage() {
                                         return (
                                         <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
                                             <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                                            <span>{t(`deliverableTypes.${typeKey}`, { defaultValue: item, count: parseInt(quantity) })}</span>
+                                            <span>{t(`deliverableTypes.${typeKey}`, { count: parseInt(quantity), defaultValue: item })}</span>
                                         </li>
                                     )})}
                                 </ul>
