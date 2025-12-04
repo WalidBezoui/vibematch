@@ -667,10 +667,10 @@
         "nextStepLabel": "Suivant",
         "completeProfileButton": "Compléter le Profil",
         "completionTips": [
-            "Les créateurs avec des profils complets sont 3x plus susceptibles d'être contactés.",
-            "Une super bio est votre chance de raconter votre histoire et d'attirer des collaborations.",
-            "Les marques filtrent souvent par lieu pour trouver des créateurs locaux.",
-            "Votre photo de profil est la première impression. Assurez-vous qu'elle soit excellente !",
+            "Les créateurs avec des profils complets sont 3x plus susceptibles d'être contactés par les marques.",
+            "Une super bio est votre chance de raconter votre histoire et d'attirer des collaborations de rêve.",
+            "Les marques filtrent souvent par lieu pour trouver des créateurs locaux pour des événements et des campagnes.",
+            "Votre photo de profil est la première impression que vous faites. Assurez-vous qu'elle soit excellente !",
             "Les tags aident notre algorithme à vous proposer les opportunités les plus pertinentes."
         ],
         "steps": {
@@ -1010,14 +1010,14 @@
     },
     "termsPage": {
         "title": "Conditions Générales d'Utilisation",
-        "lastUpdated": "Dernière mise à jour : 03/12/2025",
-        "discrepancyNotice": "En cas de divergence, la version française prévaut.",
+        "lastUpdated": "Dernière mise à jour : {{date}}",
+        "discrepancyNotice": "En cas de divergence, la version française fait foi.",
         "brand": {
             "title": "CONDITIONS D'UTILISATION (CÔTÉ MARQUES)",
             "sections": {
                 "object": {
                     "title": "1. OBJET ET INDÉPENDANCE",
-                    "p1": "Ces Conditions régissent l'utilisation de la plateforme VibeMatch par les Marques. La Marque agit en tant que client indépendant. Ces Conditions ne créent aucun contrat de travail ni agence exclusive entre VibeMatch et la Marque."
+                    "p1": "Les présentes Conditions régissent l'utilisation de la plateforme VibeMatch par les Marques. La Marque agit en tant que client indépendant. Ces Conditions ne créent aucun contrat de travail ni d'agence exclusive entre VibeMatch et la Marque."
                 },
                 "mandate": {
                     "title": "2. MANDAT DE PAIEMENT ET SÉQUESTRE",
@@ -1027,10 +1027,10 @@
                 },
                 "obligations": {
                     "title": "3. OBLIGATIONS DE LA MARQUE",
-                    "p1": "Fournir un brief clair et complet pour chaque campagne.",
-                    "p2": "Financer le compte séquestre avant le début de la collaboration.",
-                    "p3": "Non-Contournement : Ne pas contourner VibeMatch en contractant directement avec un créateur présenté via la plateforme pour une durée de 12 mois. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20 % du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts.",
-                    "p4": "Validation : Valider ou demander des révisions des livrables en temps opportun. IMPORTANT : En l'absence de validation ou de demande de révision dans les cinq (5) jours calendaires suivant la livraison, les livrables seront réputés automatiquement validés ('Validation Tacite'), déclenchant la libération des fonds au Créateur."
+                    "li1": "Fournir un brief clair et complet pour chaque campagne.",
+                    "li2": "Financer le compte séquestre avant le début de la collaboration.",
+                    "li3": "Non-Contournement : Ne pas contourner VibeMatch en contractant directement avec un créateur présenté via la plateforme pour une durée de 12 mois. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10 000 MAD (ou 20 % du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts.",
+                    "li4": "Validation : Valider ou demander des révisions des livrables en temps opportun. IMPORTANT : En l'absence de validation ou de demande de révision dans les cinq (5) jours calendaires suivant la livraison, les livrables seront réputés automatiquement validés ('Validation Tacite'), déclenchant la libération des fonds au Créateur."
                 },
                 "payments": {
                     "title": "4. PAIEMENTS",
@@ -1042,9 +1042,9 @@
                     },
                     "cancellation": {
                         "title": "4.2. ANNULATION & REMBOURSEMENTS",
-                        "p1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15% (Hors Taxe). Une fois le travail commencé, le montant total est dû.",
-                        "p2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés.",
-                        "p3": "Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
+                        "li1": "Annulation par la Marque : Si la Marque annule une mission avant que le Créateur ait commencé le travail, les fonds sont remboursés moins des frais administratifs de 15% (Hors Taxe). Une fois le travail commencé, le montant total est dû.",
+                        "li2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, la Marque a droit à un remboursement complet des fonds séquestrés.",
+                        "li3": "Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la distribution des fonds est définitive."
                     }
                 },
                 "forceMajeure": {
@@ -1203,5 +1203,7 @@
     
 
   
+
+    
 
     

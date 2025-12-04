@@ -11,14 +11,18 @@ export default function TermsPage() {
 
     const renderSections = (sections: any) => {
         if (!sections || typeof sections !== 'object') return null;
+        
         return Object.keys(sections).map(key => {
             const section = sections[key];
             if (!section || typeof section !== 'object') return null;
             
             const content: React.ReactNode[] = [];
+            
+            // Handle main paragraphs
             if (section.p1) content.push(<p key="p1">{section.p1}</p>);
             if (section.p2) content.push(<p key="p2" className="mt-4">{section.p2}</p>);
             
+            // Handle simple list items (li1, li2, etc.)
             if (section.li1) {
                 const listItems = [];
                 for (let i = 1; section[`li${i}`]; i++) {
@@ -28,16 +32,66 @@ export default function TermsPage() {
                 content.push(<ul key="list" className={`list-${listType} list-inside space-y-2 pl-4 mt-4`}>{listItems}</ul>);
             }
             
-             if (section.trigger_b) {
-                const paymentItems = [];
-                paymentItems.push(<li key="payment_trigger"><strong>{section.trigger_b}</strong>{section.trigger_t}</li>);
-                 if(section.delay_b) paymentItems.push(<li key="payment_delay"><strong>{section.delay_b}</strong>{section.delay_t}</li>);
-                 if(section.commission_b) paymentItems.push(<li key="payment_commission"><strong>{section.commission_b}</strong>{section.commission_t}</li>);
-
-                content.push(<ul key="payment-list" className="list-none p-0 space-y-2 mt-4">{paymentItems}</ul>);
+            // Handle bold/text list items (li1_b, li1_t)
+            if (section.li1_b) {
+                const boldListItems = [];
+                for (let i = 1; section[`li${i}_b`]; i++) {
+                    boldListItems.push(
+                        <li key={`bli${i}`}>
+                            <strong>{section[`li${i}_b`]}</strong>
+                            {section[`li${i}_t`]}
+                        </li>
+                    );
+                }
+                content.push(<ul key="bold-list" className="list-none p-0 space-y-2 mt-4">{boldListItems}</ul>);
             }
             
-            // This is the fix: Wrap content in a div instead of paragraph tags
+            // Handle nested sections (like chargebacks and cancellation)
+            if (section.chargebacks) {
+                content.push(
+                    <div key="chargebacks" className="ml-4 mt-4">
+                        <h3 className="text-xl font-semibold">{section.chargebacks.title}</h3>
+                        <p className="mt-2">{section.chargebacks.p1}</p>
+                    </div>
+                );
+            }
+
+            if (section.cancellation) {
+                const cancellationItems = [];
+                for (let i = 1; section.cancellation[`li${i}`]; i++) {
+                    cancellationItems.push(<li key={`cli${i}`}>{section.cancellation[`li${i}`]}</li>);
+                }
+                content.push(
+                    <div key="cancellation" className="ml-4 mt-4">
+                        <h3 className="text-xl font-semibold">{section.cancellation.title}</h3>
+                        <ul className="list-disc list-inside space-y-2 pl-4 mt-2">{cancellationItems}</ul>
+                    </div>
+                );
+            }
+
+            // Handle IP Rights nested structure
+            if (section.assignment) {
+                const assignmentItems = [];
+                for (let i = 1; section.assignment[`li${i}`]; i++) {
+                    assignmentItems.push(<li key={`ali${i}`}>{section.assignment[`li${i}`]}</li>);
+                }
+                 content.push(
+                    <div key="assignment" className="ml-4 mt-4">
+                        <h3 className="text-xl font-semibold">{section.assignment.title}</h3>
+                        <p className="mt-2">{section.assignment.p1}</p>
+                        <ul className="list-disc list-inside space-y-2 pl-4 mt-2">{assignmentItems}</ul>
+                    </div>
+                );
+            }
+            if (section.warranty) {
+                 content.push(
+                    <div key="warranty" className="ml-4 mt-4">
+                        <h3 className="text-xl font-semibold">{section.warranty.title}</h3>
+                        <p className="mt-2">{section.warranty.p1}</p>
+                    </div>
+                );
+            }
+
             return (
                 <div key={key}>
                     <h2 className="text-2xl font-bold pt-6">{section.title}</h2>
@@ -72,3 +126,5 @@ export default function TermsPage() {
         </div>
     );
 }
+
+    
