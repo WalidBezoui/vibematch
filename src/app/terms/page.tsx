@@ -15,7 +15,7 @@ export default function TermsPage() {
             const section = sections[key];
             if (!section || typeof section !== 'object') return null;
             
-            const content = [];
+            const content: React.ReactNode[] = [];
             if (section.p1) content.push(<p key="p1">{section.p1}</p>);
             if (section.p2) content.push(<p key="p2" className="mt-4">{section.p2}</p>);
             
@@ -25,7 +25,7 @@ export default function TermsPage() {
                     listItems.push(<li key={`li${i}`}>{section[`li${i}`]}</li>);
                 }
                 const listType = section.title && (section.title as string).includes("MANDATE") ? "decimal" : "disc";
-                content.push(<ul key="list" className={`list-${listType} list-inside space-y-2 pl-4`}>{listItems}</ul>);
+                content.push(<ul key="list" className={`list-${listType} list-inside space-y-2 pl-4 mt-4`}>{listItems}</ul>);
             }
             
              if (section.trigger_b) {
@@ -34,9 +34,10 @@ export default function TermsPage() {
                  if(section.delay_b) paymentItems.push(<li key="payment_delay"><strong>{section.delay_b}</strong>{section.delay_t}</li>);
                  if(section.commission_b) paymentItems.push(<li key="payment_commission"><strong>{section.commission_b}</strong>{section.commission_t}</li>);
 
-                content.push(<ul key="payment-list" className="list-none p-0 space-y-2">{paymentItems}</ul>);
+                content.push(<ul key="payment-list" className="list-none p-0 space-y-2 mt-4">{paymentItems}</ul>);
             }
-
+            
+            // This is the fix: Wrap content in a div instead of paragraph tags
             return (
                 <div key={key}>
                     <h2 className="text-2xl font-bold pt-6">{section.title}</h2>
