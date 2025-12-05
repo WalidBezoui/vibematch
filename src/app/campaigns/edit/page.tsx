@@ -66,6 +66,8 @@ const parseDeliverableString = (deliverable: string): z.infer<typeof deliverable
     if (!match) return null;
 
     const [, quantity, type] = match;
+    const typeKey = type.replace(/ /g, '_');
+
 
     const platformMap: Record<string, 'instagram' | 'tiktok'> = {
         'Post': 'instagram',
@@ -79,8 +81,8 @@ const parseDeliverableString = (deliverable: string): z.infer<typeof deliverable
 
     return {
         quantity: parseInt(quantity, 10),
-        platform: platformMap[type] || 'instagram', // Fallback
-        type: type as any,
+        platform: platformMap[typeKey] || 'instagram', // Fallback
+        type: typeKey as any,
     };
 };
 
@@ -616,13 +618,13 @@ export default function EditCampaignPage() {
                                         variant="outline"
                                         className={cn(
                                             "rounded-full",
-                                            field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+                                            field.value?.includes(niche.id) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
                                         )}
                                         onClick={() => {
                                             const currentTags = field.value || [];
-                                            const newTags = currentTags.includes(niche.label)
-                                            ? currentTags.filter(t => t !== niche.label)
-                                            : [...currentTags, niche.label];
+                                            const newTags = currentTags.includes(niche.id)
+                                            ? currentTags.filter(t => t !== niche.id)
+                                            : [...currentTags, niche.id];
                                             field.onChange(newTags);
                                         }}
                                         >
@@ -635,7 +637,7 @@ export default function EditCampaignPage() {
                                 </FormItem>
                             )}
                         />
-                        {form.watch('tags')?.includes('Other') && (
+                        {form.watch('tags')?.includes('other') && (
                             <FormField
                                 control={form.control}
                                 name="otherTag"

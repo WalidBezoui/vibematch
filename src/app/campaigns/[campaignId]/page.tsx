@@ -397,7 +397,8 @@ export default function CampaignPage() {
                                 <ul className="space-y-3">
                                     {campaign.deliverables.map((item: string, index: number) => {
                                         const [quantity, ...typeParts] = item.split(' ');
-                                        const typeKey = typeParts.join(' ');
+                                        const type = typeParts.join(' ');
+                                        const typeKey = type.replace(/ /g, '_');
                                         return (
                                         <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
                                             <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />

@@ -332,7 +332,7 @@
                 { "text": "Pour les marques visionnaires prêtes pour un vrai ROI.", "icon": "Target" },
                 { "text": "Places sur la liste d'attente limitées. Assurez votre accès prioritaire.", "icon": "BadgePercent" },
                 { "text": "Le top 1% des créateurs marocains vous attend.", "icon": "Gem" },
-                { "text": "Arrêtez de parier. Obtenez des résultats garantis.", "icon": "TrendingUp" }
+                { "text": "Arrêtez de parier. Obtenez des résultats garantis.", "icon": "TrendingUp"}
             ]
         },
         "creators": {
@@ -979,9 +979,9 @@
     },
     "deliverableTypes": {
         "Post": "{{count, plural, one {Post Instagram} other {# Posts Instagram}}}",
-        "Story": "{{count, plural, one {Story Instagram} other {# Stories Instagram}}}",
-        "Reel": "{{count, plural, one {Reel Instagram} other {# Reels Instagram}}}",
-        "Video": "{{count, plural, one {Vidéo TikTok} other {# Vidéos TikTok}}}",
+        "Story": "{count, plural, one {Story Instagram} other {# Stories Instagram}}",
+        "Reel": "{count, plural, one {Reel Instagram} other {# Reels Instagram}}",
+        "Video": "{count, plural, one {Vidéo TikTok} other {# Vidéos TikTok}}",
         "UGC_Video_Vertical": "Vidéo UGC (Verticale)",
         "UGC_Video_Horizontal": "Vidéo UGC (Horizontale)",
         "UGC_Photo_Pack": "Pack Photos UGC"
@@ -1212,10 +1212,10 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{{count, plural, one {Post Instagram} other {# Posts Instagram}}}",
-        "Story": "{{count, plural, one {Story Instagram} other {# Stories Instagram}}}",
-        "Reel": "{{count, plural, one {Reel Instagram} other {# Reels Instagram}}}",
-        "Video": "{{count, plural, one {Vidéo TikTok} other {# Vidéos TikTok}}}",
+        "Post": "{count, plural, one {Post Instagram} other {# Posts Instagram}}",
+        "Story": "{count, plural, one {Story Instagram} other {# Stories Instagram}}",
+        "Reel": "{count, plural, one {Reel Instagram} other {# Reels Instagram}}",
+        "Video": "{count, plural, one {Vidéo TikTok} other {# Vidéos TikTok}}",
         "UGC_Video_Vertical": "Vidéo UGC (Verticale)",
         "UGC_Video_Horizontal": "Vidéo UGC (Horizontale)",
         "UGC_Photo_Pack": "Pack Photos UGC"
