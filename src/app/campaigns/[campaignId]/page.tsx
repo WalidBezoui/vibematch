@@ -398,11 +398,10 @@ export default function CampaignPage() {
                                     {campaign.deliverables.map((item: string, index: number) => {
                                         const [quantity, ...typeParts] = item.split(' ');
                                         const type = typeParts.join(' ');
-                                        const typeKey = type.replace(/ /g, '_');
                                         return (
                                         <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
                                             <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                                            <span>{t(`deliverableTypes.${typeKey}`, { count: parseInt(quantity), defaultValue: item })}</span>
+                                            <span>{t(`deliverableTypes.${type}`, { count: parseInt(quantity), defaultValue: item })}</span>
                                         </li>
                                     )})}
                                 </ul>

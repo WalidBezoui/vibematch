@@ -838,13 +838,7 @@
         "budgetLabel": "الميزانية لكل مبدع (بالدرهم)",
         "numCreatorsLabel": "عدد المبدعين",
         "publishButton": "نشر الحملة",
-        "publishingButton": "جارٍ النشر...",
-        "success": {
-            "title": "تم نشر الحملة!",
-            "description": "حملتك الآن مباشرة. يمكن للمبدعين على VibeMatch الآن رؤيتها والتقدم بطلباتهم.",
-            "manageButton": "إدارة الطلبات",
-            "dashboardButton": "العودة إلى لوحة التحكم"
-        }
+        "publishingButton": "جارٍ النشر..."
     },
     "editCampaignPage": {
         "title": "تعديل الحملة",
@@ -990,9 +984,9 @@
         "Story": "{count, plural, one {قصة انستغرام} other {# قصص انستغرام}}",
         "Reel": "{count, plural, one {ريل انستغرام} other {# ريلات انستغرام}}",
         "Video": "{count, plural, one {فيديو تيك توك} other {# فيديوهات تيك توك}}",
-        "UGC_Video_Vertical": "فيديو UGC (عمودي)",
-        "UGC_Video_Horizontal": "فيديو UGC (أفقي)",
-        "UGC_Photo_Pack": "حزمة صور UGC"
+        "UGC Video Vertical": "{count, plural, one {فيديو UGC (عمودي)} other {# فيديوهات UGC (عمودية)}}",
+        "UGC Video Horizontal": "{count, plural, one {فيديو UGC (أفقي)} other {# فيديوهات UGC (أفقية)}}",
+        "UGC Photo Pack": "{count, plural, one {حزمة صور UGC} other {# حزم صور UGC}}"
     },
     "paymentSuccess": {
       "title": "تم الدفع بنجاح!",
@@ -1224,8 +1218,8 @@
         "Story": "{count, plural, one {قصة انستغرام} other {# قصص انستغرام}}",
         "Reel": "{count, plural, one {ريل انستغرام} other {# ريلات انستغرام}}",
         "Video": "{count, plural, one {فيديو تيك توك} other {# فيديوهات تيك توك}}",
-        "UGC_Video_Vertical": "فيديو UGC (عمودي)",
-        "UGC_Video_Horizontal": "فيديو UGC (أفقي)",
-        "UGC_Photo_Pack": "حزمة صور UGC"
+        "UGC Video Vertical": "{count, plural, one {فيديو UGC (عمودي)} other {# فيديوهات UGC (عمودية)}}",
+        "UGC Video Horizontal": "{count, plural, one {فيديو UGC (أفقي)} other {# فيديوهات UGC (أفقية)}}",
+        "UGC Photo Pack": "{count, plural, one {حزمة صور UGC} other {# حزم صور UGC}}"
     }
 }

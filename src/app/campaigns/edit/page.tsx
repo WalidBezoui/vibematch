@@ -34,7 +34,7 @@ const TikTokIcon = () => (
 
 const deliverableSchema = z.object({
   platform: z.enum(['instagram', 'tiktok']),
-  type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC_Video_Vertical', 'UGC_Video_Horizontal', 'UGC_Photo_Pack']),
+  type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC Video Vertical', 'UGC Video Horizontal', 'UGC Photo Pack']),
   quantity: z.preprocess(
     (val) => (val === '' ? undefined : Number(val)),
     z.number({ invalid_type_error: 'Qty must be a number.' }).min(1, 'Quantity must be at least 1.')
@@ -66,23 +66,21 @@ const parseDeliverableString = (deliverable: string): z.infer<typeof deliverable
     if (!match) return null;
 
     const [, quantity, type] = match;
-    const typeKey = type.replace(/ /g, '_');
-
 
     const platformMap: Record<string, 'instagram' | 'tiktok'> = {
         'Post': 'instagram',
         'Story': 'instagram',
         'Reel': 'instagram',
         'Video': 'tiktok',
-        'UGC_Video_Vertical': 'instagram',
-        'UGC_Video_Horizontal': 'instagram',
-        'UGC_Photo_Pack': 'instagram',
+        'UGC Video Vertical': 'instagram',
+        'UGC Video Horizontal': 'instagram',
+        'UGC Photo Pack': 'instagram',
     }
 
     return {
         quantity: parseInt(quantity, 10),
-        platform: platformMap[typeKey] || 'instagram', // Fallback
-        type: typeKey as any,
+        platform: platformMap[type] || 'instagram', // Fallback
+        type: type as any,
     };
 };
 
@@ -99,9 +97,9 @@ const influenceDeliverableTypes = {
 };
 
 const ugcDeliverableTypes = [
-    { name: 'deliverables.1.quantity', type: 'UGC_Video_Vertical', label: 'Video 9:16 (Vertical)' },
-    { name: 'deliverables.2.quantity', type: 'UGC_Video_Horizontal', label: 'Video 16:9 (Horizontal)' },
-    { name: 'deliverables.3.quantity', type: 'UGC_Photo_Pack', label: 'Photo Pack' },
+    { name: 'deliverables.1.quantity', type: 'UGC Video Vertical', label: 'Video 9:16 (Vertical)' },
+    { name: 'deliverables.2.quantity', type: 'UGC Video Horizontal', label: 'Video 16:9 (Horizontal)' },
+    { name: 'deliverables.3.quantity', type: 'UGC Photo Pack', label: 'Photo Pack' },
 ]
 
 const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
@@ -271,9 +269,9 @@ export default function EditCampaignPage() {
         tags: [],
         deliverables: [
             { platform: 'instagram', type: 'Post', quantity: 1 },
-            { platform: 'instagram', type: 'UGC_Video_Vertical', quantity: 0 },
-            { platform: 'instagram', type: 'UGC_Video_Horizontal', quantity: 0 },
-            { platform: 'instagram', type: 'UGC_Photo_Pack', quantity: 0 },
+            { platform: 'instagram', type: 'UGC Video Vertical', quantity: 0 },
+            { platform: 'instagram', type: 'UGC Video Horizontal', quantity: 0 },
+            { platform: 'instagram', type: 'UGC Photo Pack', quantity: 0 },
         ],
         otherTag: '',
     },
@@ -289,13 +287,13 @@ export default function EditCampaignPage() {
       }
       
       const ugcDeliverableQuantities = {
-        'UGC_Video_Vertical': 0,
-        'UGC_Video_Horizontal': 0,
-        'UGC_Photo_Pack': 0,
+        'UGC Video Vertical': 0,
+        'UGC Video Horizontal': 0,
+        'UGC Photo Pack': 0,
       }
       
       parsedDeliverables.forEach(d => {
-        if(d.type.startsWith('UGC_')) {
+        if(d.type.startsWith('UGC')) {
             ugcDeliverableQuantities[d.type as keyof typeof ugcDeliverableQuantities] = d.quantity;
         }
       });
@@ -309,10 +307,10 @@ export default function EditCampaignPage() {
         budget: campaign.budget || 0,
         tags: campaign.tags || [],
         deliverables: [
-            ...parsedDeliverables.filter(d => !d.type.startsWith('UGC_')),
-            { platform: 'instagram', type: 'UGC_Video_Vertical', quantity: ugcDeliverableQuantities.UGC_Video_Vertical },
-            { platform: 'instagram', type: 'UGC_Video_Horizontal', quantity: ugcDeliverableQuantities.UGC_Video_Horizontal },
-            { platform: 'instagram', type: 'UGC_Photo_Pack', quantity: ugcDeliverableQuantities.UGC_Photo_Pack },
+            ...parsedDeliverables.filter(d => !d.type.startsWith('UGC')),
+            { platform: 'instagram', type: 'UGC Video Vertical', quantity: ugcDeliverableQuantities['UGC Video Vertical'] },
+            { platform: 'instagram', type: 'UGC Video Horizontal', quantity: ugcDeliverableQuantities['UGC Video Horizontal'] },
+            { platform: 'instagram', type: 'UGC Photo Pack', quantity: ugcDeliverableQuantities['UGC Photo Pack'] },
         ]
       });
     }
@@ -534,7 +532,7 @@ export default function EditCampaignPage() {
                             <h3 className="font-semibold">{t('createCampaignPage.deliverables.selectLabel')}</h3>
                             {campaignType === 'influence' && (
                                     <>
-                                    {fields.filter(f => !f.type.startsWith('UGC_')).map((item, index) => (
+                                    {fields.filter(f => !f.type.startsWith('UGC')).map((item, index) => (
                                         <DeliverableItem key={item.id} index={fields.findIndex(f => f.id === item.id)} control={form.control} remove={remove} setValue={form.setValue} />
                                     ))}
                                     <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1 })}>

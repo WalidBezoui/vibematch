@@ -978,13 +978,13 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{{count, plural, one {Post Instagram} other {# Posts Instagram}}}",
+        "Post": "{count, plural, one {Post Instagram} other {# Posts Instagram}}",
         "Story": "{count, plural, one {Story Instagram} other {# Stories Instagram}}",
         "Reel": "{count, plural, one {Reel Instagram} other {# Reels Instagram}}",
         "Video": "{count, plural, one {Vidéo TikTok} other {# Vidéos TikTok}}",
-        "UGC_Video_Vertical": "Vidéo UGC (Verticale)",
-        "UGC_Video_Horizontal": "Vidéo UGC (Horizontale)",
-        "UGC_Photo_Pack": "Pack Photos UGC"
+        "UGC Video Vertical": "{count, plural, one {Vidéo UGC (Verticale)} other {# Vidéos UGC (Verticales)}}",
+        "UGC Video Horizontal": "{count, plural, one {Vidéo UGC (Horizontale)} other {# Vidéos UGC (Horizontales)}}",
+        "UGC Photo Pack": "{count, plural, one {Pack Photos UGC} other {# Packs Photos UGC}}"
     },
     "paymentSuccess": {
       "title": "Paiement Réussi !",
@@ -1216,8 +1216,8 @@
         "Story": "{count, plural, one {Story Instagram} other {# Stories Instagram}}",
         "Reel": "{count, plural, one {Reel Instagram} other {# Reels Instagram}}",
         "Video": "{count, plural, one {Vidéo TikTok} other {# Vidéos TikTok}}",
-        "UGC_Video_Vertical": "Vidéo UGC (Verticale)",
-        "UGC_Video_Horizontal": "Vidéo UGC (Horizontale)",
-        "UGC_Photo_Pack": "Pack Photos UGC"
+        "UGC Video Vertical": "{count, plural, one {Vidéo UGC (Verticale)} other {# Vidéos UGC (Verticales)}}",
+        "UGC Video Horizontal": "{count, plural, one {Vidéo UGC (Horizontale)} other {# Vidéos UGC (Horizontales)}}",
+        "UGC Photo Pack": "{count, plural, one {Pack Photos UGC} other {# Packs Photos UGC}}"
     }
 }
