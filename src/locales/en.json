@@ -978,10 +978,10 @@
         }
     },
     "deliverableTypes": {
-        "Post": "{count, plural, one {Instagram Post} other {# Instagram Posts}}",
-        "Story": "{count, plural, one {Instagram Story} other {# Instagram Stories}}",
-        "Reel": "{count, plural, one {Instagram Reel} other {# Instagram Reels}}",
-        "Video": "{count, plural, one {TikTok Video} other {# TikTok Videos}}",
+        "Post": "{{count, plural, one {Instagram Post} other {# Instagram Posts}}}",
+        "Story": "{{count, plural, one {Instagram Story} other {# Instagram Stories}}}",
+        "Reel": "{{count, plural, one {Instagram Reel} other {# Instagram Reels}}}",
+        "Video": "{{count, plural, one {TikTok Video} other {# TikTok Videos}}}",
         "UGC_Video_Vertical": "UGC Video (Vertical)",
         "UGC_Video_Horizontal": "UGC Video (Horizontal)",
         "UGC_Photo_Pack": "UGC Photo Pack"
@@ -1212,16 +1212,5 @@
         }
     }
 }
-  
-    
-
-  
 
     
-
-    
-
-    
-
-    
-

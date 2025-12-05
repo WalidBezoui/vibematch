@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useForm, useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -14,7 +14,8 @@ import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter, useParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, Users, Megaphone, FileVideo, Info } from 'lucide-react';
+import { PlusCircle, XCircle, Instagram, Video, Repeat, StickyNote, Users, Megaphone, FileVideo, Info, Package, Computer } from 'lucide-react';
+import * as lucideIcons from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -33,7 +34,7 @@ const TikTokIcon = () => (
 
 const deliverableSchema = z.object({
   platform: z.enum(['instagram', 'tiktok']),
-  type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC_Video_Vertical', 'UGC_Video_Horizontal', 'UGC_Photo_Pack']),
+  type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC Video Vertical', 'UGC Video Horizontal', 'UGC Photo Pack']),
   quantity: z.preprocess(
     (val) => (val === '' ? undefined : Number(val)),
     z.number({ invalid_type_error: 'Qty must be a number.' }).min(1, 'Quantity must be at least 1.')
@@ -44,7 +45,9 @@ const deliverableSchema = z.object({
 const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
   campaignBrief: z.string().min(20, 'The campaign brief must be at least 20 characters.'),
+  instructions: z.string().optional(),
   campaignType: z.enum(['influence', 'ugc']),
+  productLogistics: z.enum(['shipping', 'digital'], { required_error: 'Please select a product logistics option.' }),
   deliverables: z.array(deliverableSchema).min(1, 'Please add at least one deliverable.'),
   budget: z.preprocess(
     (val) => (val === '' ? 0 : Number(val)),
@@ -69,11 +72,14 @@ const parseDeliverableString = (deliverable: string): z.infer<typeof deliverable
         'Story': 'instagram',
         'Reel': 'instagram',
         'Video': 'tiktok',
+        'UGC Video Vertical': 'instagram',
+        'UGC Video Horizontal': 'instagram',
+        'UGC Photo Pack': 'instagram',
     }
 
     return {
         quantity: parseInt(quantity, 10),
-        platform: platformMap[type] || 'instagram', // Fallback, shouldn't happen with new data
+        platform: platformMap[type] || 'instagram', // Fallback
         type: type as any,
     };
 };
@@ -91,9 +97,9 @@ const influenceDeliverableTypes = {
 };
 
 const ugcDeliverableTypes = [
-    { name: 'deliverables.0.quantity', label: 'Video 9:16 (Vertical)' },
-    { name: 'deliverables.1.quantity', label: 'Video 16:9 (Horizontal)' },
-    { name: 'deliverables.2.quantity', label: 'Photo Pack' },
+    { name: 'deliverables.1.quantity', type: 'UGC Video Vertical', label: 'Video 9:16 (Vertical)' },
+    { name: 'deliverables.2.quantity', type: 'UGC Video Horizontal', label: 'Video 16:9 (Horizontal)' },
+    { name: 'deliverables.3.quantity', type: 'UGC Photo Pack', label: 'Photo Pack' },
 ]
 
 const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
@@ -195,8 +201,14 @@ const DeliverableItem = ({ index, control, remove, setValue }: { index: number, 
     )
 }
 
-const UGCDeliverableItem = ({ name, label }: { name: string, label: string }) => {
-    const { control } = useFormContext();
+const UGCDeliverableItem = ({ name, label, type }: { name: string, label: string, type: string }) => {
+    const { control, setValue } = useFormContext();
+    
+    useEffect(() => {
+        setValue(name.replace('quantity', 'type'), type)
+        setValue(name.replace('quantity', 'platform'), 'instagram') // Default platform
+    }, [name, type, setValue])
+
     return (
         <FormField
             control={control}
@@ -204,7 +216,7 @@ const UGCDeliverableItem = ({ name, label }: { name: string, label: string }) =>
             render={({ field }) => (
                 <FormItem className="flex items-center space-x-3 space-y-0 p-4 border rounded-lg bg-muted/50">
                     <FormControl>
-                        <Input type="number" min="0" {...field} className="w-20" placeholder="0" />
+                        <Input type="number" min="0" {...field} value={field.value || 0} className="w-20" placeholder="0" />
                     </FormControl>
                     <FormLabel className="font-normal">{label}</FormLabel>
                 </FormItem>
@@ -237,6 +249,8 @@ export default function EditCampaignPage() {
   const { toast } = useToast();
   const { t } = useLanguage();
   const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
+  const productLogisticsOptions = t('createCampaignPage.logistics.options', { returnObjects: true }) as { value: 'shipping' | 'digital', title: string, description: string, icon: string }[];
+
   
   const campaignRef = useMemoFirebase(
     () => (firestore && campaignId ? doc(firestore, 'campaigns', campaignId as string) : null),
@@ -249,14 +263,15 @@ export default function EditCampaignPage() {
     defaultValues: {
         title: '',
         campaignBrief: '',
+        instructions: '',
         campaignType: 'influence',
         budget: 0,
         tags: [],
         deliverables: [
             { platform: 'instagram', type: 'Post', quantity: 1 },
-            { platform: 'instagram', type: 'UGC_Video_Vertical', quantity: 0 },
-            { platform: 'instagram', type: 'UGC_Video_Horizontal', quantity: 0 },
-            { platform: 'instagram', type: 'UGC_Photo_Pack', quantity: 0 },
+            { platform: 'instagram', type: 'UGC Video Vertical', quantity: 0 },
+            { platform: 'instagram', type: 'UGC Video Horizontal', quantity: 0 },
+            { platform: 'instagram', type: 'UGC Photo Pack', quantity: 0 },
         ],
         otherTag: '',
     },
@@ -264,17 +279,39 @@ export default function EditCampaignPage() {
 
   useEffect(() => {
     if (campaign) {
-      const parsedDeliverables = (campaign.deliverables || [])
-        .map(parseDeliverableString)
-        .filter((d: any): d is z.infer<typeof deliverableSchema> => d !== null);
+      let parsedDeliverables: any[] = [];
+      if (campaign.deliverables && Array.isArray(campaign.deliverables)) {
+        parsedDeliverables = (campaign.deliverables)
+          .map(parseDeliverableString)
+          .filter((d: any): d is z.infer<typeof deliverableSchema> => d !== null);
+      }
+      
+      const ugcDeliverableQuantities = {
+        'UGC Video Vertical': 0,
+        'UGC Video Horizontal': 0,
+        'UGC Photo Pack': 0,
+      }
+      
+      parsedDeliverables.forEach(d => {
+        if(d.type.startsWith('UGC')) {
+            ugcDeliverableQuantities[d.type as keyof typeof ugcDeliverableQuantities] = d.quantity;
+        }
+      });
 
       form.reset({
-        title: campaign.title,
-        campaignBrief: campaign.campaignBrief,
+        title: campaign.title || '',
+        campaignBrief: campaign.campaignBrief || '',
+        instructions: campaign.instructions || '',
         campaignType: campaign.campaignType || 'influence',
-        budget: campaign.budget,
+        productLogistics: campaign.productLogistics,
+        budget: campaign.budget || 0,
         tags: campaign.tags || [],
-        deliverables: parsedDeliverables.length > 0 ? parsedDeliverables : [{ platform: 'instagram', type: 'Post', quantity: 1 }],
+        deliverables: [
+            ...parsedDeliverables.filter(d => !d.type.startsWith('UGC')),
+            { platform: 'instagram', type: 'UGC Video Vertical', quantity: ugcDeliverableQuantities['UGC Video Vertical'] },
+            { platform: 'instagram', type: 'UGC Video Horizontal', quantity: ugcDeliverableQuantities['UGC Video Horizontal'] },
+            { platform: 'instagram', type: 'UGC Photo Pack', quantity: ugcDeliverableQuantities['UGC Photo Pack'] },
+        ]
       });
     }
   }, [campaign, form]);
@@ -299,12 +336,23 @@ export default function EditCampaignPage() {
         finalTags.splice(otherIndex, 1);
     }
     finalTags = [...new Set(finalTags)];
+    
+    let finalDeliverables;
+    if (data.campaignType === 'ugc') {
+      finalDeliverables = data.deliverables
+        .filter(d => d.quantity > 0 && d.type.startsWith('UGC'))
+        .map(d => `${d.quantity} ${d.type}`);
+    } else {
+      finalDeliverables = data.deliverables
+        .filter(d => d.quantity > 0 && !d.type.startsWith('UGC'))
+        .map(d => `${d.quantity} ${d.type}`);
+    }
 
     const submissionData = {
       ...data,
       tags: finalTags,
       campaignType: data.campaignType,
-      deliverables: data.deliverables.map(d => `${d.quantity} ${d.type}`),
+      deliverables: finalDeliverables,
       updatedAt: serverTimestamp(),
     };
     delete (submissionData as any).otherTag;
@@ -406,6 +454,19 @@ export default function EditCampaignPage() {
                                 </FormItem>
                             )}
                         />
+                        <FormField
+                            control={form.control}
+                            name="instructions"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>{t('createCampaignPage.instructions.label')}</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder={t('createCampaignPage.instructions.placeholder')} {...field} rows={4} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </CardContent>
                 </Card>
 
@@ -426,11 +487,11 @@ export default function EditCampaignPage() {
                                     defaultValue={field.value}
                                     className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                     >
-                                        <FormItem>
+                                        <FormItem className="flex">
                                             <FormControl>
                                                 <RadioGroupItem value="influence" id="influence" className="sr-only" />
                                             </FormControl>
-                                            <Label htmlFor="influence" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all", field.value === 'influence' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                            <Label htmlFor="influence" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all w-full", field.value === 'influence' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
                                                 <div className="flex items-center gap-3 mb-2">
                                                     <Megaphone className="h-5 w-5 text-primary" />
                                                     <span className="font-bold">{t('createCampaignPage.deliverables.influence.title')}</span>
@@ -438,11 +499,11 @@ export default function EditCampaignPage() {
                                                 <span className="text-sm text-muted-foreground">{t('createCampaignPage.deliverables.influence.description')}</span>
                                             </Label>
                                         </FormItem>
-                                        <FormItem>
+                                        <FormItem className="flex">
                                             <FormControl>
                                                 <RadioGroupItem value="ugc" id="ugc" className="sr-only" />
                                             </FormControl>
-                                            <Label htmlFor="ugc" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all", field.value === 'ugc' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                            <Label htmlFor="ugc" className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all w-full", field.value === 'ugc' ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
                                                 <div className="flex items-center gap-3 mb-2">
                                                     <FileVideo className="h-5 w-5 text-primary" />
                                                     <span className="font-bold">{t('createCampaignPage.deliverables.ugc.title')}</span>
@@ -471,8 +532,8 @@ export default function EditCampaignPage() {
                             <h3 className="font-semibold">{t('createCampaignPage.deliverables.selectLabel')}</h3>
                             {campaignType === 'influence' && (
                                     <>
-                                    {fields.map((item, index) => (
-                                        <DeliverableItem key={item.id} index={index} control={form.control} remove={remove} setValue={form.setValue} />
+                                    {fields.filter(f => !f.type.startsWith('UGC')).map((item, index) => (
+                                        <DeliverableItem key={item.id} index={fields.findIndex(f => f.id === item.id)} control={form.control} remove={remove} setValue={form.setValue} />
                                     ))}
                                     <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1 })}>
                                         <PlusCircle className="mr-2 h-4 w-4" />
@@ -482,13 +543,55 @@ export default function EditCampaignPage() {
                             )}
                             {campaignType === 'ugc' && (
                                 <div className="space-y-4">
-                                     {ugcDeliverableTypes.map((item, index) => (
-                                         <UGCDeliverableItem key={item.name} name={item.name} label={item.label} />
+                                     {ugcDeliverableTypes.map((item) => (
+                                         <UGCDeliverableItem key={item.name} name={item.name} label={item.label} type={item.type}/>
                                      ))}
                                 </div>
                             )}
                             <FormMessage>{form.formState.errors.deliverables?.root?.message}</FormMessage>
                         </div>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{t('createCampaignPage.logistics.title')}</CardTitle>
+                    </CardHeader>
+                     <CardContent>
+                        <FormField
+                            control={form.control}
+                            name="productLogistics"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                                    >
+                                        {productLogisticsOptions.map(option => {
+                                            const Icon = (lucideIcons as any)[option.icon];
+                                            return (
+                                                <FormItem className="flex" key={option.value}>
+                                                    <FormControl>
+                                                        <RadioGroupItem value={option.value} id={option.value} className="sr-only" />
+                                                    </FormControl>
+                                                    <Label htmlFor={option.value} className={cn("flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all w-full", field.value === option.value ? 'border-primary shadow-md' : 'border-muted hover:border-border')}>
+                                                        <div className="flex items-center gap-3 mb-2">
+                                                            {Icon && <Icon className="h-5 w-5 text-primary" />}
+                                                            <span className="font-bold">{option.title}</span>
+                                                        </div>
+                                                        <span className="text-sm text-muted-foreground">{option.description}</span>
+                                                    </Label>
+                                                </FormItem>
+                                            )
+                                        })}
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </CardContent>
                 </Card>
 
