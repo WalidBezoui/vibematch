@@ -35,10 +35,11 @@ const deliverableSchema = z.object({
   platform: z.enum(['instagram', 'tiktok']),
   type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC Video Vertical', 'UGC Video Horizontal', 'UGC Photo Pack']),
   quantity: z.preprocess(
-    (val) => (val === '' ? undefined : Number(val)),
-    z.number({ invalid_type_error: 'Qty must be a number.' }).min(1, 'Quantity must be at least 1.')
+    (val) => (val === '' || val === undefined || val === null ? 0 : Number(val)),
+    z.number({ invalid_type_error: 'Qty must be a number.' }).min(0, 'Quantity must be at least 0.')
   ),
 });
+
 
 const campaignSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -57,6 +58,17 @@ const campaignSchema = z.object({
   ),
   tags: z.array(z.string()).min(1, "Please select at least one tag."),
   otherTag: z.string().optional(),
+}).refine(data => {
+    if (data.campaignType === 'influence') {
+        return data.deliverables.some(d => !d.type.startsWith('UGC') && d.quantity > 0);
+    }
+    if (data.campaignType === 'ugc') {
+        return data.deliverables.some(d => d.type.startsWith('UGC') && d.quantity > 0);
+    }
+    return true;
+}, {
+    message: 'Please add at least one deliverable with a quantity greater than zero for the selected campaign type.',
+    path: ['deliverables'],
 });
 
 type CampaignForm = z.infer<typeof campaignSchema>;
@@ -250,12 +262,12 @@ export default function CreateCampaignPage() {
     }
     
     let finalTags = [...data.tags];
-    if (data.tags.includes('Other') && data.otherTag) {
+    if (data.tags.includes('other') && data.otherTag) {
         const customTags = data.otherTag.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
         finalTags.push(...customTags);
     }
     
-    const otherIndex = finalTags.indexOf('Other');
+    const otherIndex = finalTags.indexOf('other');
     if (otherIndex > -1) {
         finalTags.splice(otherIndex, 1);
     }
@@ -271,6 +283,11 @@ export default function CreateCampaignPage() {
       finalDeliverables = data.deliverables
         .filter(d => d.quantity > 0 && !d.type.startsWith('UGC'))
         .map(d => `${d.quantity} ${d.type}`);
+    }
+
+    if (finalDeliverables.length === 0) {
+        form.setError("deliverables", { type: "manual", message: "Please add at least one deliverable with a quantity greater than zero."});
+        return;
     }
 
     const submissionData = {
@@ -620,3 +637,5 @@ export default function CreateCampaignPage() {
     </>
   );
 }
+
+    
