@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -32,7 +33,7 @@ const TikTokIcon = () => (
 
 const deliverableSchema = z.object({
   platform: z.enum(['instagram', 'tiktok']),
-  type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC Video Vertical', 'UGC Video Horizontal', 'UGC Photo Pack']),
+  type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC_Video_Vertical', 'UGC_Video_Horizontal', 'UGC_Photo_Pack']),
   quantity: z.preprocess(
     (val) => (val === '' ? undefined : Number(val)),
     z.number({ invalid_type_error: 'Qty must be a number.' }).min(1, 'Quantity must be at least 1.')
@@ -73,9 +74,9 @@ const influenceDeliverableTypes = {
 };
 
 const ugcDeliverableTypes = [
-    { name: 'deliverables.1.quantity', type: 'UGC Video Vertical', label: 'Video 9:16 (Vertical)' },
-    { name: 'deliverables.2.quantity', type: 'UGC Video Horizontal', label: 'Video 16:9 (Horizontal)' },
-    { name: 'deliverables.3.quantity', type: 'UGC Photo Pack', label: 'Photo Pack' },
+    { name: 'deliverables.1.quantity', type: 'UGC_Video_Vertical', label: 'Video 9:16 (Vertical)' },
+    { name: 'deliverables.2.quantity', type: 'UGC_Video_Horizontal', label: 'Video 16:9 (Horizontal)' },
+    { name: 'deliverables.3.quantity', type: 'UGC_Photo_Pack', label: 'Photo Pack' },
 ]
 
 const DeliverableItem = ({ index, control, remove, setValue }: { index: number, control: any, remove: (index: number) => void, setValue: any}) => {
@@ -224,9 +225,9 @@ export default function CreateCampaignPage() {
       campaignType: 'influence',
       deliverables: [
         { platform: 'instagram', type: 'Post', quantity: 1 },
-        { platform: 'instagram', type: 'UGC Video Vertical', quantity: 0 },
-        { platform: 'instagram', type: 'UGC Video Horizontal', quantity: 0 },
-        { platform: 'instagram', type: 'UGC Photo Pack', quantity: 0 },
+        { platform: 'instagram', type: 'UGC_Video_Vertical', quantity: 0 },
+        { platform: 'instagram', type: 'UGC_Video_Horizontal', quantity: 0 },
+        { platform: 'instagram', type: 'UGC_Photo_Pack', quantity: 0 },
       ],
       budget: 0,
       numberOfCreators: 1,
@@ -458,7 +459,7 @@ export default function CreateCampaignPage() {
                                 <h3 className="font-semibold">{t('createCampaignPage.deliverables.selectLabel')}</h3>
                                 {campaignType === 'influence' && (
                                      <>
-                                        {fields.filter(f => !f.type.startsWith('UGC')).map((item, index) => (
+                                        {fields.filter(f => !f.type.startsWith('UGC_')).map((item, index) => (
                                             <DeliverableItem key={item.id} index={fields.findIndex(f => f.id === item.id)} control={form.control} remove={remove} setValue={form.setValue} />
                                         ))}
                                         <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1 })}>
@@ -619,5 +620,3 @@ export default function CreateCampaignPage() {
     </>
   );
 }
-
-    

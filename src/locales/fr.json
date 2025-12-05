@@ -1108,7 +1108,7 @@
                     "li2_b": "Délai :",
                     "li2_t": "VibeMatch s'engage à initier le virement sous 5 jours ouvrés après validation.",
                     "li3_b": "Commission :",
-                    "li3_t": "En contrepartie des services de la Plateforme, une commission de 15% HT est déduite du montant total de la campagne."
+                    "li3_t": "En contrepartie des services de la Plateforme, une commission de 15% (Excluding VAT / Hors Taxe) est déduite du montant total de la campagne."
                 },
                 "circumvention": {
                     "title": "ARTICLE 5 : NON-CONTOURNEMENT (ANTI-CIRCUMVENTION)",
@@ -1210,7 +1210,14 @@
                 "content": "L'ensemble des éléments graphiques, codes sources, logos et textes du site VibeMatch sont la propriété exclusive de l'éditeur. Toute reproduction sans autorisation est interdite."
             }
         }
+    },
+    "deliverableTypes": {
+        "Post": "{{count, plural, one {Post Instagram} other {# Posts Instagram}}}",
+        "Story": "{{count, plural, one {Story Instagram} other {# Stories Instagram}}}",
+        "Reel": "{{count, plural, one {Reel Instagram} other {# Reels Instagram}}}",
+        "Video": "{{count, plural, one {Vidéo TikTok} other {# Vidéos TikTok}}}",
+        "UGC_Video_Vertical": "Vidéo UGC (Verticale)",
+        "UGC_Video_Horizontal": "Vidéo UGC (Horizontale)",
+        "UGC_Photo_Pack": "Pack Photos UGC"
     }
 }
-
-    

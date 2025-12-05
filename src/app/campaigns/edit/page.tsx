@@ -532,7 +532,7 @@ export default function EditCampaignPage() {
                             <h3 className="font-semibold">{t('createCampaignPage.deliverables.selectLabel')}</h3>
                             {campaignType === 'influence' && (
                                     <>
-                                    {fields.filter(f => !f.type.startsWith('UGC')).map((item, index) => (
+                                    {fields.filter(f => !f.type.startsWith('UGC_')).map((item, index) => (
                                         <DeliverableItem key={item.id} index={fields.findIndex(f => f.id === item.id)} control={form.control} remove={remove} setValue={form.setValue} />
                                     ))}
                                     <Button type="button" variant="outline" size="sm" onClick={() => append({ platform: 'instagram', type: 'Post', quantity: 1 })}>
