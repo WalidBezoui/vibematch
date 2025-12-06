@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet"
-import CreatorProfilePreview from "./creator-profile-preview";
+import CreatorProfilePreview from "./CreatorProfilePreview";
 import { useDoc, useFirestore, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 

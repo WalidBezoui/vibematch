@@ -1,6 +1,7 @@
+
 'use client';
 
-import { CreatorJoinForm } from '@/components/creator-join-form';
+import { CreatorJoinForm } from '@/features/creators';
 import { PromoBanner } from '@/components/promo-banner';
 import { useLanguage } from '@/context/language-context';
 
