@@ -1,17 +1,17 @@
 
 'use client';
 
-import { useUser, useFirestore, useMemoFirebase } from '@/firebase';
+import { useUser, useFirestore } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { doc, getDoc, collection, query, where } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { AppHeader } from '@/components/app-header';
 import { BrandDashboard } from '@/features/dashboard';
 import { CreatorDashboard } from '@/features/dashboard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguage } from '@/context/language-context';
 
-export default function DashboardPage() {
+export function DashboardPage() {
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
   const router = useRouter();
