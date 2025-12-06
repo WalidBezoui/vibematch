@@ -161,7 +161,9 @@ export default function DiscoverPage() {
                                                 <TypeIcon className="mr-1.5 h-3 w-3" />
                                                 {typeInfo[campaignType].badgeText}
                                             </Badge>
-                                            <CardTitle className="line-clamp-1">{campaign.title}</CardTitle>
+                                             <div className="min-h-[56px]">
+                                                <CardTitle>{campaign.title}</CardTitle>
+                                             </div>
                                             {campaign.tags && campaign.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-2 pt-2">
                                                     {campaign.tags.slice(0, 3).map((tag: string) => (
@@ -171,7 +173,7 @@ export default function DiscoverPage() {
                                             )}
                                         </CardHeader>
                                         <CardContent className="flex-grow space-y-4">
-                                            <p className="text-sm text-muted-foreground line-clamp-3 h-[60px]">
+                                            <p className="text-sm text-muted-foreground line-clamp-3">
                                                 {campaign.campaignBrief}
                                             </p>
                                             <div>
