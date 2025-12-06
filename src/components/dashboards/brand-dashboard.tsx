@@ -119,7 +119,8 @@ const ActionRequiredItem = ({ type, typeText, text, metric, buttonText, href, ca
   )
 };
 
-const EmptyState = ({title, description, icon: Icon}: {title: string, description: string, icon: React.ComponentType<{className?: string}>}) => {
+const EmptyState = ({title, description, icon: Icon, showCreateButton}: {title: string, description: string, icon: React.ComponentType<{className?: string}>, showCreateButton?: boolean}) => {
+    const { t } = useLanguage();
     return (
         <div className="text-center py-20 border-2 border-dashed rounded-2xl bg-muted/20 mt-8">
             <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
@@ -127,6 +128,14 @@ const EmptyState = ({title, description, icon: Icon}: {title: string, descriptio
             </div>
             <h2 className="text-2xl font-bold">{title}</h2>
             <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{description}</p>
+            {showCreateButton && (
+                 <Button asChild size="lg" className="gradient-bg text-black font-semibold rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary">
+                    <Link href="/campaigns/create">
+                        <PlusCircle className="mr-2 h-5 w-5" />
+                        {t('brandDashboard.createButton')}
+                    </Link>
+                </Button>
+            )}
         </div>
     )
 }
@@ -651,6 +660,7 @@ export default function BrandDashboard() {
             title={t('brandDashboard.emptyFilter.title')}
             description={t('brandDashboard.emptyFilter.description')}
             icon={EmptyStateIcon}
+            showCreateButton={activeFilter !== 'all'}
         />
       )}
     </div>
