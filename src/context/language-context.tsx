@@ -1,6 +1,8 @@
+
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
+import { IntlMessageFormat } from 'intl-messageformat';
 
 import en from '@/locales/en.json';
 import fr from '@/locales/fr.json';
@@ -28,6 +30,8 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const messageCache = new Map<string, IntlMessageFormat>();
+
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>('EN');
   const [userInterest, setUserInterestState] = useState<UserInterest>(null);
@@ -46,6 +50,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem('vibematch-language', lang);
+    messageCache.clear(); // Clear cache on language change
   };
 
   const setUserInterest = (interest: 'creator' | 'brand') => {
@@ -68,36 +73,53 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [language, dir]);
 
 
-  const t = (key: string, options?: { [key: string]: string | number, returnObjects?: boolean }): any => {
+  const t = (key: string, options?: { [key: string]: string | number | boolean, returnObjects?: boolean }): any => {
     const keys = key.split('.');
-    let result = translations[language] as Translations;
+    let result: any = translations[language];
 
     for (const k of keys) {
       result = result?.[k];
       if (result === undefined) {
-        // Fallback to English if key not found
-        let fallbackResult = translations['EN'] as Translations;
+        let fallbackResult: any = translations['EN'];
         for (const fk of keys) {
-            fallbackResult = fallbackResult?.[fk];
-            if(fallbackResult === undefined) return key;
+          fallbackResult = fallbackResult?.[fk];
+          if (fallbackResult === undefined) return key;
         }
         result = fallbackResult;
         break;
       }
     }
-    
+
     if (typeof result === 'object' && options?.returnObjects) {
       return result;
     }
 
-    if (typeof result === 'string' && options) {
-      Object.keys(options).forEach(optKey => {
-        if(optKey !== 'returnObjects') {
-            result = (result as string).replace(`{{${optKey}}}`, String(options[optKey]));
-        }
-      });
-    }
+    const message = typeof result === 'string' ? result : JSON.stringify(result);
+    
+    // Check if interpolation is needed
+    if (options && Object.keys(options).length > 0 && (message.includes('{') || typeof result === 'object')) {
+        const cacheKey = `${key}_${language}`;
+        let msgFormat = messageCache.get(cacheKey);
 
+        if (!msgFormat) {
+          try {
+            msgFormat = new IntlMessageFormat(message, language);
+            messageCache.set(cacheKey, msgFormat);
+          } catch (e) {
+            console.error(`Error compiling message for key "${key}":`, e);
+            return message; // Return the raw message on error
+          }
+        }
+        
+        try {
+            // Type assertion to satisfy format's requirement
+            return msgFormat.format(options as Record<string, string | number | boolean | Date | null | undefined>);
+        } catch (e) {
+            console.error(`Error formatting message for key "${key}" with options:`, e);
+            return message; // Return raw message on formatting error
+        }
+    }
+    
     return result || key;
   };
 
@@ -124,5 +146,3 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
-
-    
