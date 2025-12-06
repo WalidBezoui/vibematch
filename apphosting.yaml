@@ -17,3 +17,18 @@ build:
   # This is useful for installing system dependencies.
   apt_packages:
     - libglib2.0-0
+    - libnss3
+    - libasound2
+    - libxss1
+    - libdbus-glib-1-2
+    - libatk1.0-0
+    - libatk-bridge2.0-0
+    - libcups2
+    - libxdamage1
+    - libxkbcommon0
+    - libxrandr2
+    - libgbm1
+    - libxcomposite1
+    - libxfixes3
+    - libpango-1.0-0
+    - libcairo2
