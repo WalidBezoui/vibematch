@@ -2,8 +2,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { AppHeader } from '@/components/app-header';
-import { ChatSidebar } from '@/components/chat-sidebar';
-import ChatView from '@/components/chat-view';
+import { ChatSidebar, ChatView } from '@/features/chat';
 import { useUser } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';

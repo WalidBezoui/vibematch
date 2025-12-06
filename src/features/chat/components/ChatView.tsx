@@ -33,7 +33,7 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import CreatorProfileSheet from '@/components/creator-profile-sheet';
+import { CreatorProfileSheet } from '@/features/creators';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { useIsMobile } from '@/hooks/use-mobile';

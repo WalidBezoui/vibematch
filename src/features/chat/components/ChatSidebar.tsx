@@ -8,7 +8,7 @@ import { useCollection, useFirestore, useUser, useMemoFirebase, useUserProfile }
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from './ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/context/language-context';
 
