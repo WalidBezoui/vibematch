@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight, ArrowLeft } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight, ArrowLeft, Archive, Search } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, where, getDoc, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId, getDocs } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
@@ -562,6 +562,16 @@ export default function BrandDashboard() {
     
   const isLoading = isLoadingCampaigns || isLoadingConversations;
 
+  const emptyStateIcons = {
+      all: Search,
+      to_fund: Wallet,
+      hiring: Users,
+      in_progress: Activity,
+      archived: Archive,
+  };
+
+  const EmptyStateIcon = emptyStateIcons[activeFilter as keyof typeof emptyStateIcons] || FileText;
+
   return (
     <div>
       <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
@@ -640,7 +650,7 @@ export default function BrandDashboard() {
         <EmptyState 
             title={t('brandDashboard.emptyFilter.title')}
             description={t('brandDashboard.emptyFilter.description')}
-            icon={FileText}
+            icon={EmptyStateIcon}
         />
       )}
     </div>

@@ -163,7 +163,7 @@ export default function DiscoverPage() {
                                                     {typeInfo[campaignType].badgeText}
                                                 </Badge>
                                             </div>
-                                            <CardTitle>{campaign.title}</CardTitle>
+                                            <CardTitle className="text-xl font-bold">{campaign.title}</CardTitle>
                                             {campaign.tags && campaign.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-2 pt-2">
                                                     {campaign.tags.slice(0, 3).map((tag: string) => (
