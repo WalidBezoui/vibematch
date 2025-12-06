@@ -511,14 +511,11 @@ export default function BrandDashboard() {
 
         let randomDeliverables = [];
         if (randomCampaignType === 'influence') {
-            randomDeliverables = ["1 Instagram Reel", "3 Instagram Stories"];
+            randomDeliverables = [{ platform: 'instagram', type: 'Reel', quantity: 1 }, { platform: 'instagram', type: 'Story', quantity: 3 }];
         } else {
-            const ugcTypes = ['UGC_Video_Vertical', 'UGC_Video_Horizontal', 'UGC_Photo_Pack'];
-            const selectedType = ugcTypes[Math.floor(Math.random() * ugcTypes.length)];
-            const quantity = Math.floor(Math.random() * 3) + 1;
-            randomDeliverables = [`${quantity} ${selectedType}`];
+            randomDeliverables = [{ platform: 'instagram', type: 'UGC Video Vertical', quantity: 2 }];
         }
-
+        
         const testCampaign = {
             title: `(Test) ${randomTitle}`,
             campaignBrief: randomBrief,

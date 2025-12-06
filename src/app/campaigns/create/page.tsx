@@ -276,15 +276,11 @@ export default function CreateCampaignPage() {
     
     let finalDeliverables;
     if (data.campaignType === 'ugc') {
-      finalDeliverables = data.deliverables
-        .filter(d => d.quantity > 0 && d.type.startsWith('UGC'))
-        .map(d => `${d.quantity} ${d.type}`);
+      finalDeliverables = data.deliverables.filter(d => d.quantity > 0 && d.type.startsWith('UGC'));
     } else {
-      finalDeliverables = data.deliverables
-        .filter(d => d.quantity > 0 && !d.type.startsWith('UGC'))
-        .map(d => `${d.quantity} ${d.type}`);
+      finalDeliverables = data.deliverables.filter(d => d.quantity > 0 && !d.type.startsWith('UGC'));
     }
-
+    
     if (finalDeliverables.length === 0) {
         form.setError("deliverables", { type: "manual", message: "Please add at least one deliverable with a quantity greater than zero."});
         return;
@@ -637,5 +633,3 @@ export default function CreateCampaignPage() {
     </>
   );
 }
-
-    
