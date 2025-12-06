@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useUser, useFirestore, useMemoFirebase } from '@/firebase';
@@ -5,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { doc, getDoc, collection, query, where } from 'firebase/firestore';
 import { AppHeader } from '@/components/app-header';
-import BrandDashboard from '@/components/dashboards/brand-dashboard';
-import CreatorDashboard from '@/components/dashboards/creator-dashboard';
+import { BrandDashboard } from '@/features/dashboard';
+import { CreatorDashboard } from '@/features/dashboard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguage } from '@/context/language-context';
 

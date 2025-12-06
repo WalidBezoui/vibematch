@@ -373,7 +373,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
 };
 
 
-export default function BrandDashboard() {
+export function BrandDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();

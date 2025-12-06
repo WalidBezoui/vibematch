@@ -302,7 +302,7 @@ const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], o
     )
 }
 
-export default function CreatorDashboard() {
+export function CreatorDashboard() {
   const { userProfile } = useUserProfile();
   const { user } = useUser();
   const firestore = useFirestore();
