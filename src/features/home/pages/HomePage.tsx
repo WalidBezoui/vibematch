@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { HomeComponent } from '@/components/home';
+import { HomeComponent } from '@/features/home/components/Home';
 import { AppHeader } from '@/components/app-header';
 import { PromoBanner } from '@/components/promo-banner';
 import { useLanguage } from '@/context/language-context';
@@ -30,7 +30,7 @@ const LoadingSkeleton = () => (
 );
 
 
-export default function Home() {
+export function HomePage() {
   const { t } = useLanguage();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
