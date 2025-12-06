@@ -36,8 +36,8 @@ const deliverableSchema = z.object({
   platform: z.enum(['instagram', 'tiktok']),
   type: z.enum(['Post', 'Story', 'Reel', 'Video', 'UGC Video Vertical', 'UGC Video Horizontal', 'UGC Photo Pack']),
   quantity: z.preprocess(
-    (val) => (val === '' ? undefined : Number(val)),
-    z.number({ invalid_type_error: 'Qty must be a number.' }).min(1, 'Quantity must be at least 1.')
+    (val) => (val === '' || val === undefined ? 0 : Number(val)),
+    z.number({ invalid_type_error: 'Qty must be a number.' }).min(0, 'Quantity must be at least 0.')
   ),
 });
 
@@ -58,32 +58,6 @@ const campaignSchema = z.object({
 });
 
 type CampaignForm = z.infer<typeof campaignSchema>;
-
-const parseDeliverableString = (deliverable: string): z.infer<typeof deliverableSchema> | null => {
-    const regex = /(\d+)\s(.*)/;
-    const match = deliverable.match(regex);
-    
-    if (!match) return null;
-
-    const [, quantity, type] = match;
-
-    const platformMap: Record<string, 'instagram' | 'tiktok'> = {
-        'Post': 'instagram',
-        'Story': 'instagram',
-        'Reel': 'instagram',
-        'Video': 'tiktok',
-        'UGC Video Vertical': 'instagram',
-        'UGC Video Horizontal': 'instagram',
-        'UGC Photo Pack': 'instagram',
-    }
-
-    return {
-        quantity: parseInt(quantity, 10),
-        platform: platformMap[type] || 'instagram', // Fallback
-        type: type as any,
-    };
-};
-
 
 const influenceDeliverableTypes = {
     instagram: [
@@ -279,24 +253,24 @@ export default function EditCampaignPage() {
 
   useEffect(() => {
     if (campaign) {
-      let parsedDeliverables: any[] = [];
-      if (campaign.deliverables && Array.isArray(campaign.deliverables)) {
-        parsedDeliverables = (campaign.deliverables)
-          .map(parseDeliverableString)
-          .filter((d: any): d is z.infer<typeof deliverableSchema> => d !== null);
-      }
+      // Ensure that we have placeholder entries for UGC types if they don't exist
+      const ugcDefaults = {
+        'UGC Video Vertical': { platform: 'instagram', type: 'UGC Video Vertical', quantity: 0 },
+        'UGC Video Horizontal': { platform: 'instagram', type: 'UGC Video Horizontal', quantity: 0 },
+        'UGC Photo Pack': { platform: 'instagram', type: 'UGC Photo Pack', quantity: 0 },
+      };
       
-      const ugcDeliverableQuantities = {
-        'UGC Video Vertical': 0,
-        'UGC Video Horizontal': 0,
-        'UGC Photo Pack': 0,
-      }
+      const dbDeliverables = campaign.deliverables || [];
+      const influenceDeliverables = dbDeliverables.filter((d: any) => !d.type.startsWith('UGC'));
       
-      parsedDeliverables.forEach(d => {
-        if(d.type.startsWith('UGC')) {
-            ugcDeliverableQuantities[d.type as keyof typeof ugcDeliverableQuantities] = d.quantity;
+      const ugcDeliverablesMap = { ...ugcDefaults };
+      dbDeliverables.forEach((d: any) => {
+        if (d.type.startsWith('UGC')) {
+          ugcDeliverablesMap[d.type as keyof typeof ugcDeliverablesMap] = d;
         }
       });
+      
+      const allDeliverables = [...influenceDeliverables, ...Object.values(ugcDeliverablesMap)];
 
       form.reset({
         title: campaign.title || '',
@@ -306,12 +280,7 @@ export default function EditCampaignPage() {
         productLogistics: campaign.productLogistics,
         budget: campaign.budget || 0,
         tags: campaign.tags || [],
-        deliverables: [
-            ...parsedDeliverables.filter(d => !d.type.startsWith('UGC')),
-            { platform: 'instagram', type: 'UGC Video Vertical', quantity: ugcDeliverableQuantities['UGC Video Vertical'] },
-            { platform: 'instagram', type: 'UGC Video Horizontal', quantity: ugcDeliverableQuantities['UGC Video Horizontal'] },
-            { platform: 'instagram', type: 'UGC Photo Pack', quantity: ugcDeliverableQuantities['UGC Photo Pack'] },
-        ]
+        deliverables: allDeliverables,
       });
     }
   }, [campaign, form]);
@@ -339,13 +308,9 @@ export default function EditCampaignPage() {
     
     let finalDeliverables;
     if (data.campaignType === 'ugc') {
-      finalDeliverables = data.deliverables
-        .filter(d => d.quantity > 0 && d.type.startsWith('UGC'))
-        .map(d => `${d.quantity} ${d.type}`);
+      finalDeliverables = data.deliverables.filter(d => d.quantity > 0 && d.type.startsWith('UGC'));
     } else {
-      finalDeliverables = data.deliverables
-        .filter(d => d.quantity > 0 && !d.type.startsWith('UGC'))
-        .map(d => `${d.quantity} ${d.type}`);
+      finalDeliverables = data.deliverables.filter(d => d.quantity > 0 && !d.type.startsWith('UGC'));
     }
 
     const submissionData = {
@@ -356,6 +321,8 @@ export default function EditCampaignPage() {
       updatedAt: serverTimestamp(),
     };
     delete (submissionData as any).otherTag;
+    // Don't update numberOfCreators
+    delete (submissionData as any).numberOfCreators;
 
     try {
       await updateDoc(campaignRef, submissionData);
@@ -616,13 +583,13 @@ export default function EditCampaignPage() {
                                         variant="outline"
                                         className={cn(
                                             "rounded-full",
-                                            field.value?.includes(niche.label) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+                                            field.value?.includes(niche.id) && "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
                                         )}
                                         onClick={() => {
                                             const currentTags = field.value || [];
-                                            const newTags = currentTags.includes(niche.label)
-                                            ? currentTags.filter(t => t !== niche.label)
-                                            : [...currentTags, niche.label];
+                                            const newTags = currentTags.includes(niche.id)
+                                            ? currentTags.filter(t => t !== niche.id)
+                                            : [...currentTags, niche.id];
                                             field.onChange(newTags);
                                         }}
                                         >
@@ -635,7 +602,7 @@ export default function EditCampaignPage() {
                                 </FormItem>
                             )}
                         />
-                        {form.watch('tags')?.includes('Other') && (
+                        {form.watch('tags')?.includes('other') && (
                             <FormField
                                 control={form.control}
                                 name="otherTag"
@@ -679,4 +646,3 @@ export default function EditCampaignPage() {
   );
 }
 
-    
