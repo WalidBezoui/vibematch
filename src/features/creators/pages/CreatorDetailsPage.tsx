@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
+import { useDoc, useFirestore, useUser, useMemoFirebase, useCollection } from '@/firebase';
 import { doc, collection, query, where } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
@@ -11,7 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Award, CalendarDays, Info, ShieldAlert, Send } from 'lucide-react';
-import { useCollection } from '@/firebase/firestore/use-collection';
+import { useMemo } from 'react';
+import Link from 'next/link';
 import { InviteToCampaignDialog } from '@/features/campaigns';
 import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
