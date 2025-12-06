@@ -13,7 +13,8 @@
     "test": "vitest",
     "test:unit": "vitest src/components",
     "test:rules": "vitest src/firebase",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:emu": "firebase emulators:exec 'npm test'"
   },
   "dependencies": {
     "@firebase/rules-unit-testing": "^3.0.1",

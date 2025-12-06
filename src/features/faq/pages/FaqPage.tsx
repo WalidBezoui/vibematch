@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { FaqSection } from '@/components/faq';
+import { Faq } from '@/features/faq/components/Faq';
 import { AppHeader } from '@/components/app-header';
 import { useLanguage } from '@/context/language-context';
 
@@ -25,7 +25,7 @@ export default function FaqPage() {
               </p>
             </div>
 
-            <FaqSection />
+            <Faq />
 
             <div className="mt-24 md:mt-32 text-center bg-muted/50 dark:bg-background/50 rounded-xl p-10 md:p-16">
               <div className="max-w-3xl mx-auto flex flex-col items-center">
@@ -57,7 +57,7 @@ export default function FaqPage() {
               </Link>
               <Link
                 className="text-sm text-foreground/60 hover:text-primary"
-                href="#"
+                href="/privacy"
               >
                 {t('footer.privacy')}
               </Link>

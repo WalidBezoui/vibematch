@@ -4,8 +4,8 @@ import { useUserProfile, useUser } from '@/firebase';
 import { AppHeader } from '@/components/app-header';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
-import BrandProfileEditor from '@/components/profile/brand-profile-editor';
-import CreatorProfileEditor from '@/components/profile/creator-profile-editor';
+import BrandProfileEditor from '@/features/profiles/components/BrandProfileEditor';
+import CreatorProfileEditor from '@/features/creators/components/CreatorProfileEditor';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
 
