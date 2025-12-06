@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { FileText, CheckCircle, XCircle, ShieldCheck, User, MessageSquare, ArrowUpRight, UserCheck, Users, Hourglass, ArrowRight, CircleDollarSign, Calendar, Tag, Clock, Wallet, ArrowLeft } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
@@ -32,7 +32,7 @@ import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/context/language-context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import CreatorProfileSheet from '@/components/creator-profile-sheet';
+import { CreatorProfileSheet } from '@/features/creators';
 import { formatDistanceToNow } from 'date-fns';
 
 

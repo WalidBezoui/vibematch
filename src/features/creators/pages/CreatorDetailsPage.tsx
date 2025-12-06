@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useDoc, useFirestore, useMemoFirebase, useUser } from '@/firebase';
+import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, where } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
 import { AppHeader } from '@/components/app-header';
@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Award, CalendarDays, Info, ShieldAlert, Send } from 'lucide-react';
 import { useCollection } from '@/firebase/firestore/use-collection';
-import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
+import { InviteToCampaignDialog } from '@/features/campaigns';
 import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
 const TrustScoreGauge = ({ score }: { score: number }) => {
