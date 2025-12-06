@@ -73,7 +73,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [language, dir]);
 
 
-  const t = (key: string, options?: { [key: string]: string | number | boolean, returnObjects?: boolean }): any => {
+  const t = (key: string, options?: { [key: string]: any, returnObjects?: boolean }): any => {
     const keys = key.split('.');
     let result: any = translations[language];
 
@@ -94,30 +94,39 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       return result;
     }
 
-    const message = typeof result === 'string' ? result : JSON.stringify(result);
+    // Determine if the result is a string that needs formatting or a pluralization object
+    const message = typeof result === 'object' ? JSON.stringify(result) : String(result);
     
-    // Check if interpolation is needed
-    if (options && Object.keys(options).length > 0 && (message.includes('{') || typeof result === 'object')) {
-        const cacheKey = `${key}_${language}`;
-        let msgFormat = messageCache.get(cacheKey);
+    if (options && Object.keys(options).filter(k => k !== 'returnObjects').length > 0) {
+      // Check for simple {{variable}} replacement first
+      if (typeof result === 'string' && /\{\{.*\}\}/.test(result)) {
+        let tempResult = result;
+        for (const [optKey, optValue] of Object.entries(options)) {
+          tempResult = tempResult.replace(`{{${optKey}}}`, String(optValue));
+        }
+        return tempResult;
+      }
 
-        if (!msgFormat) {
-          try {
-            msgFormat = new IntlMessageFormat(message, language);
-            messageCache.set(cacheKey, msgFormat);
-          } catch (e) {
-            console.error(`Error compiling message for key "${key}":`, e);
-            return message; // Return the raw message on error
-          }
-        }
-        
+      // Handle ICU message format for pluralization
+      const cacheKey = `${key}_${language}`;
+      let msgFormat = messageCache.get(cacheKey);
+
+      if (!msgFormat) {
         try {
-            // Type assertion to satisfy format's requirement
-            return msgFormat.format(options as Record<string, string | number | boolean | Date | null | undefined>);
+          msgFormat = new IntlMessageFormat(message, language);
+          messageCache.set(cacheKey, msgFormat);
         } catch (e) {
-            console.error(`Error formatting message for key "${key}" with options:`, e);
-            return message; // Return raw message on formatting error
+          console.error(`Error compiling message for key "${key}":`, e);
+          return message; // Return the raw string on error
         }
+      }
+      
+      try {
+          return msgFormat.format(options);
+      } catch (e) {
+          console.error(`Error formatting message for key "${key}" with options:`, e);
+          return message; // Return raw string on formatting error
+      }
     }
     
     return result || key;
