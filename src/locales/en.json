@@ -157,7 +157,7 @@
             "fundCreator": "Fund the deal with {{name}}",
             "applicants": "APPLICANTS",
             "review": "Review",
-            "newApplicants": "{{count}} new applicants to review.",
+            "newApplicants": "{{count, plural, one {1 new applicant} other {# new applicants}} to review.",
             "message": "MESSAGE",
             "newMessage": "{{name}} has sent you a new message.",
             "reply": "Reply",
@@ -882,7 +882,7 @@
         "title": "Discover Campaigns",
         "description": "Browse and apply for exclusive campaigns from top Moroccan brands.",
         "budget": "Budget",
-        "viewCampaign": "View Campaign",
+        "viewAndApply": "View & Apply",
         "applied": "Application Sent",
         "full": "Campaign Full",
         "applyNow": "Apply Now",
@@ -982,9 +982,9 @@
         "Story": "{count, plural, one {Instagram Story} other {# Instagram Stories}}",
         "Reel": "{count, plural, one {Instagram Reel} other {# Instagram Reels}}",
         "Video": "{count, plural, one {TikTok Video} other {# TikTok Videos}}",
-        "UGC Video Vertical": "UGC Video (Vertical)",
-        "UGC Video Horizontal": "UGC Video (Horizontal)",
-        "UGC Photo Pack": "UGC Photo Pack"
+        "UGC Video Vertical": "{count, plural, one {UGC Video (Vertical)} other {# UGC Videos (Vertical)}}",
+        "UGC Video Horizontal": "{count, plural, one {UGC Video (Horizontal)} other {# UGC Videos (Horizontal)}}",
+        "UGC Photo Pack": "{count, plural, one {UGC Photo Pack} other {# UGC Photo Packs}}"
     },
     "paymentSuccess": {
       "title": "Payment Successful!",
@@ -1097,7 +1097,7 @@
                     "title": "3. CREATOR'S OBLIGATIONS",
                     "li1": "Provide real and verifiable audience statistics (Prohibition of buying 'Fake Followers').",
                     "li2": "Respect the delivery deadlines (Deliverables) agreed upon in the offer.",
-                    "li3": "Retention Period: The Creator agrees to keep the sponsored content visible on their social media feed (Main Feed) for a minimum period of 30 days (or 24 hours for Stories) following publication. Archiving or deleting content before this period is considered a breach of contract.",
+                    "li3": "Retention Period: The Creator agrees to keep the sponsored content visible on their social media feed (Main Feed) for a minimum period of 30 days (or 24 hours for Stories) post-publication. Archiving or deleting content before this period is considered a breach of contract.",
                     "li4": "Not to publish defamatory, illegal, or content contrary to Moroccan good morals.",
                     "li5": "Confidentiality: The Creator agrees to keep strictly confidential all information provided by the Brand (Briefs, Product Launches, Marketing Strategy) until the official campaign launch date. Any \"leak\" or premature publication will be considered a material breach liable for damages."
                 },
