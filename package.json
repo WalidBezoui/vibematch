@@ -73,7 +73,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.8",
-    "@vitejs/plugin-.react": "^5.1.1",
+    "@vitejs/plugin-react": "4.2.1",
     "firebase-tools": "^13.8.0",
     "genkit-cli": "^1.20.0",
     "jest": "^30.2.0",
@@ -83,6 +83,7 @@
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.4.5",
     "typescript": "^5",
+    "vite": "^5.0.0",
     "vitest": "^1.6.0"
   }
 }
