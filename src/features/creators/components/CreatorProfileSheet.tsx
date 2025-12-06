@@ -13,7 +13,7 @@ import { useDoc, useFirestore, useMemoFirebase } from "@/firebase";
 import { doc } from "firebase/firestore";
 
 
-export default function CreatorProfileSheet({ creatorId, open, onOpenChange }: { creatorId: string | null; open: boolean, onOpenChange: (open: boolean) => void }) {
+export function CreatorProfileSheet({ creatorId, open, onOpenChange }: { creatorId: string | null; open: boolean, onOpenChange: (open: boolean) => void }) {
     const firestore = useFirestore();
 
     const creatorRef = useMemoFirebase(

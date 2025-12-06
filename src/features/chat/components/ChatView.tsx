@@ -522,7 +522,7 @@ const MessageInput = ({ onSend, disabled, placeholder }: { onSend: (text: string
     );
 };
 
-export default function ChatView({ conversationId, onBack }: { conversationId: string, onBack: () => void }) {
+export function ChatView({ conversationId, onBack }: { conversationId: string, onBack: () => void }) {
     const firestore = useFirestore();
     const { user, isUserLoading } = useUser();
     const { userProfile } = useUserProfile();
