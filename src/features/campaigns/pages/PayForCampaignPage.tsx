@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
-import { CheckoutDialog } from '@/components/checkout-dialog';
+import { CheckoutDialog } from '@/features/checkout';
 import { useLanguage } from '@/context/language-context';
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';

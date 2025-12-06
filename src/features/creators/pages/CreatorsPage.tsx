@@ -14,10 +14,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import InviteToCampaignDialog from '@/components/invite-to-campaign-dialog';
+import { InviteToCampaignDialog } from '@/features/campaigns';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLanguage } from '@/context/language-context';
-import CreatorProfileSheet from '@/components/creator-profile-sheet';
+import { CreatorProfileSheet } from '@/features/creators';
 import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
 const CreatorCardSkeleton = () => (
@@ -123,7 +123,7 @@ const CreatorCard = ({ creator, activeCampaigns, onViewProfile }: { creator: Cre
                 </div>
             </CardContent>
             <CardFooter className="p-3 border-t bg-muted/30 flex flex-col items-stretch gap-2">
-                <InviteToCampaignDialog creator={creator} campaigns={activeCampaigns}>
+                <InviteToCampaignDialog creator={creator} campaigns={activeCampaigns || []}>
                     <Button className="w-full">
                         <Send className="mr-2 h-4 w-4" />
                         {t('discoverCreators.inviteButton')}
