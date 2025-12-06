@@ -157,13 +157,13 @@ export default function DiscoverPage() {
                                 return (
                                     <Card key={campaign.id} className={cn("flex flex-col hover:shadow-lg transition-shadow", isHighlighted && "border-primary/50 shadow-primary/10")}>
                                         <CardHeader>
-                                            <div className="flex justify-between items-start gap-2">
-                                                <CardTitle className="line-clamp-1">{campaign.title}</CardTitle>
-                                                 <Badge variant="secondary" className={cn("whitespace-nowrap text-xs", typeInfo[campaignType].badgeClass)}>
+                                            <div className="flex justify-between items-start gap-2 mb-2">
+                                                <Badge variant="secondary" className={cn("whitespace-nowrap text-xs", typeInfo[campaignType].badgeClass)}>
                                                     <TypeIcon className="mr-1.5 h-3 w-3" />
                                                     {typeInfo[campaignType].badgeText}
                                                 </Badge>
                                             </div>
+                                            <CardTitle>{campaign.title}</CardTitle>
                                             {campaign.tags && campaign.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-2 pt-2">
                                                     {campaign.tags.slice(0, 3).map((tag: string) => (
@@ -173,7 +173,7 @@ export default function DiscoverPage() {
                                             )}
                                         </CardHeader>
                                         <CardContent className="flex-grow space-y-4">
-                                            <p className="text-sm text-muted-foreground line-clamp-3 h-[60px]">
+                                            <p className="text-sm text-muted-foreground line-clamp-3">
                                                 {campaign.campaignBrief}
                                             </p>
                                             <div>
@@ -196,7 +196,7 @@ export default function DiscoverPage() {
                                                     </Button>
                                                     <AlertDialog>
                                                         <AlertDialogTrigger asChild>
-                                                            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10">
+                                                            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
                                                                 <Trash2 className="mr-2 h-3 w-3" />
                                                                 {t('creatorDashboard.actions.withdraw')}
                                                             </Button>
@@ -223,8 +223,8 @@ export default function DiscoverPage() {
                                                 </Button>
                                             ) : (
                                                 <Button asChild className="w-full">
-                                                    <Link href={`/campaigns/${campaign.id}/apply`}>
-                                                        {t('discoverCampaigns.applyNow')}
+                                                    <Link href={`/campaigns/${campaign.id}`}>
+                                                        {t('discoverCampaigns.viewAndApply')}
                                                         <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />
                                                     </Link>
                                                 </Button>

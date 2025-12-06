@@ -119,6 +119,18 @@ const ActionRequiredItem = ({ type, typeText, text, metric, buttonText, href, ca
   )
 };
 
+const EmptyState = ({title, description, icon: Icon}: {title: string, description: string, icon: React.ComponentType<{className?: string}>}) => {
+    return (
+        <div className="text-center py-20 border-2 border-dashed rounded-2xl bg-muted/20 mt-8">
+            <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/30">
+                <Icon className="h-8 w-8 text-black" />
+            </div>
+            <h2 className="text-2xl font-bold">{title}</h2>
+            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{description}</p>
+        </div>
+    )
+}
+
 
 const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, isLoading }: { campaigns: any[], applicationCounts: Record<string, number>, conversations: any[], isLoading: boolean }) => {
     const { t } = useLanguage();
@@ -625,10 +637,11 @@ export default function BrandDashboard() {
       ) : null}
 
       {!isLoading && (!filteredCampaigns || filteredCampaigns.length === 0) && (
-        <div className="text-center py-20 border-2 border-dashed rounded-2xl bg-muted/20 mt-8">
-            <h2 className="text-2xl font-bold">{t('brandDashboard.emptyFilter.title')}</h2>
-            <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">{t('brandDashboard.emptyFilter.description')}</p>
-        </div>
+        <EmptyState 
+            title={t('brandDashboard.emptyFilter.title')}
+            description={t('brandDashboard.emptyFilter.description')}
+            icon={FileText}
+        />
       )}
     </div>
   );
