@@ -1026,7 +1026,7 @@
             "title": "Preamble and Legal Notice",
             "editorIdentity": {
                 "title": "Editor's Identity",
-                "content": "The VibeMatch platform (hereinafter \"the Platform\") is edited and operated by [Your Full Name or Company Name], holder of ICE No. [Insert ICE Number], headquartered in Casablanca, Morocco."
+                "content": "The VibeMatch platform (hereinafter \"the Platform\") is edited and operated by [Company Name] SARL, holder of ICE No. [Insert ICE], RC No. [Insert RC], headquartered in Casablanca, Morocco."
             },
             "acceptance": {
                 "title": "Acceptance of Terms (Electronic Contract)",
@@ -1069,7 +1069,7 @@
             },
             "billingMandate": {
                 "title": "Billing Mandate",
-                "content": "The Creator grants VibeMatch a Billing Mandate to:",
+                "content": "To facilitate operations, the Creator grants VibeMatch a Billing Mandate to:",
                 "item1": "Issue invoices to the Brand on the Creator's behalf.",
                 "item2": "Collect funds and deduct a 15% (tax-exclusive) platform commission before transferring the net balance within five (5) business days."
             },
@@ -1120,17 +1120,6 @@
             "modifications": {
                 "title": "Changes to Terms",
                 "content": "VibeMatch reserves the right to modify these terms at any time. Users will be notified of significant changes via email or platform notification. Continued use of the service after such changes constitutes acceptance of the new Terms."
-            }
-        },
-        "preamble": {
-            "title": "Preamble and Legal Notice",
-            "editorIdentity": {
-                "title": "Editor's Identity",
-                "content": "The VibeMatch platform (hereinafter \"the Platform\") is edited and operated by VibeMatch, headquartered in Casablanca, Morocco. Contact: legal@vibematch.ma"
-            },
-            "acceptance": {
-                "title": "Acceptance of Terms (Electronic Contract)",
-                "content": "Accessing and using the Platform implies unconditional acceptance of these GTC. In accordance with Law No. 53-05 on the electronic exchange of legal data, checking the \"I agree\" box during registration or payment constitutes a valid electronic signature, binding the User to these terms with the same legal force as a handwritten signature."
             }
         }
     },
@@ -1217,3 +1206,5 @@
         "UGC Photo Pack": "{count, plural, one {UGC Photo Pack} other {# UGC Photo Packs}}"
     }
 }
+
+    
