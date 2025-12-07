@@ -1023,13 +1023,13 @@
         "lastUpdated": "Last updated: December 07, 2025",
         "discrepancyNotice": "In case of discrepancy, the French version governs.",
         "preamble": {
-            "title": "Preamble and Legal Notice",
-            "editorIdentity": {
-                "title": "Editor's Identity",
-                "content": "The VibeMatch platform (hereinafter \"the Platform\") is edited and operated by [Company Name] SARL, holder of ICE No. [Insert ICE], RC No. [Insert RC], headquartered in Casablanca, Morocco."
+            "title": "Preamble",
+            "eligibility": {
+                "title": "1. Eligibility (Age Restriction)",
+                "content": "The Services are strictly reserved for individuals aged 18 years or older having full legal capacity. Any registration by a minor is strictly prohibited unless accompanied by the written consent of a legal guardian (Wali). VibeMatch reserves the right to request proof of age at any time."
             },
             "acceptance": {
-                "title": "Acceptance of Terms (Electronic Contract)",
+                "title": "2. Acceptance (Electronic Contract)",
                 "content": "Accessing and using the Platform implies unconditional acceptance of these GTC. In accordance with Law No. 53-05 on the electronic exchange of legal data, checking the \"I agree\" box during registration or payment constitutes a valid electronic signature, binding the User to these terms with the same legal force as a handwritten signature."
             }
         },
@@ -1099,7 +1099,7 @@
             },
             "personalData": {
                 "title": "Personal Data (Law 09-08)",
-                "content": "VibeMatch processes personal data necessary for contract execution. In accordance with Law 09-08 (CNDP), Users have rights of access, rectification, and opposition by contacting legal@vibematch.ma."
+                "content": "VibeMatch processes personal data necessary for contract execution (Identity, Payments, Usage). Users acknowledge having read and accepted our [Privacy Policy], which details the collection, processing, and rights regarding their data (Access, Rectification, Opposition) in accordance with Law 09-08 (CNDP)."
             },
             "liability": {
                 "title": "Liability and Force Majeure",
@@ -1167,31 +1167,32 @@
     },
     "legalNotice": {
         "title": "Legal Notice",
+        "navTitle": "Navigation",
         "sections": {
             "editor": {
-                "title": "1. SITE EDITOR",
+                "title": "1. Site Editor",
                 "companyNameLabel": "Company Name / Name:",
-                "companyName": "[Walid Bezoui / VibeMatch]",
+                "companyName": "VibeMatch SARL",
                 "legalStatusLabel": "Legal Status:",
-                "legalStatus": "[e.g., Auto-Entrepreneur or Company in formation]",
+                "legalStatus": "Société à Responsabilité Limitée",
                 "hqLabel": "Head Office:",
                 "hq": "Casablanca, Morocco",
                 "emailLabel": "Contact Email:",
-                "email": "[contact@vibematch.ma]",
+                "email": "legal@vibematch.ma",
                 "iceLabel": "ICE Number:",
-                "ice": "[Your ICE if available, otherwise 'Pending']",
-                "tpLabel": "Professional Tax / RC ID:",
-                "tp": "[Your numbers if available]"
+                "ice": "[ICE Number]",
+                "tpLabel": "RC:",
+                "tp": "[RC Number]"
             },
             "hosting": {
-                "title": "2. HOSTING",
+                "title": "2. Hosting",
                 "hostLabel": "Host:",
-                "host": "[e.g., Vercel / AWS / Hostinger]",
+                "host": "Vercel Inc.",
                 "addressLabel": "Address:",
-                "address": "[Host's head office address, e.g., San Francisco, USA]"
+                "address": "San Francisco, USA"
             },
             "ip": {
-                "title": "3. INTELLECTUAL PROPERTY",
+                "title": "3. Intellectual Property",
                 "content": "All graphic elements, source codes, logos, and texts of the VibeMatch site are the exclusive property of the editor. Any reproduction without authorization is prohibited."
             }
         }
@@ -1206,5 +1207,7 @@
         "UGC Photo Pack": "{count, plural, one {UGC Photo Pack} other {# UGC Photo Packs}}"
     }
 }
+
+    
 
     

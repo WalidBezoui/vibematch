@@ -73,11 +73,10 @@ export function TermsPage() {
                 </aside>
 
                 <div className="md:col-span-9 prose dark:prose-invert max-w-none space-y-12 text-foreground/80">
-                     {/* Preamble */}
                     <section id="preamble">
                         <h2 className="text-2xl font-bold pt-6">{t('termsPage.preamble.title')}</h2>
-                        <h3 className="font-semibold">{t('termsPage.preamble.editorIdentity.title')}</h3>
-                        <p>{t('termsPage.preamble.editorIdentity.content')}</p>
+                        <h3 className="font-semibold">{t('termsPage.preamble.eligibility.title')}</h3>
+                        <p>{t('termsPage.preamble.eligibility.content')}</p>
                         <h3 className="font-semibold">{t('termsPage.preamble.acceptance.title')}</h3>
                         <p>{t('termsPage.preamble.acceptance.content')}</p>
                     </section>
@@ -147,8 +146,13 @@ export function TermsPage() {
                            <p><strong>{t('termsPage.common.antiCircumvention.penalty_b')}</strong> {t('termsPage.common.antiCircumvention.penalty_t')}</p>
                         </div>
                         <div id="common-data" className="scroll-mt-24">
-                           <h3 className="font-semibold">{t('termsPage.common.personalData.title')}</h3>
-                           <p>{t('termsPage.common.personalData.content')}</p>
+                            <h3 className="font-semibold">{t('termsPage.common.personalData.title')}</h3>
+                            <p>
+                                {t('termsPage.common.personalData.content', {
+                                returnObjects: true,
+                                PrivacyPolicy: <Link href="/privacy" className="text-primary hover:underline" />
+                                })}
+                            </p>
                         </div>
                         <div id="common-liability" className="scroll-mt-24">
                            <h3 className="font-semibold">{t('termsPage.common.liability.title')}</h3>
@@ -179,3 +183,5 @@ export function TermsPage() {
     </div>
   );
 }
+
+    
