@@ -1,3 +1,4 @@
+
 {
     "header": {
         "forBrands": "Pour les Marques",
@@ -1025,7 +1026,7 @@
             "title": "Préambule et Mentions Légales",
             "editorIdentity": {
                 "title": "Identité de l'Éditeur",
-                "content": "La plateforme VibeMatch (ci-après \"la Plateforme\") est éditée et opérée par VibeMatch, dont le siège social est situé à Casablanca, Maroc. Contact : legal@vibematch.ma"
+                "content": "La plateforme VibeMatch (ci-après \"la Plateforme\") est éditée et opérée par [Votre Nom Complet ou Nom de Société], titulaire de l'ICE n° [Insérer le Numéro ICE], dont le siège social est situé à Casablanca, Maroc."
             },
             "acceptance": {
                 "title": "Acceptation des Conditions (Contrat Électronique)",
@@ -1070,7 +1071,7 @@
                 "title": "Mandat de Facturation",
                 "content": "Pour faciliter les opérations, le Créateur accorde à VibeMatch un Mandat de Facturation. En conséquence :",
                 "item1": "VibeMatch est autorisé à émettre des factures au nom et pour le compte du Créateur à destination de la Marque.",
-                "item2": "VibeMatch est autorisé à encaisser les fonds et à déduire la Commission de Plateforme de 15% (Hors Taxe) avant de transférer le solde net."
+                "item2": "VibeMatch est autorisé à encaisser les fonds et à déduire la Commission de Plateforme de 15% (Hors Taxe) avant de transférer le solde net dans un délai de cinq (5) jours ouvrables."
             },
             "ip": {
                 "title": "Propriété Intellectuelle (Loi 2-00)",
@@ -1079,7 +1080,7 @@
                 "personality_b": "Droits de la Personnalité :",
                 "personality_t": "Le Créateur autorise expressément le Client à utiliser son nom, son image, sa voix et sa ressemblance contenus dans les livrables pour les besoins commerciaux de la campagne.",
                 "adaptation_b": "Droits d'Adaptation :",
-                "adaptation_t": "Le Créateur autorise le Client à effectuer les modifications techniques (recadrage, sous-titrage, redimensionnement) nécessaires aux formats des réseaux sociaux.",
+                "adaptation_t": "Le Créateur autorise le Client à effectuer les modifications techniques (recadrage, redimensionnement) nécessaires aux formats des réseaux sociaux.",
                 "warranty_b": "Garantie :",
                 "warranty_t": "Le Créateur indemnise VibeMatch et la Marque contre toute réclamation concernant les droits de tiers (musique, marques) utilisés dans son contenu."
             },
@@ -1119,6 +1120,17 @@
             "modifications": {
                 "title": "Modifications des Conditions",
                 "content": "VibeMatch se réserve le droit de modifier ces conditions à tout moment. Les utilisateurs seront notifiés des changements importants par e-mail ou notification sur la plateforme. L'utilisation continue du service après de telles modifications constitue une acceptation des nouvelles Conditions."
+            }
+        },
+        "preamble": {
+            "title": "Préambule et Mentions Légales",
+            "editorIdentity": {
+                "title": "Identité de l'Éditeur",
+                "content": "La plateforme VibeMatch (ci-après \"la Plateforme\") est éditée et opérée par VibeMatch, dont le siège social est situé à Casablanca, Maroc. Contact : legal@vibematch.ma"
+            },
+            "acceptance": {
+                "title": "Acceptation des Conditions (Contrat Électronique)",
+                "content": "L'accès et l'utilisation de la Plateforme impliquent l'acceptation sans réserve des présentes CGU. Conformément à la Loi n° 53-05 relative à l'échange électronique de données juridiques, le fait de cocher la case \"J'accepte\" lors de l'inscription ou du paiement constitue une signature électronique valide, liant l'Utilisateur à ces conditions avec la même force probante qu'une signature manuscrite."
             }
         }
     },
