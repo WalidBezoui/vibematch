@@ -1037,7 +1037,7 @@
             "title": "Partie I : Conditions pour les Marques",
             "legalStatus": {
                 "title": "Statut Juridique et Mandat",
-                "content": "La Marque reconnaît que VibeMatch agit exclusivement en tant qu'Intermédiaire Technique et Tiers de Confiance. En finançant une campagne, la Marque accorde à VibeMatch un Mandat de Paiement (D.O.C. Art. 879 et seq.) pour :",
+                "content": "La Marque reconnaît que VibeMatch agit exclusivement en tant qu'Intermédiaire Technique et Tiers de Confiance. En finançant une campagne, la Marque accorde à VibeMatch un Mandat de Paiement conformément aux Articles 879 et suivants du Dahir des Obligations et Contrats (D.O.C). Ce mandat autorise VibeMatch à :",
                 "item1": "Sécuriser les fonds sur un compte dédié (Compte de Cantonnement / Séquestre).",
                 "item2": "Libérer les fonds au profit du Créateur uniquement après validation des livrables."
             },
@@ -1094,12 +1094,12 @@
             "antiCircumvention": {
                 "title": "Non-Contournement",
                 "content": "Les Utilisateurs (Marque et Créateur) s'interdisent de contourner VibeMatch pour contracter directement entre eux pour une durée de douze (12) mois suivant leur mise en relation initiale sur la Plateforme.",
-                "penalty_b": "Clause Pénale (Art. 264 D.O.C) :",
+                "penalty_b": "Clause Pénale (Article 264 D.O.C) :",
                 "penalty_t": "Toute violation constitue une perte commerciale directe pour VibeMatch. La partie contrevenante s'engage à payer une indemnité forfaitaire de 10.000 DHS ou 20% du budget détourné (le montant le plus élevé étant retenu) à titre de dommages-intérêts, immédiatement exigibles sur notification."
             },
             "personalData": {
                 "title": "Données Personnelles (Loi 09-08)",
-                "content": "VibeMatch traite les données personnelles nécessaires à l'exécution du contrat. Les Utilisateurs reconnaissent avoir lu et accepté notre <PrivacyPolicy>Politique de Confidentialité</PrivacyPolicy>, qui détaille leurs droits (Accès, Rectification, Opposition)."
+                "content": "VibeMatch traite les données personnelles nécessaires à l'exécution du contrat. Les Utilisateurs reconnaissent avoir lu et accepté notre <PrivacyPolicy>Politique de Confidentialité</PrivacyPolicy>, qui détaille la collecte, le traitement et les droits concernant leurs données (Accès, Rectification, Opposition) conformément à la Loi 09-08 (CNDP)."
             },
             "liability": {
                 "title": "Responsabilité et Force Majeure",
@@ -1111,15 +1111,15 @@
             },
             "survival": {
                 "title": "Survivance des Clauses",
-                "content": "Les dispositions relatives à la Propriété Intellectuelle, la Confidentialité et le Non-Contournement survivront à la résiliation du compte."
+                "content": "Les dispositions relatives à la Propriété Intellectuelle, la Confidentialité et le Non-Contournement survivront à la résiliation, à l'expiration ou à la suppression du compte de l'Utilisateur pour quelque raison que ce soit, pour les durées prescrites par les lois applicables (par ex., 70 ans pour le droit d'auteur, 12 mois pour le non-contournement)."
             },
             "severability": {
                 "title": "Divisibilité",
-                "content": "Si une clause est jugée invalide, la validité des autres dispositions ne sera pas affectée."
+                "content": "Si une disposition de ces Conditions est jugée invalide ou inapplicable par un tribunal compétent, cette invalidité n'affectera pas la validité des autres dispositions qui resteront en vigueur."
             },
             "modifications": {
                 "title": "Modifications des Conditions",
-                "content": "VibeMatch se réserve le droit de modifier ces termes. L'utilisation continue du service après notification vaut acceptation."
+                "content": "VibeMatch se réserve le droit de modifier ces termes à tout moment. Les utilisateurs seront informés des changements importants par e-mail ou notification sur la plateforme. L'utilisation continue du service après de tels changements constitue une acceptation des nouvelles Conditions."
             }
         }
     },
@@ -1260,5 +1260,3 @@
         "UGC Photo Pack": "{count, plural, one {Pack Photos UGC} other {# Packs Photos UGC}}"
     }
 }
-
-    

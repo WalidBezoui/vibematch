@@ -22,7 +22,7 @@ type Translations = { [key: string]: any };
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string, options?: { [key: string]: any, returnObjects?: boolean }) => any;
+  t: (key: string, options?: { [key: string]: any, returnObjects?: boolean, defaultValue?: string }) => any;
   dir: 'ltr' | 'rtl';
   userInterest: UserInterest;
   setUserInterest: (interest: 'creator' | 'brand') => void;
@@ -31,6 +31,10 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const messageCache = new Map<string, IntlMessageFormat>();
+
+function getNestedTranslation(translations: Translations, key: string): any {
+  return key.split('.').reduce((obj, k) => (obj && obj[k] !== 'undefined') ? obj[k] : undefined, translations);
+}
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>('EN');
@@ -73,21 +77,18 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [language, dir]);
 
 
-  const t = (key: string, options?: { [key: string]: any, returnObjects?: boolean }): any => {
-    const keys = key.split('.');
-    let result: any = translations[language];
+  const t = (key: string, options?: { [key: string]: any, returnObjects?: boolean, defaultValue?: string }): any => {
+    const currentTranslations = translations[language];
+    const englishTranslations = translations['EN'];
+    
+    let result = getNestedTranslation(currentTranslations, key);
 
-    for (const k of keys) {
-      result = result?.[k];
-      if (result === undefined) {
-        let fallbackResult: any = translations['EN'];
-        for (const fk of keys) {
-          fallbackResult = fallbackResult?.[fk];
-          if (fallbackResult === undefined) return key;
-        }
-        result = fallbackResult;
-        break;
-      }
+    if (result === undefined) {
+      result = getNestedTranslation(englishTranslations, key);
+    }
+    
+    if (result === undefined) {
+        return options?.defaultValue !== undefined ? options.defaultValue : key;
     }
 
     if (typeof result === 'object' && options?.returnObjects) {
@@ -100,7 +101,10 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     const message = result;
     
-    if (options && Object.keys(options).filter(k => k !== 'returnObjects').length > 0) {
+    // Check if there are any actual values to format, ignoring our custom options
+    const formatOptions = options ? Object.keys(options).filter(k => k !== 'returnObjects' && k !== 'defaultValue') : [];
+
+    if (formatOptions.length > 0) {
       const cacheKey = `${key}_${language}`;
       let msgFormat = messageCache.get(cacheKey);
 
@@ -115,16 +119,6 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
       
       try {
-          // Pass functions for React components
-          const formatters = Object.entries(options).reduce((acc, [key, value]) => {
-            if (React.isValidElement(value)) {
-              acc[key] = () => value;
-            } else {
-              acc[key] = value;
-            }
-            return acc;
-          }, {} as Record<string, any>);
-
           return msgFormat.format(options);
       } catch (e) {
           console.error(`Error formatting message for key "${key}" with options:`, e, options);
@@ -132,7 +126,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
     }
     
-    return result || key;
+    return result;
   };
 
   const value = {
