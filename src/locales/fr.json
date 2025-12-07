@@ -1086,16 +1086,16 @@
             },
             "confidentiality": {
                 "title": "Confidentialité",
-                "content": "Le Créateur doit garder confidentiels tous les détails de la Campagne. Toute fuite prématurée constitue une Faute Grave."
+                "content": "Le Créateur doit garder tous les détails de la Campagne confidentiels. Toute fuite prématurée constitue une Faute Grave passible de dommages-intérêts."
             }
         },
         "common": {
             "title": "Partie III : Dispositions Communes",
             "antiCircumvention": {
                 "title": "Non-Contournement",
-                "content": "Les Utilisateurs s'interdisent de contourner VibeMatch pour contracter directement pendant douze (12) mois après leur mise en relation.",
+                "content": "Les Utilisateurs (Marque et Créateur) s'interdisent de contourner VibeMatch pour contracter directement entre eux pour une durée de douze (12) mois suivant leur mise en relation initiale sur la Plateforme.",
                 "penalty_b": "Clause Pénale (Art. 264 D.O.C) :",
-                "penalty_t": "Toute violation entraîne une indemnité forfaitaire de 10.000 DHS ou 20% du budget détourné (le plus élevé étant retenu)."
+                "penalty_t": "Toute violation constitue une perte commerciale directe pour VibeMatch. La partie contrevenante s'engage à payer une indemnité forfaitaire de 10.000 DHS ou 20% du budget détourné (le montant le plus élevé étant retenu) à titre de dommages-intérêts, immédiatement exigibles sur notification."
             },
             "personalData": {
                 "title": "Données Personnelles (Loi 09-08)",
@@ -1103,7 +1103,7 @@
             },
             "liability": {
                 "title": "Responsabilité et Force Majeure",
-                "content": "VibeMatch est tenu à une Obligation de Moyens. Sa responsabilité ne peut être engagée pour des pannes techniques. Aucune partie n'est responsable des retards causés par la Force Majeure."
+                "content": "VibeMatch est tenu à une Obligation de Moyens. Sa responsabilité ne saurait être engagée pour des interruptions techniques ou l'échec commercial d'une campagne. Aucune partie n'est responsable des retards causés par la Force Majeure."
             },
             "law": {
                 "title": "Droit Applicable et Juridiction",
@@ -1159,8 +1159,8 @@
               "l2": "Important : Nous n'accédons pas aux messages privés (DM) ni aux mots de passe."
             },
             "technical": {
-              "title": "2.3. Données Techniques :",
-              "l1": "Adresse IP, type de navigateur, horodatages de connexion (requis pour la preuve de \"Signature Électronique\" selon la Loi 53-05)."
+                "title": "2.3. Données Techniques :",
+                "l1": "Adresse IP, type de navigateur, horodatages de connexion (requis pour la preuve de \"Signature Électronique\" selon la Loi 53-05)."
             }
           },
           "purpose": {
