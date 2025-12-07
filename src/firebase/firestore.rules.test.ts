@@ -6,7 +6,7 @@ import {
 } from '@firebase/rules-unit-testing';
 import { setDoc, doc, getDoc, deleteDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { readFileSync } from 'fs';
-import { describe, it, beforeAll, afterAll, beforeEach } from 'vitest';
+import { describe, it, beforeAll, afterAll, beforeEach, assert } from 'vitest';
 
 let testEnv: RulesTestEnvironment;
 
@@ -20,7 +20,7 @@ describe('Firestore Security Rules', () => {
     testEnv = await initializeTestEnvironment({
       projectId: 'studio-6015308119-5a7a7',
       firestore: {
-        rules: readFileSync('src/firestore.rules', 'utf8'),
+        rules: readFileSync('firestore.rules', 'utf8'),
         host: 'localhost',
         port: 8080,
       },
@@ -187,7 +187,7 @@ describe('Firestore Security Rules', () => {
       const db = testEnv.authenticatedContext(intruderId).firestore();
       await assertFails(setDoc(doc(db, `conversations/${conversationId}/messages/msg5`), { sender_id: intruderId, text: 'I am an intruder.', timestamp: new Date() }));
     });
-    
+
     it('should DENY any user from updating or deleting a message', async () => {
         const messageId = 'msg-to-delete';
         await testEnv.withSecurityRulesDisabled(async (context) => {
