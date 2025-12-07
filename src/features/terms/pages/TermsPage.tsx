@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 
 export function TermsPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const sections = useMemo(() => ([
     { id: 'preamble', title: t('termsPage.preamble.title') },
