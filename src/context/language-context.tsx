@@ -36,6 +36,17 @@ function getNestedTranslation(translations: Translations, key: string): any {
   return key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : undefined, translations);
 }
 
+// Function to convert a string from CAMEL_CASE or PASCAL_CASE to "Title Case"
+function formatKey(key: string) {
+    if (!key || typeof key !== 'string') return '';
+    const lastPart = key.split('.').pop() || '';
+    const words = lastPart.replace(/_/g, ' ').split(/(?=[A-Z])/);
+    return words
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+}
+
+
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>('EN');
   const [userInterest, setUserInterestState] = useState<UserInterest>(null);
@@ -85,19 +96,16 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     ) : {};
 
     const currentTranslations = translations[language];
-    const englishTranslations = translations['EN'];
-    
     let message = getNestedTranslation(currentTranslations, key);
 
     // Fallback to English if the key is not found in the current language
     if (message === undefined) {
-      message = getNestedTranslation(englishTranslations, key);
+      message = getNestedTranslation(translations['EN'], key);
     }
     
     // If still not found, return a formatted, safe version of the key itself.
     if (message === undefined) {
-        // This is a safe fallback that prevents crashes.
-        return key.split('.').pop()?.replace(/_/g, ' ') || key;
+        return formatKey(key);
     }
 
     // If the message is an object and the caller wants the object (e.g., for arrays in JSON)
@@ -107,8 +115,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     
     // If the message is not a string, it's likely an object or array that wasn't meant to be formatted.
     if (typeof message !== 'string') {
-      console.warn(`Translation for key "${key}" is not a string and returnObjects was not set. Returning key as fallback.`);
-      return key.split('.').pop()?.replace(/_/g, ' ') || key;
+      return formatKey(key);
     }
 
     // Check if there are any actual values to format
@@ -124,7 +131,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
           messageCache.set(cacheKey, msgFormat);
         } catch (e) {
           console.error(`Error compiling message for key "${key}" with message "${message}":`, e);
-          return key.split('.').pop()?.replace(/_/g, ' ') || key;
+          return formatKey(key);
         }
       }
       
@@ -132,7 +139,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
           return msgFormat.format(formatOptions);
       } catch (e) {
           console.error(`Error formatting message for key "${key}" with options:`, e, formatOptions);
-          return key.split('.').pop()?.replace(/_/g, ' ') || key;
+          return formatKey(key);
       }
     }
     

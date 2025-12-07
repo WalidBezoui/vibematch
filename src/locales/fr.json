@@ -159,7 +159,7 @@
             "review": "Examiner",
             "newApplicants": "{count, plural, one {1 nouveau candidat} other {# nouveaux candidats}} à examiner.",
             "message": "MESSAGE",
-            "newMessage": "{{name}} vous a envoyé un nouveau message.",
+            "newMessage": "{name} vous a envoyé un nouveau message.",
             "reply": "Répondre",
             "aCreator": "un créateur"
         },
@@ -871,12 +871,12 @@
         "PENDING_CREATOR_ACCEPTANCE": "En attente d'acceptation",
         "OFFER_PENDING": "Offre en attente",
         "PENDING_PAYMENT": "En attente de paiement",
-        "AWAITING_YOUR_PAYMENT": "En attente de votre paiement",
         "IN_PROGRESS": "En cours",
         "DELIVERED": "Livrée",
         "COMPLETED": "Terminée",
         "REJECTED_BY_CREATOR": "Refusée par le créateur",
-        "YOUR_ACCEPTANCE": "En attente de votre acceptation"
+        "YOUR_ACCEPTANCE": "En attente de votre acceptation",
+        "AWAITING_YOUR_PAYMENT": "En attente de votre paiement"
     },
     "discoverCampaigns": {
         "title": "Découvrir les Campagnes",

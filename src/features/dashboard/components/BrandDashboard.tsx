@@ -257,8 +257,8 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment,
         ? format(campaign.createdAt.toDate(), 'MMM d, yyyy') 
         : 'Just now';
         
-    const statusKey = `status.${campaign.status}`;
-    const statusText = t(statusKey) || campaign.status.replace(/_/g, ' ');
+    const statusTextKey = `status.${campaign.status}`;
+    const statusText = t(statusTextKey);
 
 
     const campaignType = campaign.campaignType || 'influence';
