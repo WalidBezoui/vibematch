@@ -36,8 +36,8 @@ export function TermsPage() {
       <main className="flex-1">
         <div className="container mx-auto px-4 md:px-6 py-12 md:py-24">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+            <div className="mb-16">
+                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl gradient-text">
                 {t('termsPage.title')}
                 </h1>
                 <p className="mt-4 text-lg text-muted-foreground">
