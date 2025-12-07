@@ -1,12 +1,13 @@
+
 'use client';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Faq } from '@/features/faq/components/Faq';
+import { FaqSection } from '@/features/faq';
 import { AppHeader } from '@/components/app-header';
 import { useLanguage } from '@/context/language-context';
 
-export default function FaqPage() {
+export function FaqPage() {
   const { t } = useLanguage();
   return (
     <div className="flex h-auto w-full flex-col">
@@ -25,7 +26,7 @@ export default function FaqPage() {
               </p>
             </div>
 
-            <Faq />
+            <FaqSection />
 
             <div className="mt-24 md:mt-32 text-center bg-muted/50 dark:bg-background/50 rounded-xl p-10 md:p-16">
               <div className="max-w-3xl mx-auto flex flex-col items-center">

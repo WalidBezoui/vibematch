@@ -48,7 +48,7 @@ const ApplyPageSkeleton = () => (
     </div>
 )
 
-export default function ApplyPage() {
+export function ApplyToCampaignPage() {
     const { campaignId } = useParams();
     const router = useRouter();
     const firestore = useFirestore();

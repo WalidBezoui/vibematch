@@ -44,7 +44,7 @@ const CampaignCardSkeleton = () => (
 );
 
 
-export default function DiscoverPage() {
+export function DiscoverCampaignsPage() {
     const firestore = useFirestore();
     const { user } = useUser();
     const { toast } = useToast();
@@ -225,7 +225,7 @@ export default function DiscoverPage() {
                                                 <Button asChild className="w-full">
                                                     <Link href={`/campaigns/${campaign.id}`}>
                                                         {t('discoverCampaigns.viewAndApply')}
-                                                        <Arrow className="ml-2 rtl:mr-2 rtl:ml-0 h-4 w-4" />
+                                                        <Arrow className="ml-2 rtl:mr-2 rtl:ml-0" />
                                                     </Link>
                                                 </Button>
                                             )}

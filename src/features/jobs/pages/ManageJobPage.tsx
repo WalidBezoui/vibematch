@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useCollection, useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -43,7 +44,7 @@ const ApplicantCardSkeleton = () => (
     </Card>
 )
 
-export default function ManageApplicationsPage() {
+export function ManageJobPage() {
     const { jobId } = useParams();
     const firestore = useFirestore();
     const router = useRouter();

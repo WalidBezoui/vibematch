@@ -215,7 +215,7 @@ const UGCDeliverableItem = ({ name, label, type }: { name: string, label: string
 }
 
 
-export default function CreateCampaignPage() {
+export function CreateCampaignPage() {
   const router = useRouter();
   const firestore = useFirestore();
   const { user, isUserLoading } = useUser();
