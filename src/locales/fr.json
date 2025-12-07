@@ -871,12 +871,12 @@
         "PENDING_CREATOR_ACCEPTANCE": "En attente d'acceptation",
         "OFFER_PENDING": "Offre en attente",
         "PENDING_PAYMENT": "En attente de paiement",
+        "AWAITING_YOUR_PAYMENT": "En attente de votre paiement",
         "IN_PROGRESS": "En cours",
         "DELIVERED": "Livrée",
         "COMPLETED": "Terminée",
         "REJECTED_BY_CREATOR": "Refusée par le créateur",
-        "YOUR_ACCEPTANCE": "En attente de votre acceptation",
-        "AWAITING_YOUR_PAYMENT": "En attente de votre paiement"
+        "YOUR_ACCEPTANCE": "En attente de votre acceptation"
     },
     "discoverCampaigns": {
         "title": "Découvrir les Campagnes",
@@ -1133,7 +1133,7 @@
             "controller": {
               "title": "Responsable du Traitement :",
               "identity_b": "Identité :",
-              "identity_t": "[Nom de la Société] SARL, Titulaire de l'ICE N° [Insérer ICE], RC N° [Insérer RC].",
+              "identity_t": "VibeMatch SARL, Titulaire de l'ICE N° [Insérer ICE], RC N° [Insérer RC].",
               "hq_b": "Siège social :",
               "hq_t": "Casablanca, Maroc.",
               "contact_b": "Contact :",
@@ -1179,7 +1179,7 @@
             "title": "4. PARTAGE DES DONNÉES & DESTINATAIRES",
             "p1": "VibeMatch ne vend pas vos données personnelles. Les données sont partagées uniquement avec :",
             "l1_b": "Contreparties :",
-            "l1_t": "Lorsqu'une Marque engage un Créateur, les données professionnelles nécessaires (Nom, Portfolio, Statistiques) sont visibles pour la Marque.",
+            "l1_t": "Lorsqu'une Marque engage un Créateur, les données professionnelles nécessaires (Nom, Portfolio, Stats) sont visibles pour la Marque.",
             "l2_b": "Prestataires de Services :",
             "l2_t": "Processeurs de paiement sécurisés (Banques), Fournisseurs d'hébergement cloud (Stockage de données).",
             "l3_b": "Autorités :",
@@ -1226,7 +1226,7 @@
             "editor": {
                 "title": "1. Éditeur du Site",
                 "companyNameLabel": "Raison Sociale / Nom :",
-                "companyName": "[Nom de la Société] SARL",
+                "companyName": "VibeMatch SARL",
                 "legalStatusLabel": "Statut Juridique :",
                 "legalStatus": "Société à Responsabilité Limitée",
                 "hqLabel": "Siège Social :",
@@ -1261,5 +1261,3 @@
         "UGC Photo Pack": "{count, plural, one {Pack Photos UGC} other {# Packs Photos UGC}}"
     }
 }
-
-    
