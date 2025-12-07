@@ -28,7 +28,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'http://localhost:9876',
+    baseURL: 'http://localhost:3000',
 
     /* Timeout for individual actions like click, fill, etc. */
     actionTimeout: 60 * 1000, // 1 minute
@@ -79,7 +79,7 @@ export default defineConfig({
   ...(!process.env.CI && {
     webServer: {
       command: 'npm run dev',
-      url: 'http://localhost:9876',
+      url: 'http://localhost:3000',
       reuseExistingServer: true,
       timeout: 120 * 1000, // Increased timeout to 120 seconds for web server startup
     },

@@ -32,3 +32,10 @@ build:
     - libxfixes3
     - libpango-1.0-0
     - libcairo2
+    - libgconf-2-4
+    - libgdk-pixbuf2.0-0
+    - libgtk-3-0
+    - libnspr4
+    - libnss3
+    - libxss1
+    - libxtst6

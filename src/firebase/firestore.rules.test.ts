@@ -18,7 +18,7 @@ const intruderId = 'intruder';
 describe('Firestore Security Rules', () => {
   beforeAll(async () => {
     testEnv = await initializeTestEnvironment({
-      projectId: 'vibematch-full-test',
+      projectId: 'studio-6015308119-5a7a7',
       firestore: {
         rules: readFileSync('src/firestore.rules', 'utf8'),
         host: 'localhost',
