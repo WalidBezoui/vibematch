@@ -22,7 +22,7 @@ type Translations = { [key: string]: any };
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string, options?: { [key: string]: any, returnObjects?: boolean, defaultValue?: string }) => any;
+  t: (key: string, options?: Record<string, any>) => any;
   dir: 'ltr' | 'rtl';
   userInterest: UserInterest;
   setUserInterest: (interest: 'creator' | 'brand') => void;
@@ -77,7 +77,13 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [language, dir]);
 
 
-  const t = (key: string, options?: { [key: string]: any, returnObjects?: boolean, defaultValue?: string }): any => {
+  const t = (key: string, options?: Record<string, any>): any => {
+    const returnObjects = options?.returnObjects;
+    
+    const formatOptions = options ? Object.fromEntries(
+        Object.entries(options).filter(([k]) => k !== 'returnObjects')
+    ) : {};
+
     const currentTranslations = translations[language];
     const englishTranslations = translations['EN'];
     
@@ -88,52 +94,48 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       message = getNestedTranslation(englishTranslations, key);
     }
     
-    // If still not found, return the default value or the key itself
+    // If still not found, return a formatted, safe version of the key itself.
     if (message === undefined) {
-      return options?.defaultValue !== undefined ? options.defaultValue : key;
+        // This is a safe fallback that prevents crashes.
+        return key.split('.').pop()?.replace(/_/g, ' ') || key;
     }
 
     // If the message is an object and the caller wants the object (e.g., for arrays in JSON)
-    if (typeof message === 'object' && options?.returnObjects) {
+    if (typeof message === 'object' && returnObjects) {
       return message;
     }
     
     // If the message is not a string, it's likely an object or array that wasn't meant to be formatted.
-    // Return it as is, unless it was supposed to be a string.
     if (typeof message !== 'string') {
-      console.warn(`Translation for key "${key}" is not a string. Returning as is. Consider using returnObjects: true if you expect an object.`);
-      return message;
+      console.warn(`Translation for key "${key}" is not a string and returnObjects was not set. Returning key as fallback.`);
+      return key.split('.').pop()?.replace(/_/g, ' ') || key;
     }
 
-    // Check if there are any actual values to format, ignoring our custom options
-    const formatOptions = options ? Object.keys(options).filter(k => k !== 'returnObjects' && k !== 'defaultValue') : [];
+    // Check if there are any actual values to format
+    const hasFormatOptions = Object.keys(formatOptions).length > 0;
 
-    if (formatOptions.length > 0) {
+    if (hasFormatOptions) {
       const cacheKey = `${key}_${language}`;
       let msgFormat = messageCache.get(cacheKey);
 
       if (!msgFormat) {
         try {
-          // This is the line that can throw the MALFORMED_ARGUMENT error
           msgFormat = new IntlMessageFormat(message, language);
           messageCache.set(cacheKey, msgFormat);
         } catch (e) {
           console.error(`Error compiling message for key "${key}" with message "${message}":`, e);
-          // Return a safe fallback if compilation fails
-          return options?.defaultValue || key;
+          return key.split('.').pop()?.replace(/_/g, ' ') || key;
         }
       }
       
       try {
-          // This formats the message with the provided values (e.g., {count: 5})
-          return msgFormat.format(options);
+          return msgFormat.format(formatOptions);
       } catch (e) {
-          console.error(`Error formatting message for key "${key}" with options:`, e, options);
-          return options?.defaultValue || key;
+          console.error(`Error formatting message for key "${key}" with options:`, e, formatOptions);
+          return key.split('.').pop()?.replace(/_/g, ' ') || key;
       }
     }
     
-    // If there are no options to format, just return the plain string message
     return message;
   };
 
@@ -160,5 +162,3 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
-
-    

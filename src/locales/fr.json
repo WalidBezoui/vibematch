@@ -1026,7 +1026,7 @@
             "title": "Préambule",
             "eligibility": {
                 "title": "1. ÉLIGIBILITÉ (RESTRICTION D'ÂGE)",
-                "content": "Les Services sont strictement réservés aux personnes âgées de 18 ans ou plus ayant la pleine capacité juridique. Toute inscription par un mineur est strictement interdite sauf si elle est accompagnée du consentement écrit d'un tuteur légal (Wali). VibeMatch se réserve le droit de demander une preuve d'âge à tout moment."
+                "content": "Les Services sont strictement réservés aux personnes âgées de 18 ans ou plus ayant la pleine capacité juridique. Toute inscription par un mineur est strictly prohibited unless accompanied by the written consent of a legal guardian (Wali). VibeMatch se réserve le droit de demander une preuve d'âge à tout moment."
             },
             "acceptance": {
                 "title": "2. ACCEPTATION (CONTRAT ÉLECTRONIQUE)",
@@ -1037,7 +1037,7 @@
             "title": "Partie I : Conditions pour les Marques",
             "legalStatus": {
                 "title": "Statut Juridique et Mandat",
-                "content": "La Marque reconnaît que VibeMatch agit exclusivement en tant qu'Intermédiaire Technique et Tiers de Confiance. En finançant une campagne, la Marque accorde à VibeMatch un Mandat de Paiement conformément aux Articles 879 et suivants du Dahir des Obligations et Contrats (D.O.C). Ce mandat autorise VibeMatch à :",
+                "content": "La Marque reconnaît que VibeMatch agit exclusivement en tant qu'Intermédiaire Technique et Tiers de Confiance. En finançant une campagne, la Marque accorde à VibeMatch un Mandat de Paiement (D.O.C. Art. 879 et seq.) pour :",
                 "item1": "Sécuriser les fonds sur un compte dédié (Compte de Cantonnement / Séquestre).",
                 "item2": "Libérer les fonds au profit du Créateur uniquement après validation des livrables."
             },
@@ -1069,7 +1069,7 @@
             },
             "billingMandate": {
                 "title": "Mandat de Facturation",
-                "content": "Pour faciliter les opérations, le Créateur accorde à VibeMatch un Mandat de Facturation pour :",
+                "content": "Pour faciliter les opérations, le Créateur confère à VibeMatch un Mandat de Facturation afin de :",
                 "item1": "Émettre des factures au nom et pour le compte du Créateur.",
                 "item2": "Encaisser les fonds et déduire une commission de 15% (Hors Taxe) avant de transférer le solde net sous cinq (5) jours ouvrables."
             },
@@ -1133,7 +1133,7 @@
             "controller": {
               "title": "Responsable du Traitement :",
               "identity_b": "Identité :",
-              "identity_t": "VibeMatch SARL, Titulaire de l'ICE N° [Insérer ICE], RC N° [Insérer RC].",
+              "identity_t": "[Raison Sociale] SARL, Titulaire de l'ICE N° [Insérer ICE], RC N° [Insérer RC].",
               "hq_b": "Siège social :",
               "hq_t": "Casablanca, Maroc.",
               "contact_b": "Contact :",
@@ -1226,7 +1226,7 @@
             "editor": {
                 "title": "1. Éditeur du Site",
                 "companyNameLabel": "Raison Sociale / Nom :",
-                "companyName": "VibeMatch SARL",
+                "companyName": "[Raison Sociale] SARL",
                 "legalStatusLabel": "Statut Juridique :",
                 "legalStatus": "Société à Responsabilité Limitée",
                 "hqLabel": "Siège Social :",
