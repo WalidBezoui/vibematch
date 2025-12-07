@@ -1,4 +1,3 @@
-
 {
     "header": {
         "forBrands": "Pour les Marques",
@@ -1022,6 +1021,17 @@
         "title": "Conditions Générales d'Utilisation",
         "lastUpdated": "Dernière mise à jour : 07 Décembre 2025",
         "discrepancyNotice": "En cas de divergence, la version française fait foi.",
+        "preamble": {
+            "title": "Préambule et Mentions Légales",
+            "editorIdentity": {
+                "title": "Identité de l'Éditeur",
+                "content": "La plateforme VibeMatch (ci-après \"la Plateforme\") est éditée et opérée par VibeMatch, dont le siège social est situé à Casablanca, Maroc. Contact : legal@vibematch.ma"
+            },
+            "acceptance": {
+                "title": "Acceptation des Conditions (Contrat Électronique)",
+                "content": "L'accès et l'utilisation de la Plateforme impliquent l'acceptation sans réserve des présentes CGU. Conformément à la Loi n° 53-05 relative à l'échange électronique de données juridiques, le fait de cocher la case \"J'accepte\" lors de l'inscription ou du paiement constitue une signature électronique valide, liant l'Utilisateur à ces conditions avec la même force probante qu'une signature manuscrite."
+            }
+        },
         "brands": {
             "title": "Partie I : Conditions pour les Marques",
             "legalStatus": {
@@ -1096,18 +1106,19 @@
             },
             "law": {
                 "title": "Droit Applicable et Juridiction",
-                "content": "Les présentes CGU sont régies par le Droit Marocain. En cas de litige, après une tentative de règlement amiable infructueuse sous trente (30) jours, compétence exclusive est attribuée au Tribunal de Commerce de Casablanca."
-            }
-        },
-        "preamble": {
-            "title": "Préambule et Mentions Légales",
-            "editorIdentity": {
-                "title": "Identité de l'Éditeur",
-                "content": "La plateforme VibeMatch (ci-après \"la Plateforme\") est éditée et opérée par [Votre Nom de Société ou Nom Complet], dont le siège social est situé à Casablanca, Maroc. Contact : legal@vibematch.ma"
+                "content": "Les présentes CGU sont régies par le Droit Marocain. En cas de litige, après une tentative de règlement amiable infructueuse sous trente (30) jours, le litige sera soumis à la compétence exclusive du Tribunal de Commerce de Casablanca."
             },
-            "acceptance": {
-                "title": "Acceptation des Conditions (Contrat Électronique)",
-                "content": "L'accès et l'utilisation de la Plateforme impliquent l'acceptation sans réserve des présentes CGU. Conformément à la Loi n° 53-05 relative à l'échange électronique de données juridiques, le fait de cocher la case \"J'accepte\" lors de l'inscription ou du paiement constitue une signature électronique valide, liant l'Utilisateur à ces conditions avec la même force probante qu'une signature manuscrite."
+            "survival": {
+                "title": "Survivance des Clauses",
+                "content": "Les dispositions relatives à la Propriété Intellectuelle, la Confidentialité, et le Non-Contournement survivront à la résiliation, l'expiration ou la suppression du compte de l'Utilisateur pour quelque raison que ce soit, pour les durées prescrites par les lois applicables (ex: 70 ans pour le Droit d'Auteur, 12 mois pour le Non-Contournement)."
+            },
+            "severability": {
+                "title": "Divisibilité",
+                "content": "Si une disposition des présentes Conditions est jugée invalide ou inapplicable par un tribunal compétent, cette invalidité n'affectera pas la validité des autres dispositions, qui resteront en vigueur et de plein effet."
+            },
+            "modifications": {
+                "title": "Modifications des Conditions",
+                "content": "VibeMatch se réserve le droit de modifier ces conditions à tout moment. Les utilisateurs seront notifiés des changements importants par e-mail ou notification sur la plateforme. L'utilisation continue du service après de telles modifications constitue une acceptation des nouvelles Conditions."
             }
         }
     },

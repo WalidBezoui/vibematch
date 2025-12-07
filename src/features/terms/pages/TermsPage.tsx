@@ -27,6 +27,9 @@ export function TermsPage() {
         { id: 'common-data', title: t('termsPage.common.personalData.title') },
         { id: 'common-liability', title: t('termsPage.common.liability.title') },
         { id: 'common-law', title: t('termsPage.common.law.title') },
+        { id: 'common-survival', title: t('termsPage.common.survival.title') },
+        { id: 'common-severability', title: t('termsPage.common.severability.title') },
+        { id: 'common-modifications', title: t('termsPage.common.modifications.title') },
     ]},
   ]), [t]);
 
@@ -154,6 +157,18 @@ export function TermsPage() {
                          <div id="common-law" className="scroll-mt-24">
                            <h3 className="font-semibold">{t('termsPage.common.law.title')}</h3>
                            <p>{t('termsPage.common.law.content')}</p>
+                        </div>
+                        <div id="common-survival" className="scroll-mt-24">
+                            <h3 className="font-semibold">{t('termsPage.common.survival.title')}</h3>
+                            <p>{t('termsPage.common.survival.content')}</p>
+                        </div>
+                        <div id="common-severability" className="scroll-mt-24">
+                            <h3 className="font-semibold">{t('termsPage.common.severability.title')}</h3>
+                            <p>{t('termsPage.common.severability.content')}</p>
+                        </div>
+                        <div id="common-modifications" className="scroll-mt-24">
+                            <h3 className="font-semibold">{t('termsPage.common.modifications.title')}</h3>
+                            <p>{t('termsPage.common.modifications.content')}</p>
                         </div>
                     </section>
                 </div>
