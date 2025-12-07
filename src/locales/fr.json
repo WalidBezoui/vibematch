@@ -1111,11 +1111,11 @@
             },
             "survival": {
                 "title": "Survivance des Clauses",
-                "content": "Les dispositions relatives à la Propriété Intellectuelle, la Confidentialité et le Non-Contournement survivront à la résiliation du compte, pour les durées prescrites par les lois applicables (ex: 70 ans pour les droits d'auteur, 12 mois pour le non-contournement)."
+                "content": "Les dispositions relatives à la Propriété Intellectuelle, la Confidentialité et le Non-Contournement survivront à la résiliation du compte."
             },
             "severability": {
                 "title": "Divisibilité",
-                "content": "Si une clause est jugée invalide, la validité des autres dispositions ne sera pas affectée et restera en vigueur."
+                "content": "Si une clause est jugée invalide, la validité des autres dispositions ne sera pas affectée."
             },
             "modifications": {
                 "title": "Modifications des Conditions",
@@ -1260,3 +1260,5 @@
         "UGC Photo Pack": "{count, plural, one {Pack Photos UGC} other {# Packs Photos UGC}}"
     }
 }
+
+    
