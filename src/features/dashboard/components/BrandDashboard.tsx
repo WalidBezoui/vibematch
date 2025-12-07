@@ -257,8 +257,8 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment,
         : 'Just now';
         
     const statusKey = `status.${campaign.status}`;
-    const translatedStatus = t(statusKey);
-    const statusText = translatedStatus === statusKey ? campaign.status.replace(/_/g, ' ') : translatedStatus;
+    const translatedStatus = t(statusKey, { returnObjects: true });
+    const statusText = typeof translatedStatus === 'string' ? translatedStatus : campaign.status.replace(/_/g, ' ');
 
     const campaignType = campaign.campaignType || 'influence';
     const typeInfo = {
