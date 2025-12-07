@@ -334,8 +334,8 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment,
                  <div className="flex items-center justify-between pt-4">
                     <span className="gradient-text font-bold text-lg">{campaign.budget} DH</span>
                      <Badge className={cn('whitespace-nowrap text-xs', statusStyles[isAwaitingPayment ? 'AWAITING_YOUR_PAYMENT' : campaign.status])}>
-                        {isAwaitingPayment ? t('status.AWAITING_YOUR_PAYMENT') : statusText}
-                    </Badge>
+                         {isAwaitingPayment ? t('status.AWAITING_YOUR_PAYMENT') : statusText}
+                     </Badge>
                  </div>
             </CardHeader>
             <CardContent className="flex-grow space-y-4">
@@ -689,3 +689,5 @@ export function BrandDashboard() {
     </div>
   );
 }
+
+    

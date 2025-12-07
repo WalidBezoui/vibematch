@@ -199,7 +199,7 @@
         },
         "deleteDialog": {
             "title": "Êtes-vous sûr ?",
-            "description": "Cela retirera votre candidature pour \"{{campaignTitle}}\". La marque ne pourra plus la voir. Vous pourrez postuler à nouveau plus tard si la campagne est toujours ouverte.",
+            "description": "Cela retirera votre candidature pour \"{campaignTitle}\". La marque ne pourra plus la voir. Vous pourrez postuler à nouveau plus tard si la campagne est toujours ouverte.",
             "confirm": "Oui, Retirer"
         },
         "emptyStates": {
@@ -1221,6 +1221,7 @@
     },
     "legalNotice": {
         "title": "Mentions Légales",
+        "navTitle": "Sommaire",
         "sections": {
             "editor": {
                 "title": "1. Éditeur du Site",
@@ -1260,3 +1261,5 @@
         "UGC Photo Pack": "{count, plural, one {Pack Photos UGC} other {# Packs Photos UGC}}"
     }
 }
+
+    

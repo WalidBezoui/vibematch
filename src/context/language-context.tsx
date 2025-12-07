@@ -83,20 +83,25 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     
     let message = getNestedTranslation(currentTranslations, key);
 
+    // Fallback to English if the key is not found in the current language
     if (message === undefined) {
       message = getNestedTranslation(englishTranslations, key);
     }
     
+    // If still not found, return the default value or the key itself
     if (message === undefined) {
       return options?.defaultValue !== undefined ? options.defaultValue : key;
     }
 
+    // If the message is an object and the caller wants the object (e.g., for arrays in JSON)
     if (typeof message === 'object' && options?.returnObjects) {
       return message;
     }
     
+    // If the message is not a string, it's likely an object or array that wasn't meant to be formatted.
+    // Return it as is, unless it was supposed to be a string.
     if (typeof message !== 'string') {
-      // It's a valid non-string translation (e.g., an array from JSON)
+      console.warn(`Translation for key "${key}" is not a string. Returning as is. Consider using returnObjects: true if you expect an object.`);
       return message;
     }
 
@@ -109,15 +114,18 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
       if (!msgFormat) {
         try {
+          // This is the line that can throw the MALFORMED_ARGUMENT error
           msgFormat = new IntlMessageFormat(message, language);
           messageCache.set(cacheKey, msgFormat);
         } catch (e) {
           console.error(`Error compiling message for key "${key}" with message "${message}":`, e);
+          // Return a safe fallback if compilation fails
           return options?.defaultValue || key;
         }
       }
       
       try {
+          // This formats the message with the provided values (e.g., {count: 5})
           return msgFormat.format(options);
       } catch (e) {
           console.error(`Error formatting message for key "${key}" with options:`, e, options);
@@ -125,6 +133,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
     }
     
+    // If there are no options to format, just return the plain string message
     return message;
   };
 
@@ -151,3 +160,5 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
+
+    
