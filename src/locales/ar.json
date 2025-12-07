@@ -157,7 +157,7 @@
             "fundCreator": "مول الصفقة مع {{name}}",
             "applicants": "مرشحون",
             "review": "مراجعة",
-            "newApplicants": "{{count}} مرشح جديد للمراجعة.",
+            "newApplicants": "{count, plural, one {مرشح جديد واحد للمراجعة} other {# مرشحين جدد للمراجعة}}.",
             "message": "رسالة",
             "newMessage": "{{name}} أرسل لك رسالة جديدة.",
             "reply": "رد",

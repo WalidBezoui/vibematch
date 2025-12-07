@@ -157,7 +157,7 @@
             "fundCreator": "Fund the deal with {{name}}",
             "applicants": "APPLICANTS",
             "review": "Review",
-            "newApplicants": "{{count, plural, one {1 new applicant} other {# new applicants}} to review.",
+            "newApplicants": "{count, plural, one {1 new applicant} other {# new applicants}} to review.",
             "message": "MESSAGE",
             "newMessage": "{{name}} has sent you a new message.",
             "reply": "Reply",
