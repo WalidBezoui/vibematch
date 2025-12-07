@@ -40,7 +40,7 @@ export function TermsPage() {
         <div className="container mx-auto px-4 md:px-6 py-12 md:py-24">
           <div className="max-w-5xl mx-auto">
             <div className="mb-16">
-                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl gradient-text">
+                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
                 {t('termsPage.title')}
                 </h1>
                 <p className="mt-4 text-lg text-muted-foreground">
@@ -150,7 +150,7 @@ export function TermsPage() {
                             <p>
                                 {t('termsPage.common.personalData.content', {
                                 returnObjects: true,
-                                PrivacyPolicy: <Link href="/privacy" className="text-primary hover:underline" />
+                                PrivacyPolicy: (chunks: React.ReactNode) => <Link href="/privacy" className="text-primary hover:underline">{chunks}</Link>
                                 })}
                             </p>
                         </div>
@@ -183,5 +183,3 @@ export function TermsPage() {
     </div>
   );
 }
-
-    

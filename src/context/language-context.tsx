@@ -22,7 +22,7 @@ type Translations = { [key: string]: any };
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string, options?: { [key: string]: string | number, returnObjects?: boolean }) => any;
+  t: (key: string, options?: { [key: string]: any, returnObjects?: boolean }) => any;
   dir: 'ltr' | 'rtl';
   userInterest: UserInterest;
   setUserInterest: (interest: 'creator' | 'brand') => void;
@@ -93,21 +93,14 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     if (typeof result === 'object' && options?.returnObjects) {
       return result;
     }
+    
+    if (typeof result !== 'string') {
+        return result;
+    }
 
-    // Determine if the result is a string that needs formatting or a pluralization object
-    const message = typeof result === 'object' ? JSON.stringify(result) : String(result);
+    const message = result;
     
     if (options && Object.keys(options).filter(k => k !== 'returnObjects').length > 0) {
-      // Check for simple {{variable}} replacement first
-      if (typeof result === 'string' && /\{\{.*\}\}/.test(result)) {
-        let tempResult = result;
-        for (const [optKey, optValue] of Object.entries(options)) {
-          tempResult = tempResult.replace(`{{${optKey}}}`, String(optValue));
-        }
-        return tempResult;
-      }
-
-      // Handle ICU message format for pluralization
       const cacheKey = `${key}_${language}`;
       let msgFormat = messageCache.get(cacheKey);
 
@@ -122,9 +115,19 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
       
       try {
+          // Pass functions for React components
+          const formatters = Object.entries(options).reduce((acc, [key, value]) => {
+            if (React.isValidElement(value)) {
+              acc[key] = () => value;
+            } else {
+              acc[key] = value;
+            }
+            return acc;
+          }, {} as Record<string, any>);
+
           return msgFormat.format(options);
       } catch (e) {
-          console.error(`Error formatting message for key "${key}" with options:`, e);
+          console.error(`Error formatting message for key "${key}" with options:`, e, options);
           return message; // Return raw string on formatting error
       }
     }
