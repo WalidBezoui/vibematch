@@ -257,7 +257,8 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment,
         : 'Just now';
         
     const statusKey = `status.${campaign.status}`;
-    const statusText = t(statusKey, { default: campaign.status.replace(/_/g, ' ') });
+    const translatedStatus = t(statusKey);
+    const statusText = translatedStatus === statusKey ? campaign.status.replace(/_/g, ' ') : translatedStatus;
 
     const campaignType = campaign.campaignType || 'influence';
     const typeInfo = {
@@ -687,3 +688,5 @@ export function BrandDashboard() {
     </div>
   );
 }
+
+    
