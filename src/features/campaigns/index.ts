@@ -10,3 +10,4 @@ export * from './pages/ManageCampaignPage';
 export * from './pages/PayForCampaignPage';
 export * from './pages/CampaignSuccessPage';
 export * from './components/InviteToCampaignDialog';
+export * from './components/CampaignDetailsDialog';

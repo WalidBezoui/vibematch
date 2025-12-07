@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useCollection, useUser, useFirestore, useMemoFirebase } from '@/firebase';
-import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight, ArrowLeft, Archive, Search } from 'lucide-react';
+import { PlusCircle, Users, Activity, FileText, CircleDollarSign, MoreVertical, Edit, Trash2, Sparkles, Wallet, Megaphone, FileVideo, AlertCircle, MessageSquare, ArrowRight, ArrowLeft, Archive, Search, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, where, getDoc, doc, deleteDoc, addDoc, serverTimestamp, onSnapshot, Unsubscribe, documentId, getDocs } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
@@ -18,6 +18,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
+    DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu"
 import {
   AlertDialog,
@@ -33,6 +34,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/language-context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CampaignDetailsDialog } from '@/features/campaigns';
 
 
 const statusStyles: { [key: string]: string } = {
@@ -241,7 +243,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     )
 }
 
-const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment }: { campaign: any, onDelete: (campaignId: string) => Promise<void>, applicationCount: number, isAwaitingPayment: boolean }) => {
+const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment, onViewDetails }: { campaign: any, onDelete: (campaignId: string) => Promise<void>, applicationCount: number, isAwaitingPayment: boolean, onViewDetails: (campaign: any) => void }) => {
     const { t } = useLanguage();
     const hiredCount = campaign.creatorIds?.length || 0;
     const totalNeeded = campaign.numberOfCreators || 1;
@@ -294,6 +296,11 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment 
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => onViewDetails(campaign)}>
+                                    <Eye className="mr-2 h-4 w-4" />
+                                    <span>View Details</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
                                     <Link href={`/campaigns/${campaign.id}/edit`}>
                                         <Edit className="mr-2 h-4 w-4" />
@@ -397,6 +404,8 @@ export function BrandDashboard() {
   const [isStatsLoading, setIsStatsLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [conversations, setConversations] = useState<any[]>([]);
+  const [selectedCampaign, setSelectedCampaign] = useState<any | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
 
   useEffect(() => {
@@ -505,7 +514,7 @@ export function BrandDashboard() {
         });
     }
   };
-  
+    
     const handleGenerateTestCampaign = async () => {
         if (!firestore || !user) return;
 
@@ -569,6 +578,11 @@ export function BrandDashboard() {
         }
     };
     
+  const handleViewDetails = (campaign: any) => {
+    setSelectedCampaign(campaign);
+    setIsDetailsOpen(true);
+  };
+
   const isLoading = isLoadingCampaigns || isLoadingConversations;
 
   const emptyStateIcons = {
@@ -649,6 +663,7 @@ export function BrandDashboard() {
                   onDelete={handleDeleteCampaign}
                   applicationCount={applicationCounts[campaign.id] || 0}
                   isAwaitingPayment={isAwaitingPayment}
+                  onViewDetails={handleViewDetails}
               />
             )
           })}
@@ -663,6 +678,12 @@ export function BrandDashboard() {
             showCreateButton={activeFilter !== 'all'}
         />
       )}
+      
+      <CampaignDetailsDialog 
+        campaign={selectedCampaign} 
+        open={isDetailsOpen} 
+        onOpenChange={setIsDetailsOpen}
+      />
     </div>
   );
 }
