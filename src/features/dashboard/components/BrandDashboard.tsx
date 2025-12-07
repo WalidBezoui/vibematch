@@ -47,6 +47,7 @@ const statusStyles: { [key: string]: string } = {
     DELIVERED: 'bg-purple-100 text-purple-800 border-purple-200',
     COMPLETED: 'bg-gray-200 text-gray-800 border-gray-300',
     REJECTED_BY_CREATOR: 'bg-red-100 text-red-800 border-red-200',
+    AWAITING_YOUR_PAYMENT: 'bg-yellow-100 text-yellow-800 border-yellow-200 animate-pulse',
 };
 
 const CampaignCardSkeleton = () => (
@@ -147,7 +148,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
     const { t } = useLanguage();
 
     const actionItems = useMemo(() => {
-        if (!campaigns || !conversations) return [];
+        if (isLoading || !campaigns || !conversations) return [];
         const items = [];
 
         // 1. Awaiting Payment
@@ -204,7 +205,7 @@ const ActionRequiredSection = ({ campaigns, applicationCounts, conversations, is
 
 
         return items;
-    }, [campaigns, applicationCounts, conversations, t]);
+    }, [campaigns, applicationCounts, conversations, t, isLoading]);
 
     if (isLoading) {
         return (
@@ -332,7 +333,7 @@ const CampaignCard = ({ campaign, onDelete, applicationCount, isAwaitingPayment,
                 </div>
                  <div className="flex items-center justify-between pt-4">
                     <span className="gradient-text font-bold text-lg">{campaign.budget} DH</span>
-                     <Badge className={cn('whitespace-nowrap text-xs', statusStyles[campaign.status])}>
+                     <Badge className={cn('whitespace-nowrap text-xs', statusStyles[isAwaitingPayment ? 'AWAITING_YOUR_PAYMENT' : campaign.status])}>
                         {isAwaitingPayment ? t('status.AWAITING_YOUR_PAYMENT') : statusText}
                     </Badge>
                  </div>

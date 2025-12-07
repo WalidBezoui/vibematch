@@ -33,7 +33,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 const messageCache = new Map<string, IntlMessageFormat>();
 
 function getNestedTranslation(translations: Translations, key: string): any {
-  return key.split('.').reduce((obj, k) => (obj && obj[k] !== 'undefined') ? obj[k] : undefined, translations);
+  return key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : undefined, translations);
 }
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -81,26 +81,25 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     const currentTranslations = translations[language];
     const englishTranslations = translations['EN'];
     
-    let result = getNestedTranslation(currentTranslations, key);
+    let message = getNestedTranslation(currentTranslations, key);
 
-    if (result === undefined) {
-      result = getNestedTranslation(englishTranslations, key);
+    if (message === undefined) {
+      message = getNestedTranslation(englishTranslations, key);
     }
     
-    if (result === undefined) {
-        return options?.defaultValue !== undefined ? options.defaultValue : key;
+    if (message === undefined) {
+      return options?.defaultValue !== undefined ? options.defaultValue : key;
     }
 
-    if (typeof result === 'object' && options?.returnObjects) {
-      return result;
+    if (typeof message === 'object' && options?.returnObjects) {
+      return message;
     }
     
-    if (typeof result !== 'string') {
-        return result;
+    if (typeof message !== 'string') {
+      // It's a valid non-string translation (e.g., an array from JSON)
+      return message;
     }
 
-    const message = result;
-    
     // Check if there are any actual values to format, ignoring our custom options
     const formatOptions = options ? Object.keys(options).filter(k => k !== 'returnObjects' && k !== 'defaultValue') : [];
 
@@ -113,8 +112,8 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
           msgFormat = new IntlMessageFormat(message, language);
           messageCache.set(cacheKey, msgFormat);
         } catch (e) {
-          console.error(`Error compiling message for key "${key}":`, e);
-          return message; // Return the raw string on error
+          console.error(`Error compiling message for key "${key}" with message "${message}":`, e);
+          return options?.defaultValue || key;
         }
       }
       
@@ -122,11 +121,11 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
           return msgFormat.format(options);
       } catch (e) {
           console.error(`Error formatting message for key "${key}" with options:`, e, options);
-          return message; // Return raw string on formatting error
+          return options?.defaultValue || key;
       }
     }
     
-    return result;
+    return message;
   };
 
   const value = {
