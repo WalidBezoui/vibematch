@@ -44,7 +44,7 @@ const CampaignCardSkeleton = () => (
 );
 
 
-export default function DiscoverPage() {
+export function CampaignsPage() {
     const firestore = useFirestore();
     const { user } = useUser();
     const { toast } = useToast();
