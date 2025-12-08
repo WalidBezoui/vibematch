@@ -26,6 +26,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context';
 import { useNicheTranslation } from '@/hooks/use-niche-translation';
+import { Campaign, Application, Conversation } from '@/types';
 
 const CampaignCardSkeleton = () => (
     <Card className="flex flex-col">
@@ -57,21 +58,21 @@ export function CampaignsPage() {
         () => firestore ? query(collection(firestore, 'campaigns'), where('status', '==', 'OPEN_FOR_APPLICATIONS')) : null,
         [firestore]
     );
-    const { data: campaigns, isLoading: campaignsLoading, mutate: mutateCampaigns } = useCollection(campaignsQuery);
+    const { data: campaigns, isLoading: campaignsLoading, mutate: mutateCampaigns } = useCollection<Campaign>(campaignsQuery);
     
     // Fetch all applications for the current user
     const applicationsQuery = useMemoFirebase(
       () => user && firestore ? query(collectionGroup(firestore, 'applications'), where('creatorId', '==', user.uid)) : null,
       [user, firestore]
     );
-    const { data: userApplications, isLoading: applicationsLoading, mutate: mutateApplications } = useCollection(applicationsQuery);
+    const { data: userApplications, isLoading: applicationsLoading, mutate: mutateApplications } = useCollection<Application>(applicationsQuery);
 
     // Fetch all conversations for the current user
     const conversationsQuery = useMemoFirebase(
         () => user && firestore ? query(collection(firestore, 'conversations'), where('creator_id', '==', user.uid)) : null,
         [user, firestore]
     );
-    const { data: conversations, isLoading: conversationsLoading } = useCollection(conversationsQuery);
+    const { data: conversations, isLoading: conversationsLoading } = useCollection<Conversation>(conversationsQuery);
 
     const handleWithdrawApplication = async (campaignId: string) => {
         if (!firestore || !userApplications) return;
@@ -88,7 +89,7 @@ export function CampaignsPage() {
                 description: t('creatorDashboard.deleteToast.successDescription'),
             });
             // Optimistically update the UI by removing the application locally
-            mutateApplications(prev => prev ? prev.filter(app => app.id !== application.id) : null);
+            mutateApplications(prev => prev ? prev.filter(app => app.id !== application.id) : []);
         } catch (error: any) {
             toast({
                 variant: 'destructive',
@@ -182,13 +183,14 @@ export function CampaignsPage() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="flex-col items-stretch gap-2">
-                                            {status === 'in_discussion' ? (
+                                            {status === 'in_discussion' && conversation && (
                                                 <Button asChild className="w-full">
                                                     <Link href={`/chat?id=${conversation.id}`}>
                                                         {t('creatorDashboard.actions.chat')} <Arrow className="h-4 w-4 ml-2 rtl:mr-2 rtl:ml-0" />
                                                     </Link>
                                                 </Button>
-                                            ) : status === 'applied' ? (
+                                            )} 
+                                            {status === 'applied' && (
                                                 <>
                                                     <Button disabled className="w-full bg-green-600 hover:bg-green-600">
                                                         <CheckCircle className="mr-2 h-4 w-4" />
@@ -217,11 +219,8 @@ export function CampaignsPage() {
                                                         </AlertDialogContent>
                                                     </AlertDialog>
                                                 </>
-                                            ) : isFull ? (
-                                                <Button disabled className="w-full">
-                                                    {t('discoverCampaigns.full')}
-                                                </Button>
-                                            ) : (
+                                            )}
+                                            {status === 'new' && !isFull && (
                                                 <Button asChild className="w-full">
                                                     <Link href={`/campaigns/${campaign.id}`}>
                                                         {t('discoverCampaigns.viewAndApply')}
@@ -229,6 +228,7 @@ export function CampaignsPage() {
                                                     </Link>
                                                 </Button>
                                             )}
+                                            {isFull && <p>This campaign is full</p>}
                                         </CardFooter>
                                     </Card>
                                 )
