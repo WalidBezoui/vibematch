@@ -80,8 +80,6 @@ export function CampaignsPage() {
         const application = userApplications.find(app => app.campaignId === campaignId);
         if (!application) return;
 
-        console.log('application.id', typeof application.id);
-
         const applicationRef = doc(firestore, 'campaigns', campaignId, 'applications', application.id);
         
         try {
@@ -91,10 +89,7 @@ export function CampaignsPage() {
                 description: t('creatorDashboard.deleteToast.successDescription'),
             });
             // Optimistically update the UI by removing the application locally
-            mutateApplications(prev => {
-                console.log('prev', typeof prev?.[0]?.id);
-                return prev ? prev.filter(app => app.id !== application.id) : [];
-            });
+            mutateApplications(prev => prev ? prev.filter(app => app.id !== application.id) : []);
         } catch (error: any) {
             toast({
                 variant: 'destructive',
