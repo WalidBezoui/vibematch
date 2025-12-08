@@ -6,5 +6,6 @@ export default defineConfig({
       // implement node event listeners here
     },
     supportFile: false,
+    specPattern: "**/*.test.{ts,tsx}",
   },
 });
