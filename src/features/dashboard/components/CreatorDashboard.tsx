@@ -2,20 +2,21 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useCollection, useUser, useFirestore, useMemoFirebase, useUserProfile } from '@/firebase';
+import { useCollection, useUser, useFirestore, useUserProfile } from '@/firebase';
 import Link from 'next/link';
 import { collection, query, where, getDocs, collectionGroup, documentId, doc, deleteDoc } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Compass, Hourglass, Activity, ArrowRight, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, Trash2, MessageSquare, ArrowLeft } from 'lucide-react';
+import { Compass, Activity, ArrowRight, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, Trash2, MessageSquare, ArrowLeft } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ConfirmationDialog } from "@/components/ui/confirmation-dialog"
-import { useEffect, useState, useMemo } from 'react';
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+import { useEffect, useState, useMemo, Key } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/language-context';
 import { useNicheTranslation } from '@/hooks/use-niche-translation';
+import { Campaign } from '@/types/campaign';
 
 const statusStyles: { [key: string]: string } = {
     YOUR_ACCEPTANCE: 'bg-blue-100 text-blue-800 border-blue-200 animate-pulse',
@@ -92,7 +93,6 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
             const randomIndex = Math.floor(Math.random() * tips.length);
             setMotivationalTip(tips[randomIndex]);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [t]);
 
 
@@ -136,8 +136,8 @@ const ProfileImpactCard = ({ isLoading }: { isLoading: boolean }) => {
                         <div className="flex items-center gap-4">
                             <div className="relative w-12 h-12">
                                 <svg className="w-full h-full" viewBox="0 0 40 40">
-                                    <circle className="text-muted/20" strokeWidth="4" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" />
-                                    <circle className="text-primary" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" transform="rotate(-90 20 20)" />
+                                    <circle className="text-muted/20" strokeWidth="4" stroke="currentColor" fill="transparent" r={18} cx={20} cy={20} />
+                                    <circle className="text-primary" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" stroke="currentColor" fill="transparent" r={18} cx={20} cy={20} transform="rotate(-90 20 20)" />
                                 </svg>
                                 <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">{percentage}%</span>
                             </div>
@@ -181,7 +181,7 @@ const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: an
     );
 }
 
-const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], onWithdraw: (id: string) => void, listType: 'pending' | 'active' | 'discussion' | 'payment'}) => {
+const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], onWithdraw: (id: string) => void, listType: 'pending' | 'active' | 'discussion' | 'payment' | 'all' }) => {
     const { t } = useLanguage();
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(null);
@@ -217,6 +217,13 @@ const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], o
                     icon: Compass
                 };
                 break;
+            default:
+                emptyStateProps = {
+                    title: t('creatorDashboard.emptyStates.all.title'),
+                    description: t('creatorDashboard.emptyStates.all.description'),
+                    icon: Compass
+                };
+                break;
         }
         return (
             <EmptyState 
@@ -232,7 +239,7 @@ const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], o
     return (
         <>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-                {campaigns.map(campaign => {
+                {campaigns.map((campaign: { id: Key | null | undefined; status: string; title: string; budget: number; campaignBrief: string; conversationId: string; }) => {
                     let badgeStatus = campaign.status;
                     let statusTextKey = `status.${badgeStatus}`;
                     if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
@@ -262,7 +269,7 @@ const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], o
                                         <Link href={`/chat?id=${campaign.conversationId}`}>{t('creatorDashboard.actions.chat')}</Link>
                                     </Button>
                                 )}
-                                {(listType === 'active' || listType === 'payment') && (
+                                {(listType === 'active' || listType === 'payment' || listType === 'all') && (
                                      <Button asChild className="w-full" variant={isActionRequired ? "default" : "secondary"}>
                                         <Link href={`/campaigns/${campaign.id}`}>{isActionRequired ? t('creatorDashboard.actions.review') : t('creatorDashboard.actions.view')}</Link>
                                     </Button>
@@ -277,7 +284,7 @@ const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], o
                                             size="sm"
                                             className="text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                                             onClick={() => {
-                                                setSelectedCampaignId(campaign.id);
+                                                setSelectedCampaignId(campaign.id as string);
                                                 setDialogOpen(true);
                                             }}
                                         >
@@ -299,7 +306,9 @@ const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], o
                     confirmText={t('creatorDashboard.deleteDialog.confirm')}
                     cancelText={t('brandDashboard.deleteDialog.cancel')}
                     onConfirm={() => {
-                        onWithdraw(selectedCampaign.id);
+                        if (selectedCampaignId) {
+                            onWithdraw(selectedCampaignId);
+                        }
                         setDialogOpen(false);
                     }}
                 />
@@ -331,7 +340,7 @@ export function CreatorDashboard() {
   useEffect(() => {
     const now = new Date();
     const hour = now.getHours();
-    const name = userProfile?.displayName?.split(' ')[0] || userProfile?.name?.split(' ')[0] || '';
+    const name = userProfile?.displayName?.split(' ')[0] || '';
 
     if (hour < 12) {
       setGreeting(`${t('greetings.morning')}, ${name}`);
@@ -343,7 +352,7 @@ export function CreatorDashboard() {
   }, [userProfile, t]);
 
   // Fetch active campaigns (where creator is assigned)
-  const activeCampaignsQuery = useMemoFirebase(
+  const activeCampaignsQuery = useMemo(
     () => user && firestore ? query(
         collection(firestore, 'campaigns'), 
         where('creatorIds', 'array-contains', user.uid)
@@ -352,7 +361,7 @@ export function CreatorDashboard() {
   );
   const { data: activeCampaigns, isLoading: isLoadingActive } = useCollection(activeCampaignsQuery);
   
-   const conversationsQuery = useMemoFirebase(
+   const conversationsQuery = useMemo(
     () => (user && firestore) ? query(collection(firestore, 'conversations'), where('creator_id', '==', user.uid)) : null,
     [user, firestore]
   );
@@ -379,19 +388,19 @@ export function CreatorDashboard() {
                 });
                 setUserApplications(appMap);
 
-                const openCampaignsData = openCampaignsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const openCampaignsData = openCampaignsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Campaign[];
 
-                const negotiationConvos = conversations.filter(c => c.status === 'NEGOTIATION');
-                const paymentConvos = conversations.filter(c => c.status === 'OFFER_ACCEPTED');
+                const negotiationConvos = conversations.filter((c: { status: string; }) => c.status === 'NEGOTIATION');
+                const paymentConvos = conversations.filter((c: { status: string; }) => c.status === 'OFFER_ACCEPTED');
 
-                const negotiationCampaignIds = negotiationConvos.map(c => c.campaign_id);
-                const paymentCampaignIds = paymentConvos.map(c => c.campaign_id);
+                const negotiationCampaignIds = negotiationConvos.map((c: { campaign_id: any; }) => c.campaign_id);
+                const paymentCampaignIds = paymentConvos.map((c: { campaign_id: any; }) => c.campaign_id);
                 
                 // Get full campaign data for negotiations
                 if (negotiationCampaignIds.length > 0) {
                      const negotiationCampaignsQuery = query(collection(firestore, 'campaigns'), where(documentId(), 'in', negotiationCampaignIds));
                      const negotiationCampaignsSnapshot = await getDocs(negotiationCampaignsQuery);
-                     const discussionData = negotiationCampaignsSnapshot.docs.map(d => ({...d.data(), id: d.id, conversationId: negotiationConvos.find(c => c.campaign_id === d.id)?.id }));
+                     const discussionData = negotiationCampaignsSnapshot.docs.map(d => ({...d.data(), id: d.id, conversationId: negotiationConvos.find((c: { campaign_id: string; }) => c.campaign_id === d.id)?.id }));
                      setInDiscussionCampaigns(discussionData);
                 } else {
                     setInDiscussionCampaigns([]);
@@ -401,7 +410,7 @@ export function CreatorDashboard() {
                 if (paymentCampaignIds.length > 0) {
                      const paymentCampaignsQuery = query(collection(firestore, 'campaigns'), where(documentId(), 'in', paymentCampaignIds));
                      const paymentCampaignsSnapshot = await getDocs(paymentCampaignsQuery);
-                     const paymentData = paymentCampaignsSnapshot.docs.map(d => ({...d.data(), id: d.id, conversationId: paymentConvos.find(c => c.campaign_id === d.id)?.id }));
+                     const paymentData = paymentCampaignsSnapshot.docs.map(d => ({...d.data(), id: d.id, conversationId: paymentConvos.find((c: { campaign_id: string; }) => c.campaign_id === d.id)?.id }));
                      setAwaitingPaymentCampaigns(paymentData);
                 } else {
                     setAwaitingPaymentCampaigns([]);
@@ -415,11 +424,11 @@ export function CreatorDashboard() {
                 let matchingCount = 0;
                 if (creatorTags.length > 0) {
                     const matching = openCampaignsData.filter(c => 
-                        !appMap.has(c.id) && Array.isArray(c.tags) && (c.tags as string[]).some((tag: string) => creatorTags.includes(tag))
+                        !appMap.has(c.id) && c.tags?.some((tag: string) => creatorTags.includes(tag))
                     );
                     matchingCount = matching.length;
                 } else {
-                    matchingCount = openCampaignsData.length - appMap.size;
+                    matchingCount = Math.max(0, openCampaignsData.length - appMap.size);
                 }
                 setMatchingJobsCount(matchingCount);
 
@@ -445,7 +454,7 @@ export function CreatorDashboard() {
   useEffect(() => {
     if (!isLoadingActive && activeCampaigns) {
         const escrow = activeCampaigns.reduce((sum, c) => 
-            (c.status === 'IN_PROGRESS' || c.status === 'DELIVERED') ? sum + c.budget : sum
+            (c && (c.status === 'IN_PROGRESS' || c.status === 'DELIVERED')) ? sum + c.budget : sum
         , 0);
 
         setStats(prev => ({ ...prev, escrow }));
@@ -477,12 +486,12 @@ export function CreatorDashboard() {
 };
 
   const isLoading = isLoadingActive || isLoadingPending || conversationsLoading;
-  const hasActiveContracts = activeCampaigns && activeCampaigns.some(c => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED');
+  const hasActiveContracts = activeCampaigns && activeCampaigns.some((c: { status: string; }) => c.status === 'IN_PROGRESS' || c.status === 'DELIVERED');
   
-  const inProgressCampaigns = useMemo(() => activeCampaigns?.filter(c => ['IN_PROGRESS', 'DELIVERED', 'PENDING_CREATOR_ACCEPTANCE'].includes(c.status)) || [], [activeCampaigns]);
+  const inProgressCampaigns = useMemo(() => activeCampaigns?.filter((c: { status: string; }) => c && ['IN_PROGRESS', 'DELIVERED', 'PENDING_CREATOR_ACCEPTANCE'].includes(c.status)) || [], [activeCampaigns]);
   const allCampaigns = useMemo(() => [...inProgressCampaigns, ...awaitingPaymentCampaigns, ...inDiscussionCampaigns, ...pendingCampaigns], [inProgressCampaigns, awaitingPaymentCampaigns, inDiscussionCampaigns, pendingCampaigns]);
 
-  const filteredCampaigns = useMemo(() => {
+  const getFilteredCampaigns = () => {
     switch(activeFilter) {
       case 'active': return inProgressCampaigns;
       case 'payment': return awaitingPaymentCampaigns;
@@ -490,16 +499,17 @@ export function CreatorDashboard() {
       case 'pending': return pendingCampaigns;
       case 'all': 
       default:
-        // Create a Set of unique campaigns based on ID
         const uniqueCampaigns = new Map();
-        [...inProgressCampaigns, ...awaitingPaymentCampaigns, ...inDiscussionCampaigns, ...pendingCampaigns].forEach(c => {
-            if (!uniqueCampaigns.has(c.id)) {
+        allCampaigns.forEach(c => {
+            if (c && !uniqueCampaigns.has(c.id)) {
                 uniqueCampaigns.set(c.id, c);
             }
         });
         return Array.from(uniqueCampaigns.values());
     }
-  }, [activeFilter, inProgressCampaigns, awaitingPaymentCampaigns, inDiscussionCampaigns, pendingCampaigns]);
+  }
+
+  const filteredCampaigns = getFilteredCampaigns();
 
   return (
     <div>
@@ -533,7 +543,7 @@ export function CreatorDashboard() {
                   {t('creatorDashboard.tabs.active')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inProgressCampaigns.length}</Badge>
                 </TabsTrigger>
                 <TabsTrigger value="payment" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
-                  {t('creatorDashboard.tabs.payment')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{awaitingPaymentCampaigns.length}</Badge>
+                    {t('creatorDashboard.tabs.payment')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{awaitingPaymentCampaigns.length}</Badge>
                 </TabsTrigger>
                 <TabsTrigger value="discussion" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">
                   {t('creatorDashboard.tabs.discussion')} <Badge variant="secondary" className="ml-1.5 h-5 px-1.5">{inDiscussionCampaigns.length}</Badge>
@@ -545,7 +555,7 @@ export function CreatorDashboard() {
             <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background pointer-events-none md:hidden z-10"></div>
         </div>
         <TabsContent value="all">
-          <CampaignList campaigns={filteredCampaigns} onWithdraw={handleWithdrawApplication} listType="pending" />
+          <CampaignList campaigns={filteredCampaigns} onWithdraw={handleWithdrawApplication} listType="all" />
         </TabsContent>
         <TabsContent value="active">
           <CampaignList campaigns={inProgressCampaigns} onWithdraw={handleWithdrawApplication} listType="active" />

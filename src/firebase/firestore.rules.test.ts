@@ -1,3 +1,6 @@
+/**
+ * @vitest-environment node
+ */
 import {
   assertFails,
   assertSucceeds,
@@ -18,10 +21,10 @@ const intruderId = 'intruder';
 describe('Firestore Security Rules', () => {
   beforeAll(async () => {
     testEnv = await initializeTestEnvironment({
-      projectId: 'studio-6015308119-5a7a7',
+      projectId: 'test-project',
       firestore: {
         rules: readFileSync('firestore.rules', 'utf8'),
-        host: 'localhost',
+        host: '127.0.0.1',
         port: 8080,
       },
     });
@@ -43,14 +46,14 @@ describe('Firestore Security Rules', () => {
       await setDoc(doc(firestore, `brands/${brandId}`), { uid: brandId, name: 'Test Brand' });
     });
   });
-  
+
   describe('User Profile Rules', () => {
     it('should ALLOW a user to create their own profile', async () => {
       const newUser = 'new-user-id';
       const db = testEnv.authenticatedContext(newUser).firestore();
       await assertSucceeds(setDoc(doc(db, `users/${newUser}`), { uid: newUser, role: 'creator' }));
     });
-    
+
     it('should DENY a user from creating a profile for someone else', async () => {
         const newUser = 'new-user-id';
         const db = testEnv.authenticatedContext(newUser).firestore();
@@ -61,12 +64,12 @@ describe('Firestore Security Rules', () => {
         const db = testEnv.authenticatedContext(creatorId).firestore();
         await assertSucceeds(updateDoc(doc(db, `users/${creatorId}`), { displayName: 'New Name' }));
     });
-    
+
     it('should DENY a user from updating someone else\'s profile', async () => {
         const db = testEnv.authenticatedContext(intruderId).firestore();
         await assertFails(updateDoc(doc(db, `users/${creatorId}`), { displayName: 'Hacked' }));
     });
-    
+
     it('should DENY a creator from updating admin-only fields on their profile', async () => {
         const db = testEnv.authenticatedContext(creatorId).firestore();
         await assertFails(updateDoc(doc(db, `users/${creatorId}`), { adminBadge: true }));
@@ -76,7 +79,7 @@ describe('Firestore Security Rules', () => {
 
   describe('Campaign Rules', () => {
     const campaignId = 'campaign-123';
-    
+
     beforeEach(async () => {
         await testEnv.withSecurityRulesDisabled(async (context) => {
             const firestore = context.firestore();
@@ -93,12 +96,12 @@ describe('Firestore Security Rules', () => {
       const db = testEnv.authenticatedContext(creatorId).firestore();
       await assertFails(setDoc(doc(db, 'campaigns/creator-campaign'), { brand_id: creatorId, title: 'Creator Campaign' }));
     });
-    
+
     it('should ALLOW a creator to read any campaign', async () => {
         const db = testEnv.authenticatedContext(creatorId).firestore();
         await assertSucceeds(getDoc(doc(db, `campaigns/${campaignId}`)));
     });
-    
+
     it('should ALLOW a brand to read their OWN campaign', async () => {
         const db = testEnv.authenticatedContext(brandId).firestore();
         await assertSucceeds(getDoc(doc(db, `campaigns/${campaignId}`)));
@@ -142,12 +145,12 @@ describe('Firestore Security Rules', () => {
         const db = testEnv.authenticatedContext(creatorId).firestore();
         await assertFails(setDoc(doc(db, `campaign-applications/fraud-app`), { creator_id: intruderId, campaignId: campaignId }));
     });
-    
+
     it('should ALLOW the brand owner to read an application', async () => {
         const db = testEnv.authenticatedContext(brandId).firestore();
         await assertSucceeds(getDoc(doc(db, `campaign-applications/${applicationId}`)));
     });
-    
+
     it('should ALLOW the creator who applied to read their application', async () => {
         const db = testEnv.authenticatedContext(creatorId).firestore();
         await assertSucceeds(getDoc(doc(db, `campaign-applications/${applicationId}`)));
@@ -157,7 +160,7 @@ describe('Firestore Security Rules', () => {
         const db = testEnv.authenticatedContext(anotherCreatorId).firestore();
         await assertFails(getDoc(doc(db, `campaign-applications/${applicationId}`)));
     });
-    
+
     it('should ALLOW the creator to delete their own application', async () => {
         const db = testEnv.authenticatedContext(creatorId).firestore();
         await assertSucceeds(deleteDoc(doc(db, `campaign-applications/${applicationId}`)));
@@ -196,7 +199,7 @@ describe('Firestore Security Rules', () => {
 
         const brandDb = testEnv.authenticatedContext(brandId).firestore();
         const creatorDb = testEnv.authenticatedContext(creatorId).firestore();
-        
+
         await assertFails(updateDoc(doc(brandDb, `conversations/${conversationId}/messages/${messageId}`), { text: 'edited' }));
         await assertFails(deleteDoc(doc(creatorDb, `conversations/${conversationId}/messages/${messageId}`)));
     });

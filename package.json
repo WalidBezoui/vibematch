@@ -13,7 +13,8 @@
     "test": "vitest",
     "test:unit": "vitest src/components",
     "test:rules": "vitest src/firebase",
-    "test:emu": "firebase emulators:exec 'npm test'"
+    "emu:start": "firebase emulators:start --import=./.firebase/data --export-on-exit",
+    "test:emu": "vitest"
   },
   "dependencies": {
     "@firebase/rules-unit-testing": "^5.0.0",
@@ -80,7 +81,7 @@
     "jsdom": "^27.2.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "ts-jest": "^29.4.5",
+    "ts-.jest": "^29.4.5",
     "typescript": "^5",
     "vite": "^5.0.0",
     "vitest": "^1.6.0"
