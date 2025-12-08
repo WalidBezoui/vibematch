@@ -1061,7 +1061,7 @@
             "billingMandate": {
                 "title": "Billing Mandate",
                 "content": "To facilitate operations, the Creator grants VibeMatch a Billing Mandate to:",
-                "item1": "Issue invoices to the Brand on the Creator's behalf.",
+                "item1": "Issue invoices in the name and on behalf of the Creator addressed to the Brand, in accordance with the self-billing rules applicable in Morocco.",
                 "item2": "Collect funds and deduct a 15% (tax-exclusive) platform commission before transferring the net balance within five (5) business days."
             },
             "ip": {
