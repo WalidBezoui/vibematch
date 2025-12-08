@@ -215,7 +215,7 @@ const EditCampaignPageSkeleton = () => (
     </div>
 );
 
-export default function EditCampaignPage() {
+export function EditCampaignsPage() {
   const { campaignId } = useParams();
   const router = useRouter();
   const firestore = useFirestore();
