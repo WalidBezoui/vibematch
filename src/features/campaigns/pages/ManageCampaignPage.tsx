@@ -117,7 +117,7 @@ const CampaignInfoCard = ({ campaign }: { campaign: any }) => {
     )
 }
 
-export default function ManageCampaignPage() {
+export function ManageCampaignPage() {
     const { campaignId } = useParams();
     const router = useRouter();
     const firestore = useFirestore();
