@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
@@ -33,7 +34,7 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import CreatorProfileSheet from '@/features/creators/components/CreatorProfileSheet.tsx';
+import { CreatorProfileSheet } from '@/features/creators';
 import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -813,3 +814,5 @@ export default function ChatView({ conversationId, onBack }: { conversationId: s
         </main>
     );
 }
+
+    
