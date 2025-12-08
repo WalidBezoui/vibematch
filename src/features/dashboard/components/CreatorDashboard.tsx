@@ -415,7 +415,7 @@ export function CreatorDashboard() {
                 let matchingCount = 0;
                 if (creatorTags.length > 0) {
                     const matching = openCampaignsData.filter(c => 
-                        !appMap.has(c.id) && c.tags?.some((tag: string) => creatorTags.includes(tag))
+                        !appMap.has(c.id) && Array.isArray(c.tags) && (c.tags as string[]).some((tag: string) => creatorTags.includes(tag))
                     );
                     matchingCount = matching.length;
                 } else {
