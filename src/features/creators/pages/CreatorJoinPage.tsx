@@ -5,7 +5,7 @@ import { CreatorJoinForm } from '@/features/creators';
 import { PromoBanner } from '@/components/promo-banner';
 import { useLanguage } from '@/context/language-context';
 
-export default function CreatorJoinPage() {
+export function CreatorJoinPage() {
   const { dir } = useLanguage();
   return (
     <>

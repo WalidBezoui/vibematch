@@ -23,7 +23,7 @@ const brandSignupSchema = z.object({
 
 type BrandSignupForm = z.infer<typeof brandSignupSchema>;
 
-export default function BrandSignupPage() {
+export function BrandSignupPage() {
   const router = useRouter();
   const { t } = useLanguage();
   const firestore = useFirestore();

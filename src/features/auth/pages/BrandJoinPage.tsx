@@ -27,7 +27,7 @@ const brandApplicationSchema = z.object({
 
 type BrandApplicationForm = z.infer<typeof brandApplicationSchema>;
 
-export default function BrandWaitlistPage() {
+export function BrandJoinPage() {
   const router = useRouter();
   const { t } = useLanguage();
   const firestore = useFirestore();

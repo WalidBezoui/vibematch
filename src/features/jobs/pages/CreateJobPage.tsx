@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -29,7 +30,7 @@ const campaignSchema = z.object({
 
 type CampaignForm = z.infer<typeof campaignSchema>;
 
-export default function CreateCampaignPage() {
+export function CreateJobPage() {
   const router = useRouter();
   const firestore = useFirestore();
   const { user, isUserLoading } = useUser();

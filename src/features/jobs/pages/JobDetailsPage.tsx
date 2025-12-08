@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -163,7 +164,7 @@ const BrandWorkspace = ({ job, jobId, jobRef }: { job: any, jobId: string, jobRe
 }
 
 
-export default function JobPage() {
+export function JobDetailsPage() {
     const { jobId } = useParams();
     const firestore = useFirestore();
     const router = useRouter();

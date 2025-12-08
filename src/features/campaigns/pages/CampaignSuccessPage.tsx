@@ -5,7 +5,7 @@ import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
 import { Download, PartyPopper } from 'lucide-react';
 
-export default function PaymentSuccessPage() {
+export function CampaignSuccessPage() {
   const { t } = useLanguage();
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4">

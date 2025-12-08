@@ -138,7 +138,7 @@ const CreatorCard = ({ creator, activeCampaigns, onViewProfile }: { creator: Cre
     )
 }
 
-export default function CreatorDiscoveryPage() {
+export function CreatorsPage() {
     const firestore = useFirestore();
     const { user } = useUser();
     const { t } = useLanguage();
