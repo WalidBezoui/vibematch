@@ -136,7 +136,19 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
       
       try {
-          return msgFormat.format(formatOptions);
+        const parts = msgFormat.formatToParts(formatOptions);
+        return parts.map((part, index) => {
+            if (part.type === 'literal') {
+                return part.value;
+            }
+            // The key for the rich text component is the `value` of the part.
+            const richTextElement = (formatOptions as any)[part.value];
+            if (typeof richTextElement === 'function') {
+                // Ensure a unique key is passed to the component
+                return React.cloneElement(richTextElement(part.value), { key: index });
+            }
+            return part.value;
+        });
       } catch (e) {
           console.error(`Error formatting message for key "${key}" with options:`, e, formatOptions);
           return formatKey(key);
