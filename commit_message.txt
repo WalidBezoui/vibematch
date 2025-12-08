@@ -1,0 +1,18 @@
+fix: Resolve i18n errors, component imports, and legal term clarity
+
+This commit provides a comprehensive set of fixes addressing multiple bugs across the application, significantly improving stability, correctness, and legal robustness.
+
+Internationalization (i18n) Overhaul:
+
+Invalid Syntax Corrected: Performed a full audit and fixed all instances of invalid ICU message format syntax (e.g., {{variable}} changed to {variable}) and incorrect pluralization rules across all language files (en.json, fr.json, ar.json).
+JSON Validity: Resolved critical JSON parsing errors by correcting a missing key quote in fr.json and removing a duplicate deliverableTypes key in en.json.
+Core Translation Logic: Reworked the central t() translation function to prevent crashes when a translation key is missing. It now provides a safe, human-readable fallback instead of returning a raw key, which previously caused MALFORMED_ARGUMENT errors.
+React Key Warnings: Eliminated the "missing key" prop warning by ensuring the rich text rendering logic in the language-context assigns unique keys to all dynamically generated elements.
+
+Component Import/Export Errors:
+
+Resolved multiple Element type is invalid and Export ... doesn't exist build errors by correcting component naming and export/import mismatches. This includes renaming ManageApplicationsPage to ManageCampaignPage and CreatorDiscoveryPage to CreatorsPage, and fixing the export path for InviteToCampaignDialog.
+
+Legal & Terms of Service Enhancement:
+
+Strengthened the creator terms by clarifying the "Billing Mandate" clause. The text now explicitly references "self-billing rules applicable in Morocco," mitigating a potential tax and accounting risk.
