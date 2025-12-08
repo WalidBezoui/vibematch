@@ -36,11 +36,16 @@ function getNestedTranslation(translations: Translations, key: string): any {
   return key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : undefined, translations);
 }
 
-// Function to convert a string from CAMEL_CASE or PASCAL_CASE to "Title Case"
 function formatKey(key: string) {
     if (!key || typeof key !== 'string') return '';
     const lastPart = key.split('.').pop() || '';
-    const words = lastPart.replace(/_/g, ' ').split(/(?=[A-Z])/);
+    
+    // Split by uppercase letters or underscores, then join with spaces.
+    const words = lastPart
+      .split(/(?=[A-Z])|_/)
+      .map(word => word.trim())
+      .filter(Boolean);
+
     return words
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
@@ -98,27 +103,23 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     const currentTranslations = translations[language];
     let message = getNestedTranslation(currentTranslations, key);
 
-    // Fallback to English if the key is not found in the current language
     if (message === undefined) {
       message = getNestedTranslation(translations['EN'], key);
     }
     
-    // If still not found, return a formatted, safe version of the key itself.
     if (message === undefined) {
         return formatKey(key);
     }
 
-    // If the message is an object and the caller wants the object (e.g., for arrays in JSON)
     if (typeof message === 'object' && returnObjects) {
       return message;
     }
     
-    // If the message is not a string, it's likely an object or array that wasn't meant to be formatted.
     if (typeof message !== 'string') {
-      return formatKey(key);
+       console.warn(`Translation key "${key}" did not return a string. Fallback to formatted key.`);
+       return formatKey(key);
     }
 
-    // Check if there are any actual values to format
     const hasFormatOptions = Object.keys(formatOptions).length > 0;
 
     if (hasFormatOptions) {
@@ -139,15 +140,19 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
         const parts = msgFormat.formatToParts(formatOptions);
         return parts.map((part, index) => {
             if (part.type === 'literal') {
-                return part.value;
+                return <React.Fragment key={index}>{part.value}</React.Fragment>;
             }
-            // The key for the rich text component is the `value` of the part.
+            
             const richTextElement = (formatOptions as any)[part.value];
+
             if (typeof richTextElement === 'function') {
+                const element = richTextElement(part.value);
                 // Ensure a unique key is passed to the component
-                return React.cloneElement(richTextElement(part.value), { key: index });
+                 if (React.isValidElement(element)) {
+                    return React.cloneElement(element, { key: index });
+                }
             }
-            return part.value;
+            return <React.Fragment key={index}>{part.value}</React.Fragment>;
         });
       } catch (e) {
           console.error(`Error formatting message for key "${key}" with options:`, e, formatOptions);
