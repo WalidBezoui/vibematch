@@ -65,18 +65,18 @@
             "yourOffer": "Votre Offre",
             "youProposed": "Vous avez proposé un budget de",
             "offerReceived": "Offre Reçue",
-            "theyProposed": "{{name}} a proposé un budget de"
+            "theyProposed": "{name} a proposé un budget de"
         },
         "accept": "Accepter",
         "reject": "Rejeter",
         "accepted": "Acceptée",
         "rejected": "Rejetée",
         "superseded": "Remplacée",
-        "eventAccepted": "Offre acceptée par {{role}} à {{amount}} MAD.",
+        "eventAccepted": "Offre acceptée par {role} à {amount} MAD.",
         "eventFunded": "Les fonds ont été sécurisés par la marque.",
-        "eventAcceptedAwaitingFunds": "تم قبول العرض من قبل {{role}}. في انتظار التمويل من العلامة التجارية.",
+        "eventAcceptedAwaitingFunds": "تم قبول العرض من قبل {role}. في انتظار التمويل من العلامة التجارية.",
         "waitingResponse": "En attente de la réponse de l'autre partie...",
-        "acceptRate": "Accepter le tarif ({{amount}} MAD)",
+        "acceptRate": "Accepter le tarif ({amount} MAD)",
         "or": "OU",
         "proposeNew": "Proposer un nouveau tarif",
         "decline": "Refuser",
@@ -126,7 +126,7 @@
             "escrowSubtitle": "الأموال الحقيقية المقفلة للمشاريع النشطة.",
             "plannedBudgetSubtitle": "مجموع ميزانيات حملاتك النشطة."
         },
-        "createdOn": "تم الإنشاء في {{date}}",
+        "createdOn": "تم الإنشاء في {date}",
         "editAction": "تعديل",
         "deleteAction": "حذف",
         "deleteDialog": {
@@ -154,12 +154,12 @@
             "title": "مركز الإجراءات",
             "payment": "دفع",
             "pay": "ادفع",
-            "fundCreator": "مول الصفقة مع {{name}}",
+            "fundCreator": "مول الصفقة مع {name}",
             "applicants": "مرشحون",
             "review": "مراجعة",
-            "newApplicants": "{{count}} مرشح جديد للمراجعة.",
+            "newApplicants": "{count, plural, one {1 مرشح جديد} other {# مرشحين جدد}} للمراجعة.",
             "message": "رسالة",
-            "newMessage": "{{name}} أرسل لك رسالة جديدة.",
+            "newMessage": "{name} أرسل لك رسالة جديدة.",
             "reply": "رد",
             "aCreator": "مبدع"
         },
@@ -181,9 +181,9 @@
             "escrow": "الأموال في الضمان",
             "escrowSubtitle": "الأموال مؤمنة للمشاريع النشطة.",
             "matching": "الفرص المطابقة",
-            "matchingSubtitle": "{{value}} حملة تبحث عن ملف شخصي مثلك.",
+            "matchingSubtitle": "{value} حملة تبحث عن ملف شخصي مثلك.",
             "views": "مشاهدات الملف الشخصي (7 أيام)",
-            "viewsSubtitle": "{{value}} علامة تجارية شاهدت ملفك الشخصي اليوم."
+            "viewsSubtitle": "{value} علامة تجارية شاهدت ملفك الشخصي اليوم."
         },
         "tabs": {
             "active": "نشطة",
@@ -199,7 +199,7 @@
         },
         "deleteDialog": {
             "title": "هل أنت متأكد؟",
-            "description": "سيؤدي هذا إلى إزالة طلبك للحملة \"{{campaignTitle}}\". لن تتمكن العلامة التجارية من رؤيته بعد الآن. يمكنك التقديم مرة أخرى لاحقًا إذا كانت الحملة لا تزال مفتوحة.",
+            "description": "سيؤدي هذا إلى إزالة طلبك للحملة \"{campaignTitle}\". لن تتمكن العلامة التجارية من رؤيته بعد الآن. يمكنك التقديم مرة أخرى لاحقًا إذا كانت الحملة لا تزال مفتوحة.",
             "confirm": "نعم، اسحب"
         },
         "emptyStates": {
@@ -224,7 +224,7 @@
     "manageApplicationsPage": {
         "title": "إدارة الطلبات",
         "description": "راجع واختر أفضل المبدعين لحملتك:",
-        "hiredDescription": "لقد وظفت {{hired}} من أصل {{total}} مبدع لهذه الحملة.",
+        "hiredDescription": "لقد وظفت {hired} من أصل {total} مبدع لهذه الحملة.",
         "hiredLabel": "تم توظيفهم",
         "goalLabel": "الهدف",
         "tabs": {
@@ -255,7 +255,7 @@
         "trustScore": "نقاط الثقة",
         "coverLetter": "خطاب التقديم",
         "readFullLetter": "اقرأ الخطاب كاملاً",
-        "letterFrom": "خطاب التقديم من {{name}}",
+        "letterFrom": "خطاب التقديم من {name}",
         "close": "إغلاق",
         "negotiateButton": "ناقش وتفاوض",
         "acceptButton": "اقبل ووظف",
@@ -622,7 +622,7 @@
                 "description": "شكراً لتقديمك لتكون من المبدعين المؤسسين."
             }
         },
-        "stepCounter": "الخطوة {{current}} من {{total}}",
+        "stepCounter": "الخطوة {current} من {total}",
         "backButton": "رجوع",
         "nextButton": "الخطوة التالية",
         "nextButtonText": "التالي:",
@@ -915,19 +915,19 @@
         }
     },
     "inviteDialog": {
-        "title": "دعوة {{name}}",
+        "title": "دعوة {name}",
         "description": "اختر إحدى حملاتك النشطة وأرسل رسالة شخصية.",
         "campaignLabel": "الحملة",
         "campaignPlaceholder": "اختر حملة بها أماكن شاغرة...",
         "noCampaigns": "لا توجد حملات نشطة بها أماكن شاغرة.",
-        "hiredText": "تم توظيف {{hired}} من أصل {{total}}",
+        "hiredText": "تم توظيف {hired} من أصل {total}",
         "messageLabel": "الرسالة",
         "messagePlaceholder": "Rédigez un message bref au créateur...",
         "sendButton": "إرسال الدعوة",
-        "defaultMessage": "مرحبًا {{name}}، نعتقد أن ملفك الشخصي سيكون مناسبًا جدًا لحملتنا ونود دعوتك للتقديم!",
+        "defaultMessage": "مرحبًا {name}، نعتقد أن ملفك الشخصي سيكون مناسبًا جدًا لحملتنا ونود دعوتك للتقديم!",
         "validation": {
-            "alreadyHired": "{{name}} هو بالفعل جزء من هذه الحملة.",
-            "alreadyApplied": "{{name}} قد قدم بالفعل طلبًا لهذه الحملة."
+            "alreadyHired": "{name} هو بالفعل جزء من هذه الحملة.",
+            "alreadyApplied": "{name} قد قدم بالفعل طلبًا لهذه الحملة."
         },
         "toast": {
             "error": {
@@ -937,7 +937,7 @@
             },
             "success": {
                 "title": "تم إرسال الدعوة!",
-                "description": "{{name}} تمت دعوته إلى حملتك."
+                "description": "{name} تمت دعوته إلى حملتك."
             }
         }
     },
@@ -968,7 +968,7 @@
         "form": {
             "tariff": {
                 "title": "تأكيد تعريفتك",
-                "description": "الميزانية المقترحة من العلامة التجارية هي {{budget}} درهم. يمكنك تعديل هذا المبلغ إذا لزم الأمر.",
+                "description": "الميزانية المقترحة من العلامة التجارية هي {budget} درهم. يمكنك تعديل هذا المبلغ إذا لزم الأمر.",
                 "warning": "ملاحظة: عرضك أعلى من ميزانية العلامة التجارية."
             },
             "coverLetter": {
@@ -1010,7 +1010,7 @@
         "brandMandate": "أوافق على شروط الاستخدام وأفوض VibeMatch صراحة بتأمين هذه الأموال في حساب ضمان حتى يتم التحقق من التسليمات. أقر بأن هذا الدفع يبرئ ذمتي من الدين تجاه المبدع."
       },
       "cancel": "إلغاء",
-      "pay": "ادفع {{total}} درهم",
+      "pay": "ادفع {total} درهم",
       "processing": "جارٍ المعالجة...",
       "processingDescription": "محاكاة معاملة آمنة.",
       "toast": {
@@ -1022,7 +1022,7 @@
     },
     "termsPage": {
         "title": "شروط الاستخدام",
-        "lastUpdated": "آخر تحديث: {{date}}",
+        "lastUpdated": "آخر تحديث: {date}",
         "discrepancyNotice": "في حالة وجود تعارض، تسود النسخة الفرنسية.",
         "brand": {
             "title": "شروط الاستخدام (جانب العلامات التجارية)",
@@ -1091,9 +1091,9 @@
                 "mandate": {
                     "title": "2. تفويض الفوترة والتحصيل",
                     "p1": "لتبسيط الإدارة، يمنح المبدع تفويضًا صريحًا لـ VibeMatch من أجل:",
-                    "li1": "إصدار الفواتير باسم ولحساب المبدع للعملاء (العلامات التجارية).",
-                    "li2": "تحصيل الأموال المقابلة في حساب ضمان (Escrow).",
-                    "li3": "خصم عمولة VibeMatch قبل تحويل الرصيد."
+                    "li1": "إصدار الفواتير باسم ولحساب المبدع للعملاء (العلامات التجارية)، وفقًا لقواعد الفوترة الذاتية المعمول بها في المغرب.",
+                    "li2": "يحتفظ المبدع بالمسؤولية الضريبية الكاملة عن هذه الفواتير ويجب عليه إدراجها في إقراراته الضريبية الخاصة (Auto-Entrepreneur، إلخ).",
+                    "li3": "VibeMatch مفوض بتحصيل الأموال في حساب ضمان وخصم عمولة المنصة قبل تحويل الرصيد الصافي."
                 },
                 "obligations": {
                     "title": "3. التزامات المبدع",

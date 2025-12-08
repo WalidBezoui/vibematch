@@ -65,18 +65,18 @@
             "yourOffer": "Votre Offre",
             "youProposed": "Vous avez proposé un budget de",
             "offerReceived": "Offre Reçue",
-            "theyProposed": "{{name}} a proposé un budget de"
+            "theyProposed": "{name} a proposé un budget de"
         },
         "accept": "Accepter",
         "reject": "Rejeter",
         "accepted": "Acceptée",
         "rejected": "Rejetée",
         "superseded": "Remplacée",
-        "eventAccepted": "Offre acceptée par {{role}} à {{amount}} MAD.",
+        "eventAccepted": "Offre acceptée par {role} à {amount} MAD.",
         "eventFunded": "Les fonds ont été sécurisés par la marque.",
-        "eventAcceptedAwaitingFunds": "Offre acceptée par {{role}}. En attente du financement par la marque.",
+        "eventAcceptedAwaitingFunds": "Offre acceptée par {role}. En attente du financement par la marque.",
         "waitingResponse": "En attente de la réponse de l'autre partie...",
-        "acceptRate": "Accepter le tarif ({{amount}} MAD)",
+        "acceptRate": "Accepter le tarif ({amount} MAD)",
         "or": "OU",
         "proposeNew": "Proposer un nouveau tarif",
         "decline": "Refuser",
@@ -126,7 +126,7 @@
             "escrowSubtitle": "Argent réel bloqué pour les projets actifs.",
             "plannedBudgetSubtitle": "Somme de vos campagnes actives."
         },
-        "createdOn": "Créée le {{date}}",
+        "createdOn": "Créée le {date}",
         "editAction": "Modifier",
         "deleteAction": "Supprimer",
         "deleteDialog": {
@@ -154,12 +154,12 @@
             "title": "CENTRE D'ACTIONS",
             "payment": "PAIEMENT",
             "pay": "Payer",
-            "fundCreator": "Financez l'accord avec {{name}}",
+            "fundCreator": "Financez l'accord avec {name}",
             "applicants": "CANDIDATS",
             "review": "Examiner",
             "newApplicants": "{count, plural, one {1 nouveau candidat} other {# nouveaux candidats}} à examiner.",
             "message": "MESSAGE",
-            "newMessage": "{{name}} vous a envoyé un nouveau message.",
+            "newMessage": "{name} vous a envoyé un nouveau message.",
             "reply": "Répondre",
             "aCreator": "un créateur"
         },
@@ -181,9 +181,9 @@
             "escrow": "Fonds sous Séquestre",
             "escrowSubtitle": "Argent sécurisé pour les projets actifs.",
             "matching": "Opportunités Compatibles",
-            "matchingSubtitle": "{{value}} campagnes recherchent un profil comme le vôtre.",
+            "matchingSubtitle": "{value} campagnes recherchent un profil comme le vôtre.",
             "views": "Vues du Profil (7j)",
-            "viewsSubtitle": "{{value}} marques ont vu votre profil aujourd'hui."
+            "viewsSubtitle": "{value} marques ont vu votre profil aujourd'hui."
         },
         "tabs": {
             "active": "Actives",
@@ -199,7 +199,7 @@
         },
         "deleteDialog": {
             "title": "Êtes-vous sûr ?",
-            "description": "Cela retirera votre candidature pour \"{{campaignTitle}}\". La marque ne pourra plus la voir. Vous pourrez postuler à nouveau plus tard si la campagne est toujours ouverte.",
+            "description": "Cela retirera votre candidature pour \"{campaignTitle}\". La marque ne pourra plus la voir. Vous pourrez postuler à nouveau plus tard si la campagne est toujours ouverte.",
             "confirm": "Oui, Retirer"
         },
         "emptyStates": {
@@ -224,7 +224,7 @@
     "manageApplicationsPage": {
         "title": "Gérer les Candidatures",
         "description": "Examinez et sélectionnez les meilleurs créateurs pour votre campagne :",
-        "hiredDescription": "Vous avez recruté {{hired}} sur {{total}} créateurs pour cette campagne.",
+        "hiredDescription": "Vous avez recruté {hired} sur {total} créateurs pour cette campagne.",
         "hiredLabel": "Recrutés",
         "goalLabel": "Objectif",
         "tabs": {
@@ -255,7 +255,7 @@
         "trustScore": "Score de Confiance",
         "coverLetter": "Lettre de Motivation",
         "readFullLetter": "Lire la lettre complète",
-        "letterFrom": "Lettre de motivation de {{name}}",
+        "letterFrom": "Lettre de motivation de {name}",
         "close": "Fermer",
         "negotiateButton": "Discuter & Négocier",
         "acceptButton": "Accepter & Recruter",
@@ -614,7 +614,7 @@
                 "description": "Merci d'avoir postulé pour devenir un Créateur Fondateur."
             }
         },
-        "stepCounter": "Étape {{current}} sur {{total}}",
+        "stepCounter": "Étape {current} sur {total}",
         "backButton": "Retour",
         "nextButton": "Étape suivante",
         "nextButtonText": "Suivant:",
@@ -913,19 +913,19 @@
         }
     },
     "inviteDialog": {
-        "title": "Inviter {{name}}",
+        "title": "Inviter {name}",
         "description": "Sélectionnez une de vos campagnes actives et envoyez un message personnalisé.",
         "campaignLabel": "Campagne",
         "campaignPlaceholder": "Sélectionnez une campagne avec des places libres...",
         "noCampaigns": "Aucune campagne active avec des places libres.",
-        "hiredText": "{{hired}}/{{total}} recrutés",
+        "hiredText": "{hired}/{total} recrutés",
         "messageLabel": "Message",
         "messagePlaceholder": "Rédigez un message bref au créateur...",
         "sendButton": "Envoyer l'Invitation",
-        "defaultMessage": "Bonjour {{name}}, nous pensons que votre profil serait parfait pour notre campagne et nous aimerions vous inviter à postuler !",
+        "defaultMessage": "Bonjour {name}, nous pensons que votre profil serait parfait pour notre campagne et nous aimerions vous inviter à postuler !",
         "validation": {
-            "alreadyHired": "{{name}} fait déjà partie de cette campagne.",
-            "alreadyApplied": "{{name}} a déjà postulé à cette campagne."
+            "alreadyHired": "{name} fait déjà partie de cette campagne.",
+            "alreadyApplied": "{name} a déjà postulé à cette campagne."
         },
         "toast": {
             "error": {
@@ -935,7 +935,7 @@
             },
             "success": {
                 "title": "Invitation Envoyée !",
-                "description": "{{name}} a été invité(e) à votre campagne."
+                "description": "{name} a été invité(e) à votre campagne."
             }
         }
     },
@@ -966,7 +966,7 @@
         "form": {
             "tariff": {
                 "title": "Confirmez Votre Tarif",
-                "description": "Le budget proposé par la marque est de {{budget}} DH. Vous pouvez ajuster ce montant si nécessaire.",
+                "description": "Le budget proposé par la marque est de {budget} DH. Vous pouvez ajuster ce montant si nécessaire.",
                 "warning": "Note : Votre offre est supérieure au budget de la marque."
             },
             "coverLetter": {
@@ -1008,7 +1008,7 @@
         "brandMandate": "J'accepte les Conditions d'Utilisation et je donne mandat à VibeMatch pour séquestrer ces fonds jusqu'à validation des livrables. Je reconnais que ce paiement est libératoire de ma dette envers le Créateur."
       },
       "cancel": "Annuler",
-      "pay": "Payer {{total}} MAD",
+      "pay": "Payer {total} MAD",
       "processing": "Traitement...",
       "processingDescription": "Simulation d'une transaction sécurisée.",
       "toast": {
@@ -1020,7 +1020,7 @@
     },
     "termsPage": {
         "title": "Conditions Générales d'Utilisation",
-        "lastUpdated": "Dernière mise à jour : {{date}}",
+        "lastUpdated": "Dernière mise à jour : {date}",
         "discrepancyNotice": "En cas de divergence, la version française fait foi.",
         "brand": {
             "title": "CONDITIONS GENERALES D'UTILISATION (CGU) - CLIENTS (MARQUES)",
@@ -1089,7 +1089,7 @@
                 "mandate": {
                     "title": "ARTICLE 2 : MANDAT DE FACTURATION ET D'ENCAISSEMENT",
                     "p1": "Pour simplifier la gestion administrative, le Créateur donne expressément MANDAT DE FACTURATION à VibeMatch. En conséquence :",
-                    "li1": "VibeMatch est autorisé à générer et émettre les factures au nom et pour le compte du Créateur à destination des Clients.",
+                    "li1": "VibeMatch est autorisé à émettre les factures au nom et pour le compte du Créateur à destination des Clients, conformément aux règles du self-billing applicables au Maroc.",
                     "li2": "Le Créateur conserve l'entière responsabilité fiscale de ces factures et doit les intégrer dans ses propres déclarations fiscales (Auto-Entrepreneur, etc.).",
                     "li3": "VibeMatch est autorisé à encaisser les fonds sur un compte séquestre et à déduire la Commission de la Plateforme avant de reverser le solde net."
                 },
@@ -1112,7 +1112,7 @@
                 },
                 "circumvention": {
                     "title": "ARTICLE 5 : NON-CONTOURNEMENT (ANTI-CIRCUMVENTION)",
-                    "p1": "Le Créateur s'interdit formellement de solliciter, contracter, ou accepter des paiements en direct d'un Client présenté par VibeMatch, et ce, pendant une durée de 12 mois suivant la mise en relation initiale. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10.000 MAD (ou 20% du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts."
+                    "p1": "Le Créateur s'interdit formellement de solliciter, contracter avec, ou accepter des paiements en direct d'un Client présenté par VibeMatch, et ce, pendant une durée de 12 mois suivant la mise en relation initiale. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10.000 MAD (ou 20% du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts."
                 },
                 "rights": {
                     "title": "ARTICLE 6 : PROPRIÉTÉ INTELLECTUELLE & CESSION DE DROITS",

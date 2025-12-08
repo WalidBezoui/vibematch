@@ -65,18 +65,18 @@
             "yourOffer": "Your Offer",
             "youProposed": "You proposed a budget of",
             "offerReceived": "Offer Received",
-            "theyProposed": "{{name}} proposed a budget of"
+            "theyProposed": "{name} proposed a budget of"
         },
         "accept": "Accept",
         "reject": "Reject",
         "accepted": "Accepted",
         "rejected": "Rejected",
         "superseded": "Superseded",
-        "eventAccepted": "Offer accepted by {{role}} at {{amount}} MAD.",
+        "eventAccepted": "Offer accepted by {role} at {amount} MAD.",
         "eventFunded": "The funds have been secured by the brand.",
-        "eventAcceptedAwaitingFunds": "Offer accepted by {{role}}. Awaiting funds from the Brand.",
+        "eventAcceptedAwaitingFunds": "Offer accepted by {role}. Awaiting funds from the Brand.",
         "waitingResponse": "Waiting for the other party's response...",
-        "acceptRate": "Accept Rate ({{amount}} MAD)",
+        "acceptRate": "Accept Rate ({amount} MAD)",
         "or": "OR",
         "proposeNew": "Propose New Rate",
         "decline": "Decline",
@@ -126,12 +126,12 @@
             "escrowSubtitle": "Real money locked for active projects.",
             "plannedBudgetSubtitle": "Sum of your active campaigns."
         },
-        "createdOn": "Created on {{date}}",
+        "createdOn": "Created on {date}",
         "editAction": "Edit",
         "deleteAction": "Delete",
         "deleteDialog": {
             "title": "Are you sure?",
-            "description": "This will permanently delete your campaign and all its data. This action cannot be undone.",
+            "description": "This will permanently delete your campaign \"{campaignTitle}\" and all its data. This action cannot be undone.",
             "cancel": "Cancel",
             "confirm": "Yes, Delete"
         },
@@ -154,12 +154,12 @@
             "title": "ACTION CENTER",
             "payment": "PAYMENT",
             "pay": "Pay",
-            "fundCreator": "Fund the deal with {{name}}",
+            "fundCreator": "Fund the deal with {name}",
             "applicants": "APPLICANTS",
             "review": "Review",
-            "newApplicants": "{{count, plural, one {1 new applicant} other {# new applicants}} to review.",
+            "newApplicants": "{count, plural, one {1 new applicant} other {# new applicants}} to review.",
             "message": "MESSAGE",
-            "newMessage": "{{name}} has sent you a new message.",
+            "newMessage": "{name} has sent you a new message.",
             "reply": "Reply",
             "aCreator": "a creator"
         },
@@ -181,9 +181,9 @@
             "escrow": "Funds in Escrow",
             "escrowSubtitle": "Money secured for active projects.",
             "matching": "Matching Opportunities",
-            "matchingSubtitle": "{{value}} campaigns are looking for a profile like yours.",
+            "matchingSubtitle": "{value} campaigns are looking for a profile like yours.",
             "views": "Profile Views (7d)",
-            "viewsSubtitle": "{{value}} brands saw your profile today."
+            "viewsSubtitle": "{value} brands saw your profile today."
         },
         "tabs": {
             "active": "Active",
@@ -199,7 +199,7 @@
         },
         "deleteDialog": {
             "title": "Are you sure?",
-            "description": "This will remove your application for \"{{campaignTitle}}\". The brand will no longer be able to see it. You can apply again later if the campaign is still open.",
+            "description": "This will remove your application for \"{campaignTitle}\". The brand will no longer be able to see it. You can apply again later if the campaign is still open.",
             "confirm": "Yes, Withdraw"
         },
         "emptyStates": {
@@ -224,7 +224,7 @@
     "manageApplicationsPage": {
         "title": "Manage Applications",
         "description": "Review and select the best creators for your campaign:",
-        "hiredDescription": "You've hired {{hired}} out of {{total}} creators for this campaign.",
+        "hiredDescription": "You've hired {hired} out of {total} creators for this campaign.",
         "hiredLabel": "Hired",
         "goalLabel": "Goal",
         "tabs": {
@@ -255,7 +255,7 @@
         "trustScore": "Trust Score",
         "coverLetter": "Cover Letter",
         "readFullLetter": "Read full letter",
-        "letterFrom": "Cover letter from {{name}}",
+        "letterFrom": "Cover letter from {name}",
         "close": "Close",
         "negotiateButton": "Discuss & Negotiate",
         "acceptButton": "Accept & Hire",
@@ -614,7 +614,7 @@
                 "description": "Thank you for applying to be a Founding Creator."
             }
         },
-        "stepCounter": "Step {{current}} of {{total}}",
+        "stepCounter": "Step {current} of {total}",
         "backButton": "Back",
         "nextButton": "Next Step",
         "nextButtonText": "Next:",
@@ -913,19 +913,19 @@
         }
     },
     "inviteDialog": {
-        "title": "Invite {{name}}",
+        "title": "Invite {name}",
         "description": "Select one of your active campaigns and send a personalized message.",
         "campaignLabel": "Campaign",
         "campaignPlaceholder": "Select a campaign with open slots...",
         "noCampaigns": "No active campaigns with open slots.",
-        "hiredText": "{{hired}}/{{total}} hired",
+        "hiredText": "{hired}/{total} hired",
         "messageLabel": "Message",
         "messagePlaceholder": "Write a brief message to the creator...",
         "sendButton": "Send Invitation",
-        "defaultMessage": "Hi {{name}}, we think you'd be a great fit for our campaign and would love for you to apply!",
+        "defaultMessage": "Hi {name}, we think you'd be a great fit for our campaign and would love for you to apply!",
         "validation": {
-            "alreadyHired": "{{name}} is already part of this campaign.",
-            "alreadyApplied": "{{name}} has already applied to this campaign."
+            "alreadyHired": "{name} is already part of this campaign.",
+            "alreadyApplied": "{name} has already applied to this campaign."
         },
         "toast": {
             "error": {
@@ -935,7 +935,7 @@
             },
             "success": {
                 "title": "Invitation Sent!",
-                "description": "{{name}} has been invited to your campaign."
+                "description": "{name} has been invited to your campaign."
             }
         }
     },
@@ -966,7 +966,7 @@
         "form": {
             "tariff": {
                 "title": "Confirm Your Tariff",
-                "description": "The brand's proposed budget is {{budget}} DH. You can adjust this if needed.",
+                "description": "The brand's proposed budget is {budget} DH. You can adjust this if needed.",
                 "warning": "Note: Your offer is higher than the brand's budget."
             },
             "coverLetter": {
@@ -976,15 +976,6 @@
             "submitButton": "Send my Application",
             "submittingButton": "Submitting..."
         }
-    },
-    "deliverableTypes": {
-        "Post": "{count, plural, one {Instagram Post} other {# Instagram Posts}}",
-        "Story": "{count, plural, one {Instagram Story} other {# Instagram Stories}}",
-        "Reel": "{count, plural, one {Instagram Reel} other {# Instagram Reels}}",
-        "Video": "{count, plural, one {TikTok Video} other {# TikTok Videos}}",
-        "UGC Video Vertical": "{count, plural, one {UGC Video (Vertical)} other {# UGC Videos (Vertical)}}",
-        "UGC Video Horizontal": "{count, plural, one {UGC Video (Horizontal)} other {# UGC Videos (Horizontal)}}",
-        "UGC Photo Pack": "{count, plural, one {UGC Photo Pack} other {# UGC Photo Packs}}"
     },
     "paymentSuccess": {
       "title": "Payment Successful!",
@@ -1008,7 +999,7 @@
         "brandMandate": "I accept the Terms of Service and I authorize VibeMatch to secure these funds in Escrow until validation of the deliverables. I acknowledge that this payment discharges my debt towards the Creator."
       },
       "cancel": "Cancel",
-      "pay": "Pay {{total}} MAD",
+      "pay": "Pay {total} MAD",
       "processing": "Processing...",
       "processingDescription": "Simulating secure transaction.",
       "toast": {
@@ -1020,7 +1011,7 @@
     },
     "termsPage": {
         "title": "Terms of Service",
-        "lastUpdated": "Last updated: {{date}}",
+        "lastUpdated": "Last updated: {date}",
         "discrepancyNotice": "In case of discrepancy, the French version governs.",
         "brand": {
             "title": "TERMS OF USE (BRAND SIDE)",
@@ -1089,7 +1080,7 @@
                 "mandate": {
                     "title": "2. INVOICING AND COLLECTION MANDATE",
                     "p1": "To simplify administrative management, the Creator grants a Billing Mandate (Mandat de Facturation) to VibeMatch. Consequently:",
-                    "li1": "VibeMatch is authorized to generate and issue invoices in the name of and on behalf of the Creator addressed to the Clients.",
+                    "li1": "VibeMatch is authorized to issue invoices in the name and on behalf of the Creator addressed to the Brand, in accordance with the self-billing rules applicable in Morocco.",
                     "li2": "The Creator retains full tax liability for these invoices and must include them in their own tax declarations (Auto-Entrepreneur, etc.).",
                     "li3": "VibeMatch is authorized to collect the funds into a sequestered account and deduct the Platform Commission before transferring the net balance."
                 },
