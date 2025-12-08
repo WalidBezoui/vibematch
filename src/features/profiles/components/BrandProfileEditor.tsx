@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -43,7 +43,7 @@ export default function BrandProfileEditor({ profile }: { profile: any }) {
   });
   
   // Re-sync form default values if the profile prop changes
-  useState(() => {
+  useEffect(() => {
     form.reset({
       companyName: profile.companyName || profile.name || '',
       website: profile.website || '',
