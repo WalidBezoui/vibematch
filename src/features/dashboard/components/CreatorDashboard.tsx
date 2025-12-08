@@ -11,17 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Compass, Hourglass, Activity, ArrowRight, Wallet, Lock, Eye, Briefcase, UserCheck, Lightbulb, User, ImageIcon, MapPin, Tag, Type, Trash2, MessageSquare, ArrowLeft } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog"
 import { useEffect, useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/language-context';
@@ -193,6 +183,9 @@ const EmptyState = ({title, description, buttonText, buttonLink, icon: Icon}: an
 
 const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], onWithdraw: (id: string) => void, listType: 'pending' | 'active' | 'discussion' | 'payment'}) => {
     const { t } = useLanguage();
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(null);
+
     if (campaigns.length === 0) {
         let emptyStateProps;
         switch (listType) {
@@ -234,72 +227,84 @@ const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], o
         )
     }
 
-    return (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-            {campaigns.map(campaign => {
-                let badgeStatus = campaign.status;
-                let statusTextKey = `status.${badgeStatus}`;
-                if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
-                    badgeStatus = 'YOUR_ACCEPTANCE';
-                    statusTextKey = `status.${badgeStatus}`;
-                }
-                const badgeText = t(statusTextKey);
-                const isActionRequired = badgeStatus === 'YOUR_ACCEPTANCE' || listType === 'discussion';
+    const selectedCampaign = campaigns.find(c => c.id === selectedCampaignId);
 
-                return (
-                    <Card key={campaign.id} className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isActionRequired && "border-primary/30")}>
-                        <CardHeader>
-                            <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
-                            <div className="flex items-center justify-between pt-2">
-                                <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
-                                <Badge className={cn('whitespace-nowrap text-xs', statusStyles[badgeStatus])}>
-                                    {badgeText}
-                                </Badge>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="flex-grow">
-                            <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
-                        </CardContent>
-                        <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
-                            {listType === 'discussion' && campaign.conversationId && (
-                                <Button asChild className="w-full">
-                                    <Link href={`/chat?id=${campaign.conversationId}`}>{t('creatorDashboard.actions.chat')}</Link>
-                                </Button>
-                            )}
-                            {(listType === 'active' || listType === 'payment') && (
-                                 <Button asChild className="w-full" variant={isActionRequired ? "default" : "secondary"}>
-                                    <Link href={`/campaigns/${campaign.id}`}>{isActionRequired ? t('creatorDashboard.actions.review') : t('creatorDashboard.actions.view')}</Link>
-                                </Button>
-                            )}
-                            {listType === 'pending' && (
-                                <>
-                                    <Button asChild className="w-full" variant="secondary">
-                                        <Link href={`/campaigns/${campaign.id}`}>{t('creatorDashboard.actions.view')}</Link>
+    return (
+        <>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+                {campaigns.map(campaign => {
+                    let badgeStatus = campaign.status;
+                    let statusTextKey = `status.${badgeStatus}`;
+                    if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
+                        badgeStatus = 'YOUR_ACCEPTANCE';
+                        statusTextKey = `status.${badgeStatus}`;
+                    }
+                    const badgeText = t(statusTextKey);
+                    const isActionRequired = badgeStatus === 'YOUR_ACCEPTANCE' || listType === 'discussion';
+
+                    return (
+                        <Card key={campaign.id} className={cn("hover:shadow-lg transition-shadow duration-300 flex flex-col bg-card", isActionRequired && "border-primary/30")}>
+                            <CardHeader>
+                                <CardTitle className="text-lg font-bold">{campaign.title}</CardTitle>
+                                <div className="flex items-center justify-between pt-2">
+                                    <CardDescription className="gradient-text font-bold text-base">{campaign.budget} DH</CardDescription>
+                                    <Badge className={cn('whitespace-nowrap text-xs', statusStyles[badgeStatus])}>
+                                        {badgeText}
+                                    </Badge>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="flex-grow">
+                                <p className="text-sm text-muted-foreground line-clamp-2 h-10">{campaign.campaignBrief}</p>
+                            </CardContent>
+                            <CardFooter className="bg-muted/50 p-4 flex-col items-stretch gap-2">
+                                {listType === 'discussion' && campaign.conversationId && (
+                                    <Button asChild className="w-full">
+                                        <Link href={`/chat?id=${campaign.conversationId}`}>{t('creatorDashboard.actions.chat')}</Link>
                                     </Button>
-                                    <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                            <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10">
-                                                <Trash2 className="mr-1 h-3 w-3" /> {t('creatorDashboard.actions.withdraw')}
-                                            </Button>
-                                        </AlertDialogTrigger>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>{t('creatorDashboard.deleteDialog.title')}</AlertDialogTitle>
-                                                <AlertDialogDescription>{t('creatorDashboard.deleteDialog.description', { campaignTitle: campaign.title })}</AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                                <AlertDialogCancel>{t('brandDashboard.deleteDialog.cancel')}</AlertDialogCancel>
-                                                <AlertDialogAction onClick={() => onWithdraw(campaign.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{t('creatorDashboard.deleteDialog.confirm')}</AlertDialogAction>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
-                                </>
-                            )}
-                        </CardFooter>
-                    </Card>
-                )
-            })}
-        </div>
+                                )}
+                                {(listType === 'active' || listType === 'payment') && (
+                                     <Button asChild className="w-full" variant={isActionRequired ? "default" : "secondary"}>
+                                        <Link href={`/campaigns/${campaign.id}`}>{isActionRequired ? t('creatorDashboard.actions.review') : t('creatorDashboard.actions.view')}</Link>
+                                    </Button>
+                                )}
+                                {listType === 'pending' && (
+                                    <>
+                                        <Button asChild className="w-full" variant="secondary">
+                                            <Link href={`/campaigns/${campaign.id}`}>{t('creatorDashboard.actions.view')}</Link>
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                                            onClick={() => {
+                                                setSelectedCampaignId(campaign.id);
+                                                setDialogOpen(true);
+                                            }}
+                                        >
+                                            <Trash2 className="mr-1 h-3 w-3" /> {t('creatorDashboard.actions.withdraw')}
+                                        </Button>
+                                    </>
+                                )}
+                            </CardFooter>
+                        </Card>
+                    )
+                })}
+            </div>
+            {selectedCampaign && (
+                <ConfirmationDialog
+                    open={dialogOpen}
+                    onOpenChange={setDialogOpen}
+                    title={t('creatorDashboard.deleteDialog.title')}
+                    description={t('creatorDashboard.deleteDialog.description', { campaignTitle: selectedCampaign.title })}
+                    confirmText={t('creatorDashboard.deleteDialog.confirm')}
+                    cancelText={t('brandDashboard.deleteDialog.cancel')}
+                    onConfirm={() => {
+                        onWithdraw(selectedCampaign.id);
+                        setDialogOpen(false);
+                    }}
+                />
+            )}
+        </>
     )
 }
 

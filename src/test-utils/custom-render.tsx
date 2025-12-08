@@ -1,7 +1,6 @@
-
 import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { FirebaseProvider } from '@/firebase';
+import { FirebaseProvider } from '@/firebase/provider';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';

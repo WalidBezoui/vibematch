@@ -14,7 +14,7 @@ import { getImage } from '@/lib/placeholder-images';
 import React, { useEffect, useState } from 'react';
 import * as lucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
-
+import { InterestButton } from './InterestButton';
 
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
   const Icon = (lucideIcons as any)[name];
@@ -66,23 +66,24 @@ export function HomeComponent() {
             {t('homePage.hero.subtitle')}
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
-            <Button
-              asChild
-              size="lg"
-              className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-              onClick={() => setUserInterest('brand')}
+            <InterestButton
+              interest="brand"
+              href="/brands/join"
+              variant="shiny"
+              size="xxl"
+              className="min-w-[220px]"
             >
-              <Link href="/brands/join">{t('homePage.hero.brandsButton')}</Link>
-            </Button>
-            <Button
-              asChild
+              {t('homePage.hero.brandsButton')}
+            </InterestButton>
+            <InterestButton
+              interest="creator"
+              href="/creators/join"
               variant="outline"
-              size="lg"
-              className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
-              onClick={() => setUserInterest('creator')}
+              size="xxl"
+              className="min-w-[220px]"
             >
-              <Link href="/creators/join">{t('homePage.hero.creatorsButton')}</Link>
-            </Button>
+              {t('homePage.hero.creatorsButton')}
+            </InterestButton>
           </div>
         </div>
       </div>
@@ -105,13 +106,15 @@ export function HomeComponent() {
                     <p>{brandCta.text}</p>
                  </div>
                ) : <div className="h-[20px]" /> }
-              <Button
-                asChild
-                className="w-full md:w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-                onClick={() => setUserInterest('brand')}
+              <InterestButton
+                interest="brand"
+                href="/brands/join"
+                variant="shiny"
+                size="xl"
+                className="w-full md:w-fit"
               >
-                <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
-              </Button>
+                {t('homePage.brands.joinButton')}
+              </InterestButton>
             </div>
           </div>
           <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-primary/10 overflow-hidden">
@@ -157,13 +160,15 @@ export function HomeComponent() {
                     <p>{creatorCta.text}</p>
                  </div>
                ) : <div className="h-[20px]" /> }
-              <Button
-                asChild
-                className="w-full md:w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-                onClick={() => setUserInterest('creator')}
+              <InterestButton
+                interest="creator"
+                href="/creators/join"
+                variant="shiny"
+                size="xl"
+                className="w-full md:w-fit"
               >
-                <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
-              </Button>
+                {t('homePage.creators.applyButton')}
+              </InterestButton>
             </div>
           </div>
         </div>
@@ -350,23 +355,24 @@ export function HomeComponent() {
           </p>
           <p className="text-lg font-semibold text-foreground/80 mb-8">{t('homePage.waitlist.areYou')}</p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
-              onClick={() => setUserInterest('brand')}
+            <InterestButton
+              interest="brand"
+              href="/brands/join"
+              variant="shiny"
+              size="xxl"
+              className="min-w-[220px]"
             >
-              <Link href="/brands/join">{t('homePage.waitlist.brandsButton')}</Link>
-            </Button>
-            <Button
-              asChild
+              {t('homePage.waitlist.brandsButton')}
+            </InterestButton>
+            <InterestButton
+              interest="creator"
+              href="/creators/join"
               variant="outline"
-              size="lg"
-              className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
-              onClick={() => setUserInterest('creator')}
+              size="xxl"
+              className="min-w-[220px]"
             >
-              <Link href="/creators/join">{t('homePage.waitlist.creatorsButton')}</Link>
-            </Button>
+              {t('homePage.waitlist.creatorsButton')}
+            </InterestButton>
           </div>
         </div>
       </div>

@@ -1,7 +1,5 @@
-
-import React from 'react';
 import { render, screen } from '@/test-utils/custom-render';
-import DiscoverPage from './DiscoverPage';
+import { DiscoverPage } from './DiscoverPage';
 
 // Mock the AppHeader component
 vi.mock('@/components/app-header', () => ({
