@@ -238,11 +238,12 @@ const CampaignList = ({ campaigns, onWithdraw, listType }: { campaigns: any[], o
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
             {campaigns.map(campaign => {
                 let badgeStatus = campaign.status;
-                let badgeText = t(`status.${badgeStatus}`, { default: badgeStatus.replace(/_/g, ' ') });
-                 if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
+                let statusTextKey = `status.${badgeStatus}`;
+                if (campaign.status === 'PENDING_CREATOR_ACCEPTANCE') {
                     badgeStatus = 'YOUR_ACCEPTANCE';
-                    badgeText = t('status.YOUR_ACCEPTANCE');
+                    statusTextKey = `status.${badgeStatus}`;
                 }
+                const badgeText = t(statusTextKey);
                 const isActionRequired = badgeStatus === 'YOUR_ACCEPTANCE' || listType === 'discussion';
 
                 return (

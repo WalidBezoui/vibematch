@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -30,7 +31,7 @@ const PaymentPageSkeleton = () => (
     </Card>
 )
 
-export default function PaymentPage() {
+export function PayForJobPage() {
     const { jobId } = useParams();
     const firestore = useFirestore();
     const router = useRouter();

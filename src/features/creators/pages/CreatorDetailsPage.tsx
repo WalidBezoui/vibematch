@@ -90,7 +90,7 @@ const CreatorProfileSkeleton = () => (
   </div>
 );
 
-export default function CreatorPublicProfilePage() {
+export function CreatorDetailsPage() {
   const { creatorId } = useParams();
   const firestore = useFirestore();
   const { user } = useUser();

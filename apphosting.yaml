@@ -5,3 +5,37 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+
+build:
+  # You can specify the version of the buildpacks to use.
+  # https://firebase.google.com/docs/app-hosting/build-configuration
+  buildpacks:
+    # Use the latest version of the Node.js buildpack.
+    - id: nodejs
+      version: 20
+  # You can specify a list of packages to install in the build environment.
+  # This is useful for installing system dependencies.
+  apt_packages:
+    - libglib2.0-0
+    - libnss3
+    - libasound2
+    - libxss1
+    - libdbus-glib-1-2
+    - libatk1.0-0
+    - libatk-bridge2.0-0
+    - libcups2
+    - libxdamage1
+    - libxkbcommon0
+    - libxrandr2
+    - libgbm1
+    - libxcomposite1
+    - libxfixes3
+    - libpango-1.0-0
+    - libcairo2
+    - libgconf-2-4
+    - libgdk-pixbuf2.0-0
+    - libgtk-3-0
+    - libnspr4
+    - libnss3
+    - libxss1
+    - libxtst6

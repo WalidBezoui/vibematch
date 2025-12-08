@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -23,7 +24,7 @@ const creatorSignupSchema = z.object({
 
 type CreatorSignupForm = z.infer<typeof creatorSignupSchema>;
 
-export default function CreatorSignupPage() {
+export function CreatorSignupPage() {
   const router = useRouter();
   const { t } = useLanguage();
   const firestore = useFirestore();

@@ -207,7 +207,7 @@ const BrandWorkspace = ({ campaign, campaignId, hiredCreators, conversations }: 
 }
 
 
-export default function CampaignPage() {
+export function CampaignDetailsPage() {
     const { campaignId } = useParams();
     const firestore = useFirestore();
     const router = useRouter();

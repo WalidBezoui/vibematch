@@ -22,7 +22,7 @@ type Translations = { [key: string]: any };
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string, options?: { [key: string]: string | number, returnObjects?: boolean }) => any;
+  t: (key: string, options?: Record<string, any>) => any;
   dir: 'ltr' | 'rtl';
   userInterest: UserInterest;
   setUserInterest: (interest: 'creator' | 'brand') => void;
@@ -31,6 +31,26 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const messageCache = new Map<string, IntlMessageFormat>();
+
+function getNestedTranslation(translations: Translations, key: string): any {
+  return key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : undefined, translations);
+}
+
+function formatKey(key: string) {
+    if (!key || typeof key !== 'string') return '';
+    const lastPart = key.split('.').pop() || '';
+    
+    // Split by uppercase letters or underscores, then join with spaces.
+    const words = lastPart
+      .split(/(?=[A-Z])|_/)
+      .map(word => word.trim())
+      .filter(Boolean);
+
+    return words
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+}
+
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>('EN');
@@ -73,41 +93,36 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [language, dir]);
 
 
-  const t = (key: string, options?: { [key: string]: any, returnObjects?: boolean }): any => {
-    const keys = key.split('.');
-    let result: any = translations[language];
-
-    for (const k of keys) {
-      result = result?.[k];
-      if (result === undefined) {
-        let fallbackResult: any = translations['EN'];
-        for (const fk of keys) {
-          fallbackResult = fallbackResult?.[fk];
-          if (fallbackResult === undefined) return key;
-        }
-        result = fallbackResult;
-        break;
-      }
-    }
-
-    if (typeof result === 'object' && options?.returnObjects) {
-      return result;
-    }
-
-    // Determine if the result is a string that needs formatting or a pluralization object
-    const message = typeof result === 'object' ? JSON.stringify(result) : String(result);
+  const t = (key: string, options?: Record<string, any>): any => {
+    const returnObjects = options?.returnObjects;
     
-    if (options && Object.keys(options).filter(k => k !== 'returnObjects').length > 0) {
-      // Check for simple {{variable}} replacement first
-      if (typeof result === 'string' && /\{\{.*\}\}/.test(result)) {
-        let tempResult = result;
-        for (const [optKey, optValue] of Object.entries(options)) {
-          tempResult = tempResult.replace(`{{${optKey}}}`, String(optValue));
-        }
-        return tempResult;
-      }
+    const formatOptions = options ? Object.fromEntries(
+        Object.entries(options).filter(([k]) => k !== 'returnObjects')
+    ) : {};
 
-      // Handle ICU message format for pluralization
+    const currentTranslations = translations[language];
+    let message = getNestedTranslation(currentTranslations, key);
+
+    if (message === undefined) {
+      message = getNestedTranslation(translations['EN'], key);
+    }
+    
+    if (message === undefined) {
+        return formatKey(key);
+    }
+
+    if (typeof message === 'object' && returnObjects) {
+      return message;
+    }
+    
+    if (typeof message !== 'string') {
+       console.warn(`Translation key "${key}" did not return a string. Fallback to formatted key.`);
+       return formatKey(key);
+    }
+
+    const hasFormatOptions = Object.keys(formatOptions).length > 0;
+
+    if (hasFormatOptions) {
       const cacheKey = `${key}_${language}`;
       let msgFormat = messageCache.get(cacheKey);
 
@@ -116,20 +131,36 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
           msgFormat = new IntlMessageFormat(message, language);
           messageCache.set(cacheKey, msgFormat);
         } catch (e) {
-          console.error(`Error compiling message for key "${key}":`, e);
-          return message; // Return the raw string on error
+          console.error(`Error compiling message for key "${key}" with message "${message}":`, e);
+          return formatKey(key);
         }
       }
       
       try {
-          return msgFormat.format(options);
+        const parts = msgFormat.formatToParts(formatOptions);
+        return parts.map((part, index) => {
+            if (part.type === 'literal') {
+                return <React.Fragment key={index}>{part.value}</React.Fragment>;
+            }
+            
+            const richTextElement = (formatOptions as any)[part.value];
+
+            if (typeof richTextElement === 'function') {
+                const element = richTextElement(part.value);
+                // Ensure a unique key is passed to the component
+                 if (React.isValidElement(element)) {
+                    return React.cloneElement(element, { key: index });
+                }
+            }
+            return <React.Fragment key={index}>{part.value}</React.Fragment>;
+        });
       } catch (e) {
-          console.error(`Error formatting message for key "${key}" with options:`, e);
-          return message; // Return raw string on formatting error
+          console.error(`Error formatting message for key "${key}" with options:`, e, formatOptions);
+          return formatKey(key);
       }
     }
     
-    return result || key;
+    return message;
   };
 
   const value = {

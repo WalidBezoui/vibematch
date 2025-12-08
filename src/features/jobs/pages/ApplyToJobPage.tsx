@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
@@ -39,7 +40,7 @@ const ApplyPageSkeleton = () => (
     </div>
 )
 
-export default function ApplyPage() {
+export function ApplyToJobPage() {
     const { jobId } = useParams();
     const firestore = useFirestore();
     const router = useRouter();

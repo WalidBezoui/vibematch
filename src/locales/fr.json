@@ -871,12 +871,12 @@
         "PENDING_CREATOR_ACCEPTANCE": "En attente d'acceptation",
         "OFFER_PENDING": "Offre en attente",
         "PENDING_PAYMENT": "En attente de paiement",
-        "AWAITING_YOUR_PAYMENT": "En attente de votre paiement",
         "IN_PROGRESS": "En cours",
         "DELIVERED": "Livrée",
         "COMPLETED": "Terminée",
         "REJECTED_BY_CREATOR": "Refusée par le créateur",
-        "YOUR_ACCEPTANCE": "En attente de votre acceptation"
+        "YOUR_ACCEPTANCE": "En attente de votre acceptation",
+        "AWAITING_YOUR_PAYMENT": "En attente de votre paiement"
     },
     "discoverCampaigns": {
         "title": "Découvrir les Campagnes",
@@ -977,15 +977,6 @@
             "submittingButton": "Envoi en cours..."
         }
     },
-    "deliverableTypes": {
-        "Post": "{count, plural, one {Post Instagram} other {# Posts Instagram}}",
-        "Story": "{count, plural, one {Story Instagram} other {# Stories Instagram}}",
-        "Reel": "{count, plural, one {Reel Instagram} other {# Reels Instagram}}",
-        "Video": "{count, plural, one {Vidéo TikTok} other {# Vidéos TikTok}}",
-        "UGC Video Vertical": "{count, plural, one {Vidéo UGC (Verticale)} other {# Vidéos UGC (Verticales)}}",
-        "UGC Video Horizontal": "{count, plural, one {Vidéo UGC (Horizontale)} other {# Vidéos UGC (Horizontales)}}",
-        "UGC Photo Pack": "{count, plural, one {Pack Photos UGC} other {# Packs Photos UGC}}"
-    },
     "paymentSuccess": {
       "title": "Paiement Réussi !",
       "description": "Les fonds sont maintenant sécurisés en Escrow. Les créateurs ont été notifiés pour commencer leur travail.",
@@ -1020,193 +1011,233 @@
     },
     "termsPage": {
         "title": "Conditions Générales d'Utilisation",
-        "lastUpdated": "Dernière mise à jour : {date}",
+        "lastUpdated": "Dernière mise à jour : 07 Décembre 2025",
         "discrepancyNotice": "En cas de divergence, la version française fait foi.",
-        "brand": {
-            "title": "CONDITIONS GENERALES D'UTILISATION (CGU) - CLIENTS (MARQUES)",
-            "sections": {
-                "object": {
-                    "title": "ARTICLE 1 : OBJET ET INDÉPENDANCE",
-                    "p1": "Les présentes CGU régissent l'utilisation de la plateforme VibeMatch par les Clients (Marques). Le Client agit en tant que donneur d'ordre indépendant. Ces CGU ne créent aucun contrat de travail ni mandat exclusif entre VibeMatch et le Client."
-                },
-                "mandate": {
-                    "title": "ARTICLE 2 : MANDAT DE PAIEMENT ET SÉQUESTRE (ESCROW)",
-                    "p1": "En finançant une campagne, le Client donne expressément MANDAT à VibeMatch pour :",
-                    "li1": "Séquestrer la somme totale (Honoraires Créateur + Commission VibeMatch) sur un compte dédié.",
-                    "li2": "Ne libérer les fonds au profit du Créateur qu'après validation expresse des livrables par le Client sur la plateforme."
-                },
-                "obligations": {
-                    "title": "ARTICLE 3 : OBLIGATIONS DU CLIENT",
-                    "li1": "Fournir un brief clair et complet pour chaque campagne.",
-                    "li2": "Provisionner le compte séquestre avant le début de la collaboration.",
-                    "li3": "Non-Contournement (Anti-Circumvention) : S'interdire de contourner VibeMatch en contractant en direct avec un créateur présenté via la plateforme pendant une durée de 12 mois. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10.000 MAD (ou 20% du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts.",
-                    "li4": "Validation : Valider ou demander des révisions des livrables dans des délais raisonnables. IMPORTANT : À défaut de validation ou de demande de révision sous cinq (5) jours calendaires après livraison, les livrables seront réputés validés automatiquement ('Validation Tacite'), déclenchant la libération des fonds au Créateur."
-                },
-                "payments": {
-                    "title": "ARTICLE 4 : PAIEMENTS",
-                    "p1": "Le paiement est dû dès l'embauche du ou des créateur(s).",
-                    "p2": "Effet Libératoire : Le Client reconnaît que le paiement effectué sur le compte séquestre de VibeMatch vaut décharge libératoire de sa dette envers le Créateur. Le Créateur ne pourra en aucun cas réclamer un paiement direct au Client une fois les fonds perçus par VibeMatch.",
-                    "chargebacks": {
-                        "title": "4.1. CHARGEBACKS & LITIGES DE PAIEMENT",
-                        "p1": "Le Client s'engage à ne pas initier de procédure de chargeback auprès de sa banque ou de son fournisseur de carte de crédit pour quelque raison que ce soit si les livrables ont été validés (explicitement ou tacitement). Tout chargeback non justifié sera considéré comme une action frauduleuse. Il entraînera la suspension immédiate du compte, et la créance sera confiée à une agence de recouvrement avec une pénalité supplémentaire de 20% pour frais administratifs et juridiques de recouvrement."
-                    },
-                    "cancellation": {
-                        "title": "4.2. ANNULATION & REMBOURSEMENT",
-                        "li1": "Annulation par le Client : Si le Client annule une mission avant que le Créateur n'ait commencé le travail, les fonds sont remboursés déduction faite d'une commission administrative de 15% HT. Une fois le travail commencé, l'intégralité du montant est due.",
-                        "li2": "Non-Livraison : Si un Créateur ne livre pas dans les délais convenus, le Client a droit à un remboursement intégral des fonds séquestrés.",
-                        "li3": "Litiges : En cas de désaccord sur la qualité, VibeMatch agit en tant que médiateur. La décision de VibeMatch sur la répartition des fonds est finale."
-                    }
-                },
-                "forceMajeure": {
-                    "title": "ARTICLE 5 : FORCE MAJEURE",
-                    "p1": "Aucune des parties ne sera tenue pour responsable de l'inexécution de ses obligations si cette inexécution est la conséquence d'un cas de force majeure (incendie, inondation, tremblement de terre), de restrictions gouvernementales (interdictions), ou de défaillances majeures des fournisseurs d'accès Internet. Dans de tels cas, la mission est suspendue ou annulée sans pénalité."
-                },
-                "termination": {
-                    "title": "ARTICLE 6 : RÉSILIATION",
-                    "p1": "VibeMatch se réserve le droit de suspendre ou de résilier un compte en cas de violation des présentes CGU, de fraude, ou de comportement non éthique."
-                },
-                "disclaimer": {
-                    "title": "ARTICLE 7 : EXCLUSION DE GARANTIE",
-                    "p1": "La plateforme VibeMatch est fournie \"en l'état\". Bien que nous nous efforcions d'assurer la qualité des créateurs via notre Trust Engine, nous ne garantissons pas de résultats de campagne spécifiques."
-                },
-                "law": {
-                    "title": "ARTICLE 8 : DROIT APPLICABLE",
-                    "p1": "Les présentes CGU sont régies par le droit marocain. Tout litige sera de la compétence exclusive du Tribunal de Commerce de Casablanca."
-                },
-                "changes": {
-                    "title": "ARTICLE 9 : MODIFICATION DES CGU",
-                    "p1": "VibeMatch se réserve le droit de modifier les présentes CGU à tout moment. Les utilisateurs seront notifiés de toute modification."
+        "preamble": {
+            "title": "Préambule",
+            "eligibility": {
+                "title": "1. ÉLIGIBILITÉ (RESTRICTION D'ÂGE)",
+                "content": "Les Services sont strictement réservés aux personnes âgées de 18 ans ou plus ayant la pleine capacité juridique. Toute inscription par un mineur est strictly prohibited unless accompanied by the written consent of a legal guardian (Wali). VibeMatch se réserve le droit de demander une preuve d'âge à tout moment."
+            },
+            "acceptance": {
+                "title": "2. ACCEPTATION (CONTRAT ÉLECTRONIQUE)",
+                "content": "L'accès et l'utilisation de la Plateforme impliquent l'acceptation sans réserve des présentes CGU. Conformément à la Loi n° 53-05 relative à l'échange électronique de données juridiques, le fait de cocher la case \"J'accepte\" lors de l'inscription ou du paiement constitue une signature électronique valide, liant l'Utilisateur à ces conditions avec la même force probante qu'une signature manuscrite."
+            }
+        },
+        "brands": {
+            "title": "Partie I : Conditions pour les Marques",
+            "legalStatus": {
+                "title": "Statut Juridique et Mandat",
+                "content": "La Marque reconnaît que VibeMatch agit exclusivement en tant qu'Intermédiaire Technique et Tiers de Confiance. En finançant une campagne, la Marque accorde à VibeMatch un Mandat de Paiement (D.O.C. Art. 879 et seq.) pour :",
+                "item1": "Sécuriser les fonds sur un compte dédié (Compte de Cantonnement / Séquestre).",
+                "item2": "Libérer les fonds au profit du Créateur uniquement après validation des livrables."
+            },
+            "obligations": {
+                "title": "Obligations et Validation",
+                "brief_b": "Le Brief :",
+                "brief_t": "La Marque s'engage à fournir un cahier des charges précis. VibeMatch ne saurait être tenu responsable d'une insatisfaction résultant d'un brief vague ou incomplet.",
+                "validation_b": "Validation Tacite :",
+                "validation_t": "La Marque doit valider ou demander des révisions des livrables dans un délai de cinq (5) jours calendaires suivant leur réception. En l'absence d'action dans ce délai, les livrables sont réputés acceptés (\"Réception Tacite\"), déclenchant le paiement automatique au Créateur."
+            },
+            "payments": {
+                "title": "Paiements et Séquestre",
+                "liberatory_b": "Paiement Libératoire :",
+                "liberatory_t": "Le paiement au compte séquestre de VibeMatch vaut décharge de la dette de la Marque envers le Créateur.",
+                "chargebacks_b": "Chargebacks (Fraude) :",
+                "chargebacks_t": "Initier un rejet de débit après validation est considéré comme frauduleux et entraînera une pénalité de 20% plus les frais de recouvrement.",
+                "refunds": {
+                    "title": "Remboursements",
+                    "preWork": "Annulation avant travaux : Remboursement du séquestre moins 15% de Frais Administratifs (Hors Taxe).",
+                    "nonDelivery": "Non-Livraison : Remboursement intégral du séquestre."
                 }
             }
         },
-        "creator": {
-            "title": "CONDITIONS GENERALES D'UTILISATION (CGU) - CRÉATEURS",
-            "sections": {
-                "object": {
-                    "title": "ARTICLE 1 : OBJET ET INDÉPENDANCE",
-                    "p1": "Les présentes CGU régissent l'utilisation de la plateforme VibeMatch par les Créateurs de contenu / Influenceurs (ci-après 'le Créateur'). IMPORTANT - ABSENCE DE SUBORDINATION : Le Créateur agit en tant que prestataire de services indépendant (Auto-Entrepreneur, Société, ou Patenté). Ces CGU ne créent aucun lien de subordination, contrat de travail, ou mandat d'exclusivité entre VibeMatch et le Créateur. Le Créateur reste libre de son emploi du temps et de ses moyens de production."
-                },
-                "mandate": {
-                    "title": "ARTICLE 2 : MANDAT DE FACTURATION ET D'ENCAISSEMENT",
-                    "p1": "Pour simplifier la gestion administrative, le Créateur donne expressément MANDAT DE FACTURATION à VibeMatch. En conséquence :",
-                    "li1": "VibeMatch est autorisé à émettre les factures au nom et pour le compte du Créateur à destination des Clients, conformément aux règles du self-billing applicables au Maroc.",
-                    "li2": "Le Créateur conserve l'entière responsabilité fiscale de ces factures et doit les intégrer dans ses propres déclarations fiscales (Auto-Entrepreneur, etc.).",
-                    "li3": "VibeMatch est autorisé à encaisser les fonds sur un compte séquestre et à déduire la Commission de la Plateforme avant de reverser le solde net."
-                },
-                "obligations": {
-                    "title": "ARTICLE 3 : OBLIGATIONS DU CRÉATEUR",
-                    "li1": "Fournir des statistiques d'audience réelles et vérifiables (Interdiction d'achat de 'Fake Followers').",
-                    "li2": "Respecter les délais de livraison (Livrables) convenus dans l'offre.",
-                    "li3": "Durée de Maintien : Le Créateur s'engage à maintenir le contenu sponsorisé visible sur son feed principal (Main Feed) pour une durée minimale de 30 jours (ou 24h pour les Stories) post-publication. Archiver ou supprimer le contenu avant ce délai est considéré comme une rupture de contrat.",
-                    "li4": "Ne pas publier de contenu diffamatoire, illégal, ou contraire aux bonnes mœurs marocaines.",
-                    "li5": "Confidentialité : Le Créateur s'engage à une confidentialité absolue sur toutes les informations fournies par la Marque (Briefs, Lancements de produits, Stratégie marketing) jusqu'à la date de lancement officielle de la campagne. Toute \"fuite\" ou publication prématurée sera considérée comme une faute lourde engageant sa responsabilité pour dommages et intérêts."
-                },
-                "payments": {
-                    "title": "ARTICLE 4 : PAIEMENT ET COMMISSION",
-                    "li1_b": "Déclenchement :",
-                    "li1_t": "Le paiement n'est libéré qu'après validation des livrables par le Client sur la Plateforme.",
-                    "li2_b": "Délai :",
-                    "li2_t": "VibeMatch s'engage à initier le virement sous 5 jours ouvrés après validation.",
-                    "li3_b": "Commission :",
-                    "li3_t": "En contrepartie des services de la Plateforme, une commission de 15% (Excluding VAT / Hors Taxe) est déduite du montant total de la campagne."
-                },
-                "circumvention": {
-                    "title": "ARTICLE 5 : NON-CONTOURNEMENT (ANTI-CIRCUMVENTION)",
-                    "p1": "Le Créateur s'interdit formellement de solliciter, contracter avec, ou accepter des paiements en direct d'un Client présenté par VibeMatch, et ce, pendant une durée de 12 mois suivant la mise en relation initiale. Toute violation entraînera la suspension immédiate du compte et une pénalité forfaitaire de 10.000 MAD (ou 20% du budget contourné, le montant le plus élevé étant retenu) à titre de dommages et intérêts."
-                },
-                "rights": {
-                    "title": "ARTICLE 6 : PROPRIÉTÉ INTELLECTUELLE & CESSION DE DROITS",
-                    "assignment": {
-                        "title": "6.1. Cession :",
-                        "p1": "En acceptant une mission et en percevant le paiement, le Créateur cède de manière définitive au Client les droits patrimoniaux sur le contenu créé, et notamment :",
-                        "li1": "Droit de Reproduction & de Représentation : Sur internet, réseaux sociaux, et plateformes digitales.",
-                        "li2": "Territoire : Monde entier.",
-                        "li3": "Durée : Pour toute la durée légale de protection des droits d'auteur (sauf durée plus courte précisée dans le Brief de mission).",
-                        "li4": "Finalité : Usage commercial, publicitaire et promotionnel.",
-                        "li5": "Droits d'Adaptation : Le Créateur autorise expressément le Client à redimensionner, recadrer, sous-titrer ou monter le contenu à des fins de formatage uniquement sur les différents canaux de communication.",
-                        "li6": "Droits de la Personnalité : Le Créateur autorise expressément le Client à utiliser son nom, son image, sa voix et sa représentation contenus dans les livrables aux fins définies dans le présent document."
-                    },
-                    "warranty": {
-                        "title": "6.2. Garantie & Indemnisation :",
-                        "p1": "Le Créateur garantit que le contenu est original et ne viole pas les droits de tiers (musiques, droit à l'image d'autrui, marques). Le Créateur s'engage à indemniser et à garantir VibeMatch et le Client contre toute réclamation, dommage, ou frais de justice découlant d'une violation de cette garantie."
-                    }
-                },
-                "forceMajeure": {
-                    "title": "ARTICLE 7 : FORCE MAJEURE",
-                    "p1": "Aucune des parties ne sera tenue pour responsable de l'inexécution de ses obligations si cette inexécution est la conséquence d'un cas de force majeure (incendie, inondation, tremblement de terre), de restrictions gouvernementales (interdictions), ou de défaillances majeures des fournisseurs d'accès Internet. Dans de tels cas, la mission est suspendue ou annulée sans pénalité."
-                }
+        "creators": {
+            "title": "Partie II : Conditions pour les Créateurs",
+            "independence": {
+                "title": "Indépendance",
+                "content": "Le Créateur agit en tant que professionnel indépendant (Auto-Entrepreneur, Société). Ces termes ne créent aucun lien de subordination. Le Créateur est seul responsable de ses déclarations fiscales et sociales."
+            },
+            "billingMandate": {
+                "title": "Mandat de Facturation",
+                "content": "Pour faciliter les opérations, le Créateur confère à VibeMatch un Mandat de Facturation afin de :",
+                "item1": "Émettre des factures au nom et pour le compte du Créateur adressées à la Marque, conformément aux règles d'auto-facturation applicables au Maroc.",
+                "item2": "Encaisser les fonds et déduire une commission de 15% (Hors Taxe) avant de transférer le solde net sous cinq (5) jours ouvrables."
+            },
+            "ip": {
+                "title": "Propriété Intellectuelle (Loi 2-00)",
+                "assignment_b": "Cession :",
+                "assignment_t": "Dès paiement, le Créateur cède irrévocablement les droits patrimoniaux (reproduction, représentation) au Client pour une utilisation en ligne mondiale.",
+                "personality_b": "Droits de la Personnalité :",
+                "personality_t": "Le Créateur autorise le Client à utiliser son nom, image et voix pour les besoins commerciaux de la campagne.",
+                "adaptation_b": "Droits d'Adaptation :",
+                "adaptation_t": "Le Créateur autorise les modifications techniques (recadrage, redimensionnement) pour les formats des réseaux sociaux.",
+                "warranty_b": "Garantie :",
+                "warranty_t": "Le Créateur garantit VibeMatch et la Marque contre toute réclamation de tiers (musique, marques) liée au contenu."
+            },
+            "confidentiality": {
+                "title": "Confidentialité",
+                "content": "Le Créateur doit garder tous les détails de la Campagne confidentiels. Toute fuite prématurée constitue une Faute Grave passible de dommages-intérêts."
+            }
+        },
+        "common": {
+            "title": "Partie III : Dispositions Communes",
+            "antiCircumvention": {
+                "title": "Non-Contournement",
+                "content": "Les Utilisateurs (Marque et Créateur) s'interdisent de contourner VibeMatch pour contracter directement entre eux pour une durée de douze (12) mois suivant leur mise en relation initiale sur la Plateforme.",
+                "penalty_b": "Clause Pénale (Article 264 D.O.C) :",
+                "penalty_t": "Toute violation constitue une perte commerciale directe pour VibeMatch. La partie contrevenante s'engage à payer une indemnité forfaitaire de 10.000 DHS ou 20% du budget détourné (le montant le plus élevé étant retenu) à titre de dommages-intérêts, immédiatement exigibles sur notification."
+            },
+            "personalData": {
+                "title": "Données Personnelles (Loi 09-08)",
+                "content": "VibeMatch traite les données personnelles nécessaires à l'exécution du contrat. Les Utilisateurs reconnaissent avoir lu et accepté notre <PrivacyPolicy>Politique de Confidentialité</PrivacyPolicy>, qui détaille la collecte, le traitement et les droits concernant leurs données (Accès, Rectification, Opposition) conformément à la Loi 09-08 (CNDP)."
+            },
+            "liability": {
+                "title": "Responsabilité et Force Majeure",
+                "content": "VibeMatch est tenu à une Obligation de Moyens. Sa responsabilité ne saurait être engagée pour des interruptions techniques ou l'échec commercial d'une campagne. Aucune partie n'est responsable des retards causés par la Force Majeure."
+            },
+            "law": {
+                "title": "Droit Applicable et Juridiction",
+                "content": "Ces CGU sont régies par le Droit Marocain. En cas de litige, après une tentative de règlement amiable, la compétence exclusive est attribuée au Tribunal de Commerce de Casablanca."
+            },
+            "survival": {
+                "title": "Survivance des Clauses",
+                "content": "Les dispositions relatives à la Propriété Intellectuelle, la Confidentialité et le Non-Contournement survivront à la résiliation, à l'expiration ou à la suppression du compte de l'Utilisateur pour quelque raison que ce soit, pour les durées prescrites par les lois applicables (par ex., 70 ans pour le droit d'auteur, 12 mois pour le non-contournement)."
+            },
+            "severability": {
+                "title": "Divisibilité",
+                "content": "Si une disposition de ces Conditions est jugée invalide ou inapplicable par un tribunal compétent, cette invalidité n'affectera pas la validité des autres dispositions qui resteront en vigueur."
+            },
+            "modifications": {
+                "title": "Modifications des Conditions",
+                "content": "VibeMatch se réserve le droit de modifier ces termes à tout moment. Les utilisateurs seront informés des changements importants par e-mail ou notification sur la plateforme. L'utilisation continue du service après de tels changements constitue une acceptation des nouvelles Conditions."
             }
         }
     },
     "privacyPage": {
-        "title": "Politique de Confidentialité (Loi 09-08)",
-        "intro": "Ceci est un placeholder pour votre politique de confidentialité. Vous devriez le remplacer par votre politique réelle.",
+        "title": "Politique de Confidentialité",
+        "lastUpdated": "Dernière mise à jour : 07 Décembre 2025",
         "sections": {
-            "processing": {
-                "title": "1. RESPONSABLE DU TRAITEMENT",
-                "content": "Les données sont collectées par VibeMatch, [Forme Juridique: ex. Auto-Entreprise Walid Bezoui], dont le siège est situé à Casablanca."
-            },
-            "data": {
-                "title": "2. DONNÉES COLLECTÉES",
-                "p1": "Dans le cadre de son activité de mise en relation, VibeMatch collecte :",
-                "li1_b": "Données d'Identité :",
-                "li1_t": "Nom, Prénom, Email, Téléphone.",
-                "li2_b": "Données Professionnelles :",
-                "li2_t": "Liens réseaux sociaux, statistiques d'audience (publiques), SIRET/ICE.",
-                "li3_b": "Données Financières :",
-                "li3_t": "RIB (pour les virements Créateurs) - Note : Les données de carte bancaire sont gérées exclusivement par notre prestataire de paiement sécurisé."
-            },
-            "purpose": {
-                "title": "3. FINALITÉ DU TRAITEMENT",
-                "p1": "Les données sont traitées pour les finalités suivantes :",
-                "li1": "Gestion des comptes utilisateurs et authentification.",
-                "li2": "Calcul du \"Trust Score\" pour vérifier l'authenticité des audiences.",
-                "li3": "Mise en relation commerciale (B2B) et facturation.",
-                "li4": "Lutte contre la fraude."
-            },
-            "sharing": {
-                "title": "4. PARTAGE DES DONNÉES",
-                "p1": "VibeMatch ne vend pas vos données. Elles sont partagées uniquement avec :",
-                "li1": "Les Clients (Marques) : Uniquement les données du profil public et statistiques du Créateur nécessaires à la sélection.",
-                "li2": "Les Autorités : Sur réquisition judiciaire ou fiscale conformément à la loi marocaine."
-            },
-            "rights": {
-                "title": "5. VOS DROITS (LOI 09-08)",
-                "p1": "Conformément à la loi 09-08, vous disposez d'un droit d'accès, de rectification et d'opposition au traitement de vos données personnelles. Pour exercer ce droit, contactez-nous à : [Votre Email: legal@vibematch.ma]."
-            },
-            "cookies": {
-                "title": "6. COOKIES",
-                "p1": "Notre site utilise des cookies techniques nécessaires au fonctionnement (session) et des cookies analytiques pour améliorer l'expérience utilisateur."
+          "preamble": {
+            "title": "1. PRÉAMBULE & RESPONSABLE DU TRAITEMENT",
+            "p1": "La protection de vos données personnelles est une priorité pour VibeMatch. Cette Politique de Confidentialité détaille comment nous collectons, utilisons et protégeons vos données conformément à la Loi n° 09-08.",
+            "controller": {
+              "title": "Responsable du Traitement :",
+              "identity_b": "Identité :",
+              "identity_t": "[Raison Sociale] SARL, Titulaire de l'ICE N° [Insérer ICE], RC N° [Insérer RC].",
+              "hq_b": "Siège social :",
+              "hq_t": "Casablanca, Maroc.",
+              "contact_b": "Contact :",
+              "contact_t": "legal@vibematch.ma"
             }
+          },
+          "data": {
+            "title": "2. DONNÉES COLLECTÉES",
+            "p1": "Nous collectons deux types de données :",
+            "direct": {
+              "title": "2.1. Données que vous fournissez directement :",
+              "identity_b": "Identité :",
+              "identity_t": "Nom, Prénom, CNI/Passeport (pour vérification KYC), Email, Téléphone.",
+              "professional_b": "Professionnelles :",
+              "professional_t": "Biographie, Noms d'utilisateur réseaux sociaux (Instagram, TikTok), Tarifs.",
+              "financial_b": "Financières :",
+              "financial_t": "RIB/IBAN (pour les virements), Adresse de facturation. Note : les numéros de carte de crédit sont gérés directement par notre processeur de paiement sécurisé (ex: Stripe/CMI) et ne sont jamais stockés sur les serveurs de VibeMatch."
+            },
+            "auto": {
+              "title": "2.2. Données collectées automatiquement (Le \"Trust Score\") :",
+              "p1": "Pour alimenter notre moteur de vérification, nous collectons des données publiquement disponibles depuis les comptes de réseaux sociaux liés :",
+              "l1": "Nombre d'abonnés, Taux d'engagement, Données démographiques de l'audience.",
+              "l2": "Important : Nous n'accédons pas aux messages privés (DM) ni aux mots de passe."
+            },
+            "technical": {
+                "title": "2.3. Données Techniques :",
+                "l1": "Adresse IP, type de navigateur, horodatages de connexion (requis pour la preuve de \"Signature Électronique\" selon la Loi 53-05)."
+            }
+          },
+          "purpose": {
+            "title": "3. FINALITÉS DU TRAITEMENT",
+            "p1": "Nous traitons vos données pour les finalités spécifiques suivantes :",
+            "l1_b": "Exécution du Contrat :",
+            "l1_t": "Pour créer des comptes, générer des factures et faciliter le \"Mandat\" entre la Marque et le Créateur.",
+            "l2_b": "Confiance & Sécurité :",
+            "l2_t": "Pour calculer le \"Trust Score\" et détecter les faux abonnés ou les profils frauduleux.",
+            "l3_b": "Conformité Financière :",
+            "l3_t": "Pour exécuter les libérations de fonds du séquestre et se conformer aux obligations fiscales.",
+            "l4_b": "Défense Légale :",
+            "l4_t": "Pour stocker la preuve du consentement (Logs) en cas de litige."
+          },
+          "sharing": {
+            "title": "4. PARTAGE DES DONNÉES & DESTINATAIRES",
+            "p1": "VibeMatch ne vend pas vos données personnelles. Les données sont partagées uniquement avec :",
+            "l1_b": "Contreparties :",
+            "l1_t": "Lorsqu'une Marque engage un Créateur, les données professionnelles nécessaires (Nom, Portfolio, Stats) sont visibles pour la Marque.",
+            "l2_b": "Prestataires de Services :",
+            "l2_t": "Processeurs de paiement sécurisés (Banques), Fournisseurs d'hébergement cloud (Stockage de données).",
+            "l3_b": "Autorités :",
+            "l3_t": "En réponse à une demande légale valide des autorités marocaines (Police, Administration Fiscale, ou CNDP)."
+          },
+          "transfers": {
+            "title": "5. TRANSFERTS INTERNATIONAUX",
+            "p1": "Les utilisateurs sont informés que les données peuvent être hébergées sur des serveurs sécurisés situés hors du Maroc (ex: AWS, Google Cloud). VibeMatch s'assure que ces prestataires adhèrent à des normes de sécurité strictes (GDPR/ISO 27001) garantissant un niveau de protection équivalent à la loi marocaine."
+          },
+          "rights": {
+            "title": "6. VOS DROITS (LOI 09-08)",
+            "p1": "Conformément aux Articles 7, 8 et 9 de la Loi 09-08, vous disposez des droits suivants :",
+            "l1_b": "Droit d'Accès :",
+            "l1_t": "Vous pouvez demander une copie de toutes les données que nous détenons à votre sujet.",
+            "l2_b": "Droit de Rectification :",
+            "l2_t": "Vous pouvez corriger des données inexactes ou incomplètes.",
+            "l3_b": "Droit d'Opposition :",
+            "l3_t": "Vous pouvez vous opposer au traitement de vos données pour des motifs légitimes (sauf si les données sont requises pour un paiement contractuel).",
+            "p2": "Comment exercer ces droits : Envoyez une demande à legal@vibematch.ma. Nous répondrons dans le délai légal."
+          },
+          "retention": {
+            "title": "7. CONSERVATION DES DONNÉES",
+            "l1_b": "Comptes Actifs :",
+            "l1_t": "Les données sont conservées tant que le compte est actif.",
+            "l2_b": "Registres Financiers :",
+            "l2_t": "Les factures et les journaux de transactions sont conservés pendant 10 ans (obligation fiscale).",
+            "l3_b": "Comptes Inactifs :",
+            "l3_t": "Les données utilisateur sont archivées ou anonymisées 12 mois après la fermeture du compte, sauf lorsque la loi exige une conservation plus longue."
+          },
+          "security": {
+            "title": "8. SÉCURITÉ",
+            "p1": "VibeMatch met en œuvre des mesures techniques et organisationnelles (Chiffrement, Contrôle d'accès) pour protéger vos données contre tout accès non autorisé, perte ou altération."
+          },
+          "cookies": {
+            "title": "9. COOKIES",
+            "p1": "Notre plateforme utilise des \"Cookies\" pour améliorer l'expérience utilisateur (Gestion de session). Vous pouvez configurer votre navigateur pour refuser les cookies, mais certaines fonctionnalités de la plateforme (comme la Connexion) pourraient ne pas fonctionner correctement."
+          }
         }
     },
     "legalNotice": {
         "title": "Mentions Légales",
+        "navTitle": "Sommaire",
         "sections": {
             "editor": {
-                "title": "1. ÉDITEUR DU SITE",
+                "title": "1. Éditeur du Site",
                 "companyNameLabel": "Raison Sociale / Nom :",
-                "companyName": "[Walid Bezoui / VibeMatch]",
+                "companyName": "[Raison Sociale] SARL",
                 "legalStatusLabel": "Statut Juridique :",
-                "legalStatus": "[Ex: Auto-Entrepreneur ou Société en cours de formation]",
+                "legalStatus": "Société à Responsabilité Limitée",
                 "hqLabel": "Siège Social :",
                 "hq": "Casablanca, Maroc",
                 "emailLabel": "Email de contact :",
-                "email": "[contact@vibematch.ma]",
+                "email": "legal@vibematch.ma",
                 "iceLabel": "Numéro ICE :",
-                "ice": "[Votre ICE si disponible, sinon \"En cours\"]",
-                "tpLabel": "Identifiant Taxe Pro / RC :",
-                "tp": "[Vos numéros si disponibles]"
+                "ice": "[Insérer ICE]",
+                "tpLabel": "RC :",
+                "tp": "[Insérer RC]"
             },
             "hosting": {
-                "title": "2. HÉBERGEMENT",
+                "title": "2. Hébergement",
                 "hostLabel": "Hébergeur :",
-                "host": "[Ex: Vercel / AWS / Hostinger]",
+                "host": "Vercel Inc.",
                 "addressLabel": "Adresse :",
-                "address": "[Adresse du siège de l'hébergeur, ex: San Francisco, USA]"
+                "address": "San Francisco, USA"
             },
             "ip": {
-                "title": "3. PROPRIÉTÉ INTELLECTUELLE",
+                "title": "3. Propriété Intellectuelle",
                 "content": "L'ensemble des éléments graphiques, codes sources, logos et textes du site VibeMatch sont la propriété exclusive de l'éditeur. Toute reproduction sans autorisation est interdite."
             }
         }

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
 
-export default function WaitlistSuccessPage() {
+export function BrandJoinSuccessPage() {
   const { t } = useLanguage();
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4">
