@@ -37,7 +37,7 @@ const inviteSchema = z.object({
 
 type InviteFormValues = z.infer<typeof inviteSchema>;
 
-export default function InviteToCampaignDialog({
+export function InviteToCampaignDialog({
   creator,
   campaigns,
   children,
