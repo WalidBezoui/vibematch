@@ -1,7 +1,10 @@
 
-import { afterAll, vi } from 'vitest';
+import { afterAll, vi, expect } from 'vitest';
 import { getApps, deleteApp } from 'firebase/app';
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
+import * as matchers from '@testing-library/jest-dom/matchers';
+
+expect.extend(matchers);
 
 // Mock ResizeObserver
 class ResizeObserverMock {
