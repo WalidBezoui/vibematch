@@ -118,12 +118,31 @@ describe('CreatorJoinForm', () => {
     });
   }, 15000);
 
-  it('should show validation errors if required fields are missed', async () => {
+  it('should show validation errors on step 1 if fields are empty', async () => {
     render(<CreatorJoinForm />);
+    
+    // Attempt to proceed to the next step without filling any fields
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
 
+    // Assert that validation messages are shown for required fields
     await waitFor(() => {
       expect(screen.getByText(/full name is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/a valid email is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/a valid phone number is required/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show a validation error for an invalid email format', async () => {
+    render(<CreatorJoinForm />);
+    
+    // Fill in an invalid email
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'not-an-email' } });
+    
+    // Attempt to proceed
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+
+    // Assert that a specific email validation message is shown
+    await waitFor(() => {
       expect(screen.getByText(/a valid email is required/i)).toBeInTheDocument();
     });
   });
