@@ -128,21 +128,46 @@ describe('CreatorJoinForm', () => {
     });
   });
 
-  it('should show and require WhatsApp field only when the checkbox is ticked', async () => {
+  it('should only show the "Other" niche text input when the "Other" niche is selected', async () => {
     render(<CreatorJoinForm />);
-    const whatsappCheckbox = screen.getByLabelText(/my whatsapp number is different/i);
-    fireEvent.click(whatsappCheckbox);
-
-    await waitFor(() => {
-      expect(screen.getByRole('textbox', { name: /whatsapp number/i })).toBeInTheDocument();
-    });
-
-    fillStep1(); // Fill other fields
+    fillStep1();
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+    await waitFor(() => expect(screen.getByRole('heading', { name: /link your social profiles/i })).toBeInTheDocument());
+    await fillStep2();
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
 
+    await waitFor(() => expect(screen.getByRole('heading', { name: /define your vibe/i })).toBeInTheDocument());
+
+    const otherNicheInput = screen.queryByLabelText(/please specify your niche/i);
+    expect(otherNicheInput).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText(/other/i));
+
     await waitFor(() => {
-      expect(screen.getByText(/WhatsApp number is required if different from phone./i)).toBeInTheDocument();
+        const otherNicheInput = screen.getByLabelText(/please specify your niche/i);
+        expect(otherNicheInput).toBeInTheDocument();
     });
+  });
+
+  it('should correctly navigate back to the previous step', async () => {
+    render(<CreatorJoinForm />);
+    expect(screen.getByRole('heading', { name: /become a founding creator/i })).toBeInTheDocument();
+
+    fillStep1();
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+
+    await waitFor(() => expect(screen.getByRole('heading', { name: /link your social profiles/i })).toBeInTheDocument());
+
+    fireEvent.click(screen.getByRole('button', { name: /back/i }));
+
+    await waitFor(() => expect(screen.getByRole('heading', { name: /become a founding creator/i })).toBeInTheDocument());
+  });
+
+  it('should show the home button on the first step', async () => {
+      render(<CreatorJoinForm />);
+      const homeButton = screen.getByRole('link', { name: /home/i });
+      expect(homeButton).toBeInTheDocument();
+      expect(homeButton).toHaveAttribute('href', '/');
   });
   
   it('should handle social media validation states correctly', async () => {

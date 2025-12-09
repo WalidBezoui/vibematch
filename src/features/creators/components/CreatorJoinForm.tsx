@@ -44,7 +44,7 @@ const creatorApplicationSchema = z.object({
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             path: ['whatsapp'],
-            message: "WhatsApp number is required if different from phone.",
+            message: "A valid WhatsApp number is required.",
         });
     }
 });
