@@ -1,29 +1,38 @@
 
-import { render, screen, fireEvent, waitFor } from '../../test-utils/custom-render';
-import LoginPage from './LoginPage';
-import * as Auth from 'firebase/auth';
+import { render, screen, fireEvent, waitFor } from '@/test-utils/custom-render';
+import { LoginPage } from './LoginPage';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { mockUseToast } from '@/test-utils/custom-render';
 
 // Mock the Next.js router
-const mockPush = jest.fn();
-jest.mock('next/navigation', () => ({
+const mockPush = vi.fn();
+vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
   }),
+  usePathname: () => '/',
 }));
 
-// Mock the Firebase auth functions
-jest.mock('firebase/auth');
+// Mock firebase services, keeping original functionalities for the provider
+vi.mock('firebase/auth', async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        signInWithEmailAndPassword: vi.fn(),
+    };
+});
 
 describe('LoginPage', () => {
   beforeEach(() => {
     // Clear mock history before each test
     mockPush.mockClear();
-    (Auth.signInWithEmailAndPassword as jest.Mock).mockClear();
+    (signInWithEmailAndPassword as vi.Mock).mockClear();
+    mockUseToast.toasts = [];
   });
 
   it('should allow a user to log in and be redirected to the dashboard', async () => {
     // Arrange: Mock a successful login
-    (Auth.signInWithEmailAndPassword as jest.Mock).mockResolvedValue({
+    (signInWithEmailAndPassword as vi.Mock).mockResolvedValue({
       user: { uid: 'test-uid', email: 'test@example.com' },
     });
 
@@ -36,11 +45,13 @@ describe('LoginPage', () => {
     fireEvent.change(screen.getByLabelText(/password/i), {
       target: { value: 'password123' },
     });
-    fireEvent.click(screen.getByRole('button', { name: /log in/i }));
+    
+    const loginButton = await screen.findByRole('button', { name: /login/i });
+    fireEvent.click(loginButton);
 
     // Assert: Check if Firebase was called and user was redirected
     await waitFor(() => {
-      expect(Auth.signInWithEmailAndPassword).toHaveBeenCalledWith(
+      expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
         expect.any(Object), // The auth object
         'test@example.com',
         'password123'
@@ -55,7 +66,7 @@ describe('LoginPage', () => {
   it('should show an error message on a failed login attempt', async () => {
     // Arrange: Mock a failed login
     const errorMessage = 'Firebase: Error (auth/wrong-password).';
-    (Auth.signInWithEmailAndPassword as jest.Mock).mockRejectedValue(new Error(errorMessage));
+    (signInWithEmailAndPassword as vi.Mock).mockRejectedValue(new Error(errorMessage));
 
     render(<LoginPage />);
 
@@ -66,11 +77,16 @@ describe('LoginPage', () => {
     fireEvent.change(screen.getByLabelText(/password/i), {
       target: { value: 'wrong-password' },
     });
-    fireEvent.click(screen.getByRole('button', { name: /log in/i }));
+    const loginButton = await screen.findByRole('button', { name: /login/i });
+    fireEvent.click(loginButton);
 
     // Assert: Check that an error message is displayed
     await waitFor(() => {
-        expect(screen.getByText(/wrong-password/i)).toBeInTheDocument();
+      expect(mockUseToast.toast).toHaveBeenCalledWith({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: errorMessage,
+      });
     });
 
     // Ensure user is not redirected

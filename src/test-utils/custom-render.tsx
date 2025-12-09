@@ -6,6 +6,8 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { LanguageProvider } from '@/context/language-context';
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/hooks/use-toast';
 
 const firebaseConfig = {
   apiKey: 'test',
@@ -20,6 +22,17 @@ const mockFirebaseApp = initializeApp(firebaseConfig);
 const mockFirestore = getFirestore(mockFirebaseApp);
 const mockAuth = getAuth(mockFirebaseApp);
 
+// Create a mock for the useToast hook
+const mockUseToast = {
+  toasts: [],
+  toast: vi.fn(),
+  dismiss: vi.fn(),
+};
+
+vi.mock('@/hooks/use-toast', () => ({
+  useToast: () => mockUseToast,
+}));
+
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <LanguageProvider>
@@ -29,6 +42,7 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
         auth={mockAuth}
       >
         {children}
+        <Toaster />
       </FirebaseProvider>
     </LanguageProvider>
   );
@@ -40,4 +54,4 @@ const customRender = (
 ) => render(ui, { wrapper: AllTheProviders, ...options });
 
 export * from '@testing-library/react';
-export { customRender as render };
+export { customRender as render, mockUseToast };

@@ -310,7 +310,7 @@ export function CreatorJoinForm() {
                                />
                             </FormControl>
                             <div className="absolute right-3 rtl:right-auto rtl:left-3 h-full flex items-center justify-center">
-                                {socialStatus.instagram === 'checking' && <Loader2 className="h-5 w-5 animate-spin text-gray-400" />}
+                                {socialStatus.instagram === 'checking' && <Loader2 data-testid="loader-spin" className="h-5 w-5 animate-spin text-gray-400" />}
                                 {socialStatus.instagram === 'connected' && <Check className="h-5 w-5 text-green-500" />}
                                 {socialStatus.instagram === 'error' && <span className="text-red-500 text-xs font-bold">Error</span>}
                             </div>

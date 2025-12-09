@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { render, screen } from '@/test-utils/custom-render';
-import DiscoverPage from './DiscoverPage';
+import { DiscoverPage } from './DiscoverPage';
 
 // Mock the AppHeader component
 vi.mock('@/components/app-header', () => ({
@@ -10,7 +10,9 @@ vi.mock('@/components/app-header', () => ({
 
 // Mock the next/navigation module
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({}),
+  useRouter: () => ({ push: vi.fn() }),
+  useSearchParams: () => ({ get: vi.fn() }),
+  usePathname: () => '/',
 }));
 
 describe('DiscoverPage', () => {

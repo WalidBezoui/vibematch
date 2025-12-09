@@ -1,42 +1,53 @@
 
-import { render, screen, fireEvent, waitFor, act } from '../../../test-utils/custom-render';
+import { render, screen, fireEvent, waitFor } from '@/test-utils/custom-render';
 import { CreatorJoinForm } from './CreatorJoinForm';
-import * as AI from '@/ai/flows/validate-social-handle';
-import * as Auth from 'firebase/auth';
-import * as Firestore from 'firebase/firestore';
+import { validateSocialHandle } from '@/ai/flows/validate-social-handle';
+import { signInAnonymously } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
+import { mockUseToast } from '@/test-utils/custom-render';
 
 // Mock dependencies
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({ push: jest.fn() }),
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn() }),
+  usePathname: () => '/',
 }));
 
-jest.mock('@/ai/flows/validate-social-handle');
-jest.mock('firebase/auth');
-jest.mock('firebase/firestore');
-
-const mockUseToast = jest.fn();
-jest.mock('@/hooks/use-toast', () => ({
-  useToast: () => ({ toast: mockUseToast }),
+// Mock the AI flow directly
+vi.mock('@/ai/flows/validate-social-handle', () => ({
+    validateSocialHandle: vi.fn(),
 }));
+
+// Mock firebase services, keeping original functionalities for the provider
+vi.mock('firebase/auth', async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        signInAnonymously: vi.fn(),
+    };
+});
+
+vi.mock('firebase/firestore', async (importOriginal) => {
+    const actual = await importOriginal();
+    const collectionRef = {}; // A dummy object
+    return {
+        ...actual,
+        addDoc: vi.fn(),
+        collection: vi.fn(() => collectionRef),
+    };
+});
+
 
 describe('CreatorJoinForm', () => {
-  let mockValidateSocialHandle: jest.SpyInstance;
-  let mockSignInAnonymously: jest.SpyInstance;
-  let mockAddDoc: jest.SpyInstance;
 
   beforeEach(() => {
     // Reset mocks before each test
-    jest.clearAllMocks();
-
-    // Mock implementations
-    mockValidateSocialHandle = jest.spyOn(AI, 'validateSocialHandle');
-    mockSignInAnonymously = jest.spyOn(Auth, 'signInAnonymously');
-    mockAddDoc = jest.spyOn(Firestore, 'addDoc');
+    vi.clearAllMocks();
+    mockUseToast.toasts = [];
 
     // Default mock behavior
-    mockValidateSocialHandle.mockResolvedValue({ exists: true });
-    mockSignInAnonymously.mockResolvedValue({ user: { uid: 'test-uid' } });
-    mockAddDoc.mockResolvedValue({ id: 'test-doc-id' });
+    (validateSocialHandle as vi.Mock).mockResolvedValue({ exists: true });
+    (signInAnonymously as vi.Mock).mockResolvedValue({ user: { uid: 'test-uid' } });
+    (addDoc as vi.Mock).mockResolvedValue({ id: 'test-doc-id' });
   });
 
   const fillStep1 = () => {
@@ -47,7 +58,7 @@ describe('CreatorJoinForm', () => {
 
   const fillStep2 = async () => {
     fireEvent.change(screen.getByLabelText(/instagram/i), { target: { value: 'test-insta' } });
-    await waitFor(() => expect(mockValidateSocialHandle).toHaveBeenCalled());
+    await waitFor(() => expect(validateSocialHandle).toHaveBeenCalledWith({ platform: 'instagram', handle: 'test-insta' }));
   };
 
   const fillStep3 = () => {
@@ -57,30 +68,30 @@ describe('CreatorJoinForm', () => {
   };
 
   const fillStep4 = () => {
-    fireEvent.click(screen.getByLabelText(/i agree to the professionalism pledge/i));
-    fireEvent.click(screen.getByLabelText(/i agree to the terms and agreements/i));
+    fireEvent.click(screen.getByLabelText(/i commit to meeting deadlines and not using fake engagement/i));
+    fireEvent.click(screen.getByLabelText(/i accept the terms of use and i grant vibematch an exclusive mandate to invoice and collect payments on my behalf/i));
   };
 
   it('should successfully guide a user through the entire form and submit the data', async () => {
     render(<CreatorJoinForm />);
 
     // Step 1: Personal Info
-    expect(screen.getByText(/contact details/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /become a founding creator/i })).toBeInTheDocument();
     fillStep1();
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
 
     // Step 2: Social Handles
-    await waitFor(() => expect(screen.getByText(/connect your socials/i)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('heading', { name: /link your social profiles/i })).toBeInTheDocument());
     await fillStep2();
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
 
     // Step 3: Niches
-    await waitFor(() => expect(screen.getByText(/choose your niche/i)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('heading', { name: /define your vibe/i })).toBeInTheDocument());
     fillStep3();
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
 
     // Step 4: Agreements
-    await waitFor(() => expect(screen.getByText(/professionalism pledge/i)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('heading', { name: /our pledge for quality/i })).toBeInTheDocument());
     fillStep4();
     
     // Submit the form
@@ -88,9 +99,9 @@ describe('CreatorJoinForm', () => {
     
     // Final Step: Success Screen
     await waitFor(() => {
-        expect(mockSignInAnonymously).toHaveBeenCalled();
-        expect(mockAddDoc).toHaveBeenCalledWith(
-            expect.any(Object), // Firestore collection ref
+        expect(signInAnonymously).toHaveBeenCalled();
+        expect(addDoc).toHaveBeenCalledWith(
+            expect.anything(), // Firestore collection ref
             expect.objectContaining({
                 fullName: 'Test Creator',
                 email: 'creator@test.com',
@@ -103,7 +114,7 @@ describe('CreatorJoinForm', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/application submitted/i)).toBeInTheDocument();
+      expect(screen.getByText(/thank you for your application/i)).toBeInTheDocument();
     });
   });
 
@@ -123,31 +134,38 @@ describe('CreatorJoinForm', () => {
     fireEvent.click(whatsappCheckbox);
 
     await waitFor(() => {
-      expect(screen.getByLabelText(/whatsapp number/i)).toBeInTheDocument();
+      expect(screen.getByRole('textbox', { name: /whatsapp number/i })).toBeInTheDocument();
     });
 
     fillStep1(); // Fill other fields
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/whatsapp number is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/WhatsApp number is required if different from phone./i)).toBeInTheDocument();
     });
   });
   
   it('should handle social media validation states correctly', async () => {
-    mockValidateSocialHandle.mockImplementation(async () => {
+    (validateSocialHandle as vi.Mock).mockImplementation(async () => {
       await new Promise(resolve => setTimeout(resolve, 100)); // Simulate network delay
       return { exists: false };
     });
 
     render(<CreatorJoinForm />);
-    fireEvent.click(screen.getByRole('button', { name: /next/i })); // Go to step 2
-    await waitFor(() => expect(screen.getByText(/connect your socials/i)).toBeInTheDocument());
+    // Navigate to step 1 and fill it
+    fillStep1();
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+
+    // Navigate to step 2
+    await waitFor(() => expect(screen.getByRole('heading', { name: /link your social profiles/i })).toBeInTheDocument());
 
     // Test checking and error state
     fireEvent.change(screen.getByLabelText(/instagram/i), { target: { value: 'nonexistent-user' } });
-    expect(screen.getByTestId('loader-spin')).toBeInTheDocument(); // You'd need to add a data-testid to your Loader
-
+    
+    await waitFor(() => {
+      expect(screen.getByTestId('loader-spin')).toBeInTheDocument();
+    });
+    
     await waitFor(() => {
       expect(screen.getByText(/error/i)).toBeInTheDocument();
     });
@@ -156,32 +174,32 @@ describe('CreatorJoinForm', () => {
   it('should display an error toast if form submission fails', async () => {
     // Arrange: Mock a failed submission
     const submissionError = new Error('Firestore is down');
-    mockAddDoc.mockRejectedValue(submissionError);
+    (addDoc as vi.Mock).mockRejectedValue(submissionError);
 
     render(<CreatorJoinForm />);
 
     // Act: Fill the entire form correctly
     fillStep1();
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
-    await waitFor(() => { /* wait for step 2 */ });
+    await waitFor(() => expect(screen.getByRole('heading', { name: /link your social profiles/i })).toBeInTheDocument());
     await fillStep2();
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
-    await waitFor(() => { /* wait for step 3 */ });
+    await waitFor(() => expect(screen.getByRole('heading', { name: /define your vibe/i })).toBeInTheDocument());
     fillStep3();
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
-    await waitFor(() => { /* wait for step 4 */ });
+    await waitFor(() => expect(screen.getByRole('heading', { name: /our pledge for quality/i })).toBeInTheDocument());
     fillStep4();
     fireEvent.click(screen.getByRole('button', { name: /submit/i }));
 
     // Assert
     await waitFor(() => {
-      expect(mockUseToast).toHaveBeenCalledWith({
+      expect(mockUseToast.toast).toHaveBeenCalledWith({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
         description: submissionError.message,
       });
     });
     // Ensure we haven't moved to the success screen
-    expect(screen.queryByText(/application submitted/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/thank you for your application/i)).not.toBeInTheDocument();
   });
 });
