@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --exit",
     "test:unit": "vitest src/components",
     "test:rules": "vitest src/firebase",
     "test:emu": "firebase emulators:exec 'npm run test:rules'"
@@ -31,7 +31,7 @@
     "@radix-ui/react-menubar": "^1.1.6",
     "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-progress": "^1.1.2",
-    "@radix-ui/react-radio-group": "^1.2.3",
+    "@radix-ui.react-radio-group": "^1.2.3",
     "@radix-ui/react-scroll-area": "^1.2.3",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-separator": "^1.1.2",
