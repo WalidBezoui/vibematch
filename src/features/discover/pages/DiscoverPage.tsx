@@ -28,7 +28,7 @@ import { useLanguage } from '@/context/language-context';
 import { useNicheTranslation } from '@/hooks/use-niche-translation';
 
 const CampaignCardSkeleton = () => (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col" data-testid="loading-skeleton">
         <CardHeader>
             <Skeleton className="h-6 w-3/4" />
             <Skeleton className="h-4 w-1/4 mt-2" />

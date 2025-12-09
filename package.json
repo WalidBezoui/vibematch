@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --exit",
+    "test": "vitest run",
     "test:unit": "vitest src/components",
     "test:rules": "vitest src/firebase",
     "test:emu": "firebase emulators:exec 'npm run test:rules'"
