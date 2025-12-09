@@ -23,7 +23,6 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { signInAnonymously } from 'firebase/auth';
 
-// Zod schema for form validation
 const creatorApplicationSchema = z.object({
   fullName: z.string().min(2, "Full name is required."),
   email: z.string().email("A valid email is required."),
@@ -52,7 +51,6 @@ const creatorApplicationSchema = z.object({
 
 type CreatorApplicationForm = z.infer<typeof creatorApplicationSchema>;
 
-// WhatsApp Icon Component
 const WhatsAppIcon = () => (
     <svg
       role="img"
@@ -96,7 +94,7 @@ export function CreatorJoinForm() {
   const niches = t('creatorJoinForm.niches', { returnObjects: true }) as { id: string; label: string; icon: string }[];
   
   const steps = [
-    { step: 1, title: t('creatorJoinForm.steps.1.title'), description: t('creatorJoinForm.steps.1.description'), progress: 20, fields: ['fullName', 'email', 'phone', 'whatsapp'] },
+    { step: 1, title: t('creatorJoinForm.steps.1.title'), description: t('creatorJoinForm.steps.1.description'), progress: 20, fields: ['fullName', 'email', 'phone', 'useDifferentWhatsapp', 'whatsapp'] },
     { step: 2, title: t('creatorJoinForm.steps.2.title'), description: t('creatorJoinForm.steps.2.description'), progress: 40, fields: ['instagram'] },
     { step: 3, title: t('creatorJoinForm.steps.3.title'), description: t('creatorJoinForm.steps.3.description'), progress: 60, fields: ['niches'] },
     { step: 4, title: t('creatorJoinForm.steps.4.title'), description: t('creatorJoinForm.steps.4.description'), progress: 80, fields: ['pledge', 'terms'] },
