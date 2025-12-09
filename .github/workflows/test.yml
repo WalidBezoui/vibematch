@@ -3,24 +3,23 @@ name: Run Tests
 on:
   push:
     branches:
-      - main
-  pull_request:
+      - fix/ci-test-hang-rebased
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
-
-      - name: Install Firebase Tools
-        run: npm install -g firebase-tools
-
-      - name: Start Firebase emulators
-        run: firebase emulators:start &
 
       - name: Run tests
         run: npm run test:emu
