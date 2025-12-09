@@ -7,10 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Check, AtSign, Phone, User, Loader2, Home, Info, ArrowLeft, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Check, AtSign, Phone, User, Loader2, Home, Info, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/language-context';
 import { cn } from '@/lib/utils';
@@ -24,6 +23,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { signInAnonymously } from 'firebase/auth';
 
+// Zod schema for form validation
 const creatorApplicationSchema = z.object({
   fullName: z.string().min(2, "Full name is required."),
   email: z.string().email("A valid email is required."),
@@ -40,14 +40,19 @@ const creatorApplicationSchema = z.object({
   terms: z.literal(true, {
     errorMap: () => ({ message: "You must agree to the Terms and Agreements." }),
   }),
-}).refine(data => !data.useDifferentWhatsapp || (data.useDifferentWhatsapp && data.whatsapp && data.whatsapp.length > 0), {
-    message: "WhatsApp number is required if different from phone.",
-    path: ["whatsapp"],
+}).superRefine((data, ctx) => {
+    if (data.useDifferentWhatsapp && !data.whatsapp) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['whatsapp'],
+            message: "WhatsApp number is required if different from phone.",
+        });
+    }
 });
 
 type CreatorApplicationForm = z.infer<typeof creatorApplicationSchema>;
 
-
+// WhatsApp Icon Component
 const WhatsAppIcon = () => (
     <svg
       role="img"
@@ -61,7 +66,6 @@ const WhatsAppIcon = () => (
       />
     </svg>
 );
-
 
 export function CreatorJoinForm() {
   const [currentStep, setCurrentStep] = useState(1);

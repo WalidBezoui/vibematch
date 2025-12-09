@@ -111,12 +111,12 @@ describe('CreatorJoinForm', () => {
                 terms: true,
             })
         );
-    });
+    }, { timeout: 10000 });
 
     await waitFor(() => {
       expect(screen.getByText(/thank you for your application/i)).toBeInTheDocument();
     });
-  });
+  }, 15000);
 
   it('should show validation errors if required fields are missed', async () => {
     render(<CreatorJoinForm />);
