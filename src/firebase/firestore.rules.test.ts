@@ -22,7 +22,7 @@ describe('Firestore Security Rules', () => {
       projectId: 'studio-6015308119-5a7a7',
       firestore: {
         rules: readFileSync('firestore.rules', 'utf8'),
-        host: 'localhost',
+        host: '127.0.0.1',
         port: 8080,
       },
     });
