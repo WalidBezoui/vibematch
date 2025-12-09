@@ -1,3 +1,4 @@
+/** @vitest-environment jsdom */
 
 import { render, screen, fireEvent, waitFor } from '@/test-utils/custom-render';
 import { CreatorJoinForm } from './CreatorJoinForm';

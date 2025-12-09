@@ -1,3 +1,5 @@
+/** @vitest-environment jsdom */
+
 import { render, screen } from '@/test-utils/custom-render';
 import { CampaignsPage } from './CampaignsPage';
 
