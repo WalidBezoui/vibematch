@@ -227,4 +227,43 @@ describe('CreatorJoinForm', () => {
     // Ensure we haven't moved to the success screen
     expect(screen.queryByText(/thank you for your application/i)).not.toBeInTheDocument();
   });
+
+  it('should submit the custom value from the "Other" niche input', async () => {
+    render(<CreatorJoinForm />);
+
+    // Step 1
+    fillStep1();
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+
+    // Step 2
+    await waitFor(() => expect(screen.getByRole('heading', { name: /link your social profiles/i })).toBeInTheDocument());
+    await fillStep2();
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+
+    // Step 3
+    await waitFor(() => expect(screen.getByRole('heading', { name: /define your vibe/i })).toBeInTheDocument());
+    fireEvent.click(screen.getByText(/other/i));
+    await waitFor(() => {
+        const otherInput = screen.getByLabelText(/please specify your niche/i);
+        fireEvent.change(otherInput, { target: { value: 'Competitive Gaming' } });
+    });
+    fireEvent.click(screen.getByRole('button', { name: /next/i }));
+    
+    // Step 4
+    await waitFor(() => expect(screen.getByRole('heading', { name: /our pledge for quality/i })).toBeInTheDocument());
+    fillStep4();
+    fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+
+    // Assert submission
+    await waitFor(() => {
+        expect(addDoc).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.objectContaining({
+                niches: ['other'], // The "other" checkbox value
+                otherNiche: 'Competitive Gaming', // The custom text input value
+            })
+        );
+    });
+  });
+
 });
