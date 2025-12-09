@@ -16,6 +16,7 @@
     "test:emu": "firebase emulators:exec 'npm test'"
   },
   "dependencies": {
+    "@cypress/webpack-preprocessor": "^7.0.2",
     "@firebase/rules-unit-testing": "^5.0.0",
     "@genkit-ai/google-genai": "^1.20.0",
     "@genkit-ai/next": "^1.20.0",
