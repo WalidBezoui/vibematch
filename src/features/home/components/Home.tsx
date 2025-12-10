@@ -87,6 +87,50 @@ export function HomeComponent() {
           </div>
         </div>
       </div>
+      <div className="py-16 text-center">
+        <p className="text-sm font-semibold text-foreground/50 uppercase tracking-widest">{t('homePage.trustedBy')}</p>
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-6 gap-8 items-center">
+            <span className="grayscale opacity-60 text-4xl font-black">MARJANE</span>
+            <span className="grayscale opacity-60 text-4xl font-black">INWI</span>
+            <span className="grayscale opacity-60 text-4xl font-black">CIH</span>
+            <span className="grayscale opacity-60 text-4xl font-black">MCDO</span>
+            <span className="grayscale opacity-60 text-4xl font-black">PEPSI</span>
+            <span className="grayscale opacity-60 text-4xl font-black">COKE</span>
+        </div>
+      </div>
+       <div className="py-24 md:py-32 scroll-mt-16">
+        <div className="text-center mb-16 max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">
+                {t('homePage.howItWorks.title')}
+            </h2>
+            <p className="text-lg md:text-xl text-foreground/70 mt-4">
+                {t('homePage.howItWorks.description')}
+            </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border border-border/50">
+                <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-3xl font-bold text-black">1</div>
+                <h3 className="text-xl font-bold mt-2">{t('homePage.howItWorks.step1.title')}</h3>
+                <p className="text-foreground/70 leading-relaxed">
+                    {t('homePage.howItWorks.step1.description')}
+                </p>
+            </div>
+            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border border-border/50">
+                <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-3xl font-bold text-black">2</div>
+                <h3 className="text-xl font-bold mt-2">{t('homePage.howItWorks.step2.title')}</h3>
+                <p className="text-foreground/70 leading-relaxed">
+                    {t('homePage.howItWorks.step2.description')}
+                </p>
+            </div>
+            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border border-border/50">
+                <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-3xl font-bold text-black">3</div>
+                <h3 className="text-xl font-bold mt-2">{t('homePage.howItWorks.step3.title')}</h3>
+                <p className="text-foreground/70 leading-relaxed">
+                    {t('homePage.howItWorks.step3.description')}
+                </p>
+            </div>
+        </div>
+      </div>
       <div className="py-24 md:py-32 scroll-mt-16" id="brands">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
           <div className="flex flex-col gap-6">
