@@ -316,6 +316,23 @@
         "legal": "Mentions Légales"
     },
     "homePage": {
+        "trustedBy": "Approuvé par les meilleures marques marocaines",
+        "howItWorks": {
+            "title": "Lancez une Campagne en Quelques Minutes",
+            "description": "Un processus simplifié pour vous connecter avec les créateurs parfaits pour votre marque.",
+            "step1": {
+                "title": "Définissez Votre Campagne",
+                "description": "Publiez un brief détaillé décrivant vos objectifs, livrables et budget. Notre système vous aide à attirer les bons talents."
+            },
+            "step2": {
+                "title": "Connectez & Collaborez",
+                "description": "Examinez les candidatures de nos créateurs certifiés, négociez les termes et engagez vos partenaires idéaux via notre plateforme sécurisée."
+            },
+            "step3": {
+                "title": "Lancez & Suivez",
+                "description": "Financez la campagne via notre séquestre sécurisé. Les créateurs ne sont payés qu'après votre approbation du contenu, garantissant des résultats."
+            }
+        },
         "hero": {
             "title1": "L'Influence, Propulsée par la",
             "title2": "Confiance.",

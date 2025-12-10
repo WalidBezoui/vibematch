@@ -316,6 +316,23 @@
         "legal": "Legal Notice"
     },
     "homePage": {
+        "trustedBy": "Trusted By The Best Moroccan Brands",
+        "howItWorks": {
+            "title": "Launch a Campaign in Minutes",
+            "description": "A streamlined process to connect with the perfect creators for your brand.",
+            "step1": {
+                "title": "Define Your Campaign",
+                "description": "Post a detailed brief outlining your goals, deliverables, and budget. Our system helps you attract the right talent."
+            },
+            "step2": {
+                "title": "Connect & Collaborate",
+                "description": "Review applications from our vetted creators, negotiate terms, and hire your ideal partners through our secure platform."
+            },
+            "step3": {
+                "title": "Launch & Track",
+                "description": "Fund the campaign via our secure escrow. Creators get paid only after you approve the content, guaranteeing results."
+            }
+        },
         "hero": {
             "title1": "Influence, Amplified by",
             "title2": "Trust.",
@@ -871,12 +888,12 @@
         "PENDING_CREATOR_ACCEPTANCE": "Pending Creator Acceptance",
         "OFFER_PENDING": "Offer Pending",
         "PENDING_PAYMENT": "Pending Payment",
-        "AWAITING_YOUR_PAYMENT": "Awaiting Your Payment",
         "IN_PROGRESS": "In Progress",
         "DELIVERED": "Delivered",
         "COMPLETED": "Completed",
         "REJECTED_BY_CREATOR": "Rejected by Creator",
-        "YOUR_ACCEPTANCE": "Awaiting Your Acceptance"
+        "YOUR_ACCEPTANCE": "Awaiting Your Acceptance",
+        "AWAITING_YOUR_PAYMENT": "Awaiting Your Payment"
     },
     "discoverCampaigns": {
         "title": "Discover Campaigns",
