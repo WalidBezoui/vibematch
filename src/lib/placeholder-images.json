@@ -2,20 +2,20 @@
   "placeholderImages": [
     {
       "id": "fake-engagement",
-      "description": "Illustration of stacked coins with heart icons, and a thumbs-down coin floating above, symbolizing wasted money on fake engagement.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=12g2HLHUQ9xIZHrBqLejv2chpxPr7edP0",
-      "imageHint": "fake engagement"
+      "description": "A shield icon deflecting ghost-like figures, representing protection against fake engagement.",
+      "imageUrl": "https://images.unsplash.com/photo-1724219616919-aab943e7b00d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzaGllbGQlMjBzZWN1cml0eXxlbnwwfHx8fDE3NjUzMTUwOTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "shield security"
     },
     {
       "id": "guaranteed-payments",
-      "description": "A stylized illustration of a mobile phone showing an automated payment notification, with charts and graphs in the background, representing guaranteed payments.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=1KrGzwEA3svJytV3EvH35NgyghpE-bPc3",
-      "imageHint": "guaranteed payments"
+      "description": "A wallet icon with a checkmark, symbolizing guaranteed and secure payments for creators.",
+      "imageUrl": "https://images.unsplash.com/photo-1614267119077-51bdcbf9f77a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YWxsZXQlMjBwYXltZW50fGVufDB8fHx8MTc2NTM5Mzc5Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wallet payment"
     },
     {
       "id": "moroccan-team",
-      "description": "A modern, professional Moroccan team collaborating in a bright, stylish office in Casablanca.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=1_qVMP80Mw9itrY4LIWEHYy84_xPNXh5m",
+      "description": "A diverse group of modern, professional Moroccan creators and brand managers collaborating in a bright, stylish office in Casablanca, showcasing teamwork and local expertise.",
+      "imageUrl": "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjB0ZWFtfGVufDB8fHx8MTc2NTMyNjMzNHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "professional team"
     },
     {
@@ -35,6 +35,18 @@
       "description": "Portrait of Soukaina, a fashion influencer.",
       "imageUrl": "https://images.unsplash.com/photo-1527736947477-2790e28f3443?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx3b21hbiUyMGZhc2hpb258ZW58MHx8fHwxNzYxMTE2MTA5fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "woman fashion"
+    },
+    {
+      "id": "feature-autopilot",
+      "description": "A sleek, modern dashboard on a tablet screen showing campaign analytics and progress bars, symbolizing campaign management on autopilot.",
+      "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkYXNoYm9hcmQlMjBhbmFseXRpY3N8ZW58MHx8fHwxNzY1MzU1NDQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "dashboard analytics"
+    },
+    {
+      "id": "feature-deadlines",
+      "description": "A calendar icon with a checkmark and a locked padlock, representing guaranteed and secure deadlines.",
+      "imageUrl": "https://images.unsplash.com/photo-1686563873984-9ee2048d1c52?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWxlbmRhciUyMGRlYWRsaW5lfGVufDB8fHx8MTc2NTM5Mzc5Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "calendar deadline"
     }
   ]
 }

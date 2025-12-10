@@ -1,11 +1,9 @@
 
 'use client';
 
-import Link from 'next/link';
 import { HomeComponent } from '@/features/home/components/Home';
 import { AppHeader } from '@/components/app-header';
 import { PromoBanner } from '@/components/promo-banner';
-import { useLanguage } from '@/context/language-context';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -31,7 +29,6 @@ const LoadingSkeleton = () => (
 
 
 export function HomePage() {
-  const { t } = useLanguage();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
 
@@ -56,34 +53,6 @@ export function HomePage() {
             <HomeComponent />
           </div>
         </main>
-
-        <footer className="px-4 md:px-10 lg:px-20 py-8 border-t">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-sm text-center md:text-left text-foreground/60">
-              {t('footer.copyright')}
-            </p>
-            <div className="flex gap-6">
-              <Link
-                className="text-sm text-foreground/60 hover:text-primary"
-                href="/terms"
-              >
-                {t('footer.terms')}
-              </Link>
-              <Link
-                className="text-sm text-foreground/60 hover:text-primary"
-                href="/privacy"
-              >
-                {t('footer.privacy')}
-              </Link>
-              <Link
-                className="text-sm text-foreground/60 hover:text-primary"
-                href="/legal-notice"
-              >
-                {t('footer.legal')}
-              </Link>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   );
