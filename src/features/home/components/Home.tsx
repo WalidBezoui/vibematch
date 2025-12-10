@@ -343,7 +343,7 @@ export function HomeComponent() {
       </div>
       <div className="py-16 md:py-24 text-center">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <h2 className.tsx="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6">
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6">
             {t('homePage.waitlist.title1')}{' '}
             <span className="gradient-text">{t('homePage.waitlist.title2')}</span>{' '}
             {t('homePage.waitlist.title3')}
