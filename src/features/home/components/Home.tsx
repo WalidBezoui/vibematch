@@ -95,16 +95,15 @@ export function HomeComponent() {
       </div>
       
        <div className="py-24 text-center">
-        <h3 className="text-lg font-semibold text-foreground/60 mb-8">{trustSignals.title}</h3>
+         <h3 className="text-sm font-semibold text-foreground/60 tracking-widest uppercase mb-8">{trustSignals.title}</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
-            <div className="font-mono text-2xl font-bold text-foreground/70">CMI</div>
-            <div className="font-mono text-2xl font-bold text-foreground/70">Stripe</div>
-            <div className="font-mono text-2xl font-bold text-foreground/70">Google</div>
-            <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 text-primary font-bold text-lg">
+            <div className="font-mono text-2xl font-bold text-foreground/50">CMI</div>
+            <div className="font-mono text-2xl font-bold text-foreground/50">Stripe</div>
+            <div className="font-mono text-2xl font-bold text-foreground/50">Google Cloud</div>
+             <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 text-primary font-bold text-lg">
                 {trustSignals.waitlist}
             </div>
         </div>
-        <p className="text-sm text-foreground/50 mt-8">{trustSignals.paymentSecurity}</p>
        </div>
 
        <div className="py-24 md:py-32" id="how-it-works">
