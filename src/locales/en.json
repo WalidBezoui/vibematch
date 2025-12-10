@@ -316,76 +316,41 @@
         "legal": "Legal Notice"
     },
     "homePage": {
-        "trustedBy": "Trusted By The Best Moroccan Brands",
-        "howItWorks": {
-            "title": "How It Works",
-            "description": "A streamlined process to connect with the perfect creators for your brand.",
-            "brands": {
-                "tabTitle": "For Brands",
-                "steps": [
-                    {
-                        "title": "Post a Campaign",
-                        "description": "Publish a detailed brief outlining your goals, deliverables, and budget for free.",
-                        "icon": "FilePlus"
-                    },
-                    {
-                        "title": "Secure Funds",
-                        "description": "Hire your chosen creator and fund the campaign via our secure escrow system.",
-                        "icon": "ShieldCheck"
-                    },
-                    {
-                        "title": "Validate & Pay",
-                        "description": "Review the submitted content. Payment is released to the creator only upon your approval.",
-                        "icon": "CircleDollarSign"
-                    }
-                ]
-            },
-            "creators": {
-                "tabTitle": "For Creators",
-                "steps": [
-                     {
-                        "title": "Apply to Missions",
-                        "description": "Browse campaigns from top brands and apply to the ones that match your vibe, for free.",
-                        "icon": "Send"
-                    },
-                    {
-                        "title": "Create Content",
-                        "description": "Once the brand secures the funds in escrow, you can start working with full peace of mind.",
-                        "icon": "Clapperboard"
-                    },
-                    {
-                        "title": "Get Paid Instantly",
-                        "description": "As soon as the brand validates your work, the payment is instantly released to your account. No delays.",
-                        "icon": "Rocket"
-                    }
-                ]
-            }
-        },
         "hero": {
-            "title1": "Morocco's Secure Influencer Marketplace",
-            "subtitle": "Brands: Pay only when the work is validated. Creators: Get paid guaranteed within 24 hours. Escrow for everyone.",
-            "brandsButton": "Find Vetted Creators",
-            "creatorsButton": "Find Paid Missions"
+            "title1": "Influence, Amplified by",
+            "title2": "Trust.",
+            "subtitle": "No more fake engagement. No more late payments. VibeMatch is the Vetted-Influencer Marketplace for Morocco's best brands and creators.",
+            "brandsButton": "For Brands",
+            "creatorsButton": "For Creators"
         },
         "painPoints": {
             "brands": {
-                "title": "For Brands: Stop dealing with fake engagement & unprofessionalism.",
+                "title": "Stop wasting money on fake engagement.",
                 "description": "We provide vetted creators and guaranteed results. Our revolutionary Trust Engine analyzes over 50 data points to ensure every influencer you partner with has a genuine, engaged audience. No more bots, no more vanity metrics. Just real impact."
             },
             "creators": {
-                "title": "For Creators: Stop chasing payments & wasting your time.",
+                "title": "Stop chasing payments. We guarantee them.",
                 "description": "Focus on what you do best: creating amazing content. VibeMatch handles the boring stuff. We guarantee your payments and automate your invoices, so you can build your brand with peace of mind."
             }
         },
-        "killerFeature": {
-            "title": "VibeMatch Escrow: Your Security.",
-            "description": "Our secure payment system protects both brands and creators, ensuring a fair and transparent collaboration from start to finish."
+        "creating": {
+            "title1": "Focus on Creating.",
+            "title2": "We'll Handle the",
+            "title3": "Rest."
         },
-        "finalCta": {
-            "title": "Ready to launch your first campaign?",
-            "subtitle": "Join the leading brands and creators in Morocco.",
-            "button": "Get Started Now",
-            "reassurance": "No credit card required for signup."
+        "creatorFeatures": {
+            "paycheck": {
+                "title": "Your 100% Automated Paycheck",
+                "description": "Never create an invoice again. Never follow up on a payment again. As soon as the brand approves your content, our system generates the invoice and transfers the money to you automatically. You are a creator, not an accountant."
+            },
+            "confidence": {
+                "title": "Work with Absolute Confidence",
+                "description": "Never start a project hoping to get paid again. For every mission you accept, the brand's budget is locked and secured in our escrow account. Your payment is guaranteed before you even turn on your camera."
+            },
+            "briefs": {
+                "title": "Clear Briefs, Zero Confusion",
+                "description": "Say goodbye to \"details that change\" at the last minute. Our Smart Contract locks in the brief, deliverables, and budget. What is agreed upon is what is delivered. Protect your work and your time."
+            }
         },
         "testimonialsTitle1": "What",
         "testimonialsTitle2": "Moroccan Creators",
@@ -409,7 +374,82 @@
                 "role": "Fashion Influencer",
                 "image": "testimonial-3"
             }
-        ]
+        ],
+        "faq": {
+            "title1": "Your Questions,",
+            "title2": "Answered.",
+            "description": "Find quick answers to common questions about how VibeMatch works for both brands and creators.",
+            "brandsTitle": "For Brands",
+            "creatorsTitle": "For Creators",
+            "viewAllButton": "View All FAQs"
+        },
+        "brandsFaq": [
+            {
+              "question": "How does VibeMatch ensure creator quality?",
+              "answer": "Our Trust Engine analyzes over 50 data points, including audience demographics, engagement rates, and past performance, to verify every creator. We ensure you connect with influencers who have a genuine, engaged audience that match your brand values."
+            },
+            {
+              "question": "What is the pricing model for brands?",
+              "answer": "VibeMatch operates on a campaign-based fee structure. You only pay for the campaigns you launch. We are transparent about all costs upfront, so there are no hidden fees. Contact us for detailed pricing information tailored to your needs."
+            }
+        ],
+        "creatorsFaq": [
+            {
+                "question": "How do I get paid?",
+                "answer": "We guarantee your payments. Once a campaign is completed and approved, funds are released to your VibeMatch account. You can then withdraw your earnings directly to your bank account. No more chasing invoices!"
+            },
+            {
+                "question": "What are the requirements to join as a creator?",
+                "answer": "We look for creators with an authentic connection to their audience, regardless of follower size. We evaluate engagement quality, content creativity, and niche relevance. If you create high-quality content and have a loyal community, we encourage you to apply."
+            }
+        ],
+        "connect": {
+            "title": "Where Great Brands and Great Creators Connect."
+        },
+        "howItWorks": {
+            "title": "A Process You Can Trust",
+            "description": "A streamlined, secure process for brands and creators.",
+            "brands": {
+                "tabTitle": "For Brands",
+                "steps": [
+                    {
+                        "title": "Post a Campaign",
+                        "description": "Publish a detailed brief. Our system helps you attract the right, vetted talent for free.",
+                        "icon": "Megaphone"
+                    },
+                    {
+                        "title": "Secure the Funds",
+                        "description": "Once you've chosen a creator, fund the project via our secure escrow. We hold the payment until you're satisfied.",
+                        "icon": "Lock"
+                    },
+                    {
+                        "title": "Approve & Go Live",
+                        "description": "Review the content. Once you approve it, we release the payment to the creator automatically. You get your content, they get paid. Simple.",
+                        "icon": "Rocket"
+                    }
+                ]
+            },
+            "creators": {
+                "tabTitle": "For Creators",
+                "steps": [
+                    {
+                        "title": "Apply to Missions",
+                        "description": "Browse campaigns from leading brands and apply to the ones that match your vibe. It's always free to apply.",
+                        "icon": "Send"
+                    },
+                    {
+                        "title": "Work with Confidence",
+                        "description": "Once hired, the brand's payment is already secured in our escrow system. You can start creating without ever worrying about getting paid.",
+                        "icon": "ShieldCheck"
+                    },
+                    {
+                        "title": "Get Paid Instantly",
+                        "description": "As soon as the brand approves your work, the funds are released to your VibeMatch wallet. No invoices, no chasing, no delays.",
+                        "icon": "CircleDollarSign"
+                    }
+                ]
+            }
+        }
     },
     "faqPage": {
         "title": {
@@ -917,7 +957,7 @@
         "form": {
             "tariff": {
                 "title": "Confirm Your Tariff",
-                "description": "The brand's proposed budget is {budget} DH. You can adjust this if needed.",
+                "description": "The brand's proposed budget is {budget} DH. You can adjust this amount if needed.",
                 "warning": "Note: Your offer is higher than the brand's budget."
             },
             "coverLetter": {
