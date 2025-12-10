@@ -69,7 +69,8 @@ export function HomeComponent() {
             <Button
               asChild
               size="lg"
-              className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
+              variant="gradient"
+              className="min-w-[220px] h-14 px-8"
               onClick={() => setUserInterest('brand')}
             >
               <Link href="/brands/join">{t('homePage.hero.brandsButton')}</Link>
@@ -107,7 +108,8 @@ export function HomeComponent() {
                ) : <div className="h-[20px]" /> }
               <Button
                 asChild
-                className="w-full md:w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
+                variant="gradient"
+                className="w-full md:w-fit h-12 px-8"
                 onClick={() => setUserInterest('brand')}
               >
                 <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
@@ -159,7 +161,8 @@ export function HomeComponent() {
                ) : <div className="h-[20px]" /> }
               <Button
                 asChild
-                className="w-full md:w-fit h-12 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
+                variant="gradient"
+                className="w-full md:w-fit h-12 px-8"
                 onClick={() => setUserInterest('creator')}
               >
                 <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
@@ -340,7 +343,7 @@ export function HomeComponent() {
       </div>
       <div className="py-16 md:py-24 text-center">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6">
+          <h2 className.tsx="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6">
             {t('homePage.waitlist.title1')}{' '}
             <span className="gradient-text">{t('homePage.waitlist.title2')}</span>{' '}
             {t('homePage.waitlist.title3')}
@@ -353,7 +356,8 @@ export function HomeComponent() {
             <Button
               asChild
               size="lg"
-              className="min-w-[220px] h-14 px-8 gradient-bg text-black text-base font-semibold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full"
+              variant="gradient"
+              className="min-w-[220px] h-14 px-8"
               onClick={() => setUserInterest('brand')}
             >
               <Link href="/brands/join">{t('homePage.waitlist.brandsButton')}</Link>
