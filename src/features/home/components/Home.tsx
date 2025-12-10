@@ -14,7 +14,7 @@ import { getImage } from '@/lib/placeholder-images';
 import React, { useEffect, useState } from 'react';
 import * as lucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
   const Icon = (lucideIcons as any)[name];
@@ -24,70 +24,107 @@ const DynamicIcon = ({ name, className }: { name: string, className?: string }) 
   return <Icon className={className} />;
 };
 
+const HowItWorksCard = ({ step, title, description, icon }: { step: number, title: string, description: string, icon: string }) => (
+    <div className="flex items-start gap-6">
+        <div className="flex flex-col items-center gap-2">
+            <div className="w-12 h-12 rounded-full gradient-bg text-black flex items-center justify-center font-bold text-xl shadow-lg shadow-primary/30">
+                {step}
+            </div>
+            {step < 3 && <div className="w-px h-16 bg-border"></div>}
+        </div>
+        <div>
+            <div className="flex items-center gap-3 mb-2">
+                 <div className="w-8 h-8 rounded-md bg-muted flex items-center justify-center text-primary">
+                    <DynamicIcon name={icon} className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-bold">{title}</h3>
+            </div>
+            <p className="text-foreground/70 leading-relaxed">{description}</p>
+        </div>
+    </div>
+)
 
 export function HomeComponent() {
   const { t, language, setUserInterest } = useLanguage();
-  const [brandCta, setBrandCta] = useState<{ text: string, icon: string } | null>(null);
-  const [creatorCta, setCreatorCta] = useState<{ text: string, icon: string } | null>(null);
+  const [activeTab, setActiveTab] = useState('brands');
 
-  const brandsFaq = t('homePage.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
-  const creatorsFaq = t('homePage.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
+  const brandsFaq = t('homePage.faq.brandsFaq', { returnObjects: true }) as { question: string; answer: string }[];
+  const creatorsFaq = t('homePage.faq.creatorsFaq', { returnObjects: true }) as { question: string; answer: string }[];
   
-  useEffect(() => {
-    const brandCtas = t('homePage.brands.ctas', { returnObjects: true }) as {text: string, icon: string}[];
-    const creatorCtas = t('homePage.creators.ctas', { returnObjects: true }) as {text: string, icon: string}[];
+  const dashboardScreenshot = getImage('dashboard-screenshot');
+  const creatorAppScreenshot = getImage('creator-app-screenshot');
+  const escrowDiagram = getImage('escrow-diagram');
 
-    if (brandCtas && brandCtas.length > 0) {
-      const randomIndex = Math.floor(Math.random() * brandCtas.length);
-      setBrandCta(brandCtas[randomIndex]);
+  const howItWorks = {
+      brands: t('homePage.howItWorks.brands', {returnObjects: true}) as any[],
+      creators: t('homePage.howItWorks.creators', {returnObjects: true}) as any[],
+  }
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+    if(tab === 'brands') {
+        setUserInterest('brand');
+    } else {
+        setUserInterest('creator');
     }
-    if (creatorCtas && creatorCtas.length > 0) {
-      const randomIndex = Math.floor(Math.random() * creatorCtas.length);
-      setCreatorCta(creatorCtas[randomIndex]);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t]);
-
-
-  const fakeEngagementImg = getImage('fake-engagement');
-  const guaranteedPaymentsImg = getImage('guaranteed-payments');
-  const moroccanTeamImg = getImage('moroccan-team');
+  }
 
   return (
     <div className="flex flex-col max-w-[1200px] flex-1">
-      <div className="flex flex-col items-center justify-center text-center min-h-[calc(100vh-280px)] py-10">
+      {/* Hero Section */}
+      <div className="flex flex-col items-center justify-center text-center min-h-[calc(100vh-160px)] py-10">
         <div className="flex flex-col gap-6 items-center">
           <h1 className={`text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-tight ${language === 'AR' ? 'hero-title-ar' : ''}`}>
-            {t('homePage.hero.title1')}{' '}
-            <span className="gradient-text text-glow">{t('homePage.hero.title2')}</span>
+             {t('homePage.hero.title')}
           </h1>
           <h2 className="text-lg md:text-xl lg:text-2xl font-normal leading-relaxed max-w-4xl text-foreground/70">
             {t('homePage.hero.subtitle')}
           </h2>
-          <div className="flex flex-col sm:flex-row gap-4 mt-8">
-            <Button
-              asChild
-              size="lg"
-              variant="gradient"
-              className="min-w-[220px] h-14 px-8 rounded-full"
-              onClick={() => setUserInterest('brand')}
-            >
-              <Link href="/brands/join">{t('homePage.hero.brandsButton')}</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
-              onClick={() => setUserInterest('creator')}
-            >
-              <Link href="/creators/join">{t('homePage.hero.creatorsButton')}</Link>
-            </Button>
-          </div>
+        </div>
+        {dashboardScreenshot && (
+            <div className="mt-16 w-full max-w-4xl">
+                 <Image
+                    src={dashboardScreenshot.imageUrl}
+                    alt={dashboardScreenshot.description}
+                    width={1200}
+                    height={750}
+                    className="rounded-2xl border shadow-2xl shadow-primary/10"
+                />
+            </div>
+        )}
+      </div>
+
+       {/* Segmentation Tabs */}
+      <div className="py-24 md:py-32" id="start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className={cn("p-8 transition-all duration-300 cursor-pointer", activeTab === 'brands' ? 'border-primary shadow-2xl shadow-primary/20 -translate-y-2' : 'border-border hover:border-primary/50')} onClick={() => handleTabClick('brands')}>
+                <CardHeader className="p-0">
+                    <CardTitle className="text-3xl font-bold flex items-center gap-3">
+                         <span className="material-symbols-outlined text-4xl gradient-text">storefront</span>
+                         {t('homePage.segmentation.brands.tab')}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0 mt-4">
+                    <p className="text-lg text-foreground/80">{t('homePage.segmentation.brands.title')}</p>
+                </CardContent>
+            </Card>
+            <Card className={cn("p-8 transition-all duration-300 cursor-pointer", activeTab === 'creators' ? 'border-primary shadow-2xl shadow-primary/20 -translate-y-2' : 'border-border hover:border-primary/50')} onClick={() => handleTabClick('creators')}>
+                <CardHeader className="p-0">
+                    <CardTitle className="text-3xl font-bold flex items-center gap-3">
+                         <span className="material-symbols-outlined text-4xl gradient-text">person</span>
+                         {t('homePage.segmentation.creators.tab')}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0 mt-4">
+                     <p className="text-lg text-foreground/80">{t('homePage.segmentation.creators.title')}</p>
+                </CardContent>
+            </Card>
         </div>
       </div>
-      <div className="py-24 md:py-32 scroll-mt-16" id="brands">
+      
+       {/* Pain/Solution Section */}
+      <div className="py-24 md:py-32">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
           <div className="flex flex-col gap-6">
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
@@ -99,49 +136,31 @@ export function HomeComponent() {
             <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
               {t('homePage.brands.description')}
             </p>
-            <div className="mt-4 flex flex-col items-start gap-4">
-               {brandCta ? (
-                 <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
-                    <DynamicIcon name={brandCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
-                    <p>{brandCta.text}</p>
-                 </div>
-               ) : <div className="h-[20px]" /> }
-              <Button
-                asChild
-                variant="gradient"
-                className="w-full md:w-fit h-12 px-8 rounded-full"
-                onClick={() => setUserInterest('brand')}
-              >
-                <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
-              </Button>
+          </div>
+          {creatorAppScreenshot && (
+            <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-primary/10 overflow-hidden">
+                <Image
+                    src={creatorAppScreenshot.imageUrl}
+                    alt={creatorAppScreenshot.description}
+                    data-ai-hint={creatorAppScreenshot.imageHint}
+                    fill
+                    className="object-contain"
+                />
             </div>
-          </div>
-          <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-primary/10 overflow-hidden">
-            {fakeEngagementImg && (
-                <Image
-                    src={fakeEngagementImg.imageUrl}
-                    alt={fakeEngagementImg.description}
-                    data-ai-hint={fakeEngagementImg.imageHint}
-                    fill
-                    className="object-contain"
-                />
-            )}
-          </div>
+           )}
         </div>
-      </div>
-      <div className="py-24 md:py-32 scroll-mt-16" id="creators-main">
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
-           <div className="relative w-full aspect-square p-8 bg-gradient-to-bl from-accent/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-accent/10 overflow-hidden order-last md:order-first">
-             {guaranteedPaymentsImg && (
+         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 mt-32">
+           {escrowDiagram && (
+            <div className="relative w-full aspect-square p-8 bg-gradient-to-bl from-accent/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-accent/10 overflow-hidden order-last md:order-first">
                 <Image
-                    src={guaranteedPaymentsImg.imageUrl}
-                    alt={guaranteedPaymentsImg.description}
-                    data-ai-hint={guaranteedPaymentsImg.imageHint}
+                    src={escrowDiagram.imageUrl}
+                    alt={escrowDiagram.description}
+                    data-ai-hint={escrowDiagram.imageHint}
                     fill
                     className="object-contain"
                 />
-            )}
-          </div>
+            </div>
+           )}
           <div className="flex flex-col gap-6">
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
               {t('homePage.creators.title1')}{' '}
@@ -152,74 +171,44 @@ export function HomeComponent() {
             <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
               {t('homePage.creators.description')}
             </p>
-             <div className="mt-4 flex flex-col items-start gap-4">
-               {creatorCta ? (
-                 <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
-                    <DynamicIcon name={creatorCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
-                    <p>{creatorCta.text}</p>
-                 </div>
-               ) : <div className="h-[20px]" /> }
-              <Button
-                asChild
-                variant="gradient"
-                className="w-full md:w-fit h-12 px-8 rounded-full"
-                onClick={() => setUserInterest('creator')}
-              >
-                <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
-              </Button>
-            </div>
           </div>
         </div>
       </div>
-      <div
-        className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-16"
-        id="creators"
-      >
-        <div className="px-4 md:px-10 lg:px-12">
-          <div className="text-center mb-16 max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">
-              {t('homePage.creating.title1')} <br className="hidden md:block" />{' '}
-              {t('homePage.creating.title2')}{' '}
-              <span className="gradient-text text-glow">{t('homePage.creating.title3')}</span>
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
-              <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
-                <span className="material-symbols-outlined text-4xl text-black">
-                  payments
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mt-2">{t('homePage.creatorFeatures.paycheck.title')}</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                {t('homePage.creatorFeatures.paycheck.description')}
-              </p>
-            </div>
-            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
-              <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
-                <span className="material-symbols-outlined text-4xl text-black">
-                  lock
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mt-2">{t('homePage.creatorFeatures.confidence.title')}</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                {t('homePage.creatorFeatures.confidence.description')}
-              </p>
-            </div>
-            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-background border transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-2">
-              <div className="w-16 h-16 rounded-lg gradient-bg flex items-center justify-center">
-                <span className="material-symbols-outlined text-4xl text-black">
-                  rule
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mt-2">{t('homePage.creatorFeatures.briefs.title')}</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                {t('homePage.creatorFeatures.briefs.description')}
-              </p>
-            </div>
-          </div>
+      
+       {/* How it Works Section */}
+        <div className="py-24 md:py-32 text-center">
+             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-16">
+                 {t('homePage.howItWorks.title')}
+             </h2>
+             <div className="max-w-2xl mx-auto">
+                {activeTab === 'brands' ? (
+                     <div className="flex flex-col gap-8">
+                        {howItWorks.brands.map((step, index) => (
+                             <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
+                        ))}
+                    </div>
+                ) : (
+                     <div className="flex flex-col gap-8">
+                         {howItWorks.creators.map((step, index) => (
+                             <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
+                        ))}
+                    </div>
+                )}
+             </div>
         </div>
+
+      {/* Trust Signals */}
+      <div className="py-24 md:py-32 text-center">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">{t('homePage.trustedBy')}</h3>
+            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
+                <p className="font-bold text-2xl text-foreground/80">CMI</p>
+                <p className="font-bold text-2xl text-foreground/80">Stripe</p>
+                <p className="font-bold text-2xl text-foreground/80">Google Cloud</p>
+                <p className="font-bold text-2xl text-foreground/80">AWS</p>
+            </div>
       </div>
+      
+      {/* Testimonials */}
       <div className="py-24 md:py-32 text-center">
         <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-16">
           {t('homePage.testimonialsTitle1')}{' '}
@@ -251,6 +240,8 @@ export function HomeComponent() {
             ))}
         </div>
       </div>
+
+       {/* FAQ Section */}
       <div className="py-24 md:py-32" id="faq">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter">
@@ -316,25 +307,26 @@ export function HomeComponent() {
           </Button>
         </div>
       </div>
-      <div className="py-24 md:py-32">
-        <div className="relative w-full h-[400px] md:h-[600px] rounded-3xl overflow-hidden group">
-          {moroccanTeamImg && (
-            <Image
-                src={moroccanTeamImg.imageUrl}
-                alt={moroccanTeamImg.description}
-                data-ai-hint={moroccanTeamImg.imageHint}
-                fill
-                className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-16">
-            <h2 className="text-white text-4xl md:text-6xl font-extrabold tracking-tighter max-w-2xl">
-              {t('homePage.connect.title')}
-            </h2>
-          </div>
+      
+      {/* Final CTA */}
+        <div className="py-24 md:py-32 text-center">
+             <div className="max-w-2xl mx-auto">
+                <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter">
+                   {t('homePage.finalCta.title')}
+                </h2>
+                <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button
+                      asChild
+                      size="lg"
+                      variant="gradient"
+                      className="min-w-[220px] h-14 px-8 rounded-full"
+                    >
+                      <Link href={activeTab === 'brands' ? '/brands/join' : '/creators/join'}>{t('homePage.finalCta.ctaButton')}</Link>
+                    </Button>
+                 </div>
+                 <p className="mt-4 text-sm text-muted-foreground">{t('homePage.finalCta.reassurance')}</p>
+             </div>
         </div>
-      </div>
     </div>
   );
 }
