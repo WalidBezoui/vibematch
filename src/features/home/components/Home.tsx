@@ -70,7 +70,7 @@ export function HomeComponent() {
               asChild
               size="lg"
               variant="gradient"
-              className="min-w-[220px] h-14 px-8"
+              className="min-w-[220px] h-14 px-8 rounded-full"
               onClick={() => setUserInterest('brand')}
             >
               <Link href="/brands/join">{t('homePage.hero.brandsButton')}</Link>
@@ -109,7 +109,7 @@ export function HomeComponent() {
               <Button
                 asChild
                 variant="gradient"
-                className="w-full md:w-fit h-12 px-8"
+                className="w-full md:w-fit h-12 px-8 rounded-full"
                 onClick={() => setUserInterest('brand')}
               >
                 <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
@@ -154,7 +154,7 @@ export function HomeComponent() {
             </p>
              <div className="mt-4 flex flex-col items-start gap-4">
                {creatorCta ? (
-                 <div className="flex items-center justify-start gap-3 text-sm font-medium text-accent/90 dark:text-accent/80 transition-all duration-500 animate-fade-in-up">
+                 <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
                     <DynamicIcon name={creatorCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
                     <p>{creatorCta.text}</p>
                  </div>
@@ -162,7 +162,7 @@ export function HomeComponent() {
               <Button
                 asChild
                 variant="gradient"
-                className="w-full md:w-fit h-12 px-8"
+                className="w-full md:w-fit h-12 px-8 rounded-full"
                 onClick={() => setUserInterest('creator')}
               >
                 <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
@@ -357,7 +357,7 @@ export function HomeComponent() {
               asChild
               size="lg"
               variant="gradient"
-              className="min-w-[220px] h-14 px-8"
+              className="min-w-[220px] h-14 px-8 rounded-full"
               onClick={() => setUserInterest('brand')}
             >
               <Link href="/brands/join">{t('homePage.waitlist.brandsButton')}</Link>
