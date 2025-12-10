@@ -1,22 +1,22 @@
 {
   "placeholderImages": [
     {
-      "id": "dashboard-screenshot",
-      "description": "A screenshot of the VibeMatch dashboard showing campaign management and analytics.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=1WpE-yBAoJk0v5J5yS7u7-y_E6Yy6p_vB",
-      "imageHint": "dashboard ui"
+      "id": "fake-engagement",
+      "description": "Illustration of stacked coins with heart icons, and a thumbs-down coin floating above, symbolizing wasted money on fake engagement.",
+      "imageUrl": "https://drive.usercontent.google.com/download?id=12g2HLHUQ9xIZHrBqLejv2chpxPr7edP0",
+      "imageHint": "fake engagement"
     },
     {
-      "id": "creator-app-screenshot",
-      "description": "A screenshot of the VibeMatch mobile interface for creators, showing available campaigns.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=1bJ2q4pG-y0m-l_qZ2m_n5k-j9hO8jL_R",
-      "imageHint": "app ui"
+      "id": "guaranteed-payments",
+      "description": "A stylized illustration of a mobile phone showing an automated payment notification, with charts and graphs in the background, representing guaranteed payments.",
+      "imageUrl": "https://drive.usercontent.google.com/download?id=1KrGzwEA3svJytV3EvH35NgyghpE-bPc3",
+      "imageHint": "guaranteed payments"
     },
     {
-      "id": "escrow-diagram",
-      "description": "A diagram illustrating the VibeMatch escrow process, with money held securely in the middle.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=1s9Yk_7bO_j_zR7f5f-bX_u_sE7j_L_gS",
-      "imageHint": "escrow diagram"
+      "id": "moroccan-team",
+      "description": "A modern, professional Moroccan team collaborating in a bright, stylish office in Casablanca.",
+      "imageUrl": "https://drive.usercontent.google.com/download?id=1_qVMP80Mw9itrY4LIWEHYy84_xPNXh5m",
+      "imageHint": "professional team"
     },
     {
       "id": "testimonial-1",
