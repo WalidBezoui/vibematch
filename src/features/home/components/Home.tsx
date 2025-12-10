@@ -53,8 +53,6 @@ export function HomeComponent() {
   const fakeEngagementImg = getImage('fake-engagement');
   const guaranteedPaymentsImg = getImage('guaranteed-payments');
   const moroccanTeamImg = getImage('moroccan-team');
-  const featureAutopilotImg = getImage('feature-autopilot');
-  const featureDeadlinesImg = getImage('feature-deadlines');
 
   return (
     <div className="flex flex-col max-w-[1200px] flex-1">
@@ -89,83 +87,90 @@ export function HomeComponent() {
           </div>
         </div>
       </div>
-      <div className="py-16 text-center">
-        <p className="text-sm font-semibold text-foreground/50 uppercase tracking-widest">{t('homePage.trustedBy')}</p>
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-6 gap-8 items-center">
-            <span className="grayscale opacity-60 text-4xl font-black">MARJANE</span>
-            <span className="grayscale opacity-60 text-4xl font-black">INWI</span>
-            <span className="grayscale opacity-60 text-4xl font-black">CIH</span>
-            <span className="grayscale opacity-60 text-4xl font-black">MCDO</span>
-            <span className="grayscale opacity-60 text-4xl font-black">PEPSI</span>
-            <span className="grayscale opacity-60 text-4xl font-black">COKE</span>
-        </div>
-      </div>
-       <div className="py-24 md:py-32 scroll-mt-16">
-        <div className="text-center mb-16 max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">
-                {t('homePage.howItWorks.title')}
+      <div className="py-24 md:py-32 scroll-mt-16" id="brands">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
+          <div className="flex flex-col gap-6">
+            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
+              {t('homePage.brands.title1')}{' '}
+              <span className="gradient-text text-glow">
+                {t('homePage.brands.title2')}
+              </span>
             </h2>
-            <p className="text-lg md:text-xl text-foreground/70 mt-4">
-                {t('homePage.howItWorks.description')}
+            <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
+              {t('homePage.brands.description')}
             </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border border-border/50">
-                <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-3xl font-bold text-black">1</div>
-                <h3 className="text-xl font-bold mt-2">{t('homePage.howItWorks.step1.title')}</h3>
-                <p className="text-foreground/70 leading-relaxed">
-                    {t('homePage.howItWorks.step1.description')}
-                </p>
-            </div>
-            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border border-border/50">
-                <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-3xl font-bold text-black">2</div>
-                <h3 className="text-xl font-bold mt-2">{t('homePage.howItWorks.step2.title')}</h3>
-                <p className="text-foreground/70 leading-relaxed">
-                    {t('homePage.howItWorks.step2.description')}
-                </p>
-            </div>
-            <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border border-border/50">
-                <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-3xl font-bold text-black">3</div>
-                <h3 className="text-xl font-bold mt-2">{t('homePage.howItWorks.step3.title')}</h3>
-                <p className="text-foreground/70 leading-relaxed">
-                    {t('homePage.howItWorks.step3.description')}
-                </p>
-            </div>
-        </div>
-      </div>
-        <div className="py-24 md:py-32 text-center" id="brands">
-            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-16 max-w-4xl mx-auto">
-                {t('homePage.results.title1')}{' '}
-                {t('homePage.results.title2')}{' '}
-                <span className="gradient-text text-glow">{t('homePage.results.title3')}</span>
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border-2 border-primary/20">
-                    {fakeEngagementImg && <Image src={fakeEngagementImg.imageUrl} alt={fakeEngagementImg.description} data-ai-hint={fakeEngagementImg.imageHint} width={200} height={200} />}
-                    <h3 className="text-xl font-bold mt-2">{t('homePage.features.shield.title')}</h3>
-                    <p className="text-foreground/70 leading-relaxed">{t('homePage.features.shield.description')}</p>
-                </div>
-                <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border-2 border-primary/20">
-                    {featureDeadlinesImg && <Image src={featureDeadlinesImg.imageUrl} alt={featureDeadlinesImg.description} data-ai-hint={featureDeadlinesImg.imageHint} width={200} height={200} />}
-                    <h3 className="text-xl font-bold mt-2">{t('homePage.features.deadlines.title')}</h3>
-                    <p className="text-foreground/70 leading-relaxed">{t('homePage.features.deadlines.description')}</p>
-                </div>
-                <div className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-muted/30 border-2 border-primary/20">
-                    {featureAutopilotImg && <Image src={featureAutopilotImg.imageUrl} alt={featureAutopilotImg.description} data-ai-hint={featureAutopilotImg.imageHint} width={200} height={200} />}
-                    <h3 className="text-xl font-bold mt-2">{t('homePage.features.autopilot.title')}</h3>
-                    <p className="text-foreground/70 leading-relaxed">{t('homePage.features.autopilot.description')}</p>
-                </div>
-            </div>
-            <Button
+            <div className="mt-4 flex flex-col items-start gap-4">
+               {brandCta ? (
+                 <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
+                    <DynamicIcon name={brandCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
+                    <p>{brandCta.text}</p>
+                 </div>
+               ) : <div className="h-[20px]" /> }
+              <Button
                 asChild
                 variant="gradient"
-                size="lg"
-                className="w-full md:w-fit h-14 px-10 rounded-full mt-16"
+                className="w-full md:w-fit h-12 px-8 rounded-full"
                 onClick={() => setUserInterest('brand')}
-            >
+              >
                 <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
-            </Button>
+              </Button>
+            </div>
+          </div>
+          <div className="relative w-full aspect-square p-8 bg-gradient-to-br from-primary/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-primary/10 overflow-hidden">
+            {fakeEngagementImg && (
+                <Image
+                    src={fakeEngagementImg.imageUrl}
+                    alt={fakeEngagementImg.description}
+                    data-ai-hint={fakeEngagementImg.imageHint}
+                    fill
+                    className="object-contain"
+                />
+            )}
+          </div>
         </div>
+      </div>
+      <div className="py-24 md:py-32 scroll-mt-16" id="creators-main">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
+           <div className="relative w-full aspect-square p-8 bg-gradient-to-bl from-accent/10 via-transparent to-transparent rounded-3xl shadow-2xl shadow-accent/10 overflow-hidden order-last md:order-first">
+             {guaranteedPaymentsImg && (
+                <Image
+                    src={guaranteedPaymentsImg.imageUrl}
+                    alt={guaranteedPaymentsImg.description}
+                    data-ai-hint={guaranteedPaymentsImg.imageHint}
+                    fill
+                    className="object-contain"
+                />
+            )}
+          </div>
+          <div className="flex flex-col gap-6">
+            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
+              {t('homePage.creators.title1')}{' '}
+              <span className="gradient-text text-glow">
+                {t('homePage.creators.title2')}
+              </span>
+            </h2>
+            <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
+              {t('homePage.creators.description')}
+            </p>
+             <div className="mt-4 flex flex-col items-start gap-4">
+               {creatorCta ? (
+                 <div className="flex items-center justify-start gap-3 text-sm font-medium text-primary/90 dark:text-primary/80 transition-all duration-500 animate-fade-in-up">
+                    <DynamicIcon name={creatorCta.icon} className="w-5 h-5 opacity-80 animate-icon-spin" />
+                    <p>{creatorCta.text}</p>
+                 </div>
+               ) : <div className="h-[20px]" /> }
+              <Button
+                asChild
+                variant="gradient"
+                className="w-full md:w-fit h-12 px-8 rounded-full"
+                onClick={() => setUserInterest('creator')}
+              >
+                <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div
         className="py-24 md:py-32 bg-muted/50 rounded-3xl scroll-mt-16"
         id="creators"
@@ -213,17 +218,6 @@ export function HomeComponent() {
               </p>
             </div>
           </div>
-            <div className="text-center mt-16">
-                 <Button
-                    asChild
-                    variant="gradient"
-                    size="lg"
-                    className="w-full md:w-fit h-14 px-10 rounded-full"
-                    onClick={() => setUserInterest('creator')}
-                  >
-                    <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
-                </Button>
-            </div>
         </div>
       </div>
       <div className="py-24 md:py-32 text-center">
