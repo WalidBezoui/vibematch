@@ -53,6 +53,8 @@ export function HomeComponent() {
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name:string; role: string, image: string }[];
   const howItWorks = t('homePage.howItWorks', { returnObjects: true }) as any;
   const painPoints = t('homePage.painPoints', { returnObjects: true }) as any;
+  const trustSignals = t('homePage.trustSignals', { returnObjects: true }) as any;
+
 
   const fakeEngagementImg = getImage('fake-engagement');
   const guaranteedPaymentsImg = getImage('guaranteed-payments');
@@ -92,6 +94,19 @@ export function HomeComponent() {
         </div>
       </div>
       
+       <div className="py-24 text-center">
+        <h3 className="text-lg font-semibold text-foreground/60 mb-8">{trustSignals.title}</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+            <div className="font-mono text-2xl font-bold text-foreground/70">CMI</div>
+            <div className="font-mono text-2xl font-bold text-foreground/70">Stripe</div>
+            <div className="font-mono text-2xl font-bold text-foreground/70">Google</div>
+            <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 text-primary font-bold text-lg">
+                {trustSignals.waitlist}
+            </div>
+        </div>
+        <p className="text-sm text-foreground/50 mt-8">{trustSignals.paymentSecurity}</p>
+       </div>
+
        <div className="py-24 md:py-32" id="how-it-works">
             <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter">

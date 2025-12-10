@@ -323,6 +323,11 @@
             "brandsButton": "For Brands",
             "creatorsButton": "For Creators"
         },
+        "trustSignals": {
+            "title": "Supported by the best",
+            "waitlist": "+500 Creators on Waitlist",
+            "paymentSecurity": "Payments secured by CMI"
+        },
         "painPoints": {
             "brands": {
                 "title": "Stop wasting money on fake engagement.",
@@ -1203,6 +1208,7 @@
     },
     "legalNotice": {
         "title": "Legal Notice",
+        "navTitle": "Summary",
         "sections": {
             "editor": {
                 "title": "1. Site Editor",

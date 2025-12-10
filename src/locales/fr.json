@@ -323,6 +323,11 @@
             "brandsButton": "Découvrir pour les Marques",
             "creatorsButton": "Rejoindre les Créateurs"
         },
+        "trustSignals": {
+            "title": "Soutenu par les meilleurs",
+            "waitlist": "Déjà +500 Créateurs sur la Waitlist",
+            "paymentSecurity": "Paiements sécurisés par CMI"
+        },
         "painPoints": {
             "brands": {
                 "title": "Cessez d'investir dans le faux engagement.",
