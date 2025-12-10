@@ -57,8 +57,8 @@ export function HomeComponent() {
   const escrowDiagram = getImage('escrow-diagram');
 
   const howItWorks = {
-      brands: t('homePage.howItWorks.brands', {returnObjects: true}) as any[],
-      creators: t('homePage.howItWorks.creators', {returnObjects: true}) as any[],
+      brands: t('homePage.howItWorks.brands', {returnObjects: true}) as any,
+      creators: t('homePage.howItWorks.creators', {returnObjects: true}) as any,
   }
 
   const handleTabClick = (tab: string) => {
@@ -183,13 +183,13 @@ export function HomeComponent() {
              <div className="max-w-2xl mx-auto">
                 {activeTab === 'brands' ? (
                      <div className="flex flex-col gap-8">
-                        {howItWorks.brands.map((step, index) => (
+                        {howItWorks.brands.steps.map((step: any, index: number) => (
                              <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
                         ))}
                     </div>
                 ) : (
                      <div className="flex flex-col gap-8">
-                         {howItWorks.creators.map((step, index) => (
+                         {howItWorks.creators.steps.map((step: any, index: number) => (
                              <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
                         ))}
                     </div>

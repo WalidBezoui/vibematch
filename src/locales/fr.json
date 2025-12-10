@@ -340,10 +340,7 @@
             "title2": "Fini les négociations sans fin.",
             "description": "Avec notre système de séquestre (Escrow), votre paiement est garanti avant même que vous ne commenciez à travailler. Concentrez-vous sur la création de contenu exceptionnel, nous nous occupons du reste."
         },
-        "trust": {
-            "title": "La Confiance, Notre Priorité.",
-            "subtitle": "Paiements sécurisés par nos partenaires de confiance."
-        },
+        "trustedBy": "Paiements sécurisés par nos partenaires de confiance.",
         "howItWorks": {
             "title": "Comment Ça Marche ?",
             "brands": {
@@ -444,8 +441,8 @@
     },
     "faqPage": {
         "title": {
-            "part1": "Foire Aux",
-            "part2": "Questions"
+          "part1": "Foire Aux",
+          "part2": "Questions"
         },
         "description": "Une question ? Nous sommes là pour vous aider. Explorez notre FAQ pour trouver des réponses claires et concises.",
         "categories": "Catégories",
@@ -999,7 +996,7 @@
             "title": "Préambule",
             "eligibility": {
                 "title": "1. ÉLIGIBILITÉ (RESTRICTION D'ÂGE)",
-                "content": "Les Services sont strictement réservés aux personnes âgées de 18 ans ou plus ayant la pleine capacité juridique. Toute inscription par un mineur est strictly prohibited unless accompanied by the written consent of a legal guardian (Wali). VibeMatch se réserve le droit de demander une preuve d'âge à tout moment."
+                "content": "Les Services sont strictly réservés aux personnes âgées de 18 ans ou plus ayant la pleine capacité juridique. Toute inscription par un mineur est strictly prohibited unless accompanied by the written consent of a legal guardian (Wali). VibeMatch se réserve le droit de demander une preuve d'âge à tout moment."
             },
             "acceptance": {
                 "title": "2. ACCEPTATION (CONTRAT ÉLECTRONIQUE)",
