@@ -275,9 +275,6 @@ export function HomeComponent() {
                 >
                   <AccordionTrigger className="hover:no-underline text-lg font-semibold" onClick={() => setUserInterest('brand')}>
                     <span className="rtl:text-right">{faq.question}</span>
-                    <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
-                      expand_more
-                    </span>
                   </AccordionTrigger>
                   <AccordionContent className="text-foreground/70 leading-relaxed pt-2">
                     {faq.answer}
@@ -299,9 +296,6 @@ export function HomeComponent() {
                 >
                   <AccordionTrigger className="hover:no-underline text-lg font-semibold" onClick={() => setUserInterest('creator')}>
                     <span className="rtl:text-right">{faq.question}</span>
-                    <span className="material-symbols-outlined text-2xl text-primary/80 group-data-[state=open]:rotate-180 transition-transform duration-300">
-                      expand_more
-                    </span>
                   </AccordionTrigger>
                   <AccordionContent className="text-foreground/70 leading-relaxed pt-2">
                     {faq.answer}
@@ -338,39 +332,6 @@ export function HomeComponent() {
             <h2 className="text-white text-4xl md:text-6xl font-extrabold tracking-tighter max-w-2xl">
               {t('homePage.connect.title')}
             </h2>
-          </div>
-        </div>
-      </div>
-      <div className="py-16 md:py-24 text-center">
-        <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6">
-            {t('homePage.waitlist.title1')}{' '}
-            <span className="gradient-text">{t('homePage.waitlist.title2')}</span>{' '}
-            {t('homePage.waitlist.title3')}
-          </h2>
-          <p className="text-lg md:text-xl text-foreground/70 leading-relaxed mb-8">
-            {t('homePage.waitlist.description')}
-          </p>
-          <p className="text-lg font-semibold text-foreground/80 mb-8">{t('homePage.waitlist.areYou')}</p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button
-              asChild
-              size="lg"
-              variant="gradient"
-              className="min-w-[220px] h-14 px-8 rounded-full"
-              onClick={() => setUserInterest('brand')}
-            >
-              <Link href="/brands/join">{t('homePage.waitlist.brandsButton')}</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
-              onClick={() => setUserInterest('creator')}
-            >
-              <Link href="/creators/join">{t('homePage.waitlist.creatorsButton')}</Link>
-            </Button>
           </div>
         </div>
       </div>
