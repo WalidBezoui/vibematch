@@ -316,52 +316,59 @@
         "legal": "Mentions Légales"
     },
     "homePage": {
-        "hero": {
-            "title1": "L'Influence, Propulsée par la",
-            "title2": "Confiance.",
-            "subtitle": "Fini le faux engagement et les paiements en retard. VibeMatch est la marketplace d'influenceurs vérifiés, conçue pour l'élite des marques et créateurs au Maroc.",
-            "brandsButton": "Découvrir pour les Marques",
-            "creatorsButton": "Rejoindre les Créateurs"
-        },
-        "trustSignals": {
+        "trustBar": {
             "title": "PAIEMENTS SÉCURISÉS PAR",
-            "waitlist": "+500 Créateurs sur la Liste d'Attente"
+            "metric": "+500 Créateurs en liste d'attente"
         },
-        "painPoints": {
+        "howItWorks": {
+            "title": "Comment ça Marche ?",
+            "description": "Un processus simple pour vous connecter avec les créateurs parfaits pour votre marque.",
             "brands": {
-                "title": "Cessez d'investir dans le faux engagement.",
-                "description": "Nous vous offrons des créateurs certifiés et des résultats tangibles. Notre Trust Engine révolutionnaire analyse plus de 50 points de données pour garantir que chaque partenaire a une audience réelle et engagée. Fini les bots et les vanity metrics. Place à l'impact réel."
+                "steps": [
+                    { "title": "Postez Votre Campagne", "description": "Décrivez vos objectifs et livrables. C'est gratuit.", "icon": "Megaphone" },
+                    { "title": "Engagez & Sécurisez", "description": "Sélectionnez le meilleur créateur et déposez le paiement sur le séquestre VibeMatch.", "icon": "Lock" },
+                    { "title": "Validez & Payez", "description": "Une fois le contenu validé, nous libérons le paiement au créateur.", "icon": "CheckCircle" }
+                ]
             },
             "creators": {
-                "title": "Ne courez plus après vos paiements. Nous les garantissons.",
-                "description": "Concentrez-vous sur votre passion : créer du contenu exceptionnel. VibeMatch s'occupe du reste. Nous garantissons vos paiements et automatisons votre facturation, pour que vous puissiez développer votre marque l'esprit tranquille."
+                "steps": [
+                    { "title": "Postulez aux Missions", "description": "Parcourez les campagnes et postulez à celles qui correspondent à votre style. C'est gratuit.", "icon": "Rocket" },
+                    { "title": "Acceptez & Créez", "description": "Une fois engagé, le paiement de la marque est sécurisé. Vous pouvez créer en toute confiance.", "icon": "Clapperboard" },
+                    { "title": "Soyez Payé Instantanément", "description": "Dès que la marque approuve votre travail, les fonds sont virés sur votre compte.", "icon": "Banknote" }
+                ]
             }
         },
-        "creating": {
-            "title1": "Focus on Creating.",
-            "title2": "We'll Handle the",
-            "title3": "Rest."
+        "escrow": {
+            "title": "Le Séquestre VibeMatch :",
+            "titleHighlight": "Votre Garantie.",
+            "description": "Pour les marques, c'est l'assurance de ne payer que pour un travail approuvé. Pour les créateurs, c'est la garantie d'être payé dès l'embauche. C'est le moyen le plus simple de bâtir la confiance et de garantir le succès de chaque collaboration."
         },
-        "creatorFeatures": {
-            "paycheck": {
-                "title": "Votre Paiement 100% Automatisé",
-                "description": "Ne créez plus jamais de facture. Ne relancez plus jamais un paiement. Dès que la marque approuve votre contenu, notre système génère la facture et vous vire les fonds. Vous êtes un créateur, pas un comptable."
-            },
-            "confidence": {
-                "title": "Travaillez en Toute Confiance",
-                "description": "Ne démarrez plus un projet en espérant être payé. Pour chaque mission, le budget de la marque est bloqué et sécurisé sur notre compte séquestre. Votre paiement est garanti avant même de commencer à créer."
-            },
-            "briefs": {
-                "title": "Briefs Clairs, Zéro Confusion",
-                "description": "Dites adieu aux changements de dernière minute. Notre Contrat Intelligent verrouille le brief, les livrables et le budget. Ce qui est convenu est ce qui est livré. Protégez votre travail et votre temps."
-            }
+        "hero": {
+            "title1": "La Marketplace d'Influence",
+            "title2": "Sécurisée.",
+            "subtitle": "Marques : Payez seulement quand le travail est validé. Créateurs : Soyez payés garanti sous 24h. Le Séquestre (Escrow) pour tous.",
+            "brandsButton": "Je suis une Marque",
+            "creatorsButton": "Je suis un Créateur",
+            "trustText": "Rejoint par +500 créateurs sur notre liste d'attente."
+        },
+        "brands": {
+            "title1": "Ne gaspillez plus d'argent en",
+            "title2": "faux engagement.",
+            "description": "Nous fournissons des créateurs certifiés et des résultats garantis. Notre Trust Engine révolutionnaire analyse plus de 50 points de données pour s'assurer que chaque influenceur avec qui vous vous associez a une audience authentique et engagée. Fini les bots, fini les métriques de vanité. Juste un impact réel.",
+            "joinButton": "Commencer à recruter"
+        },
+        "creators": {
+            "title1": "Arrêtez de courir après les paiements.",
+            "title2": "Nous les garantissons.",
+            "description": "Concentrez-vous sur ce que vous faites de mieux : créer du contenu exceptionnel. VibeMatch s'occupe du reste. Nous garantissons vos paiements et automatisons votre facturation, pour que vous puissiez construire votre marque en toute tranquillité.",
+            "applyButton": "Sécuriser mon premier contrat"
         },
         "testimonialsTitle1": "Ce qu'en disent",
         "testimonialsTitle2": "les Créateurs Marocains",
         "testimonialsTitle3": ".",
         "testimonials": [
             {
-                "quote": "Trouver des marques qui valorisent l'engagement authentique était un combat. Le processus de VibeMatch change la donne. Je me sens enfin valorisée pour la communauté que j'ai bâtie.",
+                "quote": "Trouver des marques qui valorisent l'engagement authentique était un combat permanent. Le processus de VibeMatch change la donne. Je me sens enfin valorisée pour la communauté que j'ai bâtie.",
                 "name": "Ghita A.",
                 "role": "Créatrice Lifestyle",
                 "image": "testimonial-1"
@@ -373,86 +380,25 @@
                 "image": "testimonial-2"
             },
             {
-                "quote": "En tant que créatrice, il est difficile de trouver des partenaires qui font confiance à votre vision. VibeMatch me connecte à des marques qui comprennent la valeur de la liberté créative.",
+                "quote": "En tant que créatrice, il est difficile de trouver des partenaires qui font confiance à votre vision. VibeMatch me connecte à des marques qui comprennent la valeur de la liberté créative et du storytelling authentique.",
                 "name": "Soukaina",
                 "role": "Influenceuse Mode",
                 "image": "testimonial-3"
             }
         ],
+        "finalCta": {
+            "title": "Prêt à lancer votre première campagne ?",
+            "description": "Trouvez des créateurs authentiques, sécurisez vos paiements et obtenez des résultats fiables. L'inscription est gratuite.",
+            "button": "Commencer maintenant",
+            "reassurance": "Aucune carte de crédit requise pour l'inscription."
+        },
         "faq": {
             "title1": "Vos Questions,",
             "title2": "Nos Réponses.",
-            "description": "Trouvez ici les réponses aux questions fréquentes sur VibeMatch, que vous soyez une marque ou un créateur.",
+            "description": "Trouvez ici les réponses aux questions les plus fréquentes sur VibeMatch, que vous soyez une marque ou un créateur.",
             "brandsTitle": "Pour les Marques",
             "creatorsTitle": "Pour les Créateurs",
             "viewAllButton": "Voir toute la FAQ"
-        },
-        "brandsFaq": [
-            {
-              "question": "Comment VibeMatch garantit-il la qualité des créateurs ?",
-              "answer": "Notre Moteur de Confiance analyse plus de 50 points de données pour certifier les influenceurs. Il vérifie l'authenticité de l'engagement pour vous garantir des collaborations avec des créateurs à l'audience réelle, maximisant ainsi le ROI de vos campagnes."
-            },
-            {
-              "question": "Quel est le modèle tarifaire pour les marques ?",
-              "answer": "VibeMatch fonctionne avec des frais par campagne. Vous ne payez que pour les campagnes lancées, avec une transparence totale sur les coûts. Contactez-nous pour un devis détaillé."
-            }
-        ],
-        "creatorsFaq": [
-            {
-                "question": "Comment suis-je rémunéré ?",
-                "answer": "Paiements garantis. Une fois la campagne approuvée, les fonds sont virés sur votre compte VibeMatch, puis sur votre compte bancaire. Fini la course aux factures !"
-            },
-            {
-                "question": "Quelles sont les conditions pour devenir créateur ?",
-                "answer": "Nous cherchons des créateurs avec une audience authentique, quelle que soit sa taille. Nous évaluons la qualité de l'engagement et du contenu. Si vous avez une communauté fidèle, postulez."
-            }
-        ],
-        "connect": {
-            "title": "Le point de rencontre de l'excellence : les meilleures marques et les créateurs les plus brillants."
-        },
-        "howItWorks": {
-            "title": "Un Processus de Confiance",
-            "description": "Un processus simple et sécurisé pour les marques et les créateurs.",
-            "brands": {
-                "tabTitle": "Pour les Marques",
-                "steps": [
-                    {
-                        "title": "Postez une Campagne",
-                        "description": "Publiez un brief détaillé. Notre système vous aide à attirer gratuitement les bons talents, déjà vérifiés.",
-                        "icon": "Megaphone"
-                    },
-                    {
-                        "title": "Sécurisez les Fonds",
-                        "description": "Une fois le créateur choisi, financez le projet via notre séquestre. Nous conservons le paiement jusqu'à votre entière satisfaction.",
-                        "icon": "Lock"
-                    },
-                    {
-                        "title": "Validez & Lancez",
-                        "description": "Examinez le contenu. Dès votre approbation, nous libérons le paiement au créateur. Vous recevez votre contenu, il est payé. Simple.",
-                        "icon": "Rocket"
-                    }
-                ]
-            },
-            "creators": {
-                "tabTitle": "Pour les Créateurs",
-                "steps": [
-                    {
-                        "title": "Postulez aux Missions",
-                        "description": "Parcourez les campagnes de marques leaders et postulez à celles qui correspondent à votre univers. C'est toujours gratuit.",
-                        "icon": "Send"
-                    },
-                    {
-                        "title": "Travaillez en Confiance",
-                        "description": "Une fois recruté, le paiement de la marque est déjà sécurisé dans notre système de séquestre. Créez sans jamais vous soucier d'être payé.",
-                        "icon": "ShieldCheck"
-                    },
-                    {
-                        "title": "Soyez Payé Instantanément",
-                        "description": "Dès que la marque approuve votre travail, les fonds sont libérés sur votre portefeuille VibeMatch. Pas de factures, pas de relances, pas de retards.",
-                        "icon": "CircleDollarSign"
-                    }
-                ]
-            }
         }
     },
     "faqPage": {
@@ -487,11 +433,11 @@
           "creatorsFaq": [
               {
                   "question": "Comment suis-je rémunéré ?",
-                  "answer": "Paiements garantis. Une fois la campagne approuvée, les fonds sont virés sur votre compte VibeMatch, puis sur votre compte bancaire. Fini la course aux factures !"
+                  "answer": "Nous garantissons vos paiements. Une fois une campagne terminée et approuvée, les fonds sont libérés sur votre compte VibeMatch. Vous pouvez ensuite retirer vos gains directement sur votre compte bancaire. Fini la course aux factures !"
               },
               {
                   "question": "Quelles sont les conditions pour devenir créateur ?",
-                  "answer": "Nous cherchons des créateurs avec une audience authentique, quelle que soit sa taille. Nous évaluons la qualité de l'engagement et du contenu. Si vous avez une communauté fidèle, postulez."
+                  "answer": "Nous recherchons des créateurs ayant une connexion authentique avec leur public, quelle que soit la taille de leur communauté. Nous évaluons la qualité de l'engagement, la créativité du contenu et la pertinence de la niche. Si vous créez du contenu de haute qualité et avez une communauté fidèle, nous vous encourageons à postuler."
               },
               {
                   "question": "Y a-t-il des frais pour les créateurs ?",

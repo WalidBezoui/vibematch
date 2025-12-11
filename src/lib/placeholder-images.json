@@ -1,22 +1,28 @@
 {
   "placeholderImages": [
     {
-      "id": "fake-engagement",
-      "description": "Illustration of stacked coins with heart icons, and a thumbs-down coin floating above, symbolizing wasted money on fake engagement.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=12g2HLHUQ9xIZHrBqLejv2chpxPr7edP0",
-      "imageHint": "fake engagement"
+      "id": "dashboard-mockup",
+      "description": "A sleek, modern dashboard UI for an influencer marketing platform, displayed on a floating screen.",
+      "imageUrl": "https://drive.usercontent.google.com/download?id=1-18M78p3bT53ySn6gZl3o7o5gW4Q_qj-",
+      "imageHint": "dashboard ui"
     },
     {
-      "id": "guaranteed-payments",
-      "description": "A stylized illustration of a mobile phone showing an automated payment notification, with charts and graphs in the background, representing guaranteed payments.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=1KrGzwEA3svJytV3EvH35NgyghpE-bPc3",
-      "imageHint": "guaranteed payments"
+      "id": "brand-painpoint",
+      "description": "A UI card showing a campaign dashboard with metrics, representing a solution for brands.",
+      "imageUrl": "https://drive.usercontent.google.com/download?id=1-A7Yx9g4K2E8wX6t7h1dY0Z8b5fPq9mZ",
+      "imageHint": "dashboard card"
     },
     {
-      "id": "moroccan-team",
-      "description": "A modern, professional Moroccan team collaborating in a bright, stylish office in Casablanca.",
-      "imageUrl": "https://drive.usercontent.google.com/download?id=1_qVMP80Mw9itrY4LIWEHYy84_xPNXh5m",
-      "imageHint": "professional team"
+      "id": "creator-painpoint",
+      "description": "A UI card from a wallet or escrow feature, showing secured funds for a creator.",
+      "imageUrl": "https://drive.usercontent.google.com/download?id=1-D4b3ZJ7gYx8bV3z8C1n2kFwJ9l8Pq8o",
+      "imageHint": "wallet ui"
+    },
+    {
+      "id": "escrow-illustration",
+      "description": "A schematic illustration showing money being held securely in an escrow shield between a brand and a creator.",
+      "imageUrl": "https://drive.usercontent.google.com/download?id=1-G3Q2R0j2bY6kF4n5eX1oZ0aJ_h4bX9t",
+      "imageHint": "escrow security"
     },
     {
       "id": "testimonial-1",
