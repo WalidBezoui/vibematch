@@ -88,10 +88,10 @@ export function HomeComponent() {
                 </div>
             </div>
             <div className="relative hidden md:flex items-center justify-center p-12">
-                <div className="absolute top-0 left-0 z-20">
+                <div className="absolute top-10 left-0 z-20">
                     <FloatingProfileCard />
                 </div>
-                <div className="absolute bottom-0 right-0 z-20">
+                <div className="absolute bottom-10 right-0 z-20">
                     <FloatingStatCard />
                 </div>
                 <div className="relative z-10 flex h-full w-full items-center justify-center">
@@ -118,15 +118,18 @@ export function HomeComponent() {
 
 
         {/* --- PAIN POINT: BRANDS --- */}
-        <div className="py-24 md:py-32 scroll-mt-16">
+        <div className="py-24 md:py-32 scroll-mt-16" id="brands">
             <div className="px-4 md:px-10 lg:px-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
                     <div className="flex flex-col gap-6 items-start text-left">
                         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
-                        {t('homePage.brands.title1')}<br />
-                        <span className="gradient-text text-glow">
+                            {t('homePage.brands.title1')}
+                            <br />
                             {t('homePage.brands.title2')}
-                        </span>
+                            <br />
+                            <span className="gradient-text text-glow">
+                                {t('homePage.brands.title3')}
+                            </span>
                         </h2>
                         <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
                         {t('homePage.brands.description')}
@@ -144,10 +147,12 @@ export function HomeComponent() {
                                     <lucideIcons.ArrowRight className="ml-2 h-4 w-4" />
                                 </Link>
                             </Button>
-                             <p className="text-xs text-muted-foreground pl-2">Access our private beta of pre-vetted, high-trust influencers.</p>
+                             <p className="text-xs text-muted-foreground pl-2">{t('homePage.brands.joinSubtext')}</p>
                         </div>
                     </div>
-                    <AnimatedBrandPainpoint />
+                    <div className="relative min-h-[300px]">
+                        <AnimatedBrandPainpoint />
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,7 +186,7 @@ export function HomeComponent() {
                              <lucideIcons.ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
-                     <p className="text-xs text-muted-foreground pl-2">Limited spots available for our Founding Creator Program.</p>
+                     <p className="text-xs text-muted-foreground pl-2">{t('homePage.creators.applySubtext')}</p>
                     </div>
                 </div>
             </div>
