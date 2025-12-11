@@ -97,7 +97,7 @@ export function HomeComponent() {
 
         {/* --- TRUST BAR --- */}
         <div className="py-16 text-center">
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-6">{t('homePage.trustBar.title')}</h3>
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-8">{t('homePage.trustBar.title')}</h3>
             <div className="flex justify-center items-center gap-10 md:gap-16 flex-wrap">
                 <span className="font-mono text-xl font-medium text-foreground/60">CMI</span>
                 <span className="font-mono text-xl font-medium text-foreground/60">Stripe</span>
@@ -107,6 +107,7 @@ export function HomeComponent() {
                 </div>
             </div>
         </div>
+
 
         {/* --- PAIN POINT: BRANDS --- */}
         <div className="py-24 md:py-32 scroll-mt-16 bg-card rounded-3xl" id="brands">

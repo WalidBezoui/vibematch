@@ -106,6 +106,24 @@ export function AnimatedDashboardMockup() {
 export function AnimatedBrandPainpoint() {
   const isMobile = useIsMobile();
   
+  const cardAnimation = {
+    custom: 0,
+    variants: floatingVariants,
+    animate: "float",
+  }
+
+  const card2Animation = {
+    custom: 0.8,
+    variants: floatingVariants,
+    animate: "float",
+  }
+
+  const card3Animation = {
+    custom: 0.4,
+    variants: floatingVariants,
+    animate: "float",
+  }
+  
   if (isMobile) {
     return <AnimatedBrandPainpointCard />;
   }
@@ -115,17 +133,13 @@ export function AnimatedBrandPainpoint() {
       <motion.div
         className="absolute top-1/2 left-1/2"
         style={{ x: '-50%', y: '-50%' }}
-        variants={floatingVariants}
-        custom={0}
-        animate="float"
+        {...cardAnimation}
       >
         <AnimatedBrandPainpointCard />
       </motion.div>
       <motion.div
         className="absolute top-0 right-0"
-        variants={floatingVariants}
-        custom={0.8}
-        animate="float"
+        {...card2Animation}
       >
         <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
             <p className="text-xs text-muted-foreground">ROI</p>
@@ -134,9 +148,7 @@ export function AnimatedBrandPainpoint() {
       </motion.div>
       <motion.div
         className="absolute bottom-0 left-0"
-        variants={floatingVariants}
-        custom={0.4}
-        animate="float"
+        {...card3Animation}
       >
         <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
              <Avatar className="w-10 h-10 border">
@@ -180,6 +192,18 @@ const AnimatedBrandPainpointCard = () => (
 export function AnimatedCreatorPainpoint() {
     const isMobile = useIsMobile();
   
+    const cardAnimation = {
+      custom: 0.2,
+      variants: floatingVariants,
+      animate: "float",
+    }
+  
+    const card2Animation = {
+      custom: 1,
+      variants: floatingVariants,
+      animate: "float",
+    }
+  
     if (isMobile) {
       return <AnimatedCreatorPainpointCard />;
     }
@@ -189,17 +213,13 @@ export function AnimatedCreatorPainpoint() {
         <motion.div
             className="absolute top-1/2 left-1/2"
             style={{ x: '-50%', y: '-50%' }}
-            variants={floatingVariants}
-            custom={0.2}
-            animate="float"
+            {...cardAnimation}
         >
             <AnimatedCreatorPainpointCard />
         </motion.div>
         <motion.div
             className="absolute -top-8 -left-8"
-            variants={floatingVariants}
-            custom={1}
-            animate="float"
+            {...card2Animation}
         >
             <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
                 <div className="flex items-center gap-2">
