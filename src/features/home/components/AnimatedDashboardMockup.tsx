@@ -101,33 +101,25 @@ export function AnimatedDashboardMockup() {
 export function AnimatedBrandPainpoint() {
   const isMobile = useIsMobile();
   
-  const cardAnimation = !isMobile ? {
-    custom: 0,
-    variants: floatingVariants,
-    animate: "float",
-  } : {};
-
-  const card2Animation = !isMobile ? {
-    custom: 0.8,
-    variants: floatingVariants,
-    animate: "float",
-  } : {};
-
-  const card3Animation = !isMobile ? {
-    custom: 0.4,
-    variants: floatingVariants,
-    animate: "float",
-  } : {};
-  
   return (
-    <div className="relative w-full h-full min-h-[16rem]">
-      <div className="absolute top-0 right-0 z-20" {...card2Animation}>
+    <div className="relative w-full h-80 flex items-center justify-center">
+      <motion.div
+        className="absolute top-0 right-0 z-20"
+        custom={0.8}
+        variants={isMobile ? undefined : floatingVariants}
+        animate="float"
+      >
         <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
           <p className="text-xs text-muted-foreground">ROI</p>
           <p className="text-lg font-bold text-green-500">+125%</p>
         </Card>
-      </div>
-      <div className="absolute bottom-0 left-0 z-20" {...card3Animation}>
+      </motion.div>
+      <motion.div
+        className="absolute bottom-0 left-0 z-20"
+        custom={0.4}
+        variants={isMobile ? undefined : floatingVariants}
+        animate="float"
+      >
         <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
           <Avatar className="w-10 h-10 border">
             <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
@@ -138,8 +130,13 @@ export function AnimatedBrandPainpoint() {
             <Badge variant="outline">Selected</Badge>
           </div>
         </Card>
-      </div>
-      <div className="relative z-10 flex items-center justify-center h-full" {...cardAnimation}>
+      </motion.div>
+      <motion.div
+        className="relative z-10"
+        custom={0}
+        variants={isMobile ? undefined : floatingVariants}
+        animate="float"
+      >
         <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72 sm:w-80">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
@@ -161,7 +158,7 @@ export function AnimatedBrandPainpoint() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -169,23 +166,13 @@ export function AnimatedBrandPainpoint() {
 export function AnimatedCreatorPainpoint() {
     const isMobile = useIsMobile();
   
-    const cardAnimation = !isMobile ? {
-      custom: 0.2,
-      variants: floatingVariants,
-      animate: "float",
-    } : {};
-  
-    const card2Animation = !isMobile ? {
-      custom: 1,
-      variants: floatingVariants,
-      animate: "float",
-    } : {};
-
     return (
-        <div className="relative w-full h-full min-h-[16rem] flex items-center justify-center">
-            <div
+        <div className="relative w-full h-80 flex items-center justify-center">
+            <motion.div
                 className="absolute bottom-0 left-0 z-20"
-                {...card2Animation}
+                custom={1}
+                variants={isMobile ? undefined : floatingVariants}
+                animate="float"
             >
                 <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
                     <div className="flex items-center gap-2">
@@ -197,10 +184,12 @@ export function AnimatedCreatorPainpoint() {
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">Invited you to a campaign</p>
                 </Card>
-            </div>
-            <div
+            </motion.div>
+            <motion.div
                 className="relative z-10"
-                {...cardAnimation}
+                custom={0.2}
+                variants={isMobile ? undefined : floatingVariants}
+                animate="float"
             >
                 <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
                     <CardHeader className="p-4">
@@ -214,7 +203,7 @@ export function AnimatedCreatorPainpoint() {
                         <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
                     </CardContent>
                 </Card>
-            </div>
+            </motion.div>
         </div>
     )
 }
@@ -321,5 +310,3 @@ export function FloatingStatCard() {
         </motion.div>
     );
 }
-
-    
