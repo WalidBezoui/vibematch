@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet, Building, User } from 'lucide-react';
+import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet, Building, User, TrendingUp, MoreHorizontal } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -31,9 +31,7 @@ export function AnimatedDashboardMockup() {
   };
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      {/* Main Window */}
-      <motion.div
+    <motion.div
         className="w-full max-w-2xl h-[420px] bg-background/30 dark:bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden"
         {...animationProps}
       >
@@ -60,20 +58,9 @@ export function AnimatedDashboardMockup() {
                         <div className="h-8 w-48 bg-white/10 rounded-md"></div>
                         <div className="h-4 w-64 bg-white/5 rounded-md mb-6"></div>
                         
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="h-20 bg-white/5 rounded-lg p-3 space-y-2">
-                                <div className="h-3 w-20 bg-white/10 rounded-full"></div>
-                                <div className="h-6 w-24 bg-white/20 rounded-md"></div>
-                            </div>
-                             <div className="h-20 bg-white/5 rounded-lg p-3 space-y-2">
-                                <div className="h-3 w-24 bg-white/10 rounded-full"></div>
-                                <div className="h-6 w-16 bg-white/20 rounded-md"></div>
-                            </div>
-                        </div>
-
                          <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
                            <div className="flex items-center justify-between">
-                               <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
+                               <div className="h-4 w-1/2 bg-white/10 rounded-md"></div>
                                <div className="h-5 w-16 bg-green-500/20 rounded-full"></div>
                            </div>
                            <div className="flex items-center gap-3">
@@ -83,8 +70,18 @@ export function AnimatedDashboardMockup() {
                         </div>
                          <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
                            <div className="flex items-center justify-between">
-                               <div className="h-4 w-1/2 bg-white/10 rounded-md"></div>
-                               <div className="h-5 w-16 bg-yellow-500/20 rounded-full"></div>
+                               <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
+                               <div className="h-5 w-20 bg-yellow-500/20 rounded-full"></div>
+                           </div>
+                           <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-white/20"></div>
+                                <div className="h-4 flex-1 bg-white/10 rounded-md"></div>
+                           </div>
+                        </div>
+                         <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
+                           <div className="flex items-center justify-between">
+                               <div className="h-4 w-2/5 bg-white/10 rounded-md"></div>
+                               <div className="h-5 w-16 bg-indigo-500/20 rounded-full"></div>
                            </div>
                            <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-full bg-white/20"></div>
@@ -96,7 +93,6 @@ export function AnimatedDashboardMockup() {
             </div>
         </div>
       </motion.div>
-    </div>
   );
 }
 
@@ -127,7 +123,27 @@ export function AnimatedBrandPainpoint() {
         className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
         {...cardAnimation}
       >
-        <AnimatedBrandPainpointCard />
+        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-80">
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <BarChart className="h-4 w-4 text-primary" />
+                Campaign Dashboard
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-1">
+                <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
+                <p className="text-xl font-bold">1.2M</p>
+              </div>
+              <div className="flex gap-2 items-end h-20">
+                  <div className="h-[40%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.1s'}}></div>
+                  <div className="h-[60%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                  <div className="h-[80%] w-full bg-primary rounded-t-sm animate-pulse" style={{animationDelay: '0.3s'}}></div>
+                  <div className="h-[50%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                  <div className="h-[70%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.5s'}}></div>
+              </div>
+            </CardContent>
+        </Card>
       </motion.div>
       <motion.div
         className="absolute top-0 right-0"
@@ -157,30 +173,6 @@ export function AnimatedBrandPainpoint() {
   );
 }
 
-const AnimatedBrandPainpointCard = () => (
-    <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-80">
-        <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
-            <BarChart className="h-4 w-4 text-primary" />
-            Campaign Dashboard
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
-            <p className="text-xl font-bold">1.2M</p>
-          </div>
-          <div className="flex gap-2 items-end h-20">
-              <div className="h-[40%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.1s'}}></div>
-              <div className="h-[60%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.2s'}}></div>
-              <div className="h-[80%] w-full bg-primary rounded-t-sm animate-pulse" style={{animationDelay: '0.3s'}}></div>
-              <div className="h-[50%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.4s'}}></div>
-              <div className="h-[70%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.5s'}}></div>
-          </div>
-        </CardContent>
-      </Card>
-);
-
 export function AnimatedCreatorPainpoint() {
     const isMobile = useIsMobile();
   
@@ -202,7 +194,18 @@ export function AnimatedCreatorPainpoint() {
             className={cn("z-10", isMobile && "relative")}
             {...cardAnimation}
         >
-            <AnimatedCreatorPainpointCard />
+            <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
+              <CardHeader className="p-4">
+                  <div className="flex items-center gap-3">
+                     <Wallet className="h-6 w-6" />
+                    <CardTitle className="text-lg">Funds Secured</CardTitle>
+                  </div>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                  <p className="text-4xl font-black">7,500 DH</p>
+                  <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
+              </CardContent>
+            </Card>
         </motion.div>
         <motion.div
             className="absolute -top-8 -left-8"
@@ -222,21 +225,6 @@ export function AnimatedCreatorPainpoint() {
     </div>
     )
 }
-
-const AnimatedCreatorPainpointCard = () => (
-    <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
-      <CardHeader className="p-4">
-          <div className="flex items-center gap-3">
-             <Wallet className="h-6 w-6" />
-            <CardTitle className="text-lg">Funds Secured</CardTitle>
-          </div>
-      </CardHeader>
-      <CardContent className="p-4 pt-0">
-          <p className="text-4xl font-black">7,500 DH</p>
-          <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
-      </CardContent>
-    </Card>
-);
 
 export function AnimatedEscrow() {
   const brandVariants = {
@@ -282,4 +270,57 @@ export function AnimatedEscrow() {
       </div>
     </div>
   )
+}
+
+export function FloatingProfileCard() {
+    const isMobile = useIsMobile();
+    const animationProps = isMobile ? {} : {
+        custom: 0.3,
+        variants: floatingVariants,
+        animate: "float",
+    };
+    return (
+        <motion.div {...animationProps}>
+            <Card className="p-3 bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-60">
+                <div className="flex items-center gap-3">
+                    <Avatar className="h-12 w-12 border-2 border-primary/50">
+                        <AvatarImage src="https://i.pravatar.cc/150?img=8" />
+                        <AvatarFallback>AK</AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                        <p className="font-bold">Amine K.</p>
+                        <div className="flex items-center gap-1.5 text-xs text-green-500 font-semibold">
+                            <ShieldCheck className="h-3 w-3" />
+                            <span>Trust Score: 96</span>
+                        </div>
+                    </div>
+                </div>
+            </Card>
+        </motion.div>
+    );
+}
+
+export function FloatingStatCard() {
+    const isMobile = useIsMobile();
+    const animationProps = isMobile ? {} : {
+        custom: 0.6,
+        variants: floatingVariants,
+        animate: "float",
+    };
+    return (
+        <motion.div {...animationProps}>
+            <Card className="p-3 bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-48">
+                <p className="text-xs text-muted-foreground flex items-center justify-between">
+                    Engagement Rate <TrendingUp className="h-4 w-4 text-green-500" />
+                </p>
+                <p className="text-2xl font-bold">5.8%</p>
+                <div className="flex gap-1 items-end h-8 mt-1">
+                    <div className="h-[30%] w-full bg-primary/20 rounded-t-sm"></div>
+                    <div className="h-[50%] w-full bg-primary/20 rounded-t-sm"></div>
+                    <div className="h-[80%] w-full bg-primary/20 rounded-t-sm"></div>
+                    <div className="h-[60%] w-full bg-primary rounded-t-sm"></div>
+                </div>
+            </Card>
+        </motion.div>
+    );
 }
