@@ -35,7 +35,7 @@ export function AnimatedDashboardMockup() {
     <div className="relative w-full h-full flex items-center justify-center">
       {/* Main Window */}
       <motion.div
-        className="w-full max-w-xl h-96 bg-background/30 dark:bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden"
+        className="w-full max-w-2xl h-[420px] bg-background/30 dark:bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden"
         {...animationProps}
       >
         <div className="h-8 border-b border-white/10 flex items-center px-3 gap-1.5">
@@ -45,13 +45,13 @@ export function AnimatedDashboardMockup() {
         </div>
         <div className="flex h-[calc(100%-2rem)]">
             {/* Sidebar */}
-            <div className="w-20 p-2 border-r border-white/10 flex flex-col items-center gap-4">
-                <div className="w-8 h-8 gradient-bg rounded-lg"></div>
-                <div className="space-y-4">
+            <div className="w-20 p-3 border-r border-white/10 flex flex-col items-center gap-4">
+                <div className="w-10 h-10 gradient-bg rounded-lg"></div>
+                <div className="space-y-6">
                     <Home className="h-6 w-6 text-white" />
                     <Compass className="h-6 w-6 text-white/40" />
                     <MessageSquare className="h-6 w-6 text-white/40" />
-                    <Settings className="h-6 w-6 text-white/40 mt-8" />
+                    <Settings className="h-6 w-6 text-white/40 mt-12" />
                 </div>
             </div>
             {/* Content */}
@@ -72,26 +72,24 @@ export function AnimatedDashboardMockup() {
                             </div>
                         </div>
 
-                        <div className="h-28 w-full bg-white/5 rounded-lg mt-6 p-3 space-y-3">
-                           <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
+                         <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
+                           <div className="flex items-center justify-between">
+                               <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
+                               <div className="h-5 w-16 bg-green-500/20 rounded-full"></div>
+                           </div>
                            <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-full bg-white/20"></div>
-                                <div className="h-4 w-2/4 bg-white/10 rounded-md"></div>
-                           </div>
-                           <div className="flex items-center justify-between">
-                               <div className="h-3 w-16 bg-white/10 rounded-full"></div>
-                               <div className="h-6 w-20 bg-white/20 rounded-md"></div>
+                                <div className="h-4 flex-1 bg-white/10 rounded-md"></div>
                            </div>
                         </div>
-                         <div className="h-28 w-full bg-white/5 rounded-lg mt-6 p-3 space-y-3">
-                           <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
+                         <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
+                           <div className="flex items-center justify-between">
+                               <div className="h-4 w-1/2 bg-white/10 rounded-md"></div>
+                               <div className="h-5 w-16 bg-yellow-500/20 rounded-full"></div>
+                           </div>
                            <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-full bg-white/20"></div>
-                                <div className="h-4 w-2/4 bg-white/10 rounded-md"></div>
-                           </div>
-                           <div className="flex items-center justify-between">
-                               <div className="h-3 w-16 bg-white/10 rounded-full"></div>
-                               <div className="h-6 w-20 bg-white/20 rounded-md"></div>
+                                <div className="h-4 flex-1 bg-white/10 rounded-md"></div>
                            </div>
                         </div>
                     </div>
@@ -127,7 +125,7 @@ export function AnimatedBrandPainpoint() {
   return (
     <div className="relative w-full h-full min-h-[20rem]">
       <motion.div
-        className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
+        className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
         {...cardAnimation}
       >
         <AnimatedBrandPainpointCard />
@@ -200,9 +198,9 @@ export function AnimatedCreatorPainpoint() {
     } : {};
 
     return (
-    <div className="relative w-full h-full min-h-[12rem]">
+    <div className="relative w-full h-full min-h-[12rem] flex items-center justify-center">
         <motion.div
-            className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
+            className={cn("z-10", isMobile && "relative")}
             {...cardAnimation}
         >
             <AnimatedCreatorPainpointCard />
@@ -227,7 +225,7 @@ export function AnimatedCreatorPainpoint() {
 }
 
 const AnimatedCreatorPainpointCard = () => (
-    <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30">
+    <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
       <CardHeader className="p-4">
           <div className="flex items-center gap-3">
              <Wallet className="h-6 w-6" />
