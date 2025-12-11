@@ -23,7 +23,6 @@ const floatingVariants = {
 };
 
 export function AnimatedDashboardMockup() {
-  const { t } = useLanguage();
   const isMobile = useIsMobile();
   const animationProps = isMobile ? {} : {
     custom: 0,

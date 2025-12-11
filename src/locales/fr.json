@@ -696,8 +696,7 @@
         },
         "email": {
           "title": "Envoyer un E-mail",
-          "description": "Pour toute demande détaillée ou pour nous faire part de vos suggestions.",
-          "button": "Envoyer un E-mail"
+          "description": "Pour toute demande détaillée ou pour nous faire part de vos suggestions."
         }
     },
     "currency": "MAD",
