@@ -87,15 +87,15 @@ export function HomeComponent() {
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
                 </div>
             </div>
-            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center overflow-hidden">
-                 <div className="relative w-full h-full overflow-hidden">
+            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center">
+                 <div className="relative w-full h-full p-10">
                     <div className="absolute top-0 left-0 z-20">
                         <FloatingProfileCard />
                     </div>
                     <div className="absolute bottom-0 right-0 z-20">
                         <FloatingStatCard />
                     </div>
-                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                    <div className="relative z-10 flex h-full w-full items-center justify-center">
                         <AnimatedDashboardMockup />
                     </div>
                  </div>

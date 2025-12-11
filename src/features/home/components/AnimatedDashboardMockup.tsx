@@ -13,7 +13,7 @@ const floatingVariants = {
   float: (delay: number = 0) => ({
     y: ['-10px', '10px'],
     transition: {
-      duration: 5 + delay * 2,
+      duration: 3 + delay * 2,
       repeat: Infinity,
       repeatType: 'reverse' as const,
       ease: 'easeInOut',
