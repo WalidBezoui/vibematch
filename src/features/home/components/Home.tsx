@@ -108,11 +108,14 @@ export function HomeComponent() {
         {/* --- TRUST BAR --- */}
         <div className="py-16 text-center">
             <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-8">{t('homePage.trustBar.title')}</h3>
-            <div className="flex justify-center items-center gap-10 md:gap-16 flex-wrap">
-                <span className="font-mono text-xl font-medium text-foreground/60">CMI</span>
-                <span className="font-mono text-xl font-medium text-foreground/60">Stripe</span>
-                <span className="font-mono text-xl font-medium text-foreground/60">Google Cloud</span>
-                 <div className="p-3 px-4 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/20">
+            <div className="flex flex-col items-center gap-8">
+                <div className="flex justify-center items-center gap-10 md:gap-16 flex-wrap">
+                    <span className="font-mono text-xl font-medium text-foreground/60">CMI</span>
+                    <span className="font-mono text-xl font-medium text-foreground/60">Stripe</span>
+                    <span className="font-mono text-xl font-medium text-foreground/60">Google Cloud</span>
+                    <span className="font-mono text-xl font-medium text-foreground/60">Microsoft for Startups</span>
+                </div>
+                <div className="p-3 px-4 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/20">
                    {t('homePage.trustBar.metric')}
                 </div>
             </div>
