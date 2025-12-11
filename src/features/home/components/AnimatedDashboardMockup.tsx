@@ -120,13 +120,13 @@ export function AnimatedBrandPainpoint() {
   } : {};
   
   return (
-    <div className="relative w-full h-full min-h-[20rem] overflow-hidden">
-      <div className="relative w-full h-full p-8 md:p-12">
+    <div className="relative w-full h-full min-h-[24rem] overflow-hidden">
+      <div className="relative grid grid-cols-3 grid-rows-3 w-full h-full">
         <motion.div
-          className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
+          className="col-start-2 row-start-2 z-10 flex items-center justify-center"
           {...cardAnimation}
         >
-          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-80">
+          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72 sm:w-80">
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   <BarChart className="h-4 w-4 text-primary" />
@@ -149,7 +149,7 @@ export function AnimatedBrandPainpoint() {
           </Card>
         </motion.div>
         <motion.div
-          className="absolute top-0 right-0"
+          className="col-start-3 row-start-1 flex items-start justify-end"
           {...card2Animation}
         >
           <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
@@ -158,7 +158,7 @@ export function AnimatedBrandPainpoint() {
           </Card>
         </motion.div>
         <motion.div
-          className="absolute bottom-0 left-0"
+          className="col-start-1 row-start-3 flex items-end justify-start"
           {...card3Animation}
         >
           <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
@@ -193,10 +193,10 @@ export function AnimatedCreatorPainpoint() {
     } : {};
 
     return (
-    <div className="relative w-full h-full min-h-[12rem] flex items-center justify-center overflow-hidden">
-      <div className="relative w-full h-full p-8 md:p-12">
+    <div className="relative w-full h-full min-h-[16rem] flex items-center justify-center overflow-hidden">
+      <div className="relative w-full h-full grid grid-cols-2 grid-rows-2">
         <motion.div
-            className={cn("z-10", isMobile && "relative")}
+            className="col-span-2 row-start-1 z-10 flex justify-center items-center"
             {...cardAnimation}
         >
             <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
@@ -213,7 +213,7 @@ export function AnimatedCreatorPainpoint() {
             </Card>
         </motion.div>
         <motion.div
-            className="absolute top-0 left-0"
+            className="row-start-2 col-start-1 flex items-end justify-start"
             {...card2Animation}
         >
             <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
