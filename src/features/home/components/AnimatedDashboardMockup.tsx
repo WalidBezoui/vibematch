@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet, Building, User, TrendingUp, MoreHorizontal, Activity, FileText } from 'lucide-react';
+import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet, Building, User, TrendingUp, MoreHorizontal, Activity, FileText, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -99,72 +99,75 @@ export function AnimatedDashboardMockup() {
 }
 
 export function AnimatedBrandPainpoint() {
-  const isMobile = useIsMobile();
+    const isMobile = useIsMobile();
+    const painPointAnimation = isMobile ? {} : {
+        custom: 0.2,
+        variants: floatingVariants,
+        animate: "float",
+    };
   
-  return (
-    <div className="relative w-full min-h-[380px] flex items-center justify-center">
-        {/* Main Card */}
-        <motion.div
-            className="relative z-10 w-full max-w-sm"
-            custom={0}
-            variants={isMobile ? undefined : floatingVariants}
-            animate="float"
-        >
-            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-full">
-                <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                        <BarChart className="h-4 w-4 text-primary" />
-                        Campaign Dashboard
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="space-y-1">
-                        <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
-                        <p className="text-xl font-bold">1.2M</p>
+    return (
+        <div className="relative w-full min-h-[380px] grid grid-cols-2 grid-rows-2 gap-4">
+            <motion.div
+                className="col-span-2 row-span-2 place-self-center"
+                custom={0}
+                variants={isMobile ? undefined : floatingVariants}
+                animate="float"
+            >
+                <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72">
+                    <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                            <BarChart className="h-4 w-4 text-primary" />
+                            Campaign Dashboard
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-1">
+                            <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
+                            <p className="text-xl font-bold">1.2M</p>
+                        </div>
+                        <div className="flex gap-2 items-end h-20">
+                            <div className="h-[40%] w-full bg-primary/20 rounded-t-sm"></div>
+                            <div className="h-[60%] w-full bg-primary/20 rounded-t-sm"></div>
+                            <div className="h-[80%] w-full bg-primary rounded-t-sm"></div>
+                            <div className="h-[50%] w-full bg-primary/20 rounded-t-sm"></div>
+                            <div className="h-[70%] w-full bg-primary/20 rounded-t-sm"></div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </motion.div>
+            
+            <motion.div
+                className="z-10 self-start justify-self-start"
+                custom={0.8}
+                variants={isMobile ? undefined : floatingVariants}
+                animate="float"
+            >
+                <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 w-48">
+                    <p className="text-xs text-muted-foreground">Campaign ROI</p>
+                    <p className="text-lg font-bold text-green-500">+125%</p>
+                </Card>
+            </motion.div>
+    
+            <motion.div
+                className="z-10 self-start justify-self-end"
+                custom={0.4}
+                variants={isMobile ? undefined : floatingVariants}
+                animate="float"
+            >
+                <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3 w-56">
+                    <Avatar className="w-10 h-10 border">
+                        <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
+                        <AvatarFallback>SE</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <p className="font-bold text-sm">Sofia E.</p>
+                        <Badge variant="outline" className="border-green-500 text-green-500">Selected</Badge>
                     </div>
-                    <div className="flex gap-2 items-end h-20">
-                        <div className="h-[40%] w-full bg-primary/20 rounded-t-sm"></div>
-                        <div className="h-[60%] w-full bg-primary/20 rounded-t-sm"></div>
-                        <div className="h-[80%] w-full bg-primary rounded-t-sm"></div>
-                        <div className="h-[50%] w-full bg-primary/20 rounded-t-sm"></div>
-                        <div className="h-[70%] w-full bg-primary/20 rounded-t-sm"></div>
-                    </div>
-                </CardContent>
-            </Card>
-        </motion.div>
-        
-        {/* Floating Cards */}
-        <motion.div
-            className="absolute -top-4 left-0 z-20"
-            custom={0.8}
-            variants={isMobile ? undefined : floatingVariants}
-            animate="float"
-        >
-            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 w-48">
-                <p className="text-xs text-muted-foreground">Campaign ROI</p>
-                <p className="text-lg font-bold text-green-500">+125%</p>
-            </Card>
-        </motion.div>
-
-        <motion.div
-            className="absolute top-8 right-0 z-20"
-            custom={0.4}
-            variants={isMobile ? undefined : floatingVariants}
-            animate="float"
-        >
-            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3 w-56">
-                <Avatar className="w-10 h-10 border">
-                    <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
-                    <AvatarFallback>SE</AvatarFallback>
-                </Avatar>
-                <div>
-                    <p className="font-bold text-sm">Sofia E.</p>
-                    <Badge variant="outline" className="border-green-500 text-green-500">Selected</Badge>
-                </div>
-            </Card>
-        </motion.div>
-    </div>
-  );
+                </Card>
+            </motion.div>
+        </div>
+    );
 }
 
 
