@@ -1,4 +1,3 @@
-
 'use client';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -106,33 +105,28 @@ export function AnimatedDashboardMockup() {
 export function AnimatedBrandPainpoint() {
   const isMobile = useIsMobile();
   
-  const cardAnimation = {
+  const cardAnimation = !isMobile ? {
     custom: 0,
     variants: floatingVariants,
     animate: "float",
-  }
+  } : {};
 
-  const card2Animation = {
+  const card2Animation = !isMobile ? {
     custom: 0.8,
     variants: floatingVariants,
     animate: "float",
-  }
+  } : {};
 
-  const card3Animation = {
+  const card3Animation = !isMobile ? {
     custom: 0.4,
     variants: floatingVariants,
     animate: "float",
-  }
+  } : {};
   
-  if (isMobile) {
-    return <AnimatedBrandPainpointCard />;
-  }
-
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full min-h-[20rem]">
       <motion.div
-        className="absolute top-1/2 left-1/2"
-        style={{ x: '-50%', y: '-50%' }}
+        className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
         {...cardAnimation}
       >
         <AnimatedBrandPainpointCard />
@@ -192,27 +186,22 @@ const AnimatedBrandPainpointCard = () => (
 export function AnimatedCreatorPainpoint() {
     const isMobile = useIsMobile();
   
-    const cardAnimation = {
+    const cardAnimation = !isMobile ? {
       custom: 0.2,
       variants: floatingVariants,
       animate: "float",
-    }
+    } : {};
   
-    const card2Animation = {
+    const card2Animation = !isMobile ? {
       custom: 1,
       variants: floatingVariants,
       animate: "float",
-    }
-  
-    if (isMobile) {
-      return <AnimatedCreatorPainpointCard />;
-    }
+    } : {};
 
     return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full min-h-[12rem]">
         <motion.div
-            className="absolute top-1/2 left-1/2"
-            style={{ x: '-50%', y: '-50%' }}
+            className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
             {...cardAnimation}
         >
             <AnimatedCreatorPainpointCard />

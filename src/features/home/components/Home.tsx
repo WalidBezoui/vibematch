@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -126,9 +125,8 @@ export function HomeComponent() {
                         <div className="mt-4 flex flex-col items-start gap-4">
                         <Button
                             asChild
-                            variant="default"
                             size="lg"
-                            className="h-12 px-8 rounded-full"
+                            className="h-12 px-8 rounded-full gradient-bg text-black font-semibold"
                             onClick={() => setUserInterest('brand')}
                         >
                             <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
@@ -161,9 +159,8 @@ export function HomeComponent() {
                     <div className="mt-4 flex flex-col items-start gap-4">
                     <Button
                         asChild
-                        variant="default"
                         size="lg"
-                        className="h-12 px-8 rounded-full"
+                        className="h-12 px-8 rounded-full gradient-bg text-black font-semibold"
                         onClick={() => setUserInterest('creator')}
                     >
                         <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
