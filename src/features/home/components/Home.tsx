@@ -53,6 +53,25 @@ export function HomeComponent() {
                 <h2 className="text-lg md:text-xl font-normal leading-relaxed max-w-2xl text-foreground/70">
                     {t('homePage.hero.subtitle')}
                 </h2>
+                <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
+                     <Button
+                        asChild
+                        size="lg"
+                        className="h-14 px-8 gradient-bg text-black text-lg font-bold rounded-full"
+                        onClick={() => setUserInterest('brand')}
+                    >
+                        <Link href="/brands/join">{t('homePage.hero.brandsButton')}</Link>
+                    </Button>
+                     <Button
+                        asChild
+                        variant="outline"
+                        size="lg"
+                        className="h-14 px-8 text-lg font-bold rounded-full"
+                        onClick={() => setUserInterest('creator')}
+                    >
+                        <Link href="/creators/join">{t('homePage.hero.creatorsButton')}</Link>
+                    </Button>
+                </div>
                 <div className="flex items-center gap-4 mt-8 pt-6 border-t border-border/50">
                     <div className="flex -space-x-4 rtl:space-x-reverse">
                         <Avatar className="w-10 h-10 border-2 border-background">

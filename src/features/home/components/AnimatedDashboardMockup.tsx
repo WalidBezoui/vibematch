@@ -99,62 +99,62 @@ export function AnimatedDashboardMockup() {
             </div>
         </div>
       </motion.div>
-
-      {/* Floating UI Cards */}
-      <motion.div
-        className={cn("absolute -top-10 -left-10 w-64", isMobile && "hidden")}
-        custom={0.5}
-        variants={floatingVariants}
-        animate="float"
-      >
-        <AnimatedBrandPainpoint />
-      </motion.div>
-
-      <motion.div
-        className={cn("absolute -bottom-16 left-0 w-72", isMobile && "hidden")}
-        custom={0.2}
-        variants={floatingVariants}
-        animate="float"
-      >
-        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg">
-          <CardContent className="p-4 flex items-center gap-4">
-            <Avatar className="w-16 h-16 border">
-              <AvatarImage src="https://i.pravatar.cc/150?img=1" alt="Ghita A." />
-              <AvatarFallback>GA</AvatarFallback>
-            </Avatar>
-            <div className="space-y-1">
-              <p className="font-bold">Ghita A.</p>
-              <div className="flex items-center gap-2 text-green-600">
-                <ShieldCheck className="h-4 w-4" />
-                <span className="text-sm font-semibold">{t('discoverCreators.trustScore')}: 92</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-      
-       <motion.div
-        className={cn("absolute bottom-16 -right-16 w-56", isMobile && "hidden")}
-        custom={0.8}
-        variants={floatingVariants}
-        animate="float"
-      >
-        <AnimatedCreatorPainpoint />
-      </motion.div>
     </div>
   );
 }
 
 export function AnimatedBrandPainpoint() {
   const isMobile = useIsMobile();
-  const animationProps = isMobile ? {} : {
-    custom: 0.3,
-    variants: floatingVariants,
-    animate: "float",
-  };
+  
+  if (isMobile) {
+    return <AnimatedBrandPainpointCard />;
+  }
+
   return (
-    <motion.div {...animationProps}>
-      <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-80">
+    <div className="relative w-full h-full">
+      <motion.div
+        className="absolute top-1/2 left-1/2"
+        style={{ x: '-50%', y: '-50%' }}
+        variants={floatingVariants}
+        custom={0}
+        animate="float"
+      >
+        <AnimatedBrandPainpointCard />
+      </motion.div>
+      <motion.div
+        className="absolute top-0 right-0"
+        variants={floatingVariants}
+        custom={0.8}
+        animate="float"
+      >
+        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
+            <p className="text-xs text-muted-foreground">ROI</p>
+            <p className="text-lg font-bold text-green-500">+125%</p>
+        </Card>
+      </motion.div>
+      <motion.div
+        className="absolute bottom-0 left-0"
+        variants={floatingVariants}
+        custom={0.4}
+        animate="float"
+      >
+        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
+             <Avatar className="w-10 h-10 border">
+              <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
+              <AvatarFallback>SE</AvatarFallback>
+            </Avatar>
+            <div>
+                <p className="font-bold text-sm">Sofia E.</p>
+                <Badge variant="outline">Selected</Badge>
+            </div>
+        </Card>
+      </motion.div>
+    </div>
+  );
+}
+
+const AnimatedBrandPainpointCard = () => (
+    <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-80">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <BarChart className="h-4 w-4 text-primary" />
@@ -175,34 +175,61 @@ export function AnimatedBrandPainpoint() {
           </div>
         </CardContent>
       </Card>
-    </motion.div>
-  )
-}
+);
 
 export function AnimatedCreatorPainpoint() {
-  const isMobile = useIsMobile();
-  const animationProps = isMobile ? {} : {
-    custom: 0.6,
-    variants: floatingVariants,
-    animate: "float",
-  };
-  return (
-    <motion.div {...animationProps}>
-        <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30">
-          <CardHeader className="p-4">
-              <div className="flex items-center gap-3">
-                 <Wallet className="h-6 w-6" />
-                <CardTitle className="text-lg">Funds Secured</CardTitle>
-              </div>
-          </CardHeader>
-          <CardContent className="p-4 pt-0">
-              <p className="text-4xl font-black">7,500 DH</p>
-              <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
-          </CardContent>
-        </Card>
-    </motion.div>
-  )
+    const isMobile = useIsMobile();
+  
+    if (isMobile) {
+      return <AnimatedCreatorPainpointCard />;
+    }
+
+    return (
+    <div className="relative w-full h-full">
+        <motion.div
+            className="absolute top-1/2 left-1/2"
+            style={{ x: '-50%', y: '-50%' }}
+            variants={floatingVariants}
+            custom={0.2}
+            animate="float"
+        >
+            <AnimatedCreatorPainpointCard />
+        </motion.div>
+        <motion.div
+            className="absolute -top-8 -left-8"
+            variants={floatingVariants}
+            custom={1}
+            animate="float"
+        >
+            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
+                <div className="flex items-center gap-2">
+                     <Avatar className="w-8 h-8">
+                        <AvatarImage src="https://i.pravatar.cc/150?img=5" alt="Nike" />
+                        <AvatarFallback>N</AvatarFallback>
+                    </Avatar>
+                    <p className="font-bold text-sm">Nike</p>
+                </div>
+                 <p className="text-xs text-muted-foreground mt-1">Invited you to a campaign</p>
+            </Card>
+      </motion.div>
+    </div>
+    )
 }
+
+const AnimatedCreatorPainpointCard = () => (
+    <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30">
+      <CardHeader className="p-4">
+          <div className="flex items-center gap-3">
+             <Wallet className="h-6 w-6" />
+            <CardTitle className="text-lg">Funds Secured</CardTitle>
+          </div>
+      </CardHeader>
+      <CardContent className="p-4 pt-0">
+          <p className="text-4xl font-black">7,500 DH</p>
+          <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
+      </CardContent>
+    </Card>
+);
 
 export function AnimatedEscrow() {
   const brandVariants = {
@@ -249,5 +276,3 @@ export function AnimatedEscrow() {
     </div>
   )
 }
-
-    
