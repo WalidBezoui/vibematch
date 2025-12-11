@@ -1,20 +1,14 @@
-
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { useLanguage } from '@/context/language-context';
 import { getImage } from '@/lib/placeholder-images';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as lucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { AnimatedDashboardMockup } from './AnimatedDashboardMockup';
 
 
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
@@ -46,7 +40,6 @@ export function HomeComponent() {
   const howItWorks = t('homePage.howItWorks', { returnObjects: true });
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
   
-  const dashboardMockup = getImage('dashboard-mockup');
   const brandPainpointImg = getImage('brand-painpoint');
   const creatorPainpointImg = getImage('creator-painpoint');
   const escrowIllustration = getImage('escrow-illustration');
@@ -64,25 +57,7 @@ export function HomeComponent() {
                 <h2 className="text-lg md:text-xl font-normal leading-relaxed max-w-2xl text-foreground/70">
                     {t('homePage.hero.subtitle')}
                 </h2>
-                <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                    <Button
-                    asChild
-                    size="lg"
-                    variant="gradient"
-                    className="min-w-[220px] h-14 px-8 rounded-full"
-                    >
-                    <Link href="/brands/join">{t('homePage.hero.brandsButton')}</Link>
-                    </Button>
-                    <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="min-w-[220px] h-14 px-8 text-base font-semibold tracking-wide rounded-full"
-                    >
-                    <Link href="/creators/join">{t('homePage.hero.creatorsButton')}</Link>
-                    </Button>
-                </div>
-                 <div className="flex items-center gap-4 mt-8 pt-6 border-t border-border/50">
+                <div className="flex items-center gap-4 mt-8 pt-6 border-t border-border/50">
                     <div className="flex -space-x-4 rtl:space-x-reverse">
                         <Avatar className="w-10 h-10 border-2 border-background">
                             <AvatarImage src="https://i.pravatar.cc/150?img=1" />
@@ -101,16 +76,7 @@ export function HomeComponent() {
                 </div>
             </div>
             <div className="relative w-full h-[500px] hidden md:flex items-center justify-center">
-                 {dashboardMockup && (
-                    <Image
-                        src={dashboardMockup.imageUrl}
-                        alt={dashboardMockup.description}
-                        data-ai-hint={dashboardMockup.imageHint}
-                        width={600}
-                        height={500}
-                        className="object-contain"
-                    />
-                )}
+                 <AnimatedDashboardMockup />
             </div>
         </div>
 
@@ -231,14 +197,14 @@ export function HomeComponent() {
                     </div>
                 </div>
 
-                {activeTab === 'brands' && howItWorks.brands.steps && (
+                {activeTab === 'brands' && howItWorks.brands && (
                     <div className="grid md:grid-cols-3 gap-12 relative">
                         {howItWorks.brands.steps.map((step: any, index: number) => (
                             <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
                         ))}
                     </div>
                 )}
-                 {activeTab === 'creators' && howItWorks.creators.steps && (
+                 {activeTab === 'creators' && howItWorks.creators && (
                     <div className="grid md:grid-cols-3 gap-12 relative">
                         {howItWorks.creators.steps.map((step: any, index: number) => (
                            <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
