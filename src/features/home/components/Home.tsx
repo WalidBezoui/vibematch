@@ -87,7 +87,7 @@ export function HomeComponent() {
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
                 </div>
             </div>
-            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center">
+            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center overflow-hidden">
                  <div className="relative w-full h-full p-10">
                     <div className="absolute top-0 left-0 z-20">
                         <FloatingProfileCard />

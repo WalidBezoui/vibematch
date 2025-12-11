@@ -121,56 +121,58 @@ export function AnimatedBrandPainpoint() {
   
   return (
     <div className="relative w-full h-full min-h-[20rem] overflow-hidden">
-      <motion.div
-        className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
-        {...cardAnimation}
-      >
-        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-80">
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <BarChart className="h-4 w-4 text-primary" />
-                Campaign Dashboard
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-1">
-                <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
-                <p className="text-xl font-bold">1.2M</p>
+      <div className="relative w-full h-full p-8 md:p-12">
+        <motion.div
+          className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
+          {...cardAnimation}
+        >
+          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-80">
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <BarChart className="h-4 w-4 text-primary" />
+                  Campaign Dashboard
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-1">
+                  <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
+                  <p className="text-xl font-bold">1.2M</p>
+                </div>
+                <div className="flex gap-2 items-end h-20">
+                    <div className="h-[40%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.1s'}}></div>
+                    <div className="h-[60%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                    <div className="h-[80%] w-full bg-primary rounded-t-sm animate-pulse" style={{animationDelay: '0.3s'}}></div>
+                    <div className="h-[50%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                    <div className="h-[70%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.5s'}}></div>
+                </div>
+              </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div
+          className="absolute top-0 right-0"
+          {...card2Animation}
+        >
+          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
+              <p className="text-xs text-muted-foreground">ROI</p>
+              <p className="text-lg font-bold text-green-500">+125%</p>
+          </Card>
+        </motion.div>
+        <motion.div
+          className="absolute bottom-0 left-0"
+          {...card3Animation}
+        >
+          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
+              <Avatar className="w-10 h-10 border">
+                <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
+                <AvatarFallback>SE</AvatarFallback>
+              </Avatar>
+              <div>
+                  <p className="font-bold text-sm">Sofia E.</p>
+                  <Badge variant="outline">Selected</Badge>
               </div>
-              <div className="flex gap-2 items-end h-20">
-                  <div className="h-[40%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.1s'}}></div>
-                  <div className="h-[60%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                  <div className="h-[80%] w-full bg-primary rounded-t-sm animate-pulse" style={{animationDelay: '0.3s'}}></div>
-                  <div className="h-[50%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.4s'}}></div>
-                  <div className="h-[70%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.5s'}}></div>
-              </div>
-            </CardContent>
-        </Card>
-      </motion.div>
-      <motion.div
-        className="absolute top-0 right-0"
-        {...card2Animation}
-      >
-        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
-            <p className="text-xs text-muted-foreground">ROI</p>
-            <p className="text-lg font-bold text-green-500">+125%</p>
-        </Card>
-      </motion.div>
-      <motion.div
-        className="absolute bottom-0 left-0"
-        {...card3Animation}
-      >
-        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
-             <Avatar className="w-10 h-10 border">
-              <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
-              <AvatarFallback>SE</AvatarFallback>
-            </Avatar>
-            <div>
-                <p className="font-bold text-sm">Sofia E.</p>
-                <Badge variant="outline">Selected</Badge>
-            </div>
-        </Card>
-      </motion.div>
+          </Card>
+        </motion.div>
+      </div>
     </div>
   );
 }
@@ -192,6 +194,7 @@ export function AnimatedCreatorPainpoint() {
 
     return (
     <div className="relative w-full h-full min-h-[12rem] flex items-center justify-center overflow-hidden">
+      <div className="relative w-full h-full p-8 md:p-12">
         <motion.div
             className={cn("z-10", isMobile && "relative")}
             {...cardAnimation}
@@ -199,7 +202,7 @@ export function AnimatedCreatorPainpoint() {
             <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
               <CardHeader className="p-4">
                   <div className="flex items-center gap-3">
-                     <Wallet className="h-6 w-6" />
+                      <Wallet className="h-6 w-6" />
                     <CardTitle className="text-lg">Funds Secured</CardTitle>
                   </div>
               </CardHeader>
@@ -210,20 +213,21 @@ export function AnimatedCreatorPainpoint() {
             </Card>
         </motion.div>
         <motion.div
-            className="absolute -top-8 -left-8"
+            className="absolute top-0 left-0"
             {...card2Animation}
         >
             <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
                 <div className="flex items-center gap-2">
-                     <Avatar className="w-8 h-8">
+                      <Avatar className="w-8 h-8">
                         <AvatarImage src="https://i.pravatar.cc/150?img=5" alt="Nike" />
                         <AvatarFallback>N</AvatarFallback>
                     </Avatar>
                     <p className="font-bold text-sm">Nike</p>
                 </div>
-                 <p className="text-xs text-muted-foreground mt-1">Invited you to a campaign</p>
+                  <p className="text-xs text-muted-foreground mt-1">Invited you to a campaign</p>
             </Card>
       </motion.div>
+    </div>
     </div>
     )
 }
@@ -266,8 +270,8 @@ export function AnimatedEscrow() {
             <ShieldCheck className="h-10 w-10"/>
           </motion.div>
           <div className="absolute w-full h-1 bg-muted rounded-full overflow-hidden">
-             <motion.div variants={brandVariants} animate="animate" className="absolute top-0 left-1/2 w-1/2 h-full bg-gradient-to-l from-primary" />
-             <motion.div variants={creatorVariants} animate="animate" className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-primary" />
+              <motion.div variants={brandVariants} animate="animate" className="absolute top-0 left-1/2 w-1/2 h-full bg-gradient-to-l from-primary" />
+              <motion.div variants={creatorVariants} animate="animate" className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-primary" />
           </div>
       </div>
     </div>
