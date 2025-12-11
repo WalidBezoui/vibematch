@@ -120,7 +120,7 @@ export function AnimatedBrandPainpoint() {
   } : {};
   
   return (
-    <div className="relative w-full h-full min-h-[20rem]">
+    <div className="relative w-full h-full min-h-[20rem] overflow-hidden">
       <motion.div
         className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10", isMobile && "relative top-auto left-auto translate-x-0 translate-y-0")}
         {...cardAnimation}
@@ -191,7 +191,7 @@ export function AnimatedCreatorPainpoint() {
     } : {};
 
     return (
-    <div className="relative w-full h-full min-h-[12rem] flex items-center justify-center">
+    <div className="relative w-full h-full min-h-[12rem] flex items-center justify-center overflow-hidden">
         <motion.div
             className={cn("z-10", isMobile && "relative")}
             {...cardAnimation}

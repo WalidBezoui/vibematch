@@ -88,7 +88,7 @@ export function HomeComponent() {
                 </div>
             </div>
             <div className="relative w-full h-[500px] hidden md:flex items-center justify-center overflow-hidden">
-                 <div className="relative w-full h-full">
+                 <div className="relative w-full h-full overflow-hidden">
                     <div className="absolute top-0 left-0 z-20">
                         <FloatingProfileCard />
                     </div>
