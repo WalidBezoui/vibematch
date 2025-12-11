@@ -48,7 +48,7 @@ export function AnimatedDashboardMockup() {
             <div className="w-20 p-2 border-r border-white/10 flex flex-col items-center gap-4">
                 <div className="w-8 h-8 gradient-bg rounded-lg"></div>
                 <div className="space-y-4">
-                    <Home className="h-6 w-6 text-white/80" />
+                    <Home className="h-6 w-6 text-white" />
                     <Compass className="h-6 w-6 text-white/40" />
                     <MessageSquare className="h-6 w-6 text-white/40" />
                     <Settings className="h-6 w-6 text-white/40 mt-8" />
@@ -56,21 +56,43 @@ export function AnimatedDashboardMockup() {
             </div>
             {/* Content */}
             <div className="flex-1 p-4 overflow-hidden">
-                <div className="h-full w-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                    <div className="space-y-4">
+                <div className="h-full w-full overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full">
+                    <div className="space-y-4 pr-2">
                         <div className="h-8 w-48 bg-white/10 rounded-md"></div>
-                        <div className="h-4 w-64 bg-white/5 rounded-md"></div>
-                        <div className="h-24 w-full bg-white/5 rounded-lg mt-6 p-4 space-y-2">
-                           <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
-                           <div className="h-3 w-1/2 bg-white/5 rounded-md"></div>
+                        <div className="h-4 w-64 bg-white/5 rounded-md mb-6"></div>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="h-20 bg-white/5 rounded-lg p-3 space-y-2">
+                                <div className="h-3 w-20 bg-white/10 rounded-full"></div>
+                                <div className="h-6 w-24 bg-white/20 rounded-md"></div>
+                            </div>
+                             <div className="h-20 bg-white/5 rounded-lg p-3 space-y-2">
+                                <div className="h-3 w-24 bg-white/10 rounded-full"></div>
+                                <div className="h-6 w-16 bg-white/20 rounded-md"></div>
+                            </div>
                         </div>
-                        <div className="h-24 w-full bg-white/5 rounded-lg p-4 space-y-2">
+
+                        <div className="h-28 w-full bg-white/5 rounded-lg mt-6 p-3 space-y-3">
                            <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
-                           <div className="h-3 w-1/2 bg-white/5 rounded-md"></div>
+                           <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-white/20"></div>
+                                <div className="h-4 w-2/4 bg-white/10 rounded-md"></div>
+                           </div>
+                           <div className="flex items-center justify-between">
+                               <div className="h-3 w-16 bg-white/10 rounded-full"></div>
+                               <div className="h-6 w-20 bg-white/20 rounded-md"></div>
+                           </div>
                         </div>
-                        <div className="h-24 w-full bg-white/5 rounded-lg p-4 space-y-2">
+                         <div className="h-28 w-full bg-white/5 rounded-lg mt-6 p-3 space-y-3">
                            <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
-                           <div className="h-3 w-1/2 bg-white/5 rounded-md"></div>
+                           <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-white/20"></div>
+                                <div className="h-4 w-2/4 bg-white/10 rounded-md"></div>
+                           </div>
+                           <div className="flex items-center justify-between">
+                               <div className="h-3 w-16 bg-white/10 rounded-full"></div>
+                               <div className="h-6 w-20 bg-white/20 rounded-md"></div>
+                           </div>
                         </div>
                     </div>
                 </div>
@@ -78,33 +100,16 @@ export function AnimatedDashboardMockup() {
         </div>
       </motion.div>
 
-      {/* Campaign Card */}
+      {/* Floating UI Cards */}
       <motion.div
         className={cn("absolute -top-10 -left-10 w-64", isMobile && "hidden")}
         custom={0.5}
         variants={floatingVariants}
         animate="float"
       >
-        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <BarChart className="h-4 w-4 text-primary" />
-              Campaign Performance
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex gap-2 items-end h-20">
-                <div className="h-[40%] w-full bg-primary/20 rounded-t-sm"></div>
-                <div className="h-[60%] w-full bg-primary/20 rounded-t-sm"></div>
-                <div className="h-[80%] w-full bg-primary rounded-t-sm"></div>
-                <div className="h-[50%] w-full bg-primary/20 rounded-t-sm"></div>
-                <div className="h-[70%] w-full bg-primary/20 rounded-t-sm"></div>
-            </div>
-          </CardContent>
-        </Card>
+        <AnimatedBrandPainpoint />
       </motion.div>
 
-      {/* Influencer Card */}
       <motion.div
         className={cn("absolute -bottom-16 left-0 w-72", isMobile && "hidden")}
         custom={0.2}
@@ -128,24 +133,13 @@ export function AnimatedDashboardMockup() {
         </Card>
       </motion.div>
       
-      {/* Payment Card */}
        <motion.div
-        className={cn("absolute bottom-16 -right-16 w-52", isMobile && "hidden")}
+        className={cn("absolute bottom-16 -right-16 w-56", isMobile && "hidden")}
         custom={0.8}
         variants={floatingVariants}
         animate="float"
       >
-        <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30">
-          <CardHeader className="p-3">
-              <div className="flex items-center gap-2">
-                 <Wallet className="h-5 w-5" />
-                <CardTitle className="text-sm">Payment Secured</CardTitle>
-              </div>
-          </CardHeader>
-          <CardContent className="p-3 pt-0">
-              <p className="text-2xl font-black">5,000 DH</p>
-          </CardContent>
-        </Card>
+        <AnimatedCreatorPainpoint />
       </motion.div>
     </div>
   );
@@ -167,10 +161,18 @@ export function AnimatedBrandPainpoint() {
             Campaign Dashboard
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="h-4 w-2/3 bg-muted rounded-md"></div>
-          <div className="h-4 w-full bg-muted rounded-md"></div>
-          <div className="h-4 w-full bg-muted rounded-md"></div>
+        <CardContent className="space-y-4">
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
+            <p className="text-xl font-bold">1.2M</p>
+          </div>
+          <div className="flex gap-2 items-end h-20">
+              <div className="h-[40%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.1s'}}></div>
+              <div className="h-[60%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.2s'}}></div>
+              <div className="h-[80%] w-full bg-primary rounded-t-sm animate-pulse" style={{animationDelay: '0.3s'}}></div>
+              <div className="h-[50%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.4s'}}></div>
+              <div className="h-[70%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.5s'}}></div>
+          </div>
         </CardContent>
       </Card>
     </motion.div>
@@ -186,7 +188,7 @@ export function AnimatedCreatorPainpoint() {
   };
   return (
     <motion.div {...animationProps}>
-        <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
+        <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30">
           <CardHeader className="p-4">
               <div className="flex items-center gap-3">
                  <Wallet className="h-6 w-6" />
@@ -205,19 +207,21 @@ export function AnimatedCreatorPainpoint() {
 export function AnimatedEscrow() {
   const brandVariants = {
     animate: {
-      x: ['0%', '150%', '150%', '0%'],
-      transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+      x: ['-50%', '50%'],
+      opacity: [1, 0],
+      transition: { duration: 2.5, repeat: Infinity, ease: "linear", repeatDelay: 2.5 }
     }
   }
   const creatorVariants = {
     animate: {
-      x: ['0%', '-150%', '-150%', '0%'],
-      transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+      x: ['-50%', '50%'],
+      opacity: [1, 0],
+      transition: { duration: 2.5, repeat: Infinity, ease: "linear", delay: 2.5, repeatDelay: 2.5 }
     }
   }
   const shieldVariants = {
     animate: {
-      scale: [1, 1.2, 1.2, 1],
+      scale: [1, 1.2, 1, 1.2, 1],
       transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
     }
   }
@@ -238,10 +242,12 @@ export function AnimatedEscrow() {
             <ShieldCheck className="h-10 w-10"/>
           </motion.div>
           <div className="absolute w-full h-1 bg-muted rounded-full overflow-hidden">
-            <motion.div variants={brandVariants} animate="animate" className="absolute left-0 w-1/3 h-full bg-primary/50" />
-            <motion.div variants={creatorVariants} animate="animate" className="absolute right-0 w-1/3 h-full bg-primary/50" />
+             <motion.div variants={brandVariants} animate="animate" className="absolute top-0 left-1/2 w-1/2 h-full bg-gradient-to-l from-primary" />
+             <motion.div variants={creatorVariants} animate="animate" className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-primary" />
           </div>
       </div>
     </div>
   )
 }
+
+    
