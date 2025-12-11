@@ -8,6 +8,7 @@ import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet, 
 import { useLanguage } from '@/context/language-context';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
 
 const floatingVariants = {
   float: (delay: number = 0) => ({
@@ -32,7 +33,7 @@ export function AnimatedDashboardMockup() {
 
   return (
     <motion.div
-        className="w-full max-w-2xl h-[420px] bg-background/30 dark:bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden"
+        className="w-full max-w-3xl h-[450px] bg-background/30 dark:bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden"
         {...animationProps}
       >
         <div className="h-8 border-b border-white/10 flex items-center px-3 gap-1.5">
@@ -42,7 +43,7 @@ export function AnimatedDashboardMockup() {
         </div>
         <div className="flex h-[calc(100%-2rem)]">
             {/* Sidebar */}
-            <div className="w-20 p-3 border-r border-white/10 flex flex-col items-center gap-4">
+            <div className="w-20 p-3 border-r border-white/10 flex-col items-center gap-4 hidden sm:flex">
                 <div className="w-10 h-10 gradient-bg rounded-lg"></div>
                 <div className="space-y-6 pt-4">
                     <Home className="h-6 w-6 text-white" />
@@ -52,15 +53,33 @@ export function AnimatedDashboardMockup() {
                 </div>
             </div>
             {/* Content */}
-            <div className="flex-1 p-4">
+            <div className="flex-1 p-4 overflow-hidden">
                 <div className="h-full w-full">
-                    <div className="space-y-4 pr-2">
+                    <div className="space-y-4">
+                        {/* Header */}
                         <div className="flex items-center justify-between">
                             <div className="h-8 w-48 bg-white/10 rounded-md"></div>
-                            <div className="h-8 w-24 bg-primary/20 rounded-full"></div>
+                            <div className="h-9 w-32 bg-primary/20 rounded-full"></div>
                         </div>
                         
-                         <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
+                        {/* Stat Cards */}
+                        <div className="grid grid-cols-3 gap-3">
+                            <div className="h-20 bg-white/5 rounded-lg p-2 space-y-2">
+                                <div className="h-4 w-20 bg-white/10 rounded-md"></div>
+                                <div className="h-6 w-12 bg-white/20 rounded-md"></div>
+                            </div>
+                             <div className="h-20 bg-white/5 rounded-lg p-2 space-y-2">
+                                <div className="h-4 w-24 bg-white/10 rounded-md"></div>
+                                <div className="h-6 w-16 bg-white/20 rounded-md"></div>
+                            </div>
+                             <div className="h-20 bg-white/5 rounded-lg p-2 space-y-2">
+                                <div className="h-4 w-20 bg-white/10 rounded-md"></div>
+                                <div className="h-6 w-10 bg-white/20 rounded-md"></div>
+                            </div>
+                        </div>
+
+                        {/* Action List */}
+                        <div className="h-24 w-full bg-white/5 rounded-lg p-3 space-y-3">
                            <div className="flex items-center justify-between">
                                <div className="h-4 w-1/2 bg-white/10 rounded-md"></div>
                                <div className="h-5 w-16 bg-green-500/20 rounded-full"></div>
@@ -70,25 +89,16 @@ export function AnimatedDashboardMockup() {
                                 <div className="h-4 flex-1 bg-white/10 rounded-md"></div>
                            </div>
                         </div>
-                         <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
+
+                        {/* Campaign Progress */}
+                         <div className="h-20 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
                            <div className="flex items-center justify-between">
                                <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
                                <div className="h-5 w-20 bg-yellow-500/20 rounded-full"></div>
                            </div>
-                           <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-white/20"></div>
-                                <div className="h-4 flex-1 bg-white/10 rounded-md"></div>
-                           </div>
-                        </div>
-                         <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
-                           <div className="flex items-center justify-between">
-                               <div className="h-4 w-2/5 bg-white/10 rounded-md"></div>
-                               <div className="h-5 w-16 bg-indigo-500/20 rounded-full"></div>
-                           </div>
-                           <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-white/20"></div>
-                                <div className="h-4 flex-1 bg-white/10 rounded-md"></div>
-                           </div>
+                            <div className="h-2 w-full bg-white/10 rounded-full mt-2 overflow-hidden">
+                                <div className="h-full w-3/4 bg-yellow-500/50"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,9 +117,9 @@ export function AnimatedBrandPainpoint() {
     };
   
     return (
-        <div className="relative w-full min-h-[380px] grid grid-cols-2 grid-rows-2 gap-4">
+        <div className="relative w-full min-h-[380px] flex items-center justify-center">
             <motion.div
-                className="col-span-2 row-span-2 place-self-center"
+                className="relative z-10"
                 custom={0}
                 variants={isMobile ? undefined : floatingVariants}
                 animate="float"
@@ -138,7 +148,7 @@ export function AnimatedBrandPainpoint() {
             </motion.div>
             
             <motion.div
-                className="z-10 self-start justify-self-start"
+                className="absolute top-0 left-0 z-20"
                 custom={0.8}
                 variants={isMobile ? undefined : floatingVariants}
                 animate="float"
@@ -150,7 +160,7 @@ export function AnimatedBrandPainpoint() {
             </motion.div>
     
             <motion.div
-                className="z-10 self-start justify-self-end"
+                className="absolute bottom-0 right-0 z-20"
                 custom={0.4}
                 variants={isMobile ? undefined : floatingVariants}
                 animate="float"
