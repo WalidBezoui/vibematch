@@ -120,57 +120,48 @@ export function AnimatedBrandPainpoint() {
   } : {};
   
   return (
-    <div className="relative w-full h-full min-h-[24rem]">
-        <motion.div
-          className="absolute top-0 right-0 z-0"
-          {...card2Animation}
-        >
-          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
-              <p className="text-xs text-muted-foreground">ROI</p>
-              <p className="text-lg font-bold text-green-500">+125%</p>
-          </Card>
-        </motion.div>
-        <motion.div
-            className="absolute bottom-0 left-0 z-0"
-            {...card3Animation}
-        >
-            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
-                <Avatar className="w-10 h-10 border">
-                    <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
-                    <AvatarFallback>SE</AvatarFallback>
-                </Avatar>
-                <div>
-                    <p className="font-bold text-sm">Sofia E.</p>
-                    <Badge variant="outline">Selected</Badge>
-                </div>
-            </Card>
-        </motion.div>
-        <motion.div
-          className="relative z-10 flex items-center justify-center h-full"
-          {...cardAnimation}
-        >
-          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72 sm:w-80">
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <BarChart className="h-4 w-4 text-primary" />
-                  Campaign Dashboard
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-1">
-                  <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
-                  <p className="text-xl font-bold">1.2M</p>
-                </div>
-                <div className="flex gap-2 items-end h-20">
-                    <div className="h-[40%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.1s'}}></div>
-                    <div className="h-[60%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                    <div className="h-[80%] w-full bg-primary rounded-t-sm animate-pulse" style={{animationDelay: '0.3s'}}></div>
-                    <div className="h-[50%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.4s'}}></div>
-                    <div className="h-[70%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{animationDelay: '0.5s'}}></div>
-                </div>
-              </CardContent>
-          </Card>
-        </motion.div>
+    <div className="relative w-full h-full min-h-[16rem]">
+      <div className="absolute top-0 right-0 z-20" {...card2Animation}>
+        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
+          <p className="text-xs text-muted-foreground">ROI</p>
+          <p className="text-lg font-bold text-green-500">+125%</p>
+        </Card>
+      </div>
+      <div className="absolute bottom-0 left-0 z-20" {...card3Animation}>
+        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
+          <Avatar className="w-10 h-10 border">
+            <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
+            <AvatarFallback>SE</AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="font-bold text-sm">Sofia E.</p>
+            <Badge variant="outline">Selected</Badge>
+          </div>
+        </Card>
+      </div>
+      <div className="relative z-10 flex items-center justify-center h-full" {...cardAnimation}>
+        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72 sm:w-80">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <BarChart className="h-4 w-4 text-primary" />
+              Campaign Dashboard
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
+              <p className="text-xl font-bold">1.2M</p>
+            </div>
+            <div className="flex gap-2 items-end h-20">
+              <div className="h-[40%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{ animationDelay: '0.1s' }}></div>
+              <div className="h-[60%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+              <div className="h-[80%] w-full bg-primary rounded-t-sm animate-pulse" style={{ animationDelay: '0.3s' }}></div>
+              <div className="h-[50%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+              <div className="h-[70%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
@@ -192,8 +183,8 @@ export function AnimatedCreatorPainpoint() {
 
     return (
         <div className="relative w-full h-full min-h-[16rem] flex items-center justify-center">
-            <motion.div
-                className="absolute bottom-0 left-0 z-0"
+            <div
+                className="absolute bottom-0 left-0 z-20"
                 {...card2Animation}
             >
                 <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
@@ -206,8 +197,8 @@ export function AnimatedCreatorPainpoint() {
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">Invited you to a campaign</p>
                 </Card>
-            </motion.div>
-            <motion.div
+            </div>
+            <div
                 className="relative z-10"
                 {...cardAnimation}
             >
@@ -223,7 +214,7 @@ export function AnimatedCreatorPainpoint() {
                         <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
                     </CardContent>
                 </Card>
-            </motion.div>
+            </div>
         </div>
     )
 }
@@ -253,11 +244,15 @@ export function AnimatedEscrow() {
     <div className="w-full h-full flex flex-col items-center justify-center gap-8">
       <div className="flex justify-between w-full max-w-sm">
         <div className="flex flex-col items-center gap-2">
-            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center"><Building className="h-8 w-8 text-primary" /></div>
+            <div className="w-16 h-16 bg-gradient-to-br from-muted to-background rounded-full flex items-center justify-center shadow-inner-lg">
+                <Building className="h-8 w-8 text-primary" />
+            </div>
             <p className="font-semibold">Brand</p>
         </div>
         <div className="flex flex-col items-center gap-2">
-            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center"><User className="h-8 w-8 text-primary" /></div>
+            <div className="w-16 h-16 bg-gradient-to-br from-muted to-background rounded-full flex items-center justify-center shadow-inner-lg">
+                <User className="h-8 w-8 text-primary" />
+            </div>
             <p className="font-semibold">Creator</p>
         </div>
       </div>

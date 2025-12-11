@@ -19,7 +19,7 @@ const DynamicIcon = ({ name, className }: { name: string, className?: string }) 
 };
 
 const HowItWorksCard = ({ step, title, description, icon }: { step: number; title: string; description: string; icon: string }) => (
-    <div className="relative flex flex-col items-center text-center p-6 bg-card rounded-2xl border">
+    <div className="relative flex flex-col items-center text-center p-6 bg-card rounded-2xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
         <div className="absolute -top-6 w-12 h-12 rounded-full gradient-bg flex items-center justify-center text-black font-bold text-xl border-4 border-background shadow-md">
         {step}
         </div>
@@ -87,7 +87,7 @@ export function HomeComponent() {
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
                 </div>
             </div>
-            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center">
+            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center overflow-hidden">
                  <div className="relative w-full h-full p-10">
                     <div className="absolute top-0 left-0 z-20">
                         <FloatingProfileCard />
@@ -110,6 +110,7 @@ export function HomeComponent() {
                     <span className="font-mono text-xl font-medium text-foreground/60">CMI</span>
                     <span className="font-mono text-xl font-medium text-foreground/60">Stripe</span>
                     <span className="font-mono text-xl font-medium text-foreground/60">Google Cloud</span>
+                    <span className="font-mono text-xl font-medium text-foreground/60">Google for Startups</span>
                 </div>
                 <div className="p-3 px-4 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/20">
                    {t('homePage.trustBar.metric')}
@@ -119,7 +120,7 @@ export function HomeComponent() {
 
 
         {/* --- PAIN POINT: BRANDS --- */}
-        <div className="py-24 md:py-32 scroll-mt-16 bg-card rounded-3xl">
+        <div className="py-24 md:py-32 scroll-mt-16 bg-card rounded-3xl overflow-hidden">
             <div className="px-4 md:px-10 lg:px-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
                     <div className="flex flex-col gap-6">
@@ -154,7 +155,7 @@ export function HomeComponent() {
         </div>
         
         {/* --- PAIN POINT: CREATORS --- */}
-        <div className="py-24 md:py-32 scroll-mt-16">
+        <div className="py-24 md:py-32 scroll-mt-16 overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
                 <div className="relative w-full h-80 flex items-center justify-center order-last md:order-first">
                     <AnimatedCreatorPainpoint />
@@ -191,7 +192,7 @@ export function HomeComponent() {
              <div className="px-4 md:px-10 lg:px-12">
                 <div className="text-center mb-16 max-w-3xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">
-                        {howItWorks.title}
+                        How <span className="gradient-text text-glow">VibeMatch</span> Works
                     </h2>
                     <p className="text-lg md:text-xl text-foreground/70 mt-4">
                         {howItWorks.description}
@@ -279,7 +280,7 @@ export function HomeComponent() {
                   {t('homePage.finalCta.title')}
                 </h2>
                 <p className="text-lg md:text-xl text-foreground/60 leading-relaxed mb-8">
-                 {t('homePage.finalCta.description')}
+                  Find <span className="gradient-text text-glow">authentic creators, secure your payments, and get results</span> you can count on. It's free to get started.
                 </p>
                 <Button asChild size="lg" className="min-w-[220px] h-14 px-8 gradient-bg text-black text-lg font-bold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
                   <Link href="/brands/join">{t('homePage.finalCta.button')}</Link>

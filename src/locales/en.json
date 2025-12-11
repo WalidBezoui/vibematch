@@ -355,7 +355,7 @@
             "title1": "Stop wasting money on",
             "title2": "fake engagement.",
             "description": "We provide vetted creators and guaranteed results. Our revolutionary Trust Engine analyzes over 50 data points to ensure every influencer you partner with has a genuine, engaged audience. No more bots, no more vanity metrics. Just real impact.",
-            "joinButton": "Start Hiring safely"
+            "joinButton": "Start Hiring Safely"
         },
         "creators": {
             "title1": "Stop chasing payments.",
@@ -1025,7 +1025,7 @@
             "title": "Part III: Common Provisions",
             "antiCircumvention": {
                 "title": "Non-Circumvention",
-                "content": "Users (Brand and Creator) agree not to bypass VibeMatch to contract directly for twelve (12) months after their initial connection on the platform.",
+                "content": "Users (Brand and Creator) agree not to bypass VibeMatch to contract directly between them for a period of twelve (12) months following their initial connection on the platform.",
                 "penalty_b": "Penalty Clause (D.O.C. Art. 264):",
                 "penalty_t": "Violation constitutes a direct commercial loss for VibeMatch. The defaulting party agrees to pay a fixed penalty of 10,000 MAD or 20% of the circumvented budget (whichever is higher) as damages, due upon notice."
             },
@@ -1035,7 +1035,7 @@
             },
             "liability": {
                 "title": "Liability and Force Majeure",
-                "content": "VibeMatch has an obligation of means. It cannot be held liable for technical interruptions or campaign commercial failure. No party is liable for delays caused by Force Majeure."
+                "content": "VibeMatch has an obligation of means. It cannot be held liable for technical interruptions or the commercial failure of a campaign. No party is liable for delays caused by Force Majeure."
             },
             "law": {
                 "title": "Governing Law and Jurisdiction",
@@ -1153,6 +1153,7 @@
     },
     "legalNotice": {
         "title": "Legal Notice",
+        "navTitle": "Summary",
         "sections": {
             "editor": {
                 "title": "1. Site Editor",
