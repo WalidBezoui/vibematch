@@ -45,7 +45,7 @@ export function HomeComponent() {
         
         {/* --- HERO SECTION --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 min-h-[calc(100vh-200px)] py-10">
-            <div className="flex flex-col gap-6 text-left items-start">
+            <div className="flex flex-col gap-6 items-start text-left">
                 <h1 className={cn('text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-tight', language === 'AR' && 'hero-title-ar')}>
                     {t('homePage.hero.title1')}{' '}
                     <span className="gradient-text text-glow">{t('homePage.hero.title2')}</span>
@@ -87,7 +87,7 @@ export function HomeComponent() {
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
                 </div>
             </div>
-             <div className="relative hidden md:flex items-center justify-center p-10 overflow-hidden">
+             <div className="relative hidden md:flex items-center justify-center p-10">
                 <div className="absolute top-0 left-0 z-20">
                     <FloatingProfileCard />
                 </div>
@@ -293,5 +293,3 @@ export function HomeComponent() {
     </div>
   );
 }
-
-    
