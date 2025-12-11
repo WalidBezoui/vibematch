@@ -318,7 +318,7 @@
     "homePage": {
         "trustBar": {
             "title": "ILS FONT CONFIANCE À NOTRE ÉCOSYSTÈME",
-            "metric": "+500 Créateurs en liste d'attente"
+            "metric": "50+ Créateurs en liste d'attente"
         },
         "howItWorks": {
             "title": "Comment ça Marche ?",
@@ -349,7 +349,7 @@
             "subtitle": "Marques : Payez seulement quand le travail est validé. Créateurs : Soyez payés garanti sous 24h. Le Séquestre (Escrow) pour tous.",
             "brandsButton": "Je suis une Marque",
             "creatorsButton": "Je suis un Créateur",
-            "trustText": "Rejoint par +500 créateurs sur notre liste d'attente."
+            "trustText": "Rejoint par +50 créateurs sur notre liste d'attente."
         },
         "brands": {
             "title1": "Ne gaspillez plus d'argent en",

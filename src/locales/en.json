@@ -318,7 +318,7 @@
     "homePage": {
         "trustBar": {
             "title": "JOINING A TRUSTED ECOSYSTEM",
-            "metric": "500+ Creators on Waitlist"
+            "metric": "50+ Creators on Waitlist"
         },
         "howItWorks": {
             "title": "How VibeMatch Works",
@@ -349,7 +349,7 @@
             "subtitle": "For Brands: Only pay for work you validate. For Creators: Get paid, guaranteed, within 24 hours. Escrow for everyone.",
             "brandsButton": "I'm a Brand",
             "creatorsButton": "I'm a Creator",
-            "trustText": "Trusted by 500+ creators on our waitlist."
+            "trustText": "Trusted by 50+ creators on our waitlist."
         },
         "brands": {
             "title1": "Stop wasting money on",

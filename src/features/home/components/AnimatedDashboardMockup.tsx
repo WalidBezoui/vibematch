@@ -13,7 +13,7 @@ const floatingVariants = {
   float: (delay: number = 0) => ({
     y: ['-10px', '10px'],
     transition: {
-      duration: 4 + delay * 2,
+      duration: 5 + delay * 2,
       repeat: Infinity,
       repeatType: 'reverse' as const,
       ease: 'easeInOut',
@@ -53,7 +53,7 @@ export function AnimatedDashboardMockup() {
             </div>
             {/* Content */}
             <div className="flex-1 p-4 overflow-hidden">
-                <div className="h-full w-full overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full">
+                <div className="h-full w-full">
                     <div className="space-y-4 pr-2">
                         <div className="flex items-center justify-between">
                             <div className="h-8 w-48 bg-white/10 rounded-md"></div>

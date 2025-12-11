@@ -75,16 +75,13 @@ export function HomeComponent() {
                 <div className="flex items-center gap-4 mt-8 pt-6 border-t border-border/50">
                     <div className="flex -space-x-4 rtl:space-x-reverse">
                         <Avatar className="w-10 h-10 border-2 border-background">
-                            <AvatarImage src="https://i.pravatar.cc/150?img=1" />
-                            <AvatarFallback>A</AvatarFallback>
+                           <AvatarFallback>GA</AvatarFallback>
                         </Avatar>
                         <Avatar className="w-10 h-10 border-2 border-background">
-                            <AvatarImage src="https://i.pravatar.cc/150?img=2" />
-                            <AvatarFallback>B</AvatarFallback>
+                            <AvatarFallback>AF</AvatarFallback>
                         </Avatar>
                         <Avatar className="w-10 h-10 border-2 border-background">
-                            <AvatarImage src="https://i.pravatar.cc/150?img=3" />
-                            <AvatarFallback>C</AvatarFallback>
+                            <AvatarFallback>S</AvatarFallback>
                         </Avatar>
                     </div>
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
@@ -113,7 +110,6 @@ export function HomeComponent() {
                     <span className="font-mono text-xl font-medium text-foreground/60">CMI</span>
                     <span className="font-mono text-xl font-medium text-foreground/60">Stripe</span>
                     <span className="font-mono text-xl font-medium text-foreground/60">Google Cloud</span>
-                    <span className="font-mono text-xl font-medium text-foreground/60">Microsoft for Startups</span>
                 </div>
                 <div className="p-3 px-4 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/20">
                    {t('homePage.trustBar.metric')}
@@ -257,7 +253,6 @@ export function HomeComponent() {
                         <p className="text-foreground/70 leading-relaxed text-lg">"{testimonial.quote}"</p>
                         <div className="flex items-center gap-4 mt-4">
                             <Avatar className="w-12 h-12 border-2 border-background">
-                                <AvatarImage src={`https://i.pravatar.cc/150?img=${index + 1}`} alt={testimonial.name} />
                                 <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
                             </Avatar>
                             <div>
