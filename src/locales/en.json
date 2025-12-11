@@ -316,92 +316,55 @@
         "legal": "Legal Notice"
     },
     "homePage": {
-        "trustedBy": "Trusted By The Best Moroccan Brands",
+        "trustBar": {
+            "title": "JOINING A TRUSTED ECOSYSTEM",
+            "metric": "50+ Creators on Waitlist"
+        },
         "howItWorks": {
-            "title": "Launch a Campaign in Minutes",
+            "title": "How VibeMatch Works",
             "description": "A streamlined process to connect with the perfect creators for your brand.",
-            "step1": {
-                "title": "Define Your Campaign",
-                "description": "Post a detailed brief outlining your goals, deliverables, and budget. Our system helps you attract the right talent."
+            "brands": {
+                "steps": [
+                    { "title": "Post Your Campaign", "description": "Describe your goals and deliverables. It's free to post.", "icon": "Megaphone" },
+                    { "title": "Hire & Secure Funds", "description": "Select the best creator and deposit the payment into VibeMatch Escrow.", "icon": "Lock" },
+                    { "title": "Approve & Release", "description": "Once you validate the content, we release the payment to the creator.", "icon": "CheckCircle" }
+                ]
             },
-            "step2": {
-                "title": "Connect & Collaborate",
-                "description": "Review applications from our vetted creators, negotiate terms, and hire your ideal partners through our secure platform."
-            },
-            "step3": {
-                "title": "Launch & Track",
-                "description": "Fund the campaign via our secure escrow. Creators get paid only after you approve the content, guaranteeing results."
+            "creators": {
+                "steps": [
+                    { "title": "Apply to Missions", "description": "Browse campaigns and apply to the ones that match your vibe. It's free.", "icon": "Rocket" },
+                    { "title": "Accept & Create", "description": "Once hired, the brand's payment is secured in Escrow. You can start creating with confidence.", "icon": "Clapperboard" },
+                    { "title": "Get Paid Instantly", "description": "As soon as the brand approves your work, the funds are released to your account.", "icon": "Banknote" }
+                ]
             }
         },
+        "escrow": {
+            "title": "The VibeMatch Escrow:",
+            "titleHighlight": "Your Security.",
+            "description": "For brands, it means you only pay for work you approve. For creators, it means your payment is guaranteed the moment you're hired. It's the simplest way to build trust and ensure every collaboration is a success."
+        },
         "hero": {
-            "title1": "Influence, Amplified by",
-            "title2": "Trust.",
-            "subtitle": "No more fake engagement. No more late payments. VibeMatch is the Vetted-Influencer Marketplace for Morocco's best brands and creators.",
-            "brandsButton": "For Brands",
-            "creatorsButton": "For Creators"
+            "title1": "The Secure Influencer",
+            "title2": "Marketplace.",
+            "subtitle": "For Brands: Only pay for work you validate. For Creators: Get paid, guaranteed, within 24 hours. Escrow for everyone.",
+            "brandsButton": "I'm a Brand",
+            "creatorsButton": "I'm a Creator",
+            "trustText": "Trusted by 50+ creators on our waitlist."
         },
         "brands": {
-            "title1": "Stop wasting money on",
-            "title2": "fake engagement.",
+            "title1": "Stop wasting money",
+            "title2": "on",
+            "title3": "fake engagement.",
             "description": "We provide vetted creators and guaranteed results. Our revolutionary Trust Engine analyzes over 50 data points to ensure every influencer you partner with has a genuine, engaged audience. No more bots, no more vanity metrics. Just real impact.",
-            "joinButton": "Join the Brand Waitlist",
-            "ctas": [
-                { "text": "For visionary brands ready for real ROI.", "icon": "Target" },
-                { "text": "Waitlist spots are limited. Secure your priority access.", "icon": "BadgePercent" },
-                { "text": "The top 1% of Moroccan creators are waiting.", "icon": "Gem" },
-                { "text": "Stop gambling. Start getting guaranteed results.", "icon": "TrendingUp"}
-            ]
+            "joinButton": "Start Hiring Safely",
+            "joinSubtext": "Access our private beta of pre-vetted, high-trust influencers."
         },
         "creators": {
             "title1": "Stop chasing payments.",
             "title2": "We guarantee them.",
             "description": "Focus on what you do best: creating amazing content. VibeMatch handles the boring stuff. We guarantee your payments and automate your invoices, so you can build your brand with peace of mind.",
-            "applyButton": "Apply as a Founding Creator",
-            "ctas": [
-                { "text": "For the top 1% of creators who value their time.", "icon": "Gem" },
-                { "text": "Tired of chasing payments? We automate them.", "icon": "DollarSign" },
-                { "text": "Limited spots for Founding Creators are now open.",
-                "icon": "PenTool" },
-                { "text": "Unlock partnerships with Morocco's leading brands.", "icon": "Briefcase" }
-            ]
-        },
-        "results": {
-            "title1": "Stop Managing Risks.",
-            "title2": "Start Managing",
-            "title3": "Results."
-        },
-        "features": {
-            "shield": {
-                "title": "Your Shield Against Fake Engagement",
-                "description": "Stop wondering if an audience is real. Our proprietary \"Trust Score\" and manual vetting process eliminate creators with suspicious engagement. Every creator on VibeMatch is verified for authenticity."
-            },
-            "deadlines": {
-                "title": "Guaranteed Deadlines, Not Excuses",
-                "description": "No more \"I forgot to post.\" Our Smart Contract locks in the exact publication dates. If a creator is late, their Trust Score gets penalized, protecting you and your campaign schedule."
-            },
-            "autopilot": {
-                "title": "Campaign Management on Autopilot",
-                "description": "Stop juggling 10 DM conversations. Manage all your collaborations, from negotiation to approval, from a single, clear, centralized dashboard. See who's late and who's submitted content at a glance."
-            }
-        },
-        "creating": {
-            "title1": "Focus on Creating.",
-            "title2": "We'll Handle the",
-            "title3": "Rest."
-        },
-        "creatorFeatures": {
-            "paycheck": {
-                "title": "Your 100% Automated Paycheck",
-                "description": "Never create an invoice again. Never follow up on a payment again. As soon as the brand approves your content, our system generates the invoice and transfers the money to you automatically. You are a creator, not an accountant."
-            },
-            "confidence": {
-                "title": "Work with Absolute Confidence",
-                "description": "Never start a project hoping to get paid again. For every mission you accept, the brand's budget is locked and secured in our escrow account. Your payment is guaranteed before you even turn on your camera."
-            },
-            "briefs": {
-                "title": "Clear Briefs, Zero Confusion",
-                "description": "Say goodbye to \"details that change\" at the last minute. Our Smart Contract locks in the brief, deliverables, and budget. What is agreed upon is what is delivered. Protect your work and your time."
-            }
+            "applyButton": "Secure my first job",
+            "applySubtext": "Limited spots available for our Founding Creator Program."
         },
         "testimonialsTitle1": "What",
         "testimonialsTitle2": "Moroccan Creators",
@@ -426,6 +389,12 @@
                 "image": "testimonial-3"
             }
         ],
+        "finalCta": {
+            "title": "Ready to Launch Your First Campaign?",
+            "description": "Find authentic creators, secure your payments, and get results you can count on. It's free to get started.",
+            "button": "Start Now",
+            "reassurance": "No credit card required for signup."
+        },
         "faq": {
             "title1": "Your Questions,",
             "title2": "Answered.",
@@ -433,48 +402,6 @@
             "brandsTitle": "For Brands",
             "creatorsTitle": "For Creators",
             "viewAllButton": "View All FAQs"
-        },
-        "brandsFaq": [
-            {
-              "question": "How does VibeMatch ensure creator quality?",
-              "answer": "Our Trust Engine analyzes over 50 data points, including audience demographics, engagement rates, and past performance, to verify every creator. We ensure you connect with influencers who have a genuine, engaged audience that match your brand values."
-            },
-            {
-              "question": "What is the pricing model for brands?",
-              "answer": "VibeMatch operates on a campaign-based fee structure. You only pay for the campaigns you launch. We are transparent about all costs upfront, so there are no hidden fees. Contact us for detailed pricing information tailored to your needs."
-            }
-        ],
-        "creatorsFaq": [
-            {
-                "question": "How do I get paid?",
-                "answer": "We guarantee your payments. Once a campaign is completed and approved, funds are released to your VibeMatch account. You can then withdraw your earnings directly to your bank account. No more chasing invoices!"
-            },
-            {
-                "question": "What are the requirements to join as a creator?",
-                "answer": "We look for creators with an authentic connection to their audience, regardless of follower size. We evaluate engagement quality, content creativity, and niche relevance. If you create high-quality content and have a loyal community, we encourage you to apply."
-            }
-        ],
-        "generalFaq": [
-            {
-                "question": "What makes VibeMatch different from other platforms?",
-                "answer": "VibeMatch is built on the pillars of Trust and Efficiency. Our unique Trust Engine ensures authentic collaborations, while our automated payment system protects creators. We are specifically focused on the Moroccan market, understanding its unique dynamics and fostering a community of top-tier local talent and brands."
-            },
-            {
-                "question": "What if I have a dispute?",
-                "answer": "In the rare case of a disagreement between a brand and a creator, VibeMatch provides a dedicated dispute resolution process. Our support team will mediate the situation, review the campaign agreement and communication, and work towards a fair and timely resolution for both parties."
-            }
-        ],
-        "connect": {
-            "title": "Where Great Brands and Great Creators Connect."
-        },
-        "waitlist": {
-            "title1": "Join the",
-            "title2": "VibeMatch",
-            "title3": "Waitlist.",
-            "description": "Be the first to experience the future of influencer marketing in Morocco.",
-            "areYou": "Are you a brand or a creator?",
-            "brandsButton": "Join the Brands Waitlist",
-            "creatorsButton": "Apply as a Founding Creator"
         }
     },
     "faqPage": {
@@ -1101,7 +1028,7 @@
             "title": "Part III: Common Provisions",
             "antiCircumvention": {
                 "title": "Non-Circumvention",
-                "content": "Users (Brand and Creator) agree not to bypass VibeMatch to contract directly for twelve (12) months after their initial connection on the platform.",
+                "content": "Users (Brand and Creator) agree not to bypass VibeMatch to contract directly between them for a period of twelve (12) months following their initial connection on the platform.",
                 "penalty_b": "Penalty Clause (D.O.C. Art. 264):",
                 "penalty_t": "Violation constitutes a direct commercial loss for VibeMatch. The defaulting party agrees to pay a fixed penalty of 10,000 MAD or 20% of the circumvented budget (whichever is higher) as damages, due upon notice."
             },
@@ -1111,7 +1038,7 @@
             },
             "liability": {
                 "title": "Liability and Force Majeure",
-                "content": "VibeMatch has an obligation of means. It cannot be held liable for technical interruptions or campaign commercial failure. No party is liable for delays caused by Force Majeure."
+                "content": "VibeMatch has an obligation of means. It cannot be held liable for technical interruptions or the commercial failure of a campaign. No party is liable for delays caused by Force Majeure."
             },
             "law": {
                 "title": "Governing Law and Jurisdiction",
@@ -1229,6 +1156,7 @@
     },
     "legalNotice": {
         "title": "Legal Notice",
+        "navTitle": "Summary",
         "sections": {
             "editor": {
                 "title": "1. Site Editor",
