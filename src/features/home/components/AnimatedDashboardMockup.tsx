@@ -102,63 +102,63 @@ export function AnimatedBrandPainpoint() {
   const isMobile = useIsMobile();
   
   return (
-    <div className="relative w-full h-80 flex items-center justify-center">
-      <motion.div
-        className="absolute top-0 right-0 z-20"
-        custom={0.8}
-        variants={isMobile ? undefined : floatingVariants}
-        animate="float"
-      >
-        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
-          <p className="text-xs text-muted-foreground">ROI</p>
-          <p className="text-lg font-bold text-green-500">+125%</p>
-        </Card>
-      </motion.div>
-      <motion.div
-        className="absolute bottom-0 left-0 z-20"
-        custom={0.4}
-        variants={isMobile ? undefined : floatingVariants}
-        animate="float"
-      >
-        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
-          <Avatar className="w-10 h-10 border">
-            <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
-            <AvatarFallback>SE</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-bold text-sm">Sofia E.</p>
-            <Badge variant="outline">Selected</Badge>
-          </div>
-        </Card>
-      </motion.div>
-      <motion.div
-        className="relative z-10"
-        custom={0}
-        variants={isMobile ? undefined : floatingVariants}
-        animate="float"
-      >
-        <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72 sm:w-80">
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <BarChart className="h-4 w-4 text-primary" />
-              Campaign Dashboard
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-1">
-              <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
-              <p className="text-xl font-bold">1.2M</p>
+    <div className="relative w-full h-80 grid grid-cols-2 grid-rows-2 gap-4">
+        <motion.div
+            className="col-start-2 row-start-1"
+            custom={0.8}
+            variants={isMobile ? undefined : floatingVariants}
+            animate="float"
+        >
+            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
+            <p className="text-xs text-muted-foreground">ROI</p>
+            <p className="text-lg font-bold text-green-500">+125%</p>
+            </Card>
+        </motion.div>
+        <motion.div
+            className="col-start-1 row-start-2"
+            custom={0.4}
+            variants={isMobile ? undefined : floatingVariants}
+            animate="float"
+        >
+            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
+            <Avatar className="w-10 h-10 border">
+                <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
+                <AvatarFallback>SE</AvatarFallback>
+            </Avatar>
+            <div>
+                <p className="font-bold text-sm">Sofia E.</p>
+                <Badge variant="outline">Selected</Badge>
             </div>
-            <div className="flex gap-2 items-end h-20">
-              <div className="h-[40%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{ animationDelay: '0.1s' }}></div>
-              <div className="h-[60%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-              <div className="h-[80%] w-full bg-primary rounded-t-sm animate-pulse" style={{ animationDelay: '0.3s' }}></div>
-              <div className="h-[50%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-              <div className="h-[70%] w-full bg-primary/20 rounded-t-sm animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+            </Card>
+        </motion.div>
+        <motion.div
+            className="col-span-2 row-span-2 flex items-center justify-center z-10"
+            custom={0}
+            variants={isMobile ? undefined : floatingVariants}
+            animate="float"
+        >
+            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72 sm:w-80">
+            <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                <BarChart className="h-4 w-4 text-primary" />
+                Campaign Dashboard
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="space-y-1">
+                <p className="text-xs font-medium text-muted-foreground">Total Engagement</p>
+                <p className="text-xl font-bold">1.2M</p>
+                </div>
+                <div className="flex gap-2 items-end h-20">
+                    <div className="h-[40%] w-full bg-primary/20 rounded-t-sm"></div>
+                    <div className="h-[60%] w-full bg-primary/20 rounded-t-sm"></div>
+                    <div className="h-[80%] w-full bg-primary rounded-t-sm"></div>
+                    <div className="h-[50%] w-full bg-primary/20 rounded-t-sm"></div>
+                    <div className="h-[70%] w-full bg-primary/20 rounded-t-sm"></div>
+                </div>
+            </CardContent>
+            </Card>
+        </motion.div>
     </div>
   );
 }
@@ -167,9 +167,9 @@ export function AnimatedCreatorPainpoint() {
     const isMobile = useIsMobile();
   
     return (
-        <div className="relative w-full h-80 flex items-center justify-center">
+        <div className="relative w-full h-80 grid grid-cols-2 grid-rows-2 gap-4">
             <motion.div
-                className="absolute bottom-0 left-0 z-20"
+                className="col-start-1 row-start-2"
                 custom={1}
                 variants={isMobile ? undefined : floatingVariants}
                 animate="float"
@@ -186,7 +186,7 @@ export function AnimatedCreatorPainpoint() {
                 </Card>
             </motion.div>
             <motion.div
-                className="relative z-10"
+                className="col-span-2 row-span-2 flex items-center justify-center z-10"
                 custom={0.2}
                 variants={isMobile ? undefined : floatingVariants}
                 animate="float"
@@ -233,13 +233,13 @@ export function AnimatedEscrow() {
     <div className="w-full h-full flex flex-col items-center justify-center gap-8">
       <div className="flex justify-between w-full max-w-sm">
         <div className="flex flex-col items-center gap-2">
-            <div className="w-16 h-16 bg-gradient-to-br from-muted to-background rounded-full flex items-center justify-center shadow-inner-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-muted to-background rounded-full flex items-center justify-center shadow-inner-lg border">
                 <Building className="h-8 w-8 text-primary" />
             </div>
             <p className="font-semibold">Brand</p>
         </div>
         <div className="flex flex-col items-center gap-2">
-            <div className="w-16 h-16 bg-gradient-to-br from-muted to-background rounded-full flex items-center justify-center shadow-inner-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-muted to-background rounded-full flex items-center justify-center shadow-inner-lg border">
                 <User className="h-8 w-8 text-primary" />
             </div>
             <p className="font-semibold">Creator</p>

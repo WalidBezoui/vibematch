@@ -45,7 +45,7 @@ export function HomeComponent() {
         
         {/* --- HERO SECTION --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 min-h-[calc(100vh-200px)] py-10">
-            <div className="flex flex-col gap-6 text-center md:text-left items-center md:items-start">
+            <div className="flex flex-col gap-6 text-left items-start">
                 <h1 className={cn('text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-tight', language === 'AR' && 'hero-title-ar')}>
                     {t('homePage.hero.title1')}{' '}
                     <span className="gradient-text text-glow">{t('homePage.hero.title2')}</span>
@@ -87,19 +87,17 @@ export function HomeComponent() {
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
                 </div>
             </div>
-             <div className="relative hidden md:flex items-center justify-center overflow-visible">
-                 <div className="relative w-full h-full p-10">
-                    <div className="absolute top-0 left-0 z-20">
-                        <FloatingProfileCard />
-                    </div>
-                    <div className="absolute bottom-0 right-0 z-20">
-                        <FloatingStatCard />
-                    </div>
-                    <div className="relative z-10 flex h-full w-full items-center justify-center">
-                        <AnimatedDashboardMockup />
-                    </div>
-                 </div>
-            </div>
+             <div className="relative hidden md:flex items-center justify-center p-10">
+                <div className="absolute top-0 left-0 z-20">
+                    <FloatingProfileCard />
+                </div>
+                <div className="absolute bottom-0 right-0 z-20">
+                    <FloatingStatCard />
+                </div>
+                <div className="relative z-10 flex h-full w-full items-center justify-center">
+                    <AnimatedDashboardMockup />
+                </div>
+             </div>
         </div>
 
         {/* --- TRUST BAR --- */}
@@ -120,7 +118,7 @@ export function HomeComponent() {
 
 
         {/* --- PAIN POINT: BRANDS --- */}
-        <div className="py-24 md:py-32 scroll-mt-16 overflow-hidden">
+        <div className="py-24 md:py-32 scroll-mt-16">
             <div className="px-4 md:px-10 lg:px-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
                     <div className="flex flex-col gap-6">
@@ -143,21 +141,20 @@ export function HomeComponent() {
                             <Link href="/brands/join">
                                 <lucideIcons.ShieldCheck className="mr-2 h-5 w-5" />
                                 {t('homePage.brands.joinButton')}
+                                <lucideIcons.ArrowRight className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
                         </div>
                     </div>
-                    <div className="relative w-full h-80 flex items-center justify-center">
-                       <AnimatedBrandPainpoint />
-                    </div>
+                    <AnimatedBrandPainpoint />
                 </div>
             </div>
         </div>
         
         {/* --- PAIN POINT: CREATORS --- */}
-        <div className="py-24 md:py-32 scroll-mt-16 overflow-hidden">
+        <div className="py-24 md:py-32 scroll-mt-16">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
-                <div className="relative w-full h-80 flex items-center justify-center order-last md:order-first">
+                <div className="order-last md:order-first">
                     <AnimatedCreatorPainpoint />
                 </div>
                 <div className="flex flex-col gap-6">
@@ -180,6 +177,7 @@ export function HomeComponent() {
                         <Link href="/creators/join">
                              <lucideIcons.Rocket className="mr-2 h-5 w-5" />
                             {t('homePage.creators.applyButton')}
+                             <lucideIcons.ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
                     </div>
@@ -277,10 +275,10 @@ export function HomeComponent() {
             <div className="text-center bg-card border rounded-3xl p-10 md:p-16">
               <div className="max-w-3xl mx-auto flex flex-col items-center">
                 <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter mb-4">
-                  {t('homePage.finalCta.title')}
+                  Ready to <span className="gradient-text text-glow">Launch</span> Your First Campaign?
                 </h2>
                 <p className="text-lg md:text-xl text-foreground/60 leading-relaxed mb-8">
-                  {t('homePage.finalCta.description')}
+                  Find authentic creators, secure your payments, and get results you can count on. It's free to get started.
                 </p>
                 <Button asChild size="lg" className="min-w-[220px] h-14 px-8 gradient-bg text-black text-lg font-bold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
                   <Link href="/brands/join">{t('homePage.finalCta.button')}</Link>
