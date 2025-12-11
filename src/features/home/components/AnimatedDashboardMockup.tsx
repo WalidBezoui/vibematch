@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet, Building, User, TrendingUp, MoreHorizontal } from 'lucide-react';
+import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet, Building, User, TrendingUp, MoreHorizontal, Activity, FileText } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -44,7 +44,7 @@ export function AnimatedDashboardMockup() {
             {/* Sidebar */}
             <div className="w-20 p-3 border-r border-white/10 flex flex-col items-center gap-4">
                 <div className="w-10 h-10 gradient-bg rounded-lg"></div>
-                <div className="space-y-6">
+                <div className="space-y-6 pt-4">
                     <Home className="h-6 w-6 text-white" />
                     <Compass className="h-6 w-6 text-white/40" />
                     <MessageSquare className="h-6 w-6 text-white/40" />
@@ -55,8 +55,10 @@ export function AnimatedDashboardMockup() {
             <div className="flex-1 p-4 overflow-hidden">
                 <div className="h-full w-full overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full">
                     <div className="space-y-4 pr-2">
-                        <div className="h-8 w-48 bg-white/10 rounded-md"></div>
-                        <div className="h-4 w-64 bg-white/5 rounded-md mb-6"></div>
+                        <div className="flex items-center justify-between">
+                            <div className="h-8 w-48 bg-white/10 rounded-md"></div>
+                            <div className="h-8 w-24 bg-primary/20 rounded-full"></div>
+                        </div>
                         
                          <div className="h-24 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3">
                            <div className="flex items-center justify-between">

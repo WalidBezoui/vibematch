@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import * as lucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { AnimatedDashboardMockup, AnimatedBrandPainpoint, AnimatedCreatorPainpoint, AnimatedEscrow, FloatingProfileCard, FloatingStatCard } from './AnimatedDashboardMockup';
+import { AnimatedDashboardMockup, FloatingProfileCard, FloatingStatCard, AnimatedBrandPainpoint, AnimatedCreatorPainpoint, AnimatedEscrow } from './AnimatedDashboardMockup';
 
 
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
@@ -92,13 +92,13 @@ export function HomeComponent() {
             </div>
             <div className="relative w-full h-[500px] hidden md:flex items-center justify-center">
                  <div className="relative w-full h-full">
-                    <div className="absolute top-0 left-0">
+                    <div className="absolute top-0 left-0 z-20">
                         <FloatingProfileCard />
                     </div>
-                    <div className="absolute bottom-0 right-0">
+                    <div className="absolute bottom-0 right-0 z-20">
                         <FloatingStatCard />
                     </div>
-                    <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center z-10">
                         <AnimatedDashboardMockup />
                     </div>
                  </div>
