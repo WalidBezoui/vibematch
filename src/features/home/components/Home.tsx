@@ -280,7 +280,7 @@ export function HomeComponent() {
                   Ready to <span className="gradient-text text-glow">Launch</span> Your First Campaign?
                 </h2>
                 <p className="text-lg md:text-xl text-foreground/60 leading-relaxed mb-8">
-                  Find authentic creators, secure your payments, and get results you can count on. It's free to get started.
+                  {t('homePage.finalCta.description')}
                 </p>
                 <Button asChild size="lg" className="min-w-[220px] h-14 px-8 gradient-bg text-black text-lg font-bold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
                   <Link href="/brands/join">{t('homePage.finalCta.button')}</Link>
@@ -293,3 +293,5 @@ export function HomeComponent() {
     </div>
   );
 }
+
+    

@@ -52,7 +52,7 @@ export function AnimatedDashboardMockup() {
                 </div>
             </div>
             {/* Content */}
-            <div className="flex-1 p-4 overflow-hidden">
+            <div className="flex-1 p-4">
                 <div className="h-full w-full">
                     <div className="space-y-4 pr-2">
                         <div className="flex items-center justify-between">
@@ -104,18 +104,18 @@ export function AnimatedBrandPainpoint() {
   return (
     <div className="relative w-full h-80 grid grid-cols-5 grid-rows-3 gap-4">
         <motion.div
-            className="col-start-4 col-span-2 row-start-1"
+            className="col-start-1 col-span-3 row-start-1"
             custom={0.8}
             variants={isMobile ? undefined : floatingVariants}
             animate="float"
         >
             <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
-            <p className="text-xs text-muted-foreground">ROI</p>
+            <p className="text-xs text-muted-foreground">Campaign ROI</p>
             <p className="text-lg font-bold text-green-500">+125%</p>
             </Card>
         </motion.div>
         <motion.div
-            className="col-start-1 col-span-2 row-start-3"
+            className="col-start-4 col-span-2 row-start-3"
             custom={0.4}
             variants={isMobile ? undefined : floatingVariants}
             animate="float"
@@ -310,3 +310,5 @@ export function FloatingStatCard() {
         </motion.div>
     );
 }
+
+    

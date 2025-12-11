@@ -957,7 +957,7 @@
             "title": "Préambule",
             "eligibility": {
                 "title": "1. ÉLIGIBILITÉ (RESTRICTION D'ÂGE)",
-                "content": "Les Services sont strictement réservés aux personnes âgées de 18 ans ou plus ayant la pleine capacité juridique. Toute inscription par un mineur est strictly prohibited unless accompanied by the written consent of a legal guardian (Wali). VibeMatch se réserve le droit de demander une preuve d'âge à tout moment."
+                "content": "Les Services sont strictly reserved for individuals aged 18 years or older having full legal capacity. Any registration by a minor is strictly prohibited unless accompanied by the written consent of a legal guardian (Wali). VibeMatch se réserve le droit de demander une preuve d'âge à tout moment."
             },
             "acceptance": {
                 "title": "2. ACCEPTATION (CONTRAT ÉLECTRONIQUE)",
@@ -1192,3 +1192,5 @@
         "UGC Photo Pack": "{count, plural, one {Pack Photos UGC} other {# Packs Photos UGC}}"
     }
 }
+
+    
