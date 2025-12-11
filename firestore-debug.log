@@ -1,4 +1,4 @@
-Dec 11, 2025 12:36:56 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+Dec 11, 2025 1:09:57 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
 INFO: Started WebSocket server on ws://127.0.0.1:9150
 API endpoint: http://127.0.0.1:8080
 If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
@@ -12,15 +12,15 @@ If you are running a Firestore in Datastore Mode project, run:
 Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
 Dev App Server is now running.
 
-Dec 11, 2025 12:37:32 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Dec 11, 2025 1:10:19 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Dec 11, 2025 12:37:33 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Dec 11, 2025 1:10:19 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Dec 11, 2025 12:37:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Dec 11, 2025 1:10:22 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Dec 11, 2025 12:37:39 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Dec 11, 2025 1:10:23 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Dec 11, 2025 12:37:40 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:24 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 false for 'create' @ L11, false for 'update' @ L14
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -51,7 +51,7 @@ false for 'create' @ L11, false for 'update' @ L14
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:41 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:26 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 false for 'update' @ L14
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -82,7 +82,7 @@ false for 'update' @ L14
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:42 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:26 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 evaluation error at L14:24 for 'update' @ L14, false for 'update' @ L14
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -113,7 +113,7 @@ evaluation error at L14:24 for 'update' @ L14, false for 'update' @ L14
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:42 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:26 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 evaluation error at L14:24 for 'update' @ L14, false for 'update' @ L14
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -144,7 +144,7 @@ evaluation error at L14:24 for 'update' @ L14, false for 'update' @ L14
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:43 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:27 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 evaluation error at L61:24 for 'create' @ L61, evaluation error at L64:24 for 'update' @ L64, false for 'create' @ L61
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -175,7 +175,7 @@ evaluation error at L61:24 for 'create' @ L61, evaluation error at L64:24 for 'u
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:45 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:29 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 evaluation error at L67:24 for 'delete' @ L67, false for 'delete' @ L67
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -206,7 +206,7 @@ evaluation error at L67:24 for 'delete' @ L67, false for 'delete' @ L67
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:46 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:30 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 false for 'create' @ L73, false for 'update' @ L82
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -237,7 +237,7 @@ false for 'create' @ L73, false for 'update' @ L82
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:48 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:32 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 evaluation error at L184:30 for 'create' @ L184, false for 'update' @ L194, false for 'create' @ L184
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -268,7 +268,7 @@ evaluation error at L184:30 for 'create' @ L184, false for 'update' @ L194, fals
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:48 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:32 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 false for 'update' @ L194
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -299,7 +299,7 @@ false for 'update' @ L194
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-Dec 11, 2025 12:37:48 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
+Dec 11, 2025 1:10:32 PM com.google.cloud.datastore.emulator.impl.util.WrappedStreamObserver onError
 WARNING: Operation failed: 
 false for 'delete' @ L194
 com.google.cloud.datastore.core.exception.DatastoreException: 
@@ -328,47 +328,8 @@ false for 'delete' @ L194
 	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
-	at java.base/java.lang.Thread.run(Thread.java:1583)
-
-Dec 11, 2025 12:37:51 PM io.gapi.emulators.netty.TcpProxyHandler$1 operationComplete
-WARNING: Failed to complete operation
-java.io.IOException: Broken pipe
-	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
-	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:62)
-	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:137)
-	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:81)
-	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:58)
-	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:542)
-	at io.netty.channel.socket.nio.NioSocketChannel.doWrite(NioSocketChannel.java:414)
-	at io.netty.channel.AbstractChannel$AbstractUnsafe.flush0(AbstractChannel.java:929)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.flush0(AbstractNioChannel.java:359)
-	at io.netty.channel.AbstractChannel$AbstractUnsafe.flush(AbstractChannel.java:893)
-	at io.netty.channel.DefaultChannelPipeline$HeadContext.flush(DefaultChannelPipeline.java:1369)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeFlush0(AbstractChannelHandlerContext.java:935)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeWriteAndFlush(AbstractChannelHandlerContext.java:957)
-	at io.netty.channel.AbstractChannelHandlerContext.write(AbstractChannelHandlerContext.java:982)
-	at io.netty.channel.AbstractChannelHandlerContext.writeAndFlush(AbstractChannelHandlerContext.java:950)
-	at io.netty.channel.AbstractChannelHandlerContext.writeAndFlush(AbstractChannelHandlerContext.java:1000)
-	at io.netty.channel.DefaultChannelPipeline.writeAndFlush(DefaultChannelPipeline.java:1024)
-	at io.netty.channel.AbstractChannel.writeAndFlush(AbstractChannel.java:305)
-	at io.gapi.emulators.netty.TcpProxyHandler$OutboundTcpProxyHandler.channelRead(TcpProxyHandler.java:99)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:442)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
-	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
-	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1407)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
-	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:918)
-	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:166)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:994)
-	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
 *** shutting down gRPC server since JVM is shutting down
 *** server shut down
-25
+251211 13:11:30.827:I 1 [main] [com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer.stop:80] Stopping WebSocket server...

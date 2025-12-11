@@ -53,7 +53,7 @@ export function HomeComponent() {
                 <h2 className="text-lg md:text-xl font-normal leading-relaxed max-w-2xl text-foreground/70">
                     {t('homePage.hero.subtitle')}
                 </h2>
-                <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="mt-4 flex flex-col sm:flex-row items-center gap-4">
                      <Button
                         asChild
                         size="lg"
@@ -87,7 +87,7 @@ export function HomeComponent() {
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
                 </div>
             </div>
-            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center">
+            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center overflow-hidden">
                  <div className="relative w-full h-full">
                     <div className="absolute top-0 left-0 z-20">
                         <FloatingProfileCard />
@@ -105,7 +105,7 @@ export function HomeComponent() {
         {/* --- TRUST BAR --- */}
         <div className="py-16 text-center">
             <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-8">{t('homePage.trustBar.title')}</h3>
-            <div className="flex flex-col items-center gap-8">
+             <div className="flex flex-col items-center gap-8">
                 <div className="flex justify-center items-center gap-10 md:gap-16 flex-wrap">
                     <span className="font-mono text-xl font-medium text-foreground/60">CMI</span>
                     <span className="font-mono text-xl font-medium text-foreground/60">Stripe</span>
