@@ -361,7 +361,7 @@
         "testimonialsTitle3": ".",
         "testimonials": [
             {
-                "quote": "Trouver des marques qui valorisent l'engagement authentique était un combat permanent. Le processus de VibeMatch change la donne. Je me sens enfin valorisée pour la communauté que j'ai bâtie.",
+                "quote": "Trouver des marques qui valorisent l'engagement authentique était un combat. Le processus de VibeMatch change la donne. Je me sens enfin valorisée pour la communauté que j'ai bâtie.",
                 "name": "Ghita A.",
                 "role": "Créatrice Lifestyle",
                 "image": "testimonial-1"
@@ -373,7 +373,7 @@
                 "image": "testimonial-2"
             },
             {
-                "quote": "En tant que créatrice, il est difficile de trouver des partenaires qui font confiance à votre vision. VibeMatch me connecte à des marques qui comprennent la valeur de la liberté créative et du storytelling authentique.",
+                "quote": "En tant que créatrice, il est difficile de trouver des partenaires qui font confiance à votre vision. VibeMatch me connecte à des marques qui comprennent la valeur de la liberté créative.",
                 "name": "Soukaina",
                 "role": "Influenceuse Mode",
                 "image": "testimonial-3"
@@ -382,7 +382,7 @@
         "faq": {
             "title1": "Vos Questions,",
             "title2": "Nos Réponses.",
-            "description": "Trouvez ici les réponses aux questions les plus fréquentes sur VibeMatch, que vous soyez une marque ou un créateur.",
+            "description": "Trouvez ici les réponses aux questions fréquentes sur VibeMatch, que vous soyez une marque ou un créateur.",
             "brandsTitle": "Pour les Marques",
             "creatorsTitle": "Pour les Créateurs",
             "viewAllButton": "Voir toute la FAQ"
@@ -390,21 +390,21 @@
         "brandsFaq": [
             {
               "question": "Comment VibeMatch garantit-il la qualité des créateurs ?",
-              "answer": "Notre Moteur de Confiance analyse plus de 50 points de données, y compris la démographie de l'audience, les taux d'engagement et les performances passées, pour vérifier chaque créateur. Nous vous assurons de vous connecter avec des influenceurs qui ont une audience authentique et engagée qui correspond aux valeurs de votre marque."
+              "answer": "Notre Moteur de Confiance analyse plus de 50 points de données pour certifier les influenceurs. Il vérifie l'authenticité de l'engagement pour vous garantir des collaborations avec des créateurs à l'audience réelle, maximisant ainsi le ROI de vos campagnes."
             },
             {
               "question": "Quel est le modèle tarifaire pour les marques ?",
-              "answer": "VibeMatch fonctionne sur une structure de frais basés sur la campagne. Vous ne payez que pour les campagnes que vous lancez. Nous sommes transparents sur tous les coûts à l'avance, donc il n'y a pas de frais cachés. Contactez-nous pour des informations tarifaires détaillées adaptées à vos besoins."
+              "answer": "VibeMatch fonctionne avec des frais par campagne. Vous ne payez que pour les campagnes lancées, avec une transparence totale sur les coûts. Contactez-nous pour un devis détaillé."
             }
         ],
         "creatorsFaq": [
             {
                 "question": "Comment suis-je rémunéré ?",
-                "answer": "Nous garantissons vos paiements. Une fois une campagne terminée et approuvée, les fonds sont libérés sur votre compte VibeMatch. Vous pouvez ensuite retirer vos gains directement sur votre compte bancaire. Fini la course aux factures !"
+                "answer": "Paiements garantis. Une fois la campagne approuvée, les fonds sont virés sur votre compte VibeMatch, puis sur votre compte bancaire. Fini la course aux factures !"
             },
             {
                 "question": "Quelles sont les conditions pour devenir créateur ?",
-                "answer": "Nous recherchons des créateurs ayant une connexion authentique avec leur public, quelle que soit la taille de leur communauté. Nous évaluons la qualité de l'engagement, la créativité du contenu et la pertinence de la niche. Si vous créez du contenu de haute qualité et avez une communauté fidèle, nous vous encourageons à postuler."
+                "answer": "Nous cherchons des créateurs avec une audience authentique, quelle que soit sa taille. Nous évaluons la qualité de l'engagement et du contenu. Si vous avez une communauté fidèle, postulez."
             }
         ],
         "connect": {
@@ -487,11 +487,11 @@
           "creatorsFaq": [
               {
                   "question": "Comment suis-je rémunéré ?",
-                  "answer": "Nous garantissons vos paiements. Une fois une campagne terminée et approuvée, les fonds sont libérés sur votre compte VibeMatch. Vous pouvez ensuite retirer vos gains directement sur votre compte bancaire. Fini la course aux factures !"
+                  "answer": "Paiements garantis. Une fois la campagne approuvée, les fonds sont virés sur votre compte VibeMatch, puis sur votre compte bancaire. Fini la course aux factures !"
               },
               {
                   "question": "Quelles sont les conditions pour devenir créateur ?",
-                  "answer": "Nous recherchons des créateurs ayant une connexion authentique avec leur public, quelle que soit la taille de leur communauté. Nous évaluons la qualité de l'engagement, la créativité du contenu et la pertinence de la niche. Si vous créez du contenu de haute qualité et avez une communauté fidèle, nous vous encourageons à postuler."
+                  "answer": "Nous cherchons des créateurs avec une audience authentique, quelle que soit sa taille. Nous évaluons la qualité de l'engagement et du contenu. Si vous avez une communauté fidèle, postulez."
               },
               {
                   "question": "Y a-t-il des frais pour les créateurs ?",

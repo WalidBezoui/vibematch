@@ -59,13 +59,14 @@ export function HomeComponent() {
   const fakeEngagementImg = getImage('fake-engagement');
   const guaranteedPaymentsImg = getImage('guaranteed-payments');
   const moroccanTeamImg = getImage('moroccan-team');
+  const dashboardImg = getImage('dashboard-screenshot');
 
   return (
     <div className="flex flex-col max-w-[1200px] flex-1">
       <div className="flex flex-col items-center justify-center text-center min-h-[calc(100vh-280px)] py-10">
         <div className="flex flex-col gap-6 items-center">
-          <h1 className={`text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-tight ${language === 'AR' ? 'hero-title-ar' : ''}`}>
-            {t('homePage.hero.title1')}{' '}
+           <h1 className={`text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-tight ${language === 'AR' ? 'hero-title-ar' : ''}`}>
+             {t('homePage.hero.title1')}{' '}
             <span className="gradient-text text-glow">{t('homePage.hero.title2')}</span>
           </h1>
           <h2 className="text-lg md:text-xl lg:text-2xl font-normal leading-relaxed max-w-4xl text-foreground/70">
@@ -94,19 +95,19 @@ export function HomeComponent() {
         </div>
       </div>
       
-       <div className="py-24 text-center">
-         <h3 className="text-sm font-semibold text-foreground/60 tracking-widest uppercase mb-8">{trustSignals.title}</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
-            <div className="font-mono text-2xl font-bold text-foreground/50">CMI</div>
-            <div className="font-mono text-2xl font-bold text-foreground/50">Stripe</div>
-            <div className="font-mono text-2xl font-bold text-foreground/50">Google Cloud</div>
-             <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 text-primary font-bold text-lg">
-                {trustSignals.waitlist}
+       <div className="py-16 text-center">
+            <h3 className="text-sm font-semibold text-foreground/60 tracking-widest uppercase mb-8">{t('homePage.trustSignals.title')}</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+                <div className="font-mono text-2xl font-bold text-foreground/50">CMI</div>
+                <div className="font-mono text-2xl font-bold text-foreground/50">Stripe</div>
+                <div className="font-mono text-2xl font-bold text-foreground/50">Google Cloud</div>
+                <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 text-primary font-bold text-lg">
+                    {t('homePage.trustSignals.waitlist')}
+                </div>
             </div>
-        </div>
        </div>
 
-       <div className="py-24 md:py-32" id="how-it-works">
+      <div className="py-24 md:py-32" id="how-it-works">
             <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-6xl font-extrabold tracking-tighter">
                     {howItWorks.title}
