@@ -136,10 +136,13 @@ export function HomeComponent() {
                         <Button
                             asChild
                             size="lg"
-                            className="h-12 px-8 rounded-full gradient-bg text-black font-semibold"
+                            className="h-12 px-8 rounded-full gradient-bg text-black font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary"
                             onClick={() => setUserInterest('brand')}
                         >
-                            <Link href="/brands/join">{t('homePage.brands.joinButton')}</Link>
+                            <Link href="/brands/join">
+                                <lucideIcons.ShieldCheck className="mr-2 h-5 w-5" />
+                                {t('homePage.brands.joinButton')}
+                            </Link>
                         </Button>
                         </div>
                     </div>
@@ -170,10 +173,13 @@ export function HomeComponent() {
                     <Button
                         asChild
                         size="lg"
-                        className="h-12 px-8 rounded-full gradient-bg text-black font-semibold"
+                        className="h-12 px-8 rounded-full gradient-bg text-black font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary"
                         onClick={() => setUserInterest('creator')}
                     >
-                        <Link href="/creators/join">{t('homePage.creators.applyButton')}</Link>
+                        <Link href="/creators/join">
+                             <lucideIcons.Rocket className="mr-2 h-5 w-5" />
+                            {t('homePage.creators.applyButton')}
+                        </Link>
                     </Button>
                     </div>
                 </div>
