@@ -87,7 +87,7 @@ export function HomeComponent() {
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
                 </div>
             </div>
-             <div className="relative hidden md:flex items-center justify-center p-10">
+             <div className="relative hidden md:flex items-center justify-center p-10 overflow-hidden">
                 <div className="absolute top-0 left-0 z-20">
                     <FloatingProfileCard />
                 </div>
@@ -121,7 +121,7 @@ export function HomeComponent() {
         <div className="py-24 md:py-32 scroll-mt-16">
             <div className="px-4 md:px-10 lg:px-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-6 items-start text-left">
                         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
                         {t('homePage.brands.title1')}{' '}
                         <span className="gradient-text text-glow">
@@ -131,7 +131,7 @@ export function HomeComponent() {
                         <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
                         {t('homePage.brands.description')}
                         </p>
-                        <div className="mt-4 flex flex-col items-start gap-4">
+                        <div className="mt-4 flex flex-col items-start gap-2">
                         <Button
                             asChild
                             size="lg"
@@ -144,6 +144,7 @@ export function HomeComponent() {
                                 <lucideIcons.ArrowRight className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
+                        <p className="text-xs text-muted-foreground pl-2">Access our private beta of pre-vetted, high-trust influencers.</p>
                         </div>
                     </div>
                     <AnimatedBrandPainpoint />
@@ -157,7 +158,7 @@ export function HomeComponent() {
                 <div className="order-last md:order-first">
                     <AnimatedCreatorPainpoint />
                 </div>
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 items-start text-left">
                     <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
                     {t('homePage.creators.title1')}{' '}
                     <span className="gradient-text text-glow">
@@ -167,7 +168,7 @@ export function HomeComponent() {
                     <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
                     {t('homePage.creators.description')}
                     </p>
-                    <div className="mt-4 flex flex-col items-start gap-4">
+                    <div className="mt-4 flex flex-col items-start gap-2">
                     <Button
                         asChild
                         size="lg"
@@ -180,6 +181,7 @@ export function HomeComponent() {
                              <lucideIcons.ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
+                    <p className="text-xs text-muted-foreground pl-2">Limited spots available for our Founding Creator Program.</p>
                     </div>
                 </div>
             </div>

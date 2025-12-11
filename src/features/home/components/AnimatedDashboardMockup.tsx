@@ -102,9 +102,9 @@ export function AnimatedBrandPainpoint() {
   const isMobile = useIsMobile();
   
   return (
-    <div className="relative w-full h-80 grid grid-cols-2 grid-rows-2 gap-4">
+    <div className="relative w-full h-80 grid grid-cols-5 grid-rows-3 gap-4">
         <motion.div
-            className="col-start-2 row-start-1"
+            className="col-start-4 col-span-2 row-start-1"
             custom={0.8}
             variants={isMobile ? undefined : floatingVariants}
             animate="float"
@@ -115,7 +115,7 @@ export function AnimatedBrandPainpoint() {
             </Card>
         </motion.div>
         <motion.div
-            className="col-start-1 row-start-2"
+            className="col-start-1 col-span-2 row-start-3"
             custom={0.4}
             variants={isMobile ? undefined : floatingVariants}
             animate="float"
@@ -132,12 +132,12 @@ export function AnimatedBrandPainpoint() {
             </Card>
         </motion.div>
         <motion.div
-            className="col-span-2 row-span-2 flex items-center justify-center z-10"
+            className="col-start-2 col-span-3 row-start-2 z-10"
             custom={0}
             variants={isMobile ? undefined : floatingVariants}
             animate="float"
         >
-            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72 sm:w-80">
+            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-full">
             <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                 <BarChart className="h-4 w-4 text-primary" />
@@ -167,9 +167,9 @@ export function AnimatedCreatorPainpoint() {
     const isMobile = useIsMobile();
   
     return (
-        <div className="relative w-full h-80 grid grid-cols-2 grid-rows-2 gap-4">
+        <div className="relative w-full h-80 grid grid-cols-5 grid-rows-3 gap-4">
             <motion.div
-                className="col-start-1 row-start-2"
+                className="col-start-1 col-span-2 row-start-1"
                 custom={1}
                 variants={isMobile ? undefined : floatingVariants}
                 animate="float"
@@ -185,13 +185,13 @@ export function AnimatedCreatorPainpoint() {
                     <p className="text-xs text-muted-foreground mt-1">Invited you to a campaign</p>
                 </Card>
             </motion.div>
-            <motion.div
-                className="col-span-2 row-span-2 flex items-center justify-center z-10"
+             <motion.div
+                className="col-start-2 col-span-3 row-start-2 z-10"
                 custom={0.2}
                 variants={isMobile ? undefined : floatingVariants}
                 animate="float"
             >
-                <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
+                <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-full">
                     <CardHeader className="p-4">
                         <div className="flex items-center gap-3">
                             <Wallet className="h-6 w-6" />
