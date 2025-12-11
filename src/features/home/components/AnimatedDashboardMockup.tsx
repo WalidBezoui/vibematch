@@ -120,10 +120,33 @@ export function AnimatedBrandPainpoint() {
   } : {};
   
   return (
-    <div className="relative w-full h-full min-h-[24rem] overflow-hidden">
-      <div className="relative grid grid-cols-3 grid-rows-3 w-full h-full">
+    <div className="relative w-full h-full min-h-[24rem]">
         <motion.div
-          className="col-start-2 row-start-2 z-10 flex items-center justify-center"
+          className="absolute top-0 right-0 z-0"
+          {...card2Animation}
+        >
+          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
+              <p className="text-xs text-muted-foreground">ROI</p>
+              <p className="text-lg font-bold text-green-500">+125%</p>
+          </Card>
+        </motion.div>
+        <motion.div
+            className="absolute bottom-0 left-0 z-0"
+            {...card3Animation}
+        >
+            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
+                <Avatar className="w-10 h-10 border">
+                    <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
+                    <AvatarFallback>SE</AvatarFallback>
+                </Avatar>
+                <div>
+                    <p className="font-bold text-sm">Sofia E.</p>
+                    <Badge variant="outline">Selected</Badge>
+                </div>
+            </Card>
+        </motion.div>
+        <motion.div
+          className="relative z-10 flex items-center justify-center h-full"
           {...cardAnimation}
         >
           <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72 sm:w-80">
@@ -148,31 +171,6 @@ export function AnimatedBrandPainpoint() {
               </CardContent>
           </Card>
         </motion.div>
-        <motion.div
-          className="col-start-3 row-start-1 flex items-start justify-end"
-          {...card2Animation}
-        >
-          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
-              <p className="text-xs text-muted-foreground">ROI</p>
-              <p className="text-lg font-bold text-green-500">+125%</p>
-          </Card>
-        </motion.div>
-        <motion.div
-          className="col-start-1 row-start-3 flex items-end justify-start"
-          {...card3Animation}
-        >
-          <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3">
-              <Avatar className="w-10 h-10 border">
-                <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
-                <AvatarFallback>SE</AvatarFallback>
-              </Avatar>
-              <div>
-                  <p className="font-bold text-sm">Sofia E.</p>
-                  <Badge variant="outline">Selected</Badge>
-              </div>
-          </Card>
-        </motion.div>
-      </div>
     </div>
   );
 }
@@ -193,42 +191,40 @@ export function AnimatedCreatorPainpoint() {
     } : {};
 
     return (
-    <div className="relative w-full h-full min-h-[16rem] flex items-center justify-center overflow-hidden">
-      <div className="relative w-full h-full grid grid-cols-2 grid-rows-2">
-        <motion.div
-            className="col-span-2 row-start-1 z-10 flex justify-center items-center"
-            {...cardAnimation}
-        >
-            <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
-              <CardHeader className="p-4">
-                  <div className="flex items-center gap-3">
-                      <Wallet className="h-6 w-6" />
-                    <CardTitle className="text-lg">Funds Secured</CardTitle>
-                  </div>
-              </CardHeader>
-              <CardContent className="p-4 pt-0">
-                  <p className="text-4xl font-black">7,500 DH</p>
-                  <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
-              </CardContent>
-            </Card>
-        </motion.div>
-        <motion.div
-            className="row-start-2 col-start-1 flex items-end justify-start"
-            {...card2Animation}
-        >
-            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
-                <div className="flex items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage src="https://i.pravatar.cc/150?img=5" alt="Nike" />
-                        <AvatarFallback>N</AvatarFallback>
-                    </Avatar>
-                    <p className="font-bold text-sm">Nike</p>
-                </div>
-                  <p className="text-xs text-muted-foreground mt-1">Invited you to a campaign</p>
-            </Card>
-      </motion.div>
-    </div>
-    </div>
+        <div className="relative w-full h-full min-h-[16rem] flex items-center justify-center">
+            <motion.div
+                className="absolute bottom-0 left-0 z-0"
+                {...card2Animation}
+            >
+                <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3">
+                    <div className="flex items-center gap-2">
+                        <Avatar className="w-8 h-8">
+                            <AvatarImage src="https://i.pravatar.cc/150?img=5" alt="Nike" />
+                            <AvatarFallback>N</AvatarFallback>
+                        </Avatar>
+                        <p className="font-bold text-sm">Nike</p>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">Invited you to a campaign</p>
+                </Card>
+            </motion.div>
+            <motion.div
+                className="relative z-10"
+                {...cardAnimation}
+            >
+                <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
+                    <CardHeader className="p-4">
+                        <div className="flex items-center gap-3">
+                            <Wallet className="h-6 w-6" />
+                            <CardTitle className="text-lg">Funds Secured</CardTitle>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0">
+                        <p className="text-4xl font-black">7,500 DH</p>
+                        <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
+                    </CardContent>
+                </Card>
+            </motion.div>
+        </div>
     )
 }
 
@@ -330,3 +326,5 @@ export function FloatingStatCard() {
         </motion.div>
     );
 }
+
+    

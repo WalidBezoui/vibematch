@@ -46,7 +46,7 @@ export function HomeComponent() {
         {/* --- HERO SECTION --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 min-h-[calc(100vh-200px)] py-10">
             <div className="flex flex-col gap-6 text-center md:text-left items-center md:items-start">
-                <h1 className={`text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-tight ${language === 'AR' ? 'hero-title-ar' : ''}`}>
+                <h1 className={cn('text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-tight', language === 'AR' && 'hero-title-ar')}>
                     {t('homePage.hero.title1')}{' '}
                     <span className="gradient-text text-glow">{t('homePage.hero.title2')}</span>
                 </h1>
@@ -87,7 +87,7 @@ export function HomeComponent() {
                     <p className="text-sm font-semibold text-foreground/70">{t('homePage.hero.trustText')}</p>
                 </div>
             </div>
-            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center overflow-hidden">
+            <div className="relative w-full h-[500px] hidden md:flex items-center justify-center">
                  <div className="relative w-full h-full p-10">
                     <div className="absolute top-0 left-0 z-20">
                         <FloatingProfileCard />
@@ -119,7 +119,7 @@ export function HomeComponent() {
 
 
         {/* --- PAIN POINT: BRANDS --- */}
-        <div className="py-24 md:py-32 scroll-mt-16 bg-card rounded-3xl" id="brands">
+        <div className="py-24 md:py-32 scroll-mt-16 bg-card rounded-3xl">
             <div className="px-4 md:px-10 lg:px-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
                     <div className="flex flex-col gap-6">
@@ -154,7 +154,7 @@ export function HomeComponent() {
         </div>
         
         {/* --- PAIN POINT: CREATORS --- */}
-        <div className="py-24 md:py-32 scroll-mt-16" id="creators">
+        <div className="py-24 md:py-32 scroll-mt-16">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
                 <div className="relative w-full h-80 flex items-center justify-center order-last md:order-first">
                     <AnimatedCreatorPainpoint />
@@ -292,3 +292,5 @@ export function HomeComponent() {
     </div>
   );
 }
+
+    
