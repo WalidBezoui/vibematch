@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet } from 'lucide-react';
+import { BarChart, ShieldCheck, Home, Compass, MessageSquare, Settings, Wallet, Building, User } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 const floatingVariants = {
   float: (delay: number = 0) => ({
@@ -22,14 +24,19 @@ const floatingVariants = {
 
 export function AnimatedDashboardMockup() {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
+  const animationProps = isMobile ? {} : {
+    custom: 0,
+    variants: floatingVariants,
+    animate: "float",
+  };
+
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       {/* Main Window */}
       <motion.div
         className="w-full max-w-xl h-96 bg-background/30 dark:bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden"
-        custom={0}
-        variants={floatingVariants}
-        animate="float"
+        {...animationProps}
       >
         <div className="h-8 border-b border-white/10 flex items-center px-3 gap-1.5">
           <div className="w-3 h-3 bg-red-500/80 rounded-full"></div>
@@ -53,9 +60,18 @@ export function AnimatedDashboardMockup() {
                     <div className="space-y-4">
                         <div className="h-8 w-48 bg-white/10 rounded-md"></div>
                         <div className="h-4 w-64 bg-white/5 rounded-md"></div>
-                        <div className="h-24 w-full bg-white/5 rounded-lg mt-6"></div>
-                        <div className="h-24 w-full bg-white/5 rounded-lg"></div>
-                        <div className="h-24 w-full bg-white/5 rounded-lg"></div>
+                        <div className="h-24 w-full bg-white/5 rounded-lg mt-6 p-4 space-y-2">
+                           <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
+                           <div className="h-3 w-1/2 bg-white/5 rounded-md"></div>
+                        </div>
+                        <div className="h-24 w-full bg-white/5 rounded-lg p-4 space-y-2">
+                           <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
+                           <div className="h-3 w-1/2 bg-white/5 rounded-md"></div>
+                        </div>
+                        <div className="h-24 w-full bg-white/5 rounded-lg p-4 space-y-2">
+                           <div className="h-4 w-1/3 bg-white/10 rounded-md"></div>
+                           <div className="h-3 w-1/2 bg-white/5 rounded-md"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,7 +80,7 @@ export function AnimatedDashboardMockup() {
 
       {/* Campaign Card */}
       <motion.div
-        className="absolute -top-10 -left-10 w-64"
+        className={cn("absolute -top-10 -left-10 w-64", isMobile && "hidden")}
         custom={0.5}
         variants={floatingVariants}
         animate="float"
@@ -90,7 +106,7 @@ export function AnimatedDashboardMockup() {
 
       {/* Influencer Card */}
       <motion.div
-        className="absolute -bottom-16 left-0 w-72"
+        className={cn("absolute -bottom-16 left-0 w-72", isMobile && "hidden")}
         custom={0.2}
         variants={floatingVariants}
         animate="float"
@@ -114,7 +130,7 @@ export function AnimatedDashboardMockup() {
       
       {/* Payment Card */}
        <motion.div
-        className="absolute bottom-16 -right-16 w-52"
+        className={cn("absolute bottom-16 -right-16 w-52", isMobile && "hidden")}
         custom={0.8}
         variants={floatingVariants}
         animate="float"
@@ -133,4 +149,99 @@ export function AnimatedDashboardMockup() {
       </motion.div>
     </div>
   );
+}
+
+export function AnimatedBrandPainpoint() {
+  const isMobile = useIsMobile();
+  const animationProps = isMobile ? {} : {
+    custom: 0.3,
+    variants: floatingVariants,
+    animate: "float",
+  };
+  return (
+    <motion.div {...animationProps}>
+      <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-80">
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <BarChart className="h-4 w-4 text-primary" />
+            Campaign Dashboard
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="h-4 w-2/3 bg-muted rounded-md"></div>
+          <div className="h-4 w-full bg-muted rounded-md"></div>
+          <div className="h-4 w-full bg-muted rounded-md"></div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
+}
+
+export function AnimatedCreatorPainpoint() {
+  const isMobile = useIsMobile();
+  const animationProps = isMobile ? {} : {
+    custom: 0.6,
+    variants: floatingVariants,
+    animate: "float",
+  };
+  return (
+    <motion.div {...animationProps}>
+        <Card className="bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-72">
+          <CardHeader className="p-4">
+              <div className="flex items-center gap-3">
+                 <Wallet className="h-6 w-6" />
+                <CardTitle className="text-lg">Funds Secured</CardTitle>
+              </div>
+          </CardHeader>
+          <CardContent className="p-4 pt-0">
+              <p className="text-4xl font-black">7,500 DH</p>
+              <p className="text-sm opacity-80 mt-1">Ready for withdrawal</p>
+          </CardContent>
+        </Card>
+    </motion.div>
+  )
+}
+
+export function AnimatedEscrow() {
+  const brandVariants = {
+    animate: {
+      x: ['0%', '150%', '150%', '0%'],
+      transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+    }
+  }
+  const creatorVariants = {
+    animate: {
+      x: ['0%', '-150%', '-150%', '0%'],
+      transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+    }
+  }
+  const shieldVariants = {
+    animate: {
+      scale: [1, 1.2, 1.2, 1],
+      transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+    }
+  }
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-8">
+      <div className="flex justify-between w-full max-w-sm">
+        <div className="flex flex-col items-center gap-2">
+            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center"><Building className="h-8 w-8 text-primary" /></div>
+            <p className="font-semibold">Brand</p>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center"><User className="h-8 w-8 text-primary" /></div>
+            <p className="font-semibold">Creator</p>
+        </div>
+      </div>
+      <div className="relative w-full max-w-xs h-16 flex items-center justify-center">
+          <motion.div variants={shieldVariants} animate="animate" className="z-10 w-20 h-20 rounded-full gradient-bg flex items-center justify-center text-black shadow-lg shadow-primary/40">
+            <ShieldCheck className="h-10 w-10"/>
+          </motion.div>
+          <div className="absolute w-full h-1 bg-muted rounded-full overflow-hidden">
+            <motion.div variants={brandVariants} animate="animate" className="absolute left-0 w-1/3 h-full bg-primary/50" />
+            <motion.div variants={creatorVariants} animate="animate" className="absolute right-0 w-1/3 h-full bg-primary/50" />
+          </div>
+      </div>
+    </div>
+  )
 }

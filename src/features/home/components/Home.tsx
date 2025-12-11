@@ -1,14 +1,13 @@
+
 'use client';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/language-context';
-import { getImage } from '@/lib/placeholder-images';
 import React, { useState } from 'react';
 import * as lucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { AnimatedDashboardMockup } from './AnimatedDashboardMockup';
+import { AnimatedDashboardMockup, AnimatedBrandPainpoint, AnimatedCreatorPainpoint, AnimatedEscrow } from './AnimatedDashboardMockup';
 
 
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
@@ -40,9 +39,6 @@ export function HomeComponent() {
   const howItWorks = t('homePage.howItWorks', { returnObjects: true });
   const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
   
-  const brandPainpointImg = getImage('brand-painpoint');
-  const creatorPainpointImg = getImage('creator-painpoint');
-  const escrowIllustration = getImage('escrow-illustration');
 
   return (
     <div className="flex flex-col max-w-[1200px] flex-1">
@@ -119,17 +115,8 @@ export function HomeComponent() {
                         </Button>
                         </div>
                     </div>
-                    <div className="relative w-full aspect-[4/3] flex items-center justify-center">
-                        {brandPainpointImg && (
-                            <Image
-                                src={brandPainpointImg.imageUrl}
-                                alt={brandPainpointImg.description}
-                                data-ai-hint={brandPainpointImg.imageHint}
-                                width={500}
-                                height={400}
-                                className="object-contain"
-                            />
-                        )}
+                    <div className="relative w-full h-80 flex items-center justify-center">
+                       <AnimatedBrandPainpoint />
                     </div>
                 </div>
             </div>
@@ -138,17 +125,8 @@ export function HomeComponent() {
         {/* --- PAIN POINT: CREATORS --- */}
         <div className="py-24 md:py-32 scroll-mt-16" id="creators">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
-                <div className="relative w-full aspect-[4/3] flex items-center justify-center order-last md:order-first">
-                    {creatorPainpointImg && (
-                        <Image
-                            src={creatorPainpointImg.imageUrl}
-                            alt={creatorPainpointImg.description}
-                            data-ai-hint={creatorPainpointImg.imageHint}
-                            width={500}
-                            height={400}
-                            className="object-contain"
-                        />
-                    )}
+                <div className="relative w-full h-80 flex items-center justify-center order-last md:order-first">
+                    <AnimatedCreatorPainpoint />
                 </div>
                 <div className="flex flex-col gap-6">
                     <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
@@ -228,17 +206,8 @@ export function HomeComponent() {
                         {t('homePage.escrow.description')}
                     </p>
                 </div>
-                <div className="relative w-full aspect-square flex items-center justify-center">
-                    {escrowIllustration && (
-                        <Image
-                            src={escrowIllustration.imageUrl}
-                            alt={escrowIllustration.description}
-                            data-ai-hint={escrowIllustration.imageHint}
-                            width={500}
-                            height={500}
-                            className="object-contain"
-                        />
-                    )}
+                <div className="relative w-full h-[400px] flex items-center justify-center">
+                    <AnimatedEscrow />
                 </div>
             </div>
         </div>
@@ -256,17 +225,10 @@ export function HomeComponent() {
                     <div key={index} className="flex flex-col gap-4 text-left p-8 rounded-3xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
                         <p className="text-foreground/70 leading-relaxed text-lg">"{testimonial.quote}"</p>
                         <div className="flex items-center gap-4 mt-4">
-                            <div className="w-12 h-12 rounded-full bg-cover bg-center overflow-hidden">
-                            {getImage(testimonial.image) && (
-                                <Image
-                                src={getImage(testimonial.image)!.imageUrl}
-                                alt={getImage(testimonial.image)!.description}
-                                width={48}
-                                height={48}
-                                className='object-cover w-full h-full'
-                                />
-                            )}
-                            </div>
+                            <Avatar className="w-12 h-12 border-2 border-background">
+                                <AvatarImage src={`https://i.pravatar.cc/150?img=${index + 1}`} alt={testimonial.name} />
+                                <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+                            </Avatar>
                             <div>
                                 <div className="font-bold">{testimonial.name}</div>
                                 <div className="text-sm text-foreground/70">{testimonial.role}</div>
