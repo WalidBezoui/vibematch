@@ -102,38 +102,7 @@ export function AnimatedBrandPainpoint() {
   const isMobile = useIsMobile();
   
   return (
-    <div className="relative w-full min-h-[350px] flex items-center justify-center">
-        {/* Floating Cards */}
-        <motion.div
-            className="absolute top-0 left-0 z-20"
-            custom={0.8}
-            variants={isMobile ? undefined : floatingVariants}
-            animate="float"
-        >
-            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 w-48">
-                <p className="text-xs text-muted-foreground">Campaign ROI</p>
-                <p className="text-lg font-bold text-green-500">+125%</p>
-            </Card>
-        </motion.div>
-
-        <motion.div
-            className="absolute top-8 right-0 z-20"
-            custom={0.4}
-            variants={isMobile ? undefined : floatingVariants}
-            animate="float"
-        >
-            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3 w-56">
-                <Avatar className="w-10 h-10 border">
-                    <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
-                    <AvatarFallback>SE</AvatarFallback>
-                </Avatar>
-                <div>
-                    <p className="font-bold text-sm">Sofia E.</p>
-                    <Badge variant="outline" className="border-green-500 text-green-500">Selected</Badge>
-                </div>
-            </Card>
-        </motion.div>
-
+    <div className="relative w-full min-h-[380px] flex items-center justify-center">
         {/* Main Card */}
         <motion.div
             className="relative z-10 w-full max-w-sm"
@@ -161,6 +130,37 @@ export function AnimatedBrandPainpoint() {
                         <div className="h-[70%] w-full bg-primary/20 rounded-t-sm"></div>
                     </div>
                 </CardContent>
+            </Card>
+        </motion.div>
+        
+        {/* Floating Cards */}
+        <motion.div
+            className="absolute -top-4 left-0 z-20"
+            custom={0.8}
+            variants={isMobile ? undefined : floatingVariants}
+            animate="float"
+        >
+            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 w-48">
+                <p className="text-xs text-muted-foreground">Campaign ROI</p>
+                <p className="text-lg font-bold text-green-500">+125%</p>
+            </Card>
+        </motion.div>
+
+        <motion.div
+            className="absolute top-8 right-0 z-20"
+            custom={0.4}
+            variants={isMobile ? undefined : floatingVariants}
+            animate="float"
+        >
+            <Card className="bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3 w-56">
+                <Avatar className="w-10 h-10 border">
+                    <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="Sofia E." />
+                    <AvatarFallback>SE</AvatarFallback>
+                </Avatar>
+                <div>
+                    <p className="font-bold text-sm">Sofia E.</p>
+                    <Badge variant="outline" className="border-green-500 text-green-500">Selected</Badge>
+                </div>
             </Card>
         </motion.div>
     </div>
