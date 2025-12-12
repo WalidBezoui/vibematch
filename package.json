@@ -10,10 +10,10 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "npm run test:emu",
     "test:unit": "vitest src/components",
     "test:rules": "vitest src/firebase/firestore.rules.test.ts",
-    "test:emu": "firebase emulators:exec 'npm run test:rules'"
+    "test:emu": "firebase emulators:exec 'vitest run'"
   },
   "dependencies": {
     "@firebase/rules-unit-testing": "^3.0.0",

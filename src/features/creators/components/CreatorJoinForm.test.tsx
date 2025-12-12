@@ -185,7 +185,7 @@ describe('CreatorJoinForm', () => {
 
   it('should show the home button on the first step', async () => {
       render(<CreatorJoinForm />);
-      const homeButton = screen.getByRole('link', { name: /home/i });
+      const homeButton = await screen.findByRole('link', { name: /home/i });
       expect(homeButton).toBeInTheDocument();
       expect(homeButton).toHaveAttribute('href', '/');
   });
@@ -212,7 +212,7 @@ describe('CreatorJoinForm', () => {
     });
     
     await waitFor(() => {
-      expect(screen.getByText(/error/i)).toBeInTheDocument();
+      expect(screen.getByText(/Error/i)).toBeInTheDocument();
     });
   });
 

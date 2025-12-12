@@ -9,8 +9,8 @@ vi.mock('next/navigation', () => ({
 }));
 
 describe('CampaignsPage', () => {
-  it('should render the page title', () => {
+  it('should render the page title', async () => {
     render(<CampaignsPage />);
-    expect(screen.getByText('Discover Campaigns')).toBeInTheDocument();
+    expect(await screen.findByText('Discover Campaigns')).toBeInTheDocument();
   });
 });

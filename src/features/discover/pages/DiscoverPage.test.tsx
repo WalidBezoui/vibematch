@@ -24,24 +24,25 @@ describe('DiscoverPage', () => {
     vi.clearAllMocks();
   });
 
-  it('should render a loading skeleton when data is loading', () => {
-    (useCollection as vi.Mock).mockReturnValue({ isLoading: true });
+  it('should render a loading skeleton when data is loading', async () => {
+    (useCollection as vi.Mock).mockReturnValue({ isLoading: true, data: [] });
 
     render(<DiscoverPage />);
 
-    expect(screen.getAllByTestId('loading-skeleton').length).toBeGreaterThan(0);
+    const skeletons = await screen.findAllByTestId('loading-skeleton');
+    expect(skeletons.length).toBeGreaterThan(0);
   });
 
-  it('should render an empty state message when no campaigns are available', () => {
+  it('should render an empty state message when no campaigns are available', async () => {
     (useCollection as vi.Mock).mockReturnValue({ data: [], isLoading: false });
 
     render(<DiscoverPage />);
 
-    expect(screen.getByRole('heading', { name: /no open campaigns/i })).toBeInTheDocument();
-    expect(screen.getByText(/check back soon for new opportunities/i)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /no open campaigns/i })).toBeInTheDocument();
+    expect(await screen.findByText(/check back soon for new opportunities/i)).toBeInTheDocument();
   });
 
-  it('should render a list of campaign cards when campaigns are available', () => {
+  it('should render a list of campaign cards when campaigns are available', async () => {
     const mockCampaigns = [
       { id: '1', title: 'Test Campaign 1', budget: '100', campaignBrief: 'Brief 1', tags: ['fashion'], numberOfCreators: 2, creatorIds: ['1'] },
       { id: '2', title: 'Test Campaign 2', budget: '200', campaignBrief: 'Brief 2', tags: ['beauty'], numberOfCreators: 1, creatorIds: [] },
@@ -55,7 +56,7 @@ describe('DiscoverPage', () => {
 
     render(<DiscoverPage />);
 
-    expect(screen.getByText('Test Campaign 1')).toBeInTheDocument();
-    expect(screen.getByText('Test Campaign 2')).toBeInTheDocument();
+    expect(await screen.findByText('Test Campaign 1')).toBeInTheDocument();
+    expect(await screen.findByText('Test Campaign 2')).toBeInTheDocument();
   });
 });

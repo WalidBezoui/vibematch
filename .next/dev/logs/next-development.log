@@ -1,0 +1,6 @@
+[00:00:15.734] Server  LOG      ○ Compiling middleware ...
+[00:00:16.399] Server  WARN     ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+[00:00:18.473] Server  LOG      ✓ Ready in 13.6s
+[00:00:21.818] Server  LOG      ○ Compiling / ...
+[00:02:17.444] Server  WARN     ⚠ Cross origin request detected from 9000-firebase-vibematchwithlegals-1764759275642.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
