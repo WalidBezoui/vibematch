@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit",
     "test": "npm run test:ci",
     "test:unit": "vitest src/components",
-    "test:emu": "vitest run",
+    "test:emu": "firebase emulators:exec --only firestore,auth 'vitest run'",
     "test:ci": "firebase emulators:exec --only firestore,auth 'vitest run'"
   },
   "dependencies": {
@@ -79,3 +79,4 @@
     "vitest": "^4.0.15"
   }
 }
+  
