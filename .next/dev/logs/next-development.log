@@ -1,37 +1,5 @@
-[00:00:03.909] Server  WARN     ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
-[00:00:04.149] Server  LOG      ✓ Ready in 3.3s
-[00:00:07.374] Server  LOG      ○ Compiling / ...
-[00:00:47.706] Server  WARN     ⚠ Cross origin request detected from 6000-firebase-vibematchwithlegals-1764759275642.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+[00:00:04.744] Server  WARN     ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+[00:00:04.973] Server  LOG      ✓ Ready in 2.8s
+[01:37:38.272] Server  LOG      ○ Compiling / ...
+[01:38:55.283] Server  WARN     ⚠ Cross origin request detected from 9000-firebase-vibematchwithlegals-1764759275642.cluster-64pjnskmlbaxowh5lzq6i7v4ra.cloudworkstations.dev to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
-[00:00:48.055] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:03:46.685] Server  LOG      ✓ Compiled in 13ms
-[00:05:40.873] Server  LOG      ✓ Compiled in 1607ms
-[00:08:05.749] Server  LOG      ✓ Compiled in 2s
-[00:10:41.905] Server  LOG      ✓ Compiled in 1963ms
-[00:15:29.972] Server  LOG      ✓ Compiled in 2.7s
-[00:15:31.165] Browser ERROR   uncaughtError: ReferenceError: cn is not defined
-[00:15:31.755] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:15:31.962] Browser ERROR   uncaughtError: ReferenceError: cn is not defined
-[00:15:32.304] Server  LOG      ✓ Compiled in 1077ms
-[00:15:38.482] Browser ERROR   uncaughtError: ReferenceError: cn is not defined
-[00:15:45.653] Browser ERROR   uncaughtError: ReferenceError: cn is not defined
-[00:16:07.775] Browser ERROR   uncaughtError: ReferenceError: cn is not defined
-[00:17:09.413] Server  LOG      ✓ Compiled in 2s
-[00:17:09.872] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:17:09.974] Server  LOG      ✓ Compiled in 0ms
-[00:17:10.069] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:20:53.353] Server  LOG      ✓ Compiled in 681ms
-[00:23:04.410] Server  LOG      ✓ Compiled in 819ms
-[00:25:52.391] Server  LOG      ✓ Compiled in 503ms
-[00:25:56.361] Server  LOG      ✓ Compiled in 13ms
-[00:25:59.248] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:27:44.692] Server  LOG      ✓ Compiled in 2.4s
-[00:27:45.343] Browser ERROR   uncaughtError: ReferenceError: lucideIcons is not defined
-[00:27:46.012] Browser ERROR   uncaughtError: ReferenceError: lucideIcons is not defined
-[00:28:32.756] Browser ERROR   uncaughtError: ReferenceError: lucideIcons is not defined
-[00:29:50.749] Server  LOG      ✓ Compiled in 2.6s
-[00:29:51.459] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:29:51.498] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:29:53.574] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:46:53.859] Server  LOG      ✓ Compiled in 610ms
-[00:49:04.384] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
