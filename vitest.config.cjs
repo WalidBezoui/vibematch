@@ -1,9 +1,0 @@
-const { defineConfig } = require('vitest/config');
-
-module.exports = defineConfig({
-  test: {
-    globals: true,
-    environment: 'node',
-    testTimeout: 10000, // Optional: adjust timeout
-  },
-});
