@@ -12,7 +12,6 @@
     "typecheck": "tsc --noEmit",
     "test": "npm run test:emu",
     "test:unit": "vitest src/components",
-    "test:rules": "vitest src/firebase/firestore.rules.test.ts",
     "test:emu": "vitest run"
   },
   "dependencies": {
