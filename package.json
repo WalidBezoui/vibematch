@@ -11,10 +11,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "npm run test:ci",
-    "test:unit": "vitest src/components",
-    "test:emu": "firebase emulators:exec --only firestore,auth 'vitest run'",
-    "test:ci": "firebase emulators:exec --only firestore,auth 'vitest run'"
+    "test": "lsof -t -i:9099 -i:8080 -i:4000 | xargs -r kill -9; firebase emulators:exec --only firestore,auth 'vitest run'",
+    "test:unit": "vitest src/components"
   },
   "dependencies": {
     "@firebase/rules-unit-testing": "^3.0.0",
