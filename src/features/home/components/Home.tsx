@@ -7,7 +7,14 @@ import React, { useState } from 'react';
 import * as lucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { AnimatedDashboardMockup, FloatingProfileCard, FloatingStatCard, AnimatedBrandPainpoint, AnimatedCreatorPainpoint, AnimatedEscrow } from './AnimatedDashboardMockup';
+import { AnimatedDashboardMockup, AnimatedBrandPainpoint, AnimatedCreatorPainpoint, AnimatedEscrow } from './AnimatedDashboardMockup';
+import { Star, Instagram } from 'lucide-react';
+
+const TikTokIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+    </svg>
+);
 
 
 const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
@@ -37,7 +44,7 @@ export function HomeComponent() {
   const [activeTab, setActiveTab] = useState('brands');
 
   const howItWorks = t('homePage.howItWorks', { returnObjects: true });
-  const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string }[];
+  const testimonials = t('homePage.testimonials', { returnObjects: true }) as { quote: string; name: string; role: string, image: string, platform: 'instagram' | 'tiktok' }[];
   
 
   return (
@@ -88,13 +95,7 @@ export function HomeComponent() {
                 </div>
             </div>
             <div className="relative hidden md:flex items-center justify-center p-12">
-                <div className="absolute top-10 left-0 z-20">
-                    <FloatingProfileCard />
-                </div>
-                <div className="absolute bottom-10 right-0 z-20">
-                    <FloatingStatCard />
-                </div>
-                <div className="relative z-10 flex h-full w-full items-center justify-center">
+                 <div className="relative w-full h-full">
                     <AnimatedDashboardMockup />
                 </div>
              </div>
@@ -119,51 +120,46 @@ export function HomeComponent() {
 
         {/* --- PAIN POINT: BRANDS --- */}
         <div className="py-24 md:py-32 scroll-mt-16" id="brands">
-            <div className="px-4 md:px-10 lg:px-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
-                    <div className="flex flex-col gap-6 items-start text-left">
-                        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
-                            {t('homePage.brands.title1')}
-                            <br />
-                            {t('homePage.brands.title2')}
-                            <br />
-                            <span className="gradient-text text-glow">
-                                {t('homePage.brands.title3')}
-                            </span>
-                        </h2>
-                        <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
-                        {t('homePage.brands.description')}
-                        </p>
-                         <div className="mt-4 flex flex-col items-start gap-2">
-                            <Button
-                                asChild
-                                size="lg"
-                                className="h-12 px-8 rounded-full gradient-bg text-black font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary"
-                                onClick={() => setUserInterest('brand')}
-                            >
-                                <Link href="/brands/join">
-                                    <lucideIcons.ShieldCheck className="mr-2 h-5 w-5" />
-                                    {t('homePage.brands.joinButton')}
-                                    <lucideIcons.ArrowRight className="ml-2 h-4 w-4" />
-                                </Link>
-                            </Button>
-                             <p className="text-xs text-muted-foreground pl-2">{t('homePage.brands.joinSubtext')}</p>
-                        </div>
+             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
+                <div className="flex flex-col gap-6 items-start text-left">
+                    <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
+                        {t('homePage.brands.title1')} <br /> {t('homePage.brands.title2')}{' '}
+                        <span className="gradient-text text-glow">
+                           {t('homePage.brands.title3')}
+                        </span>
+                    </h2>
+                    <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
+                    {t('homePage.brands.description')}
+                    </p>
+                    <div className="mt-4 flex flex-col items-start gap-2">
+                        <Button
+                            asChild
+                            size="lg"
+                            className="h-12 px-8 rounded-full gradient-bg text-black font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary"
+                            onClick={() => setUserInterest('brand')}
+                        >
+                            <Link href="/brands/join">
+                                <lucideIcons.ShieldCheck className="mr-2 h-5 w-5" />
+                                {t('homePage.brands.joinButton')}
+                                <lucideIcons.ArrowRight className="ml-2 h-4 w-4" />
+                            </Link>
+                        </Button>
+                        <p className="text-xs text-muted-foreground pl-2">{t('homePage.brands.joinSubtext')}</p>
                     </div>
-                    <div className="relative min-h-[300px]">
-                        <AnimatedBrandPainpoint />
-                    </div>
+                </div>
+                <div className="relative min-h-[300px]">
+                    <AnimatedBrandPainpoint />
                 </div>
             </div>
         </div>
         
         {/* --- PAIN POINT: CREATORS --- */}
-        <div className="py-24 md:py-32 scroll-mt-16">
+        <div className="py-24 md:py-32 scroll-mt-16" id="creators">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
                 <div className="order-last md:order-first">
                     <AnimatedCreatorPainpoint />
                 </div>
-                <div className="flex flex-col gap-6 items-start text-left">
+                <div className="flex flex-col gap-6 items-start text-left md:order-last">
                     <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
                     {t('homePage.creators.title1')}{' '}
                     <span className="gradient-text text-glow">
@@ -193,8 +189,8 @@ export function HomeComponent() {
         </div>
 
         {/* --- HOW IT WORKS --- */}
-        <div className="py-24 md:py-32 bg-muted/50 rounded-3xl">
-             <div className="px-4 md:px-10 lg:px-12">
+        <div className="py-24 md:py-32 bg-muted/50 rounded-3xl -mx-4 md:-mx-10 lg:-mx-20 px-4 md:px-10 lg:px-20">
+             <div className="max-w-[1200px] mx-auto">
                 <div className="text-center mb-16 max-w-3xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter">
                         How <span className="gradient-text text-glow">VibeMatch</span> Works
@@ -214,20 +210,27 @@ export function HomeComponent() {
                     </div>
                 </div>
 
-                {activeTab === 'brands' && howItWorks.brands && (
-                    <div className="grid md:grid-cols-3 gap-12 relative">
-                        {howItWorks.brands.steps.map((step: any, index: number) => (
-                            <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
-                        ))}
+                <div className="relative">
+                    <div className="absolute hidden md:block top-1/2 left-0 w-full h-px -translate-y-1/2">
+                       <svg width="100%" height="2" className="overflow-visible">
+                            <line x1="0" y1="1" x2="100%" y2="1" stroke="hsl(var(--border))" strokeWidth="2" strokeDasharray="8, 8"/>
+                        </svg>
                     </div>
-                )}
-                 {activeTab === 'creators' && howItWorks.creators && (
-                    <div className="grid md:grid-cols-3 gap-12 relative">
-                        {howItWorks.creators.steps.map((step: any, index: number) => (
-                           <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
-                        ))}
-                    </div>
-                )}
+                    {activeTab === 'brands' && howItWorks.brands && (
+                        <div className="grid md:grid-cols-3 gap-12 relative">
+                            {howItWorks.brands.steps.map((step: any, index: number) => (
+                                <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
+                            ))}
+                        </div>
+                    )}
+                    {activeTab === 'creators' && howItWorks.creators && (
+                        <div className="grid md:grid-cols-3 gap-12 relative">
+                            {howItWorks.creators.steps.map((step: any, index: number) => (
+                               <HowItWorksCard key={index} step={index+1} title={step.title} description={step.description} icon={step.icon} />
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
 
@@ -262,14 +265,21 @@ export function HomeComponent() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {testimonials.map((testimonial, index) => (
                     <div key={index} className="flex flex-col gap-4 text-left p-8 rounded-3xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
-                        <p className="text-foreground/70 leading-relaxed text-lg">"{testimonial.quote}"</p>
+                        <div className="flex text-yellow-400">
+                            {[...Array(5)].map((_, i) => <Star key={i} fill="currentColor" className="w-5 h-5" />)}
+                        </div>
+                        <p className="text-foreground/70 leading-relaxed text-lg flex-grow">"{testimonial.quote}"</p>
                         <div className="flex items-center gap-4 mt-4">
                             <Avatar className="w-12 h-12 border-2 border-background">
                                 <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
                             </Avatar>
                             <div>
                                 <div className="font-bold">{testimonial.name}</div>
-                                <div className="text-sm text-foreground/70">{testimonial.role}</div>
+                                <div className="text-sm text-foreground/70 flex items-center gap-1.5">
+                                    {testimonial.platform === 'instagram' && <Instagram className="w-3 h-3" />}
+                                    {testimonial.platform === 'tiktok' && <TikTokIcon />}
+                                    {testimonial.role}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -279,18 +289,18 @@ export function HomeComponent() {
 
         {/* --- FINAL CTA --- */}
          <div className="py-24 md:py-32">
-            <div className="text-center bg-card border rounded-3xl p-10 md:p-16">
+            <div className="text-center bg-gray-900 dark:bg-black rounded-3xl p-10 md:p-16 border border-gray-800 shadow-2xl shadow-primary/20">
               <div className="max-w-3xl mx-auto flex flex-col items-center">
-                <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter mb-4">
-                  Ready to <span className="gradient-text text-glow">Launch</span> Your First Campaign?
+                <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter mb-4 text-white">
+                    {t('homePage.finalCta.title1')}{' '}<span className="gradient-text text-glow">{t('homePage.finalCta.titleLaunch')}</span>{' '}{t('homePage.finalCta.title2')}
                 </h2>
-                <p className="text-lg md:text-xl text-foreground/60 leading-relaxed mb-8">
+                <p className="text-lg md:text-xl text-gray-400 leading-relaxed mb-8">
                   {t('homePage.finalCta.description')}
                 </p>
                 <Button asChild size="lg" className="min-w-[220px] h-14 px-8 gradient-bg text-black text-lg font-bold tracking-wide hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary rounded-full">
                   <Link href="/brands/join">{t('homePage.finalCta.button')}</Link>
                 </Button>
-                <p className="text-sm text-muted-foreground mt-4">{t('homePage.finalCta.reassurance')}</p>
+                <p className="text-sm text-gray-500 mt-4">{t('homePage.finalCta.reassurance')}</p>
               </div>
             </div>
         </div>
@@ -298,3 +308,5 @@ export function HomeComponent() {
     </div>
   );
 }
+
+    

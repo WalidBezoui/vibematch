@@ -266,31 +266,30 @@ __turbopack_context__.s([
     "AnimatedDashboardMockup",
     ()=>AnimatedDashboardMockup,
     "AnimatedEscrow",
-    ()=>AnimatedEscrow,
-    "FloatingProfileCard",
-    ()=>FloatingProfileCard,
-    "FloatingStatCard",
-    ()=>FloatingStatCard
+    ()=>AnimatedEscrow
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/framer-motion/dist/es/render/components/motion/proxy.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/card.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/avatar.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/badge.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chart$2d$no$2d$axes$2d$column$2d$increasing$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BarChart$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chart-no-axes-column-increasing.js [app-client] (ecmascript) <export default as BarChart>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldCheck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shield-check.js [app-client] (ecmascript) <export default as ShieldCheck>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$house$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Home$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/house.js [app-client] (ecmascript) <export default as Home>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$compass$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Compass$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/compass.js [app-client] (ecmascript) <export default as Compass>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$square$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageSquare$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/message-square.js [app-client] (ecmascript) <export default as MessageSquare>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/settings.js [app-client] (ecmascript) <export default as Settings>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUp$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trending-up.js [app-client] (ecmascript) <export default as TrendingUp>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wallet$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Wallet$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/wallet.js [app-client] (ecmascript) <export default as Wallet>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chart$2d$no$2d$axes$2d$column$2d$increasing$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BarChart$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chart-no-axes-column-increasing.js [app-client] (ecmascript) <export default as BarChart>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$building$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Building$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/building.js [app-client] (ecmascript) <export default as Building>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user.js [app-client] (ecmascript) <export default as User>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUp$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trending-up.js [app-client] (ecmascript) <export default as TrendingUp>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/lock.js [app-client] (ecmascript) <export default as Lock>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check-big.js [app-client] (ecmascript) <export default as CheckCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$mobile$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/hooks/use-mobile.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
 ;
-var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature(), _s4 = __turbopack_context__.k.signature();
+var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature(), _s3 = __turbopack_context__.k.signature();
 'use client';
+;
+;
+;
 ;
 ;
 ;
@@ -300,11 +299,11 @@ var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.sign
 const floatingVariants = {
     float: (delay = 0)=>({
             y: [
-                '-10px',
-                '10px'
+                '-6px',
+                '6px'
             ],
             transition: {
-                duration: 3 + delay * 2,
+                duration: 3 + delay * 1.5,
                 repeat: Infinity,
                 repeatType: 'reverse',
                 ease: 'easeInOut',
@@ -315,336 +314,237 @@ const floatingVariants = {
 function AnimatedDashboardMockup() {
     _s();
     const isMobile = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$mobile$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useIsMobile"])();
-    const animationProps = isMobile ? {} : {
-        custom: 0,
-        variants: floatingVariants,
-        animate: "float"
-    };
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-        className: "w-full max-w-3xl h-[450px] bg-background/30 dark:bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden",
-        ...animationProps,
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "h-8 border-b border-white/10 flex items-center px-3 gap-1.5",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-3 h-3 bg-red-500/80 rounded-full"
-                    }, void 0, false, {
-                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 40,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-3 h-3 bg-yellow-500/80 rounded-full"
-                    }, void 0, false, {
-                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 41,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-3 h-3 bg-green-500/80 rounded-full"
-                    }, void 0, false, {
-                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 42,
-                        columnNumber: 11
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 39,
-                columnNumber: 9
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex h-[calc(100%-2rem)]",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-20 p-3 border-r border-white/10 flex-col items-center gap-4 hidden sm:flex",
+    const animationProps = (delay)=>isMobile ? {} : {
+            custom: delay,
+            variants: floatingVariants,
+            animate: "float"
+        };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "relative w-full h-full flex items-center justify-center",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "relative w-full max-w-lg aspect-[4/3]",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                    className: "absolute w-[45%] top-[10%] left-[5%] z-20",
+                    ...animationProps(0.2),
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-xl p-3 md:p-4 h-full flex flex-col justify-center",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-10 h-10 gradient-bg rounded-lg"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-[10px] md:text-sm text-muted-foreground",
+                                children: "Verified Creator"
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
                                 lineNumber: 47,
-                                columnNumber: 17
+                                columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "space-y-6 pt-4",
+                                className: "flex items-center gap-2 md:gap-3 mt-1 md:mt-2",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$house$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Home$3e$__["Home"], {
-                                        className: "h-6 w-6 text-white"
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
+                                        className: "w-8 h-8 md:w-12 md:h-12 border",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarImage"], {
+                                                src: "https://i.pravatar.cc/150?img=4",
+                                                alt: "Sofia E."
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 50,
+                                                columnNumber: 29
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
+                                                children: "SE"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 51,
+                                                columnNumber: 29
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
                                         lineNumber: 49,
-                                        columnNumber: 21
+                                        columnNumber: 25
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$compass$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Compass$3e$__["Compass"], {
-                                        className: "h-6 w-6 text-white/40"
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "font-bold text-sm md:text-lg",
+                                            children: "Sofia E."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                            lineNumber: 54,
+                                            columnNumber: 29
+                                        }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 50,
-                                        columnNumber: 21
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$square$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageSquare$3e$__["MessageSquare"], {
-                                        className: "h-6 w-6 text-white/40"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 51,
-                                        columnNumber: 21
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"], {
-                                        className: "h-6 w-6 text-white/40 mt-12"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 52,
-                                        columnNumber: 21
+                                        lineNumber: 53,
+                                        columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
                                 lineNumber: 48,
-                                columnNumber: 17
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "mt-2 md:mt-4",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                    variant: "outline",
+                                    className: "border-green-500/50 bg-green-500/10 text-green-600 dark:text-green-400 font-semibold text-xs md:text-sm px-2 py-1",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldCheck$3e$__["ShieldCheck"], {
+                                            className: "h-4 w-4 mr-1.5"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                            lineNumber: 59,
+                                            columnNumber: 29
+                                        }, this),
+                                        " Trust Score: 98"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                    lineNumber: 58,
+                                    columnNumber: 25
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 57,
+                                columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
                         lineNumber: 46,
-                        columnNumber: 13
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex-1 p-4 overflow-hidden",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "h-full w-full",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "space-y-4",
+                        columnNumber: 17
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                    lineNumber: 42,
+                    columnNumber: 13
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                    className: "absolute w-[40%] top-[20%] right-[5%] z-10",
+                    ...animationProps(0.6),
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-xl p-3 md:p-4 h-full text-center flex flex-col justify-center",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-[10px] md:text-sm font-medium text-muted-foreground",
+                                children: "Campaign ROI"
+                            }, void 0, false, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 71,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-3xl md:text-5xl font-black text-green-500 mt-1 flex items-center justify-center gap-2",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center justify-between",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "h-8 w-48 bg-white/10 rounded-md"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 61,
-                                                columnNumber: 29
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "h-9 w-32 bg-primary/20 rounded-full"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 62,
-                                                columnNumber: 29
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUp$3e$__["TrendingUp"], {
+                                        className: "h-6 w-6 md:h-8 md:w-8"
+                                    }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 60,
+                                        lineNumber: 73,
                                         columnNumber: 25
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "grid grid-cols-3 gap-3",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "h-20 bg-white/5 rounded-lg p-2 space-y-2",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-4 w-20 bg-white/10 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 68,
-                                                        columnNumber: 33
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-6 w-12 bg-white/20 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 69,
-                                                        columnNumber: 33
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 67,
-                                                columnNumber: 29
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "h-20 bg-white/5 rounded-lg p-2 space-y-2",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-4 w-24 bg-white/10 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 72,
-                                                        columnNumber: 33
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-6 w-16 bg-white/20 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 73,
-                                                        columnNumber: 33
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 71,
-                                                columnNumber: 30
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "h-20 bg-white/5 rounded-lg p-2 space-y-2",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-4 w-20 bg-white/10 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 76,
-                                                        columnNumber: 33
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-6 w-10 bg-white/20 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 77,
-                                                        columnNumber: 33
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 75,
-                                                columnNumber: 30
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
+                                    "125%"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 72,
+                                columnNumber: 21
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                        lineNumber: 70,
+                        columnNumber: 17
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                    lineNumber: 66,
+                    columnNumber: 13
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                    className: "absolute w-[55%] bottom-[15%] left-[22.5%] z-30",
+                    ...animationProps(0.4),
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "bg-green-500/90 text-white backdrop-blur-xl shadow-lg shadow-green-500/30 w-full",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                                className: "p-4",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex items-center gap-3",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wallet$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Wallet$3e$__["Wallet"], {
+                                            className: "h-6 w-6"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                            lineNumber: 87,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                            className: "text-lg",
+                                            children: "Funds Secured"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                            lineNumber: 88,
+                                            columnNumber: 29
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                    lineNumber: 86,
+                                    columnNumber: 25
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 85,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                className: "p-4 pt-0",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-4xl font-black",
+                                        children: "7,500 DH"
+                                    }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 66,
+                                        lineNumber: 92,
                                         columnNumber: 25
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "h-24 w-full bg-white/5 rounded-lg p-3 space-y-3",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex items-center justify-between",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-4 w-1/2 bg-white/10 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 84,
-                                                        columnNumber: 32
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-5 w-16 bg-green-500/20 rounded-full"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 85,
-                                                        columnNumber: 32
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 83,
-                                                columnNumber: 28
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex items-center gap-3",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "w-8 h-8 rounded-full bg-white/20"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 88,
-                                                        columnNumber: 33
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-4 flex-1 bg-white/10 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 89,
-                                                        columnNumber: 33
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 87,
-                                                columnNumber: 28
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-sm opacity-80 mt-1",
+                                        children: "Ready for withdrawal"
+                                    }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 82,
+                                        lineNumber: 93,
                                         columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "h-20 w-full bg-white/5 rounded-lg mt-4 p-3 space-y-3",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex items-center justify-between",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-4 w-1/3 bg-white/10 rounded-md"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 96,
-                                                        columnNumber: 32
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "h-5 w-20 bg-yellow-500/20 rounded-full"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                        lineNumber: 97,
-                                                        columnNumber: 32
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 95,
-                                                columnNumber: 28
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "h-2 w-full bg-white/10 rounded-full mt-2 overflow-hidden",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "h-full w-3/4 bg-yellow-500/50"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                    lineNumber: 100,
-                                                    columnNumber: 33
-                                                }, this)
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                                lineNumber: 99,
-                                                columnNumber: 29
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 94,
-                                        columnNumber: 26
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 58,
+                                lineNumber: 91,
                                 columnNumber: 21
                             }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 57,
-                            columnNumber: 17
-                        }, this)
-                    }, void 0, false, {
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 56,
-                        columnNumber: 13
+                        lineNumber: 84,
+                        columnNumber: 17
                     }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 44,
-                columnNumber: 9
-            }, this)
-        ]
-    }, void 0, true, {
+                }, void 0, false, {
+                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                    lineNumber: 80,
+                    columnNumber: 14
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+            lineNumber: 39,
+            columnNumber: 9
+        }, this)
+    }, void 0, false, {
         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-        lineNumber: 35,
+        lineNumber: 38,
         columnNumber: 5
     }, this);
 }
@@ -657,241 +557,244 @@ _c = AnimatedDashboardMockup;
 function AnimatedBrandPainpoint() {
     _s1();
     const isMobile = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$mobile$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useIsMobile"])();
-    const painPointAnimation = isMobile ? {} : {
-        custom: 0.2,
-        variants: floatingVariants,
-        animate: "float"
-    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "relative w-full min-h-[380px] flex items-center justify-center",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                className: "relative z-10",
-                custom: 0,
-                variants: isMobile ? undefined : floatingVariants,
-                animate: "float",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                    className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-72",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
-                                className: "text-base flex items-center gap-2",
+        className: "relative w-full h-full min-h-[300px] flex items-center justify-center",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "relative w-full max-w-md aspect-video",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                    className: "absolute w-[40%] top-0 left-0 z-20",
+                    custom: 0.4,
+                    variants: isMobile ? undefined : floatingVariants,
+                    animate: "float",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-xs text-muted-foreground",
+                                children: "Campaign ROI"
+                            }, void 0, false, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 117,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-lg font-bold text-green-500",
+                                children: "+125%"
+                            }, void 0, false, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 118,
+                                columnNumber: 25
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                        lineNumber: 116,
+                        columnNumber: 21
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                    lineNumber: 110,
+                    columnNumber: 18
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                    className: "absolute w-[50%] top-[15%] right-0 z-20",
+                    custom: 0.8,
+                    variants: isMobile ? undefined : floatingVariants,
+                    animate: "float",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
+                                className: "w-10 h-10 border",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chart$2d$no$2d$axes$2d$column$2d$increasing$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BarChart$3e$__["BarChart"], {
-                                        className: "h-4 w-4 text-primary"
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarImage"], {
+                                        src: "https://i.pravatar.cc/150?img=4",
+                                        alt: "Sofia E."
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
                                         lineNumber: 130,
                                         columnNumber: 29
                                     }, this),
-                                    "Campaign Dashboard"
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
+                                        children: "SE"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                        lineNumber: 131,
+                                        columnNumber: 29
+                                    }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
                                 lineNumber: 129,
                                 columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "font-bold text-sm",
+                                        children: "Sofia E."
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                        lineNumber: 134,
+                                        columnNumber: 29
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                        variant: "outline",
+                                        className: "border-green-500 text-green-500",
+                                        children: "Selected"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                        lineNumber: 135,
+                                        columnNumber: 29
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 133,
+                                columnNumber: 25
                             }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 128,
-                            columnNumber: 21
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                            className: "space-y-4",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "space-y-1",
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                        lineNumber: 128,
+                        columnNumber: 22
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                    lineNumber: 122,
+                    columnNumber: 17
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                    className: "absolute w-[65%] h-[80%] left-[17.5%] top-[20%] z-10 p-4",
+                    custom: 0,
+                    variants: isMobile ? undefined : floatingVariants,
+                    animate: "float",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-2xl h-full w-full flex flex-col",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                                className: "p-3 md:p-4",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                    className: "text-sm md:text-base flex items-center gap-2",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-xs font-medium text-muted-foreground",
-                                            children: "Total Engagement"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chart$2d$no$2d$axes$2d$column$2d$increasing$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BarChart$3e$__["BarChart"], {
+                                            className: "h-4 w-4 text-primary"
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 136,
-                                            columnNumber: 29
+                                            lineNumber: 149,
+                                            columnNumber: 33
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-xl font-bold",
-                                            children: "1.2M"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 137,
-                                            columnNumber: 29
-                                        }, this)
+                                        "Campaign Dashboard"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 135,
-                                    columnNumber: 25
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex gap-2 items-end h-20",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "h-[40%] w-full bg-primary/20 rounded-t-sm"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 140,
-                                            columnNumber: 29
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "h-[60%] w-full bg-primary/20 rounded-t-sm"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 141,
-                                            columnNumber: 29
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "h-[80%] w-full bg-primary rounded-t-sm"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 142,
-                                            columnNumber: 29
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "h-[50%] w-full bg-primary/20 rounded-t-sm"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 143,
-                                            columnNumber: 29
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "h-[70%] w-full bg-primary/20 rounded-t-sm"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 144,
-                                            columnNumber: 29
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 139,
-                                    columnNumber: 25
+                                    lineNumber: 148,
+                                    columnNumber: 29
                                 }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 134,
-                            columnNumber: 21
-                        }, this)
-                    ]
-                }, void 0, true, {
+                            }, void 0, false, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 147,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                className: "p-3 md:p-4 space-y-2 md:space-y-4 flex flex-col flex-grow",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-1",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-xs font-medium text-muted-foreground",
+                                                children: "Total Engagement"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 155,
+                                                columnNumber: 33
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-lg md:text-xl font-bold",
+                                                children: "1.2M"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 156,
+                                                columnNumber: 33
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                        lineNumber: 154,
+                                        columnNumber: 29
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex-grow flex gap-1 md:gap-2 items-end",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-[40%] w-full bg-primary/20 rounded-t-sm"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 159,
+                                                columnNumber: 33
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-[60%] w-full bg-primary/20 rounded-t-sm"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 160,
+                                                columnNumber: 33
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-[80%] w-full bg-primary rounded-t-sm"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 161,
+                                                columnNumber: 33
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-[50%] w-full bg-primary/20 rounded-t-sm"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 162,
+                                                columnNumber: 33
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-[70%] w-full bg-primary/20 rounded-t-sm"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                                lineNumber: 163,
+                                                columnNumber: 33
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                        lineNumber: 158,
+                                        columnNumber: 29
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                lineNumber: 153,
+                                columnNumber: 25
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                        lineNumber: 146,
+                        columnNumber: 21
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                    lineNumber: 127,
+                    lineNumber: 140,
                     columnNumber: 17
                 }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 121,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                className: "absolute top-0 left-0 z-20",
-                custom: 0.8,
-                variants: isMobile ? undefined : floatingVariants,
-                animate: "float",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                    className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 w-48",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-xs text-muted-foreground",
-                            children: "Campaign ROI"
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 157,
-                            columnNumber: 21
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-lg font-bold text-green-500",
-                            children: "+125%"
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 158,
-                            columnNumber: 21
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                    lineNumber: 156,
-                    columnNumber: 17
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 150,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                className: "absolute bottom-0 right-0 z-20",
-                custom: 0.4,
-                variants: isMobile ? undefined : floatingVariants,
-                animate: "float",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                    className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 flex items-center gap-3 w-56",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
-                            className: "w-10 h-10 border",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarImage"], {
-                                    src: "https://i.pravatar.cc/150?img=4",
-                                    alt: "Sofia E."
-                                }, void 0, false, {
-                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 170,
-                                    columnNumber: 25
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
-                                    children: "SE"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 171,
-                                    columnNumber: 25
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 169,
-                            columnNumber: 21
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "font-bold text-sm",
-                                    children: "Sofia E."
-                                }, void 0, false, {
-                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 174,
-                                    columnNumber: 25
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                    variant: "outline",
-                                    className: "border-green-500 text-green-500",
-                                    children: "Selected"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 175,
-                                    columnNumber: 25
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 173,
-                            columnNumber: 21
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                    lineNumber: 168,
-                    columnNumber: 17
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 162,
-                columnNumber: 13
-            }, this)
-        ]
-    }, void 0, true, {
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+            lineNumber: 109,
+            columnNumber: 14
+        }, this)
+    }, void 0, false, {
         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-        lineNumber: 120,
+        lineNumber: 108,
         columnNumber: 9
     }, this);
 }
@@ -908,12 +811,12 @@ function AnimatedCreatorPainpoint() {
         className: "relative w-full min-h-[350px] flex items-center justify-center",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                className: "absolute top-0 left-0 z-20",
+                className: "absolute top-0 left-0 z-20 w-3/5 max-w-[240px]",
                 custom: 1,
                 variants: isMobile ? undefined : floatingVariants,
                 animate: "float",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                    className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3 w-60",
+                    className: "bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg p-3",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "flex items-center gap-2",
@@ -926,20 +829,20 @@ function AnimatedCreatorPainpoint() {
                                             alt: "Nike"
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 198,
+                                            lineNumber: 188,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                             children: "N"
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                            lineNumber: 199,
+                                            lineNumber: 189,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 197,
+                                    lineNumber: 187,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -947,13 +850,13 @@ function AnimatedCreatorPainpoint() {
                                     children: "Nike"
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 201,
+                                    lineNumber: 191,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 196,
+                            lineNumber: 186,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -961,18 +864,18 @@ function AnimatedCreatorPainpoint() {
                             children: "Invited you to a campaign"
                         }, void 0, false, {
                             fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 203,
+                            lineNumber: 193,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                    lineNumber: 195,
+                    lineNumber: 185,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 189,
+                lineNumber: 179,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -992,7 +895,7 @@ function AnimatedCreatorPainpoint() {
                                         className: "h-6 w-6"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 216,
+                                        lineNumber: 206,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
@@ -1000,18 +903,18 @@ function AnimatedCreatorPainpoint() {
                                         children: "Funds Secured"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 217,
+                                        lineNumber: 207,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 215,
+                                lineNumber: 205,
                                 columnNumber: 25
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 214,
+                            lineNumber: 204,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1022,7 +925,7 @@ function AnimatedCreatorPainpoint() {
                                     children: "7,500 DH"
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 221,
+                                    lineNumber: 211,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1030,30 +933,30 @@ function AnimatedCreatorPainpoint() {
                                     children: "Ready for withdrawal"
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 222,
+                                    lineNumber: 212,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 220,
+                            lineNumber: 210,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                    lineNumber: 213,
+                    lineNumber: 203,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 207,
+                lineNumber: 197,
                 columnNumber: 14
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-        lineNumber: 188,
+        lineNumber: 178,
         columnNumber: 9
     }, this);
 }
@@ -1064,59 +967,22 @@ _s2(AnimatedCreatorPainpoint, "zdJ8C3X+YlDYVai5EPOd8CzoqSU=", false, function() 
 });
 _c2 = AnimatedCreatorPainpoint;
 function AnimatedEscrow() {
-    const brandVariants = {
-        animate: {
-            x: [
-                '-50%',
-                '50%'
-            ],
-            opacity: [
-                1,
-                0
-            ],
-            transition: {
-                duration: 2.5,
-                repeat: Infinity,
-                ease: "linear",
-                repeatDelay: 2.5
-            }
+    _s3();
+    const [isPaid, setIsPaid] = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](false);
+    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "AnimatedEscrow.useEffect": ()=>{
+            const interval = setInterval({
+                "AnimatedEscrow.useEffect.interval": ()=>{
+                    setIsPaid({
+                        "AnimatedEscrow.useEffect.interval": (prev)=>!prev
+                    }["AnimatedEscrow.useEffect.interval"]);
+                }
+            }["AnimatedEscrow.useEffect.interval"], 4000);
+            return ({
+                "AnimatedEscrow.useEffect": ()=>clearInterval(interval)
+            })["AnimatedEscrow.useEffect"];
         }
-    };
-    const creatorVariants = {
-        animate: {
-            x: [
-                '-50%',
-                '50%'
-            ],
-            opacity: [
-                1,
-                0
-            ],
-            transition: {
-                duration: 2.5,
-                repeat: Infinity,
-                ease: "linear",
-                delay: 2.5,
-                repeatDelay: 2.5
-            }
-        }
-    };
-    const shieldVariants = {
-        animate: {
-            scale: [
-                1,
-                1.2,
-                1,
-                1.2,
-                1
-            ],
-            transition: {
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut"
-            }
-        }
-    };
+    }["AnimatedEscrow.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "w-full h-full flex flex-col items-center justify-center gap-8",
         children: [
@@ -1132,12 +998,12 @@ function AnimatedEscrow() {
                                     className: "h-8 w-8 text-primary"
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 256,
+                                    lineNumber: 236,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 255,
+                                lineNumber: 235,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1145,13 +1011,13 @@ function AnimatedEscrow() {
                                 children: "Brand"
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 258,
+                                lineNumber: 238,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 254,
+                        lineNumber: 234,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1163,12 +1029,12 @@ function AnimatedEscrow() {
                                     className: "h-8 w-8 text-primary"
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                    lineNumber: 262,
+                                    lineNumber: 242,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 261,
+                                lineNumber: 241,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1176,282 +1042,134 @@ function AnimatedEscrow() {
                                 children: "Creator"
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 264,
+                                lineNumber: 244,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 260,
+                        lineNumber: 240,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 253,
+                lineNumber: 233,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "relative w-full max-w-xs h-16 flex items-center justify-center",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                        variants: shieldVariants,
-                        animate: "animate",
-                        className: "z-10 w-20 h-20 rounded-full gradient-bg flex items-center justify-center text-black shadow-lg shadow-primary/40",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldCheck$3e$__["ShieldCheck"], {
-                            className: "h-10 w-10"
+                className: "relative w-full max-w-sm h-32 flex items-center justify-center",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                    initial: {
+                        scale: 0.9,
+                        opacity: 0
+                    },
+                    animate: {
+                        scale: 1,
+                        opacity: 1
+                    },
+                    transition: {
+                        duration: 0.5,
+                        delay: 0.2
+                    },
+                    className: "w-72 bg-gradient-to-tr from-gray-900 to-gray-800 text-white rounded-xl shadow-2xl p-6",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex justify-between items-start",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm text-gray-400",
+                                            children: "Escrow Balance"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                            lineNumber: 256,
+                                            columnNumber: 25
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-3xl font-bold",
+                                            children: "7,500 DH"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                            lineNumber: 257,
+                                            columnNumber: 25
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                    lineNumber: 255,
+                                    columnNumber: 21
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-500", isPaid ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300'),
+                                    children: [
+                                        isPaid ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__["CheckCircle"], {
+                                            className: "h-3 w-3"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                            lineNumber: 267,
+                                            columnNumber: 35
+                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__["Lock"], {
+                                            className: "h-3 w-3"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                            lineNumber: 267,
+                                            columnNumber: 85
+                                        }, this),
+                                        isPaid ? 'RELEASED' : 'LOCKED'
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                                    lineNumber: 259,
+                                    columnNumber: 21
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                            lineNumber: 254,
+                            columnNumber: 17
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "h-px bg-white/10 my-4"
                         }, void 0, false, {
                             fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 269,
-                            columnNumber: 13
+                            lineNumber: 271,
+                            columnNumber: 17
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-xs text-gray-500",
+                            children: "Funds released upon campaign completion."
+                        }, void 0, false, {
+                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                            lineNumber: 272,
+                            columnNumber: 17
                         }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 268,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "absolute w-full h-1 bg-muted rounded-full overflow-hidden",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                                variants: brandVariants,
-                                animate: "animate",
-                                className: "absolute top-0 left-1/2 w-1/2 h-full bg-gradient-to-l from-primary"
-                            }, void 0, false, {
-                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 272,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                                variants: creatorVariants,
-                                animate: "animate",
-                                className: "absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-primary"
-                            }, void 0, false, {
-                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 273,
-                                columnNumber: 15
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 271,
-                        columnNumber: 11
-                    }, this)
-                ]
-            }, void 0, true, {
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
+                    lineNumber: 248,
+                    columnNumber: 13
+                }, this)
+            }, void 0, false, {
                 fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 267,
+                lineNumber: 247,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-        lineNumber: 252,
+        lineNumber: 232,
         columnNumber: 5
     }, this);
 }
+_s3(AnimatedEscrow, "X8a7gDviukBnep/XwjVSAK8+fT8=");
 _c3 = AnimatedEscrow;
-function FloatingProfileCard() {
-    _s3();
-    const isMobile = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$mobile$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useIsMobile"])();
-    const animationProps = isMobile ? {} : {
-        custom: 0.3,
-        variants: floatingVariants,
-        animate: "float"
-    };
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-        ...animationProps,
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-            className: "p-3 bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-60",
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-3",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
-                        className: "h-12 w-12 border-2 border-primary/50",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarImage"], {
-                                src: "https://i.pravatar.cc/150?img=8"
-                            }, void 0, false, {
-                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 292,
-                                columnNumber: 25
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
-                                children: "AK"
-                            }, void 0, false, {
-                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 293,
-                                columnNumber: 25
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 291,
-                        columnNumber: 21
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-1",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "font-bold",
-                                children: "Amine K."
-                            }, void 0, false, {
-                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 296,
-                                columnNumber: 25
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex items-center gap-1.5 text-xs text-green-500 font-semibold",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldCheck$3e$__["ShieldCheck"], {
-                                        className: "h-3 w-3"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 298,
-                                        columnNumber: 29
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        children: "Trust Score: 96"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                        lineNumber: 299,
-                                        columnNumber: 29
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                                lineNumber: 297,
-                                columnNumber: 25
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                        lineNumber: 295,
-                        columnNumber: 21
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                lineNumber: 290,
-                columnNumber: 17
-            }, this)
-        }, void 0, false, {
-            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-            lineNumber: 289,
-            columnNumber: 13
-        }, this)
-    }, void 0, false, {
-        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-        lineNumber: 288,
-        columnNumber: 9
-    }, this);
-}
-_s3(FloatingProfileCard, "zdJ8C3X+YlDYVai5EPOd8CzoqSU=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$mobile$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useIsMobile"]
-    ];
-});
-_c4 = FloatingProfileCard;
-function FloatingStatCard() {
-    _s4();
-    const isMobile = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$mobile$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useIsMobile"])();
-    const animationProps = isMobile ? {} : {
-        custom: 0.6,
-        variants: floatingVariants,
-        animate: "float"
-    };
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-        ...animationProps,
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-            className: "p-3 bg-background/80 dark:bg-background/80 backdrop-blur-xl shadow-lg w-48",
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                    className: "text-xs text-muted-foreground flex items-center justify-between",
-                    children: [
-                        "Engagement Rate ",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUp$3e$__["TrendingUp"], {
-                            className: "h-4 w-4 text-green-500"
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 319,
-                            columnNumber: 37
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                    lineNumber: 318,
-                    columnNumber: 17
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                    className: "text-2xl font-bold",
-                    children: "5.8%"
-                }, void 0, false, {
-                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                    lineNumber: 321,
-                    columnNumber: 17
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex gap-1 items-end h-8 mt-1",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "h-[30%] w-full bg-primary/20 rounded-t-sm"
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 323,
-                            columnNumber: 21
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "h-[50%] w-full bg-primary/20 rounded-t-sm"
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 324,
-                            columnNumber: 21
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "h-[80%] w-full bg-primary/20 rounded-t-sm"
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 325,
-                            columnNumber: 21
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "h-[60%] w-full bg-primary rounded-t-sm"
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                            lineNumber: 326,
-                            columnNumber: 21
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-                    lineNumber: 322,
-                    columnNumber: 17
-                }, this)
-            ]
-        }, void 0, true, {
-            fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-            lineNumber: 317,
-            columnNumber: 13
-        }, this)
-    }, void 0, false, {
-        fileName: "[project]/src/features/home/components/AnimatedDashboardMockup.tsx",
-        lineNumber: 316,
-        columnNumber: 9
-    }, this);
-}
-_s4(FloatingStatCard, "zdJ8C3X+YlDYVai5EPOd8CzoqSU=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$mobile$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useIsMobile"]
-    ];
-});
-_c5 = FloatingStatCard;
-var _c, _c1, _c2, _c3, _c4, _c5;
+var _c, _c1, _c2, _c3;
 __turbopack_context__.k.register(_c, "AnimatedDashboardMockup");
 __turbopack_context__.k.register(_c1, "AnimatedBrandPainpoint");
 __turbopack_context__.k.register(_c2, "AnimatedCreatorPainpoint");
 __turbopack_context__.k.register(_c3, "AnimatedEscrow");
-__turbopack_context__.k.register(_c4, "FloatingProfileCard");
-__turbopack_context__.k.register(_c5, "FloatingStatCard");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
@@ -1472,6 +1190,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/avatar.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/features/home/components/AnimatedDashboardMockup.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/star.js [app-client] (ecmascript) <export default as Star>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$instagram$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Instagram$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/instagram.js [app-client] (ecmascript) <export default as Instagram>");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
@@ -1483,6 +1203,26 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
+const TikTokIcon = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        fill: "currentColor",
+        viewBox: "0 0 16 16",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+            d: "M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"
+        }, void 0, false, {
+            fileName: "[project]/src/features/home/components/Home.tsx",
+            lineNumber: 15,
+            columnNumber: 9
+        }, ("TURBOPACK compile-time value", void 0))
+    }, void 0, false, {
+        fileName: "[project]/src/features/home/components/Home.tsx",
+        lineNumber: 14,
+        columnNumber: 5
+    }, ("TURBOPACK compile-time value", void 0));
+_c = TikTokIcon;
 const DynamicIcon = ({ name, className })=>{
     const Icon = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$lucide$2d$react$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[name];
     if (!Icon) {
@@ -1490,7 +1230,7 @@ const DynamicIcon = ({ name, className })=>{
             className: className
         }, void 0, false, {
             fileName: "[project]/src/features/home/components/Home.tsx",
-            lineNumber: 16,
+            lineNumber: 23,
             columnNumber: 12
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -1498,11 +1238,11 @@ const DynamicIcon = ({ name, className })=>{
         className: className
     }, void 0, false, {
         fileName: "[project]/src/features/home/components/Home.tsx",
-        lineNumber: 18,
+        lineNumber: 25,
         columnNumber: 10
     }, ("TURBOPACK compile-time value", void 0));
 };
-_c = DynamicIcon;
+_c1 = DynamicIcon;
 const HowItWorksCard = ({ step, title, description, icon })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "relative flex flex-col items-center text-center p-6 bg-card rounded-2xl border transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2",
         children: [
@@ -1511,7 +1251,7 @@ const HowItWorksCard = ({ step, title, description, icon })=>/*#__PURE__*/ (0, _
                 children: step
             }, void 0, false, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 23,
+                lineNumber: 30,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1522,7 +1262,7 @@ const HowItWorksCard = ({ step, title, description, icon })=>/*#__PURE__*/ (0, _
                         className: "w-10 h-10 text-primary mx-auto mb-4"
                     }, void 0, false, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 27,
+                        lineNumber: 34,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1530,7 +1270,7 @@ const HowItWorksCard = ({ step, title, description, icon })=>/*#__PURE__*/ (0, _
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 28,
+                        lineNumber: 35,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1538,22 +1278,22 @@ const HowItWorksCard = ({ step, title, description, icon })=>/*#__PURE__*/ (0, _
                         children: description
                     }, void 0, false, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 29,
+                        lineNumber: 36,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 26,
+                lineNumber: 33,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/features/home/components/Home.tsx",
-        lineNumber: 22,
+        lineNumber: 29,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
-_c1 = HowItWorksCard;
+_c2 = HowItWorksCard;
 function HomeComponent() {
     _s();
     const { t, language, setUserInterest } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$language$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useLanguage"])();
@@ -1583,13 +1323,13 @@ function HomeComponent() {
                                         children: t('homePage.hero.title2')
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 51,
+                                        lineNumber: 58,
                                         columnNumber: 21
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 49,
+                                lineNumber: 56,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1597,7 +1337,7 @@ function HomeComponent() {
                                 children: t('homePage.hero.subtitle')
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 53,
+                                lineNumber: 60,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1613,12 +1353,12 @@ function HomeComponent() {
                                             children: t('homePage.hero.brandsButton')
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/Home.tsx",
-                                            lineNumber: 63,
+                                            lineNumber: 70,
                                             columnNumber: 25
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 57,
+                                        lineNumber: 64,
                                         columnNumber: 22
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1632,18 +1372,18 @@ function HomeComponent() {
                                             children: t('homePage.hero.creatorsButton')
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/Home.tsx",
-                                            lineNumber: 72,
+                                            lineNumber: 79,
                                             columnNumber: 25
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 65,
+                                        lineNumber: 72,
                                         columnNumber: 22
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 56,
+                                lineNumber: 63,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1658,12 +1398,12 @@ function HomeComponent() {
                                                     children: "GA"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                                    lineNumber: 78,
+                                                    lineNumber: 85,
                                                     columnNumber: 28
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 77,
+                                                lineNumber: 84,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
@@ -1672,12 +1412,12 @@ function HomeComponent() {
                                                     children: "AF"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                                    lineNumber: 81,
+                                                    lineNumber: 88,
                                                     columnNumber: 29
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 80,
+                                                lineNumber: 87,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Avatar"], {
@@ -1686,18 +1426,18 @@ function HomeComponent() {
                                                     children: "S"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                                    lineNumber: 84,
+                                                    lineNumber: 91,
                                                     columnNumber: 29
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 83,
+                                                lineNumber: 90,
                                                 columnNumber: 25
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 76,
+                                        lineNumber: 83,
                                         columnNumber: 21
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1705,70 +1445,44 @@ function HomeComponent() {
                                         children: t('homePage.hero.trustText')
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 87,
+                                        lineNumber: 94,
                                         columnNumber: 21
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 75,
+                                lineNumber: 82,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 48,
+                        lineNumber: 55,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "relative hidden md:flex items-center justify-center p-12",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "absolute top-10 left-0 z-20",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FloatingProfileCard"], {}, void 0, false, {
-                                    fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 92,
-                                    columnNumber: 21
-                                }, this)
-                            }, void 0, false, {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "relative w-full h-full",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatedDashboardMockup"], {}, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 91,
-                                columnNumber: 17
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "absolute bottom-10 right-0 z-20",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FloatingStatCard"], {}, void 0, false, {
-                                    fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 95,
-                                    columnNumber: 21
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 94,
-                                columnNumber: 17
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "relative z-10 flex h-full w-full items-center justify-center",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatedDashboardMockup"], {}, void 0, false, {
-                                    fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 98,
-                                    columnNumber: 21
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 97,
-                                columnNumber: 17
+                                lineNumber: 99,
+                                columnNumber: 21
                             }, this)
-                        ]
-                    }, void 0, true, {
+                        }, void 0, false, {
+                            fileName: "[project]/src/features/home/components/Home.tsx",
+                            lineNumber: 98,
+                            columnNumber: 18
+                        }, this)
+                    }, void 0, false, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 90,
+                        lineNumber: 97,
                         columnNumber: 13
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 47,
+                lineNumber: 54,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1779,7 +1493,7 @@ function HomeComponent() {
                         children: t('homePage.trustBar.title')
                     }, void 0, false, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 105,
+                        lineNumber: 106,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1793,7 +1507,7 @@ function HomeComponent() {
                                         children: "CMI"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 108,
+                                        lineNumber: 109,
                                         columnNumber: 21
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1801,7 +1515,7 @@ function HomeComponent() {
                                         children: "Stripe"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 109,
+                                        lineNumber: 110,
                                         columnNumber: 21
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1809,7 +1523,7 @@ function HomeComponent() {
                                         children: "Google Cloud"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 110,
+                                        lineNumber: 111,
                                         columnNumber: 21
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1817,13 +1531,13 @@ function HomeComponent() {
                                         children: "Google for Startups"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 111,
+                                        lineNumber: 112,
                                         columnNumber: 21
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 107,
+                                lineNumber: 108,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1831,156 +1545,148 @@ function HomeComponent() {
                                 children: t('homePage.trustBar.metric')
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 113,
+                                lineNumber: 114,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 106,
+                        lineNumber: 107,
                         columnNumber: 14
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 104,
+                lineNumber: 105,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "py-24 md:py-32 scroll-mt-16",
                 id: "brands",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "px-4 md:px-10 lg:px-12",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "grid grid-cols-1 md:grid-cols-2 items-center gap-16",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex flex-col gap-6 items-start text-left",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                        className: "text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight",
-                                        children: [
-                                            t('homePage.brands.title1'),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                                fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 127,
-                                                columnNumber: 29
-                                            }, this),
-                                            t('homePage.brands.title2'),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                                fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 129,
-                                                columnNumber: 29
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "gradient-text text-glow",
-                                                children: t('homePage.brands.title3')
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 130,
-                                                columnNumber: 29
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 125,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-lg md:text-xl text-foreground/70 leading-relaxed",
-                                        children: t('homePage.brands.description')
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 134,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "mt-4 flex flex-col items-start gap-2",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                asChild: true,
-                                                size: "lg",
-                                                className: "h-12 px-8 rounded-full gradient-bg text-black font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary",
-                                                onClick: ()=>setUserInterest('brand'),
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                    href: "/brands/join",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$lucide$2d$react$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.ShieldCheck, {
-                                                            className: "mr-2 h-5 w-5"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/features/home/components/Home.tsx",
-                                                            lineNumber: 145,
-                                                            columnNumber: 37
-                                                        }, this),
-                                                        t('homePage.brands.joinButton'),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$lucide$2d$react$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.ArrowRight, {
-                                                            className: "ml-2 h-4 w-4"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/features/home/components/Home.tsx",
-                                                            lineNumber: 147,
-                                                            columnNumber: 37
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/features/home/components/Home.tsx",
-                                                    lineNumber: 144,
-                                                    columnNumber: 33
-                                                }, this)
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 138,
-                                                columnNumber: 29
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-xs text-muted-foreground pl-2",
-                                                children: t('homePage.brands.joinSubtext')
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 150,
-                                                columnNumber: 30
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 137,
-                                        columnNumber: 26
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 124,
-                                columnNumber: 21
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "relative min-h-[300px]",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatedBrandPainpoint"], {}, void 0, false, {
+                    className: "grid grid-cols-1 md:grid-cols-2 items-center gap-16",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex flex-col gap-6 items-start text-left",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                    className: "text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight",
+                                    children: [
+                                        t('homePage.brands.title1'),
+                                        " ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/Home.tsx",
+                                            lineNumber: 126,
+                                            columnNumber: 55
+                                        }, this),
+                                        " ",
+                                        t('homePage.brands.title2'),
+                                        ' ',
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "gradient-text text-glow",
+                                            children: t('homePage.brands.title3')
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/Home.tsx",
+                                            lineNumber: 127,
+                                            columnNumber: 25
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 154,
-                                    columnNumber: 25
+                                    lineNumber: 125,
+                                    columnNumber: 21
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-lg md:text-xl text-foreground/70 leading-relaxed",
+                                    children: t('homePage.brands.description')
+                                }, void 0, false, {
+                                    fileName: "[project]/src/features/home/components/Home.tsx",
+                                    lineNumber: 131,
+                                    columnNumber: 21
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "mt-4 flex flex-col items-start gap-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                            asChild: true,
+                                            size: "lg",
+                                            className: "h-12 px-8 rounded-full gradient-bg text-black font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-glow-primary",
+                                            onClick: ()=>setUserInterest('brand'),
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                href: "/brands/join",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$lucide$2d$react$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.ShieldCheck, {
+                                                        className: "mr-2 h-5 w-5"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/features/home/components/Home.tsx",
+                                                        lineNumber: 142,
+                                                        columnNumber: 33
+                                                    }, this),
+                                                    t('homePage.brands.joinButton'),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$lucide$2d$react$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.ArrowRight, {
+                                                        className: "ml-2 h-4 w-4"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/features/home/components/Home.tsx",
+                                                        lineNumber: 144,
+                                                        columnNumber: 33
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/features/home/components/Home.tsx",
+                                                lineNumber: 141,
+                                                columnNumber: 29
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/Home.tsx",
+                                            lineNumber: 135,
+                                            columnNumber: 25
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-xs text-muted-foreground pl-2",
+                                            children: t('homePage.brands.joinSubtext')
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/Home.tsx",
+                                            lineNumber: 147,
+                                            columnNumber: 25
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/features/home/components/Home.tsx",
+                                    lineNumber: 134,
+                                    columnNumber: 21
                                 }, this)
-                            }, void 0, false, {
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/features/home/components/Home.tsx",
+                            lineNumber: 124,
+                            columnNumber: 17
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "relative min-h-[300px]",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatedBrandPainpoint"], {}, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 153,
+                                lineNumber: 151,
                                 columnNumber: 21
                             }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 123,
-                        columnNumber: 17
-                    }, this)
-                }, void 0, false, {
+                        }, void 0, false, {
+                            fileName: "[project]/src/features/home/components/Home.tsx",
+                            lineNumber: 150,
+                            columnNumber: 17
+                        }, this)
+                    ]
+                }, void 0, true, {
                     fileName: "[project]/src/features/home/components/Home.tsx",
-                    lineNumber: 122,
-                    columnNumber: 13
+                    lineNumber: 123,
+                    columnNumber: 14
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 121,
+                lineNumber: 122,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "py-24 md:py-32 scroll-mt-16",
+                id: "creators",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "grid grid-cols-1 md:grid-cols-2 items-center gap-16",
                     children: [
@@ -1988,16 +1694,16 @@ function HomeComponent() {
                             className: "order-last md:order-first",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatedCreatorPainpoint"], {}, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 164,
+                                lineNumber: 160,
                                 columnNumber: 21
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/features/home/components/Home.tsx",
-                            lineNumber: 163,
+                            lineNumber: 159,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex flex-col gap-6 items-start text-left",
+                            className: "flex flex-col gap-6 items-start text-left md:order-last",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                     className: "text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight",
@@ -2009,13 +1715,13 @@ function HomeComponent() {
                                             children: t('homePage.creators.title2')
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/Home.tsx",
-                                            lineNumber: 169,
+                                            lineNumber: 165,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 167,
+                                    lineNumber: 163,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2023,7 +1729,7 @@ function HomeComponent() {
                                     children: t('homePage.creators.description')
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 173,
+                                    lineNumber: 169,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2041,7 +1747,7 @@ function HomeComponent() {
                                                         className: "mr-2 h-5 w-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                                        lineNumber: 184,
+                                                        lineNumber: 180,
                                                         columnNumber: 30
                                                     }, this),
                                                     t('homePage.creators.applyButton'),
@@ -2049,18 +1755,18 @@ function HomeComponent() {
                                                         className: "ml-2 h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                                        lineNumber: 186,
+                                                        lineNumber: 182,
                                                         columnNumber: 30
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 183,
+                                                lineNumber: 179,
                                                 columnNumber: 25
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/Home.tsx",
-                                            lineNumber: 177,
+                                            lineNumber: 173,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2068,36 +1774,36 @@ function HomeComponent() {
                                             children: t('homePage.creators.applySubtext')
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/Home.tsx",
-                                            lineNumber: 189,
+                                            lineNumber: 185,
                                             columnNumber: 22
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 176,
+                                    lineNumber: 172,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/features/home/components/Home.tsx",
-                            lineNumber: 166,
+                            lineNumber: 162,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/features/home/components/Home.tsx",
-                    lineNumber: 162,
+                    lineNumber: 158,
                     columnNumber: 13
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 161,
+                lineNumber: 157,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "py-24 md:py-32 bg-muted/50 rounded-3xl",
+                className: "py-24 md:py-32 bg-muted/50 rounded-3xl -mx-4 md:-mx-10 lg:-mx-20 px-4 md:px-10 lg:px-20",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "px-4 md:px-10 lg:px-12",
+                    className: "max-w-[1200px] mx-auto",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "text-center mb-16 max-w-3xl mx-auto",
@@ -2111,14 +1817,14 @@ function HomeComponent() {
                                             children: "VibeMatch"
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/Home.tsx",
-                                            lineNumber: 200,
+                                            lineNumber: 196,
                                             columnNumber: 29
                                         }, this),
                                         " Works"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 199,
+                                    lineNumber: 195,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2126,13 +1832,13 @@ function HomeComponent() {
                                     children: howItWorks.description
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 202,
+                                    lineNumber: 198,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/features/home/components/Home.tsx",
-                            lineNumber: 198,
+                            lineNumber: 194,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2147,7 +1853,7 @@ function HomeComponent() {
                                         children: t('homePage.faq.brandsTitle')
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 208,
+                                        lineNumber: 204,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2157,63 +1863,101 @@ function HomeComponent() {
                                         children: t('homePage.faq.creatorsTitle')
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 211,
+                                        lineNumber: 207,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 207,
+                                lineNumber: 203,
                                 columnNumber: 21
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/features/home/components/Home.tsx",
-                            lineNumber: 206,
+                            lineNumber: 202,
                             columnNumber: 18
                         }, this),
-                        activeTab === 'brands' && howItWorks.brands && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid md:grid-cols-3 gap-12 relative",
-                            children: howItWorks.brands.steps.map((step, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HowItWorksCard, {
-                                    step: index + 1,
-                                    title: step.title,
-                                    description: step.description,
-                                    icon: step.icon
-                                }, index, false, {
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "relative",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "absolute hidden md:block top-1/2 left-0 w-full h-px -translate-y-1/2",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                        width: "100%",
+                                        height: "2",
+                                        className: "overflow-visible",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("line", {
+                                            x1: "0",
+                                            y1: "1",
+                                            x2: "100%",
+                                            y2: "1",
+                                            stroke: "hsl(var(--border))",
+                                            strokeWidth: "2",
+                                            strokeDasharray: "8, 8"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/home/components/Home.tsx",
+                                            lineNumber: 216,
+                                            columnNumber: 29
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/home/components/Home.tsx",
+                                        lineNumber: 215,
+                                        columnNumber: 24
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/src/features/home/components/Home.tsx",
+                                    lineNumber: 214,
+                                    columnNumber: 21
+                                }, this),
+                                activeTab === 'brands' && howItWorks.brands && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "grid md:grid-cols-3 gap-12 relative",
+                                    children: howItWorks.brands.steps.map((step, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HowItWorksCard, {
+                                            step: index + 1,
+                                            title: step.title,
+                                            description: step.description,
+                                            icon: step.icon
+                                        }, index, false, {
+                                            fileName: "[project]/src/features/home/components/Home.tsx",
+                                            lineNumber: 222,
+                                            columnNumber: 33
+                                        }, this))
+                                }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
                                     lineNumber: 220,
-                                    columnNumber: 29
-                                }, this))
-                        }, void 0, false, {
-                            fileName: "[project]/src/features/home/components/Home.tsx",
-                            lineNumber: 218,
-                            columnNumber: 21
-                        }, this),
-                        activeTab === 'creators' && howItWorks.creators && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid md:grid-cols-3 gap-12 relative",
-                            children: howItWorks.creators.steps.map((step, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HowItWorksCard, {
-                                    step: index + 1,
-                                    title: step.title,
-                                    description: step.description,
-                                    icon: step.icon
-                                }, index, false, {
+                                    columnNumber: 25
+                                }, this),
+                                activeTab === 'creators' && howItWorks.creators && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "grid md:grid-cols-3 gap-12 relative",
+                                    children: howItWorks.creators.steps.map((step, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(HowItWorksCard, {
+                                            step: index + 1,
+                                            title: step.title,
+                                            description: step.description,
+                                            icon: step.icon
+                                        }, index, false, {
+                                            fileName: "[project]/src/features/home/components/Home.tsx",
+                                            lineNumber: 229,
+                                            columnNumber: 32
+                                        }, this))
+                                }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
                                     lineNumber: 227,
-                                    columnNumber: 28
-                                }, this))
-                        }, void 0, false, {
+                                    columnNumber: 25
+                                }, this)
+                            ]
+                        }, void 0, true, {
                             fileName: "[project]/src/features/home/components/Home.tsx",
-                            lineNumber: 225,
-                            columnNumber: 21
+                            lineNumber: 213,
+                            columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/features/home/components/Home.tsx",
-                    lineNumber: 197,
+                    lineNumber: 193,
                     columnNumber: 14
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 196,
+                lineNumber: 192,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2234,13 +1978,13 @@ function HomeComponent() {
                                             children: t('homePage.escrow.titleHighlight')
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/home/components/Home.tsx",
-                                            lineNumber: 240,
+                                            lineNumber: 243,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 238,
+                                    lineNumber: 241,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2248,36 +1992,36 @@ function HomeComponent() {
                                     children: t('homePage.escrow.description')
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 244,
+                                    lineNumber: 247,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/features/home/components/Home.tsx",
-                            lineNumber: 237,
+                            lineNumber: 240,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "relative w-full h-[400px] flex items-center justify-center",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$home$2f$components$2f$AnimatedDashboardMockup$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatedEscrow"], {}, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 249,
+                                lineNumber: 252,
                                 columnNumber: 21
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/features/home/components/Home.tsx",
-                            lineNumber: 248,
+                            lineNumber: 251,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/features/home/components/Home.tsx",
-                    lineNumber: 236,
+                    lineNumber: 239,
                     columnNumber: 13
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 235,
+                lineNumber: 238,
                 columnNumber: 10
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2293,7 +2037,7 @@ function HomeComponent() {
                                 children: t('homePage.testimonialsTitle2')
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 259,
+                                lineNumber: 262,
                                 columnNumber: 13
                             }, this),
                             ' ',
@@ -2301,7 +2045,7 @@ function HomeComponent() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 257,
+                        lineNumber: 260,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2309,8 +2053,25 @@ function HomeComponent() {
                         children: testimonials.map((testimonial, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex flex-col gap-4 text-left p-8 rounded-3xl bg-muted/50 border transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/10",
                                 children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex text-yellow-400",
+                                        children: [
+                                            ...Array(5)
+                                        ].map((_, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"], {
+                                                fill: "currentColor",
+                                                className: "w-5 h-5"
+                                            }, i, false, {
+                                                fileName: "[project]/src/features/home/components/Home.tsx",
+                                                lineNumber: 269,
+                                                columnNumber: 58
+                                            }, this))
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/home/components/Home.tsx",
+                                        lineNumber: 268,
+                                        columnNumber: 25
+                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-foreground/70 leading-relaxed text-lg",
+                                        className: "text-foreground/70 leading-relaxed text-lg flex-grow",
                                         children: [
                                             '"',
                                             testimonial.quote,
@@ -2318,7 +2079,7 @@ function HomeComponent() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 265,
+                                        lineNumber: 271,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2330,12 +2091,12 @@ function HomeComponent() {
                                                     children: testimonial.name.charAt(0)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                                    lineNumber: 268,
+                                                    lineNumber: 274,
                                                     columnNumber: 33
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 267,
+                                                lineNumber: 273,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2345,78 +2106,94 @@ function HomeComponent() {
                                                         children: testimonial.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                                        lineNumber: 271,
+                                                        lineNumber: 277,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-sm text-foreground/70",
-                                                        children: testimonial.role
-                                                    }, void 0, false, {
+                                                        className: "text-sm text-foreground/70 flex items-center gap-1.5",
+                                                        children: [
+                                                            testimonial.platform === 'instagram' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$instagram$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Instagram$3e$__["Instagram"], {
+                                                                className: "w-3 h-3"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/features/home/components/Home.tsx",
+                                                                lineNumber: 279,
+                                                                columnNumber: 78
+                                                            }, this),
+                                                            testimonial.platform === 'tiktok' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TikTokIcon, {}, void 0, false, {
+                                                                fileName: "[project]/src/features/home/components/Home.tsx",
+                                                                lineNumber: 280,
+                                                                columnNumber: 75
+                                                            }, this),
+                                                            testimonial.role
+                                                        ]
+                                                    }, void 0, true, {
                                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                                        lineNumber: 272,
+                                                        lineNumber: 278,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                                lineNumber: 270,
+                                                lineNumber: 276,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 266,
+                                        lineNumber: 272,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, index, true, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 264,
+                                lineNumber: 267,
                                 columnNumber: 21
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 262,
+                        lineNumber: 265,
                         columnNumber: 13
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 256,
+                lineNumber: 259,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "py-24 md:py-32",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "text-center bg-card border rounded-3xl p-10 md:p-16",
+                    className: "text-center bg-gray-900 dark:bg-black rounded-3xl p-10 md:p-16 border border-gray-800 shadow-2xl shadow-primary/20",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "max-w-3xl mx-auto flex flex-col items-center",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                className: "text-4xl md:text-5xl font-extrabold tracking-tighter mb-4",
+                                className: "text-4xl md:text-5xl font-extrabold tracking-tighter mb-4 text-white",
                                 children: [
-                                    "Ready to ",
+                                    t('homePage.finalCta.title1'),
+                                    ' ',
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "gradient-text text-glow",
-                                        children: "Launch"
+                                        children: t('homePage.finalCta.titleLaunch')
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/home/components/Home.tsx",
-                                        lineNumber: 285,
-                                        columnNumber: 28
+                                        lineNumber: 295,
+                                        columnNumber: 57
                                     }, this),
-                                    " Your First Campaign?"
+                                    ' ',
+                                    t('homePage.finalCta.title2')
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 284,
+                                lineNumber: 294,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-lg md:text-xl text-foreground/60 leading-relaxed mb-8",
+                                className: "text-lg md:text-xl text-gray-400 leading-relaxed mb-8",
                                 children: t('homePage.finalCta.description')
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 287,
+                                lineNumber: 297,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2428,42 +2205,42 @@ function HomeComponent() {
                                     children: t('homePage.finalCta.button')
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/home/components/Home.tsx",
-                                    lineNumber: 291,
+                                    lineNumber: 301,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 290,
+                                lineNumber: 300,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-sm text-muted-foreground mt-4",
+                                className: "text-sm text-gray-500 mt-4",
                                 children: t('homePage.finalCta.reassurance')
                             }, void 0, false, {
                                 fileName: "[project]/src/features/home/components/Home.tsx",
-                                lineNumber: 293,
+                                lineNumber: 303,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/home/components/Home.tsx",
-                        lineNumber: 283,
+                        lineNumber: 293,
                         columnNumber: 15
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/features/home/components/Home.tsx",
-                    lineNumber: 282,
+                    lineNumber: 292,
                     columnNumber: 13
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/features/home/components/Home.tsx",
-                lineNumber: 281,
+                lineNumber: 291,
                 columnNumber: 10
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/features/home/components/Home.tsx",
-        lineNumber: 44,
+        lineNumber: 51,
         columnNumber: 5
     }, this);
 }
@@ -2472,11 +2249,12 @@ _s(HomeComponent, "YObwlBz3EojGKkySS+zpmD7sX9A=", false, function() {
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$language$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useLanguage"]
     ];
 });
-_c2 = HomeComponent;
-var _c, _c1, _c2;
-__turbopack_context__.k.register(_c, "DynamicIcon");
-__turbopack_context__.k.register(_c1, "HowItWorksCard");
-__turbopack_context__.k.register(_c2, "HomeComponent");
+_c3 = HomeComponent;
+var _c, _c1, _c2, _c3;
+__turbopack_context__.k.register(_c, "TikTokIcon");
+__turbopack_context__.k.register(_c1, "DynamicIcon");
+__turbopack_context__.k.register(_c2, "HowItWorksCard");
+__turbopack_context__.k.register(_c3, "HomeComponent");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
