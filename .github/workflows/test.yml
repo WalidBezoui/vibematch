@@ -20,6 +20,8 @@ jobs:
         with:
           path: ~/.cache/firebase/emulators
           key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('**/firebase.json') }}
+          restore-keys: |
+            ${{ runner.os }}-firebase-emulators-
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
